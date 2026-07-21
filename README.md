@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SpeakUp — Practice presentations with AI
 
-## Getting Started
+Your personal public speaking coach, available 24/7. Record a presentation,
+get instant AI feedback on clarity, confidence, pacing and delivery, and
+track your improvement over time.
 
-First, run the development server:
+**Workflow:** Practice → Analyze → Improve.
+
+## Tech stack
+
+- [Next.js 16](https://nextjs.org) (App Router) + React 19 + TypeScript
+- [Tailwind CSS 4](https://tailwindcss.com) — design tokens, dark mode
+- [Supabase](https://supabase.com) — auth (via `@supabase/ssr`) + Postgres with RLS
+- [Framer Motion](https://www.framer.com/motion/) — animations
+- OpenAI integration (placeholder provider, see below)
+- Stripe-ready (placeholders)
+- Deploys to [Vercel](https://vercel.com) out of the box
+
+## Getting started
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Demo mode (zero config)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Without env vars the app runs fully in **demo mode**: auth is disabled and
+sessions are stored in `localStorage`, so the whole practice → analyze →
+improve loop works locally out of the box.
 
-## Learn More
+### Full setup (Supabase)
 
-To learn more about Next.js, take a look at the following resources:
+1. Create a project at [supabase.com](https://supabase.com).
+2. Run `supabase/migrations/00001_initial_schema.sql` in the SQL editor
+   (creates `profiles` + `practice_sessions` with RLS and a signup trigger).
+3. Copy `.env.example` to `.env.local` and fill in:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Restart the dev server — signup, login, password reset and per-user session
+storage are now live.
 
-## Deploy on Vercel
+## Project structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+├── app/
+│   ├── (auth)/          # login, signup, forgot/reset password
+│   ├── (app)/           # protected: dashboard, practice, results, history, profile
+│   ├── api/analyze/     # server-side AI analysis endpoint
+│   ├── auth/callback/   # Supabase code exchange
+│   └── page.tsx         # landing page
+├── components/          # ui kit + feature components (landing, dashboard, …)
+├── hooks/               # useRecorder, useSessions, useUser
+├── services/            # auth, sessions, analysis + ai/ provider architecture
+├── lib/supabase/        # browser/server clients, env config
+├── types/               # domain types (AnalysisResult, PracticeSession, …)
+├── utils/               # cn, formatters, score helpers
+└── proxy.ts             # session refresh + protected routes
+supabase/migrations/     # SQL schema
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## AI architecture
+
+Analysis runs server-side behind `POST /api/analyze` so vendor keys never
+reach the browser. Providers implement a single interface:
+
+```
+services/ai/
+├── provider.ts        # AnalysisProvider interface + AnalysisRequest
+├── mock-provider.ts   # deterministic mock (active today)
+├── openai-provider.ts # TODO(ai): Whisper transcription + LLM structured output
+└── index.ts           # factory — flip USE_OPENAI when the pipeline lands
+```
+
+`AnalysisResult` already models every metric (clarity, confidence, pace,
+structure, persuasiveness, vocabulary, filler words) plus reserved fields
+for future video analysis (eye contact, body language), so shipping the real
+provider requires no UI changes.
+
+## Roadmap (architected, not yet built)
+
+Practice modes for interviews, startup pitches, school, TED talks, sales and
+language exams already exist as an extensible enum. Placeholders with `TODO`
+markers cover: Stripe billing, PDF reports, achievements, video analysis,
+coach avatars, leaderboards, daily challenges and AI-generated practice
+questions.
+
+## Deployment (Vercel)
+
+Push to GitHub, import the repo in Vercel, add the env vars from
+`.env.example`. No extra configuration needed.

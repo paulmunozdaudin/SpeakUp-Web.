@@ -23,15 +23,17 @@ export function useSessions(): UseSessionsResult {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const refresh = useCallback(async () => {
-    try {
-      setSessions(await listSessions());
-      setError(null);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Failed to load sessions");
-    } finally {
-      setLoading(false);
-    }
+  // Promise-chained (no synchronous setState) so it is effect-safe.
+  const refresh = useCallback(() => {
+    return listSessions()
+      .then((data) => {
+        setSessions(data);
+        setError(null);
+      })
+      .catch((e: unknown) => {
+        setError(e instanceof Error ? e.message : "Failed to load sessions");
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {

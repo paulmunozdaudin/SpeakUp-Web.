@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useState,
+  useSyncExternalStore,
 } from "react";
 
 type Theme = "light" | "dark" | "system";
@@ -19,48 +20,43 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 const STORAGE_KEY = "speakup-theme";
+const MEDIA_QUERY = "(prefers-color-scheme: dark)";
 
-function systemTheme(): "light" | "dark" {
-  if (typeof window === "undefined") return "light";
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+/* System dark-mode preference as an external store (SSR-safe). */
+function subscribeToSystemTheme(callback: () => void) {
+  const media = window.matchMedia(MEDIA_QUERY);
+  media.addEventListener("change", callback);
+  return () => media.removeEventListener("change", callback);
+}
+
+const getSystemDark = () => window.matchMedia(MEDIA_QUERY).matches;
+const getServerSystemDark = () => false;
+
+function readStoredTheme(): Theme {
+  if (typeof window === "undefined") return "system";
+  return (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? "system";
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>("system");
-  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
-
-  const apply = useCallback((next: Theme) => {
-    const resolved = next === "system" ? systemTheme() : next;
-    document.documentElement.classList.toggle("dark", resolved === "dark");
-    setResolvedTheme(resolved);
-  }, []);
-
-  useEffect(() => {
-    const stored = (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? "system";
-    setThemeState(stored);
-    apply(stored);
-
-    // Follow OS changes while in "system" mode.
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => {
-      const current =
-        (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? "system";
-      if (current === "system") apply("system");
-    };
-    media.addEventListener("change", onChange);
-    return () => media.removeEventListener("change", onChange);
-  }, [apply]);
-
-  const setTheme = useCallback(
-    (next: Theme) => {
-      localStorage.setItem(STORAGE_KEY, next);
-      setThemeState(next);
-      apply(next);
-    },
-    [apply],
+  const [theme, setThemeState] = useState<Theme>(readStoredTheme);
+  const systemDark = useSyncExternalStore(
+    subscribeToSystemTheme,
+    getSystemDark,
+    getServerSystemDark,
   );
+
+  const resolvedTheme: "light" | "dark" =
+    theme === "dark" || (theme === "system" && systemDark) ? "dark" : "light";
+
+  // Keep the <html> class in sync (the init script handles first paint).
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", resolvedTheme === "dark");
+  }, [resolvedTheme]);
+
+  const setTheme = useCallback((next: Theme) => {
+    localStorage.setItem(STORAGE_KEY, next);
+    setThemeState(next);
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ theme, resolvedTheme, setTheme }}>
@@ -84,7 +80,7 @@ export const themeInitScript = `
   try {
     var t = localStorage.getItem("${STORAGE_KEY}");
     var dark = t === "dark" || ((t === null || t === "system") &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches);
+      window.matchMedia("${MEDIA_QUERY}").matches);
     if (dark) document.documentElement.classList.add("dark");
   } catch (e) {}
 })();
