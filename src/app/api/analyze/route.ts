@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { PracticeMode } from "@/types";
 import { getAnalysisProvider } from "@/services/ai";
+import type { AnalysisLocale } from "@/services/ai/provider";
 
 export const runtime = "nodejs";
 export const maxDuration = 60; // transcription + LLM can take a while
@@ -8,7 +9,7 @@ export const maxDuration = 60; // transcription + LLM can take a while
 /**
  * POST /api/analyze
  * Body: multipart form-data { audio: Blob, topic: string, mode: PracticeMode,
- * durationSeconds: string }.
+ * durationSeconds: string, locale?: "en" | "es" }.
  * Returns: AnalysisResult (JSON).
  *
  * Runs server-side so AI vendor keys never reach the browser.
@@ -20,6 +21,8 @@ export async function POST(request: Request) {
     const topic = form.get("topic");
     const mode = form.get("mode");
     const durationSeconds = Number(form.get("durationSeconds"));
+    const localeRaw = form.get("locale");
+    const locale: AnalysisLocale = localeRaw === "es" ? "es" : "en";
 
     if (
       !(audio instanceof Blob) ||
@@ -40,6 +43,7 @@ export async function POST(request: Request) {
       topic,
       mode: mode as PracticeMode,
       durationSeconds,
+      locale,
     });
 
     return NextResponse.json(analysis);

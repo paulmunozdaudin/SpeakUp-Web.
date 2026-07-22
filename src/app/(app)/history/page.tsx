@@ -4,18 +4,19 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Mic, Search, SearchX, Trash2 } from "lucide-react";
 import type { PracticeMode } from "@/types";
-import { PRACTICE_MODE_LABELS } from "@/types";
 import { useSessions } from "@/hooks/use-sessions";
 import { toSummary } from "@/services/sessions.service";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
 import { SessionListItem } from "@/components/dashboard/session-list-item";
+import { useDict } from "@/lib/i18n";
 import { cn } from "@/utils/cn";
 
 type ModeFilter = PracticeMode | "all";
 
 export default function HistoryPage() {
+  const d = useDict();
   const { sessions, loading, error, remove } = useSessions();
   const [query, setQuery] = useState("");
   const [modeFilter, setModeFilter] = useState<ModeFilter>("all");
@@ -39,11 +40,9 @@ export default function HistoryPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-          History
+          {d.history.title}
         </h1>
-        <p className="mt-1 text-sm text-muted">
-          Every practice, every score — your journey so far.
-        </p>
+        <p className="mt-1 text-sm text-muted">{d.history.subtitle}</p>
       </div>
 
       {/* Search + mode filters */}
@@ -52,7 +51,7 @@ export default function HistoryPage() {
           <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
           <input
             type="search"
-            placeholder="Search by topic…"
+            placeholder={d.history.searchPlaceholder}
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             className="h-10 w-full rounded-xl border border-border bg-surface pl-10 pr-3.5 text-sm placeholder:text-muted/60 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/20"
@@ -72,7 +71,7 @@ export default function HistoryPage() {
                     : "bg-surface-muted text-muted hover:text-foreground",
                 )}
               >
-                {mode === "all" ? "All" : PRACTICE_MODE_LABELS[mode]}
+                {mode === "all" ? d.history.all : d.modes[mode]}
               </button>
             ))}
           </div>
@@ -94,19 +93,19 @@ export default function HistoryPage() {
       ) : sessions.length === 0 ? (
         <EmptyState
           icon={Mic}
-          title="No practices yet"
-          description="Your reports will appear here after your first session."
+          title={d.history.emptyTitle}
+          description={d.history.emptyDescription}
           action={
             <Link href="/practice">
-              <Button>Start practicing</Button>
+              <Button>{d.common.startPracticing}</Button>
             </Link>
           }
         />
       ) : filtered.length === 0 ? (
         <EmptyState
           icon={SearchX}
-          title="No results"
-          description="No sessions match your search or filters."
+          title={d.history.noResultsTitle}
+          description={d.history.noResultsDescription}
         />
       ) : (
         <div className="space-y-3">
@@ -122,20 +121,20 @@ export default function HistoryPage() {
                       setConfirmingId(null);
                     }}
                   >
-                    Delete
+                    {d.common.delete}
                   </Button>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => setConfirmingId(null)}
                   >
-                    Cancel
+                    {d.common.cancel}
                   </Button>
                 </span>
               ) : (
                 <button
                   type="button"
-                  aria-label={`Delete ${session.topic}`}
+                  aria-label={`${d.history.deleteAria} ${session.topic}`}
                   onClick={() => setConfirmingId(session.id)}
                   className="cursor-pointer rounded-lg p-2 text-muted transition-colors hover:bg-danger/10 hover:text-danger"
                 >

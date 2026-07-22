@@ -4,8 +4,18 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Mic, Play, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useDict } from "@/lib/i18n";
 
 export function Hero() {
+  const d = useDict();
+
+  const previewMetrics = [
+    { label: d.landing.previewMetrics.clarity, value: 88 },
+    { label: d.landing.previewMetrics.confidence, value: 82 },
+    { label: d.landing.previewMetrics.pacing, value: 79 },
+    { label: d.landing.previewMetrics.structure, value: 91 },
+  ];
+
   return (
     <section className="relative overflow-hidden">
       {/* Soft radial glow behind the headline */}
@@ -21,7 +31,7 @@ export function Hero() {
           className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs font-medium text-muted"
         >
           <Sparkles className="h-3.5 w-3.5 text-accent" />
-          Your personal speaking coach, available 24/7
+          {d.landing.heroBadge}
         </motion.div>
 
         <motion.h1
@@ -30,7 +40,7 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.08 }}
           className="text-balance text-5xl font-semibold tracking-tight sm:text-6xl md:text-7xl"
         >
-          Practice presentations with AI.
+          {d.landing.heroTitle}
         </motion.h1>
 
         <motion.p
@@ -39,8 +49,7 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.16 }}
           className="mt-6 max-w-xl text-pretty text-lg text-muted"
         >
-          Get instant feedback on your clarity, confidence, pacing and
-          delivery.
+          {d.landing.heroSubtitle}
         </motion.p>
 
         <motion.div
@@ -52,14 +61,14 @@ export function Hero() {
           <Link href="/signup">
             <Button size="lg">
               <Mic className="h-4.5 w-4.5" />
-              Start practicing
+              {d.common.startPracticing}
             </Button>
           </Link>
           {/* TODO(demo): link to a real product demo video. */}
           <Link href="#how-it-works">
             <Button variant="secondary" size="lg">
               <Play className="h-4.5 w-4.5" />
-              See demo
+              {d.common.seeDemo}
             </Button>
           </Link>
         </motion.div>
@@ -74,20 +83,15 @@ export function Hero() {
           <div className="mx-auto max-w-3xl rounded-3xl border border-border bg-surface p-6 shadow-xl shadow-black/5 sm:p-8">
             <div className="flex items-center justify-between">
               <div className="text-left">
-                <p className="text-sm font-medium">Startup pitch — take 3</p>
-                <p className="text-xs text-muted">Analyzed just now</p>
+                <p className="text-sm font-medium">{d.landing.previewTitle}</p>
+                <p className="text-xs text-muted">{d.landing.previewSubtitle}</p>
               </div>
               <span className="rounded-full bg-success/10 px-3 py-1 text-sm font-semibold text-success">
                 86
               </span>
             </div>
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {[
-                { label: "Clarity", value: 88 },
-                { label: "Confidence", value: 82 },
-                { label: "Pacing", value: 79 },
-                { label: "Structure", value: 91 },
-              ].map((metric) => (
+              {previewMetrics.map((metric) => (
                 <div
                   key={metric.label}
                   className="rounded-2xl bg-surface-muted p-4 text-left"

@@ -6,8 +6,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { signIn } from "@/services/auth.service";
+import { useDict } from "@/lib/i18n";
 
 function LoginForm() {
+  const d = useDict();
   const router = useRouter();
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
@@ -25,7 +27,7 @@ function LoginForm() {
     );
 
     if (!result.ok) {
-      setError(result.error ?? "Something went wrong.");
+      setError(result.error ?? d.auth.genericError);
       setLoading(false);
       return;
     }
@@ -35,13 +37,13 @@ function LoginForm() {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
-      <p className="mt-1.5 text-sm text-muted">
-        Log in to continue practicing.
-      </p>
+      <h1 className="text-2xl font-semibold tracking-tight">
+        {d.auth.loginTitle}
+      </h1>
+      <p className="mt-1.5 text-sm text-muted">{d.auth.loginSubtitle}</p>
       <form onSubmit={handleSubmit} className="mt-8 space-y-4">
         <Input
-          label="Email"
+          label={d.auth.email}
           name="email"
           type="email"
           placeholder="you@example.com"
@@ -50,7 +52,7 @@ function LoginForm() {
         />
         <div className="space-y-1.5">
           <Input
-            label="Password"
+            label={d.auth.password}
             name="password"
             type="password"
             placeholder="••••••••"
@@ -62,7 +64,7 @@ function LoginForm() {
               href="/forgot-password"
               className="text-xs text-accent hover:underline"
             >
-              Forgot password?
+              {d.auth.forgotPassword}
             </Link>
           </div>
         </div>
@@ -72,13 +74,13 @@ function LoginForm() {
           </p>
         )}
         <Button type="submit" loading={loading} className="w-full">
-          Log in
+          {d.common.logIn}
         </Button>
       </form>
       <p className="mt-6 text-center text-sm text-muted">
-        Don&apos;t have an account?{" "}
+        {d.auth.noAccount}{" "}
         <Link href="/signup" className="font-medium text-accent hover:underline">
-          Sign up
+          {d.common.signUp}
         </Link>
       </p>
     </>

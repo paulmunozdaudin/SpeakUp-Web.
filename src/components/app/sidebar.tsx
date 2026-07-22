@@ -11,21 +11,24 @@ import {
 } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { LanguageToggle } from "@/components/theme/language-toggle";
 import { signOut } from "@/services/auth.service";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { useDict } from "@/lib/i18n";
 import { cn } from "@/utils/cn";
-
-const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/practice", label: "Practice", icon: Mic },
-  { href: "/history", label: "History", icon: History },
-  { href: "/profile", label: "Profile", icon: User },
-];
 
 /** Desktop sidebar + mobile bottom navigation for the authenticated app. */
 export function Sidebar() {
+  const d = useDict();
   const pathname = usePathname();
   const router = useRouter();
+
+  const navItems = [
+    { href: "/dashboard", label: d.nav.dashboard, icon: LayoutDashboard },
+    { href: "/practice", label: d.nav.practice, icon: Mic },
+    { href: "/history", label: d.nav.history, icon: History },
+    { href: "/profile", label: d.nav.profile, icon: User },
+  ];
 
   async function handleLogout() {
     await signOut();
@@ -69,12 +72,15 @@ export function Sidebar() {
               className="flex cursor-pointer items-center gap-2 rounded-xl px-3 py-2 text-sm text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
             >
               <LogOut className="h-4 w-4" />
-              Log out
+              {d.common.logOut}
             </button>
           ) : (
-            <span className="px-3 text-xs text-muted">Demo mode</span>
+            <span className="px-3 text-xs text-muted">{d.common.demoMode}</span>
           )}
-          <ThemeToggle />
+          <div className="flex items-center">
+            <LanguageToggle />
+            <ThemeToggle />
+          </div>
         </div>
       </aside>
 

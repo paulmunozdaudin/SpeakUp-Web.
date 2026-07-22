@@ -1,11 +1,15 @@
 import type { AnalysisResult, PracticeMode } from "@/types";
 
+/** Language the feedback should be written in. */
+export type AnalysisLocale = "en" | "es";
+
 /** Everything an analysis provider needs to evaluate a practice session. */
 export interface AnalysisRequest {
   audio: Blob;
   topic: string;
   mode: PracticeMode;
   durationSeconds: number;
+  locale: AnalysisLocale;
 }
 
 /**

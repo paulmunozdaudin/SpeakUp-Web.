@@ -3,25 +3,21 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { AudioLines } from "lucide-react";
-
-const STEPS = [
-  "Uploading your recording…",
-  "Transcribing your speech…",
-  "Evaluating clarity and pacing…",
-  "Writing your personalized feedback…",
-];
+import { useDict } from "@/lib/i18n";
 
 /** Full-screen animated state shown while the AI analyzes a recording. */
 export function AnalyzingOverlay() {
+  const d = useDict();
+  const steps = d.practice.analyzingSteps;
   const [step, setStep] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(
-      () => setStep((s) => Math.min(s + 1, STEPS.length - 1)),
+      () => setStep((s) => Math.min(s + 1, steps.length - 1)),
       1600,
     );
     return () => clearInterval(interval);
-  }, []);
+  }, [steps.length]);
 
   return (
     <motion.div
@@ -53,7 +49,7 @@ export function AnalyzingOverlay() {
       </div>
 
       <h2 className="mt-10 text-xl font-semibold tracking-tight">
-        Analyzing…
+        {d.practice.analyzing}
       </h2>
       <motion.p
         key={step}
@@ -61,7 +57,7 @@ export function AnalyzingOverlay() {
         animate={{ opacity: 1, y: 0 }}
         className="mt-2 text-sm text-muted"
       >
-        {STEPS[step]}
+        {steps[step]}
       </motion.p>
 
       {/* Animated equalizer bars */}

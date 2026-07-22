@@ -1,13 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { SupabaseNotice } from "@/components/auth/supabase-notice";
+import { LanguageToggle } from "@/components/theme/language-toggle";
+import { useDict } from "@/lib/i18n";
 
 export default function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const d = useDict();
+
   return (
     <main className="relative flex flex-1 flex-col items-center justify-center px-4 py-16">
       <div
@@ -19,8 +25,11 @@ export default function AuthLayout({
         className="absolute left-4 top-4 inline-flex items-center gap-1.5 text-sm text-muted transition-colors hover:text-foreground sm:left-6 sm:top-6"
       >
         <ArrowLeft className="h-4 w-4" />
-        Home
+        {d.common.home}
       </Link>
+      <div className="absolute right-4 top-4 sm:right-6 sm:top-6">
+        <LanguageToggle />
+      </div>
       <div className="relative w-full max-w-md">
         <div className="mb-8 flex justify-center">
           <Logo />

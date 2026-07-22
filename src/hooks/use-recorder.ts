@@ -84,10 +84,11 @@ export function useRecorder(): UseRecorderResult {
       startTimer();
     } catch (e) {
       setStatus("error");
+      // Error codes (not copy) so the UI can localize the message.
       setError(
         e instanceof DOMException && e.name === "NotAllowedError"
-          ? "Microphone access was denied. Allow it in your browser settings and try again."
-          : "Could not start recording. Check that a microphone is connected.",
+          ? "mic-denied"
+          : "mic-unavailable",
       );
     }
   }, [startTimer]);

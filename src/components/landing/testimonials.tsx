@@ -1,35 +1,19 @@
+"use client";
+
 import { Section } from "./section";
+import { useDict } from "@/lib/i18n";
 
 /* TODO(content): replace placeholder testimonials with real customer quotes. */
-const testimonials = [
-  {
-    quote:
-      "I rehearsed my seed round pitch 14 times with SpeakUp. By demo day I wasn't nervous — I was ready.",
-    name: "Sofia M.",
-    role: "Startup founder",
-  },
-  {
-    quote:
-      "My filler-word count dropped from 42 to 6 in three weeks. My students noticed before I did.",
-    name: "Daniel R.",
-    role: "University lecturer",
-  },
-  {
-    quote:
-      "It's like having a speaking coach in my pocket. I practice on my commute before every client meeting.",
-    name: "Amara K.",
-    role: "Sales lead",
-  },
-];
-
 export function Testimonials() {
+  const d = useDict();
+
   return (
     <Section
-      eyebrow="Testimonials"
-      title="Loved by speakers at every level"
+      eyebrow={d.landing.testimonialsEyebrow}
+      title={d.landing.testimonialsTitle}
     >
       <div className="grid gap-4 md:grid-cols-3">
-        {testimonials.map((t) => (
+        {d.landing.testimonials.map((t) => (
           <figure
             key={t.name}
             className="flex flex-col justify-between rounded-2xl border border-border bg-surface p-6"

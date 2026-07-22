@@ -13,16 +13,6 @@ export type PracticeMode =
   | "sales-pitch"
   | "language-exam";
 
-export const PRACTICE_MODE_LABELS: Record<PracticeMode, string> = {
-  presentation: "Presentation",
-  interview: "Interview",
-  "startup-pitch": "Startup Pitch",
-  school: "School Presentation",
-  "ted-talk": "TED Talk",
-  "sales-pitch": "Sales Pitch",
-  "language-exam": "Language Exam",
-};
-
 /** A single 0–100 metric returned by the AI analysis. */
 export interface MetricScore {
   score: number; // 0–100

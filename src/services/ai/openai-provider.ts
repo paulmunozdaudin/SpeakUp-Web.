@@ -9,7 +9,8 @@ import type { AnalysisProvider, AnalysisRequest } from "./provider";
  *      (e.g. `whisper-1` / `gpt-4o-transcribe`), keeping word timestamps.
  *   2. Compute pace (words/minute) and filler-word counts from the transcript.
  *   3. Send transcript + metadata (topic, mode, duration) to a chat model with
- *      a structured-output JSON schema matching `AnalysisResult`.
+ *      a structured-output JSON schema matching `AnalysisResult`, instructing
+ *      it to write all feedback in `request.locale`.
  *   4. Validate the response (zod) and return it.
  *
  * Mode-specific prompts (interview vs. startup pitch vs. TED talk) should be

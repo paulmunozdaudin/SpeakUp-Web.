@@ -6,8 +6,10 @@ import { MailCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { requestPasswordReset } from "@/services/auth.service";
+import { useDict } from "@/lib/i18n";
 
 export default function ForgotPasswordPage() {
+  const d = useDict();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
@@ -21,7 +23,7 @@ export default function ForgotPasswordPage() {
     const result = await requestPasswordReset(form.get("email") as string);
 
     if (!result.ok) {
-      setError(result.error ?? "Something went wrong.");
+      setError(result.error ?? d.auth.genericError);
       setLoading(false);
       return;
     }
@@ -35,13 +37,10 @@ export default function ForgotPasswordPage() {
         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-soft text-accent">
           <MailCheck className="h-6 w-6" />
         </div>
-        <h1 className="text-xl font-semibold">Check your inbox</h1>
-        <p className="mt-2 max-w-xs text-sm text-muted">
-          If an account exists for that email, you&apos;ll receive a link to
-          reset your password.
-        </p>
+        <h1 className="text-xl font-semibold">{d.auth.checkInbox}</h1>
+        <p className="mt-2 max-w-xs text-sm text-muted">{d.auth.resetSent}</p>
         <Link href="/login" className="mt-6">
-          <Button variant="secondary">Back to login</Button>
+          <Button variant="secondary">{d.auth.backToLogin}</Button>
         </Link>
       </div>
     );
@@ -50,14 +49,12 @@ export default function ForgotPasswordPage() {
   return (
     <>
       <h1 className="text-2xl font-semibold tracking-tight">
-        Reset your password
+        {d.auth.forgotTitle}
       </h1>
-      <p className="mt-1.5 text-sm text-muted">
-        Enter your email and we&apos;ll send you a reset link.
-      </p>
+      <p className="mt-1.5 text-sm text-muted">{d.auth.forgotSubtitle}</p>
       <form onSubmit={handleSubmit} className="mt-8 space-y-4">
         <Input
-          label="Email"
+          label={d.auth.email}
           name="email"
           type="email"
           placeholder="you@example.com"
@@ -70,13 +67,13 @@ export default function ForgotPasswordPage() {
           </p>
         )}
         <Button type="submit" loading={loading} className="w-full">
-          Send reset link
+          {d.auth.sendResetLink}
         </Button>
       </form>
       <p className="mt-6 text-center text-sm text-muted">
-        Remembered it?{" "}
+        {d.auth.rememberedIt}{" "}
         <Link href="/login" className="font-medium text-accent hover:underline">
-          Log in
+          {d.common.logIn}
         </Link>
       </p>
     </>

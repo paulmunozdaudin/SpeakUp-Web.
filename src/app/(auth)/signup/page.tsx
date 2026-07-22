@@ -7,8 +7,10 @@ import { MailCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { signUp } from "@/services/auth.service";
+import { useDict } from "@/lib/i18n";
 
 export default function SignupPage() {
+  const d = useDict();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +29,7 @@ export default function SignupPage() {
     );
 
     if (!result.ok) {
-      setError(result.error ?? "Something went wrong.");
+      setError(result.error ?? d.auth.genericError);
       setLoading(false);
       return;
     }
@@ -46,13 +48,12 @@ export default function SignupPage() {
         <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-soft text-accent">
           <MailCheck className="h-6 w-6" />
         </div>
-        <h1 className="text-xl font-semibold">Check your inbox</h1>
+        <h1 className="text-xl font-semibold">{d.auth.checkInbox}</h1>
         <p className="mt-2 max-w-xs text-sm text-muted">
-          We sent you a confirmation link. Click it to activate your account,
-          then log in.
+          {d.auth.confirmationSent}
         </p>
         <Link href="/login" className="mt-6">
-          <Button variant="secondary">Back to login</Button>
+          <Button variant="secondary">{d.auth.backToLogin}</Button>
         </Link>
       </div>
     );
@@ -61,14 +62,12 @@ export default function SignupPage() {
   return (
     <>
       <h1 className="text-2xl font-semibold tracking-tight">
-        Create your account
+        {d.auth.signupTitle}
       </h1>
-      <p className="mt-1.5 text-sm text-muted">
-        Start practicing in less than a minute.
-      </p>
+      <p className="mt-1.5 text-sm text-muted">{d.auth.signupSubtitle}</p>
       <form onSubmit={handleSubmit} className="mt-8 space-y-4">
         <Input
-          label="Full name"
+          label={d.auth.fullName}
           name="fullName"
           type="text"
           placeholder="Ada Lovelace"
@@ -76,7 +75,7 @@ export default function SignupPage() {
           required
         />
         <Input
-          label="Email"
+          label={d.auth.email}
           name="email"
           type="email"
           placeholder="you@example.com"
@@ -84,10 +83,10 @@ export default function SignupPage() {
           required
         />
         <Input
-          label="Password"
+          label={d.auth.password}
           name="password"
           type="password"
-          placeholder="At least 8 characters"
+          placeholder={d.auth.passwordPlaceholder}
           autoComplete="new-password"
           minLength={8}
           required
@@ -98,13 +97,13 @@ export default function SignupPage() {
           </p>
         )}
         <Button type="submit" loading={loading} className="w-full">
-          Create account
+          {d.auth.createAccount}
         </Button>
       </form>
       <p className="mt-6 text-center text-sm text-muted">
-        Already have an account?{" "}
+        {d.auth.haveAccount}{" "}
         <Link href="/login" className="font-medium text-accent hover:underline">
-          Log in
+          {d.common.logIn}
         </Link>
       </p>
     </>

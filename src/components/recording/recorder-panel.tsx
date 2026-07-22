@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, Mic, Pause, Play, RotateCcw, Square, Upload } from "lucide-react";
 import { useRecorder } from "@/hooks/use-recorder";
 import { Button } from "@/components/ui/button";
+import { useDict } from "@/lib/i18n";
 import { formatDuration } from "@/utils/format";
 import { cn } from "@/utils/cn";
 
@@ -16,6 +17,7 @@ interface RecorderPanelProps {
 
 /** Big-mic recording surface with timer, pause/resume/stop and file upload. */
 export function RecorderPanel({ onFinish, disabled }: RecorderPanelProps) {
+  const d = useDict();
   const recorder = useRecorder();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -23,6 +25,13 @@ export function RecorderPanel({ onFinish, disabled }: RecorderPanelProps) {
   const isPaused = recorder.status === "paused";
   const isActive = isRecording || isPaused;
   const isDone = recorder.status === "stopped" && recorder.audioBlob !== null;
+
+  const errorMessage =
+    recorder.error === "mic-denied"
+      ? d.practice.micDenied
+      : recorder.error === "mic-unavailable"
+        ? d.practice.micUnavailable
+        : null;
 
   function handleUpload(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -62,18 +71,22 @@ export function RecorderPanel({ onFinish, disabled }: RecorderPanelProps) {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-danger opacity-75" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-danger" />
             </span>
-            <span className="font-medium text-danger">Recording</span>
+            <span className="font-medium text-danger">
+              {d.practice.recording}
+            </span>
           </>
         )}
-        {isPaused && <span className="font-medium text-warning">Paused</span>}
+        {isPaused && (
+          <span className="font-medium text-warning">{d.practice.paused}</span>
+        )}
         {isDone && (
           <span className="inline-flex items-center gap-1.5 font-medium text-success">
             <Check className="h-4 w-4" />
-            Recording ready
+            {d.practice.recordingReady}
           </span>
         )}
         {recorder.status === "idle" && (
-          <span className="text-muted">Press the mic to start</span>
+          <span className="text-muted">{d.practice.pressMic}</span>
         )}
       </div>
 
@@ -102,7 +115,7 @@ export function RecorderPanel({ onFinish, disabled }: RecorderPanelProps) {
               recorder.resume();
             }
           }}
-          aria-label={isRecording ? "Stop recording" : "Start recording"}
+          aria-label={isRecording ? d.practice.stop : d.practice.recording}
           className={cn(
             "relative flex h-24 w-24 cursor-pointer items-center justify-center rounded-full text-white shadow-lg transition-all duration-300 active:scale-95 disabled:opacity-50",
             isRecording
@@ -123,18 +136,18 @@ export function RecorderPanel({ onFinish, disabled }: RecorderPanelProps) {
         {isRecording && (
           <Button variant="secondary" size="sm" onClick={recorder.pause}>
             <Pause className="h-4 w-4" />
-            Pause
+            {d.practice.pause}
           </Button>
         )}
         {isPaused && (
           <>
             <Button variant="secondary" size="sm" onClick={recorder.resume}>
               <Play className="h-4 w-4" />
-              Resume
+              {d.practice.resume}
             </Button>
             <Button variant="danger" size="sm" onClick={recorder.stop}>
               <Square className="h-4 w-4" />
-              Stop
+              {d.practice.stop}
             </Button>
           </>
         )}
@@ -148,26 +161,26 @@ export function RecorderPanel({ onFinish, disabled }: RecorderPanelProps) {
               disabled={disabled}
             >
               <Check className="h-4 w-4" />
-              Analyze recording
+              {d.practice.analyzeRecording}
             </Button>
             <Button variant="secondary" size="sm" onClick={recorder.reset}>
               <RotateCcw className="h-4 w-4" />
-              Retake
+              {d.practice.retake}
             </Button>
           </>
         )}
       </div>
 
-      {recorder.error && (
+      {errorMessage && (
         <p className="mt-4 max-w-sm rounded-xl bg-danger/10 px-4 py-2.5 text-center text-sm text-danger">
-          {recorder.error}
+          {errorMessage}
         </p>
       )}
 
       {/* Upload alternative */}
       {!isActive && !isDone && (
         <div className="mt-8 flex flex-col items-center border-t border-border pt-6">
-          <p className="text-xs text-muted">or</p>
+          <p className="text-xs text-muted">{d.practice.or}</p>
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
@@ -175,7 +188,7 @@ export function RecorderPanel({ onFinish, disabled }: RecorderPanelProps) {
             className="mt-2 inline-flex cursor-pointer items-center gap-2 text-sm font-medium text-accent hover:underline disabled:opacity-50"
           >
             <Upload className="h-4 w-4" />
-            Upload an audio file
+            {d.practice.uploadFile}
           </button>
           <input
             ref={fileInputRef}

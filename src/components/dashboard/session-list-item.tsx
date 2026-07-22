@@ -1,8 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import { ChevronRight, Clock } from "lucide-react";
 import type { PracticeSessionSummary } from "@/types";
 import { Badge } from "@/components/ui/badge";
-import { PRACTICE_MODE_LABELS } from "@/types";
+import { useDict } from "@/lib/i18n";
 import { formatDate, formatDuration } from "@/utils/format";
 import { scoreTone, SCORE_TONE_TEXT } from "@/utils/score";
 import { cn } from "@/utils/cn";
@@ -15,6 +17,8 @@ export function SessionListItem({
   session: PracticeSessionSummary;
   children?: React.ReactNode; // extra actions (e.g. delete button in history)
 }) {
+  const d = useDict();
+
   return (
     <div className="group flex items-center gap-4 rounded-2xl border border-border bg-surface p-4 transition-all hover:border-accent/40 hover:shadow-sm">
       <div
@@ -25,13 +29,10 @@ export function SessionListItem({
       >
         {session.overallScore}
       </div>
-      <Link
-        href={`/results/${session.id}`}
-        className="min-w-0 flex-1"
-      >
+      <Link href={`/results/${session.id}`} className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium">{session.topic}</p>
         <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
-          <Badge tone="accent">{PRACTICE_MODE_LABELS[session.mode]}</Badge>
+          <Badge tone="accent">{d.modes[session.mode]}</Badge>
           <span>{formatDate(session.createdAt)}</span>
           <span className="inline-flex items-center gap-1">
             <Clock className="h-3 w-3" />
@@ -42,7 +43,7 @@ export function SessionListItem({
       {children}
       <Link
         href={`/results/${session.id}`}
-        aria-label="Open report"
+        aria-label={d.history.openReport}
         className="text-muted transition-transform group-hover:translate-x-0.5 group-hover:text-foreground"
       >
         <ChevronRight className="h-5 w-5" />

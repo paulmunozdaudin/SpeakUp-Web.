@@ -2,6 +2,7 @@
 
 import { TrendingUp } from "lucide-react";
 import { Card, CardTitle } from "@/components/ui/card";
+import { useDict } from "@/lib/i18n";
 import { formatDate } from "@/utils/format";
 
 interface ProgressChartProps {
@@ -18,25 +19,23 @@ const PADDING = 12;
  * per-metric trends and tooltips.
  */
 export function ProgressChart({ trend }: ProgressChartProps) {
+  const d = useDict();
+
   if (trend.length < 2) {
     return (
       <Card>
-        <CardTitle>Progress</CardTitle>
+        <CardTitle>{d.dashboard.progress}</CardTitle>
         <div className="mt-6 flex h-40 flex-col items-center justify-center text-center">
           <TrendingUp className="mb-2 h-6 w-6 text-muted/50" />
-          <p className="text-sm text-muted">
-            Complete at least two practices to see your progress curve.
-          </p>
+          <p className="text-sm text-muted">{d.dashboard.progressEmpty}</p>
         </div>
       </Card>
     );
   }
 
   const points = trend.map((point, index) => ({
-    x:
-      PADDING + (index / (trend.length - 1)) * (WIDTH - PADDING * 2),
-    y:
-      HEIGHT - PADDING - (point.score / 100) * (HEIGHT - PADDING * 2),
+    x: PADDING + (index / (trend.length - 1)) * (WIDTH - PADDING * 2),
+    y: HEIGHT - PADDING - (point.score / 100) * (HEIGHT - PADDING * 2),
   }));
 
   const line = points.map((p) => `${p.x},${p.y}`).join(" ");
@@ -49,10 +48,12 @@ export function ProgressChart({ trend }: ProgressChartProps) {
   return (
     <Card>
       <div className="flex items-center justify-between">
-        <CardTitle>Progress</CardTitle>
+        <CardTitle>{d.dashboard.progress}</CardTitle>
         <span
           className={
-            delta >= 0 ? "text-sm font-medium text-success" : "text-sm font-medium text-danger"
+            delta >= 0
+              ? "text-sm font-medium text-success"
+              : "text-sm font-medium text-danger"
           }
         >
           {delta >= 0 ? "+" : ""}
@@ -63,7 +64,7 @@ export function ProgressChart({ trend }: ProgressChartProps) {
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
         className="mt-4 w-full"
         role="img"
-        aria-label="Score progress over time"
+        aria-label={d.dashboard.progress}
       >
         <defs>
           <linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1">

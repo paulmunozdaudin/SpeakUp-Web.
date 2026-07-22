@@ -20,10 +20,13 @@ export const SCORE_TONE_STROKE: Record<ScoreTone, string> = {
   danger: "stroke-danger",
 };
 
-export function scoreLabel(score: number): string {
-  if (score >= 90) return "Excellent";
-  if (score >= 75) return "Great";
-  if (score >= 60) return "Good";
-  if (score >= 45) return "Fair";
-  return "Needs work";
+/** Dictionary key for the qualitative label — resolve via d.scoreLabels[key]. */
+export type ScoreLabelKey = "excellent" | "great" | "good" | "fair" | "needsWork";
+
+export function scoreLabelKey(score: number): ScoreLabelKey {
+  if (score >= 90) return "excellent";
+  if (score >= 75) return "great";
+  if (score >= 60) return "good";
+  if (score >= 45) return "fair";
+  return "needsWork";
 }

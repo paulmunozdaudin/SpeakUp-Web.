@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { PracticeMode } from "@/types";
-import { PRACTICE_MODE_LABELS } from "@/types";
+import { useDict } from "@/lib/i18n";
 import { cn } from "@/utils/cn";
 
 const MODE_ICONS: Record<PracticeMode, LucideIcon> = {
@@ -31,9 +31,11 @@ export function ModeSelector({
   value: PracticeMode;
   onChange: (mode: PracticeMode) => void;
 }) {
+  const d = useDict();
+
   return (
     <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
-      {(Object.keys(PRACTICE_MODE_LABELS) as PracticeMode[]).map((mode) => {
+      {(Object.keys(MODE_ICONS) as PracticeMode[]).map((mode) => {
         const Icon = MODE_ICONS[mode];
         const active = value === mode;
         return (
@@ -51,7 +53,7 @@ export function ModeSelector({
           >
             <Icon className="h-5 w-5" />
             <span className="text-sm font-medium leading-tight">
-              {PRACTICE_MODE_LABELS[mode]}
+              {d.modes[mode]}
             </span>
           </button>
         );

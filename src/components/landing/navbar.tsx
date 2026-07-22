@@ -4,15 +4,19 @@ import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
-
-const links = [
-  { href: "#features", label: "Features" },
-  { href: "#how-it-works", label: "How it works" },
-  { href: "#pricing", label: "Pricing" },
-  { href: "#faq", label: "FAQ" },
-];
+import { LanguageToggle } from "@/components/theme/language-toggle";
+import { useDict } from "@/lib/i18n";
 
 export function Navbar() {
+  const d = useDict();
+
+  const links = [
+    { href: "#features", label: d.nav.features },
+    { href: "#how-it-works", label: d.nav.howItWorks },
+    { href: "#pricing", label: d.nav.pricing },
+    { href: "#faq", label: d.nav.faq },
+  ];
+
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
@@ -29,14 +33,15 @@ export function Navbar() {
           ))}
         </div>
         <div className="flex items-center gap-2">
+          <LanguageToggle />
           <ThemeToggle />
           <Link href="/login" className="hidden sm:block">
             <Button variant="ghost" size="sm">
-              Log in
+              {d.common.logIn}
             </Button>
           </Link>
           <Link href="/signup">
-            <Button size="sm">Start practicing</Button>
+            <Button size="sm">{d.common.startPracticing}</Button>
           </Link>
         </div>
       </nav>

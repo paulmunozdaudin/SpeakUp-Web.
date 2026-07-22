@@ -1,3 +1,5 @@
+"use client";
+
 import {
   CheckCircle2,
   Dumbbell,
@@ -6,13 +8,16 @@ import {
 } from "lucide-react";
 import type { AnalysisResult } from "@/types";
 import { Card, CardTitle } from "@/components/ui/card";
+import { useDict } from "@/lib/i18n";
 
 /** Strengths, weaknesses, tips and next exercises from the AI report. */
 export function Insights({ analysis }: { analysis: AnalysisResult }) {
+  const d = useDict();
+
   return (
     <div className="grid gap-4 md:grid-cols-2">
       <Card>
-        <CardTitle>Strengths</CardTitle>
+        <CardTitle>{d.results.strengths}</CardTitle>
         <ul className="mt-4 space-y-3">
           {analysis.strengths.map((item) => (
             <li key={item} className="flex items-start gap-2.5 text-sm">
@@ -24,7 +29,7 @@ export function Insights({ analysis }: { analysis: AnalysisResult }) {
       </Card>
 
       <Card>
-        <CardTitle>Areas to improve</CardTitle>
+        <CardTitle>{d.results.areasToImprove}</CardTitle>
         <ul className="mt-4 space-y-3">
           {analysis.weaknesses.map((item) => (
             <li key={item} className="flex items-start gap-2.5 text-sm">
@@ -36,7 +41,7 @@ export function Insights({ analysis }: { analysis: AnalysisResult }) {
       </Card>
 
       <Card>
-        <CardTitle>Personalized tips</CardTitle>
+        <CardTitle>{d.results.personalizedTips}</CardTitle>
         <ul className="mt-4 space-y-3">
           {analysis.tips.map((item) => (
             <li key={item} className="flex items-start gap-2.5 text-sm">
@@ -48,7 +53,7 @@ export function Insights({ analysis }: { analysis: AnalysisResult }) {
       </Card>
 
       <Card>
-        <CardTitle>Next exercises</CardTitle>
+        <CardTitle>{d.results.nextExercises}</CardTitle>
         <ul className="mt-4 space-y-3">
           {analysis.nextExercises.map((item) => (
             <li key={item} className="flex items-start gap-2.5 text-sm">

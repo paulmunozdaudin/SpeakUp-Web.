@@ -6,6 +6,7 @@
  */
 
 import type { AnalysisResult, PracticeMode, PracticeSession } from "@/types";
+import { getLocale } from "@/lib/i18n";
 import { createSession } from "./sessions.service";
 
 export interface AnalyzeInput {
@@ -23,6 +24,8 @@ export async function analyzeAndSave(
   form.append("topic", input.topic);
   form.append("mode", input.mode);
   form.append("durationSeconds", String(Math.round(input.durationSeconds)));
+  // The AI writes its feedback in the user's current language.
+  form.append("locale", getLocale());
 
   const response = await fetch("/api/analyze", { method: "POST", body: form });
   if (!response.ok) {

@@ -1,8 +1,11 @@
+"use client";
+
 import { Flame, Mic, Trophy } from "lucide-react";
 import type { UserStats } from "@/types";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { scoreLabel } from "@/utils/score";
+import { useDict } from "@/lib/i18n";
+import { scoreLabelKey } from "@/utils/score";
 
 export function StatsCards({
   stats,
@@ -11,6 +14,8 @@ export function StatsCards({
   stats: UserStats;
   loading?: boolean;
 }) {
+  const d = useDict();
+
   if (loading) {
     return (
       <div className="grid gap-4 sm:grid-cols-3">
@@ -24,30 +29,33 @@ export function StatsCards({
   const cards = [
     {
       icon: Mic,
-      title: "Total practices",
+      title: d.dashboard.totalPractices,
       value: stats.totalSessions.toString(),
-      hint: stats.totalSessions === 0 ? "Start your first one" : "Keep it up",
+      hint:
+        stats.totalSessions === 0 ? d.dashboard.startFirst : d.dashboard.keepItUp,
     },
     {
       icon: Trophy,
-      title: "Average score",
+      title: d.dashboard.averageScore,
       value: stats.totalSessions === 0 ? "—" : `${stats.averageScore}`,
       hint:
         stats.totalSessions === 0
-          ? "No sessions yet"
-          : scoreLabel(stats.averageScore),
+          ? d.dashboard.noSessionsYet
+          : d.scoreLabels[scoreLabelKey(stats.averageScore)],
     },
     {
       icon: Flame,
-      title: "Current streak",
+      title: d.dashboard.currentStreak,
       value:
         stats.currentStreakDays === 0
           ? "—"
-          : `${stats.currentStreakDays} day${stats.currentStreakDays === 1 ? "" : "s"}`,
+          : `${stats.currentStreakDays} ${
+              stats.currentStreakDays === 1 ? d.dashboard.day : d.dashboard.days
+            }`,
       hint:
         stats.currentStreakDays === 0
-          ? "Practice today to start one"
-          : "Don't break the chain",
+          ? d.dashboard.practiceToday
+          : d.dashboard.dontBreakChain,
     },
   ];
 

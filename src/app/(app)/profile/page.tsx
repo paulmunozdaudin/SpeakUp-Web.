@@ -7,46 +7,43 @@ import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { scoreLabel } from "@/utils/score";
-
-/* TODO(achievements): replace with real, unlockable achievements. */
-const upcomingAchievements = [
-  { name: "First Words", description: "Complete your first practice" },
-  { name: "On Fire", description: "Practice 7 days in a row" },
-  { name: "Smooth Talker", description: "Score 90+ on clarity" },
-  { name: "Marathon Speaker", description: "Complete 50 practices" },
-];
+import { useDict } from "@/lib/i18n";
+import { scoreLabelKey } from "@/utils/score";
 
 export default function ProfilePage() {
+  const d = useDict();
   const { user, loading: userLoading } = useUser();
   const { stats, loading: sessionsLoading } = useSessions();
 
   const fullName =
     (user?.user_metadata?.full_name as string | undefined) ??
-    (isSupabaseConfigured ? "—" : "Demo user");
-  const email = user?.email ?? (isSupabaseConfigured ? "—" : "demo@speakup.app");
+    (isSupabaseConfigured ? "—" : d.profile.demoUser);
+  const email =
+    user?.email ?? (isSupabaseConfigured ? "—" : "demo@speakup.app");
 
   const statItems = [
     {
       icon: Mic,
-      label: "Total practices",
+      label: d.profile.totalPractices,
       value: stats.totalSessions.toString(),
     },
     {
       icon: Trophy,
-      label: "Average score",
+      label: d.profile.averageScore,
       value:
         stats.totalSessions === 0
           ? "—"
-          : `${stats.averageScore} · ${scoreLabel(stats.averageScore)}`,
+          : `${stats.averageScore} · ${d.scoreLabels[scoreLabelKey(stats.averageScore)]}`,
     },
     {
       icon: Flame,
-      label: "Current streak",
+      label: d.profile.currentStreak,
       value:
         stats.currentStreakDays === 0
           ? "—"
-          : `${stats.currentStreakDays} day${stats.currentStreakDays === 1 ? "" : "s"}`,
+          : `${stats.currentStreakDays} ${
+              stats.currentStreakDays === 1 ? d.dashboard.day : d.dashboard.days
+            }`,
     },
   ];
 
@@ -54,11 +51,9 @@ export default function ProfilePage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-          Profile
+          {d.profile.title}
         </h1>
-        <p className="mt-1 text-sm text-muted">
-          Your account and speaking journey at a glance.
-        </p>
+        <p className="mt-1 text-sm text-muted">{d.profile.subtitle}</p>
       </div>
 
       {/* Identity card */}
@@ -81,7 +76,7 @@ export default function ProfilePage() {
               <div className="flex flex-wrap items-center gap-2.5">
                 <h2 className="text-xl font-semibold">{fullName}</h2>
                 {/* TODO(stripe): read real subscription status from Stripe. */}
-                <Badge tone="accent">Free plan</Badge>
+                <Badge tone="accent">{d.profile.freePlan}</Badge>
               </div>
               <p className="mt-1 flex items-center gap-1.5 text-sm text-muted">
                 <Mail className="h-3.5 w-3.5" />
@@ -114,13 +109,16 @@ export default function ProfilePage() {
       </div>
 
       {/* Achievements (coming soon) */}
+      {/* TODO(achievements): replace with real, unlockable achievements. */}
       <section>
         <div className="mb-3 flex items-center gap-2">
-          <h2 className="text-sm font-medium text-muted">Achievements</h2>
-          <Badge>Coming soon</Badge>
+          <h2 className="text-sm font-medium text-muted">
+            {d.profile.achievements}
+          </h2>
+          <Badge>{d.common.comingSoon}</Badge>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {upcomingAchievements.map((achievement) => (
+          {d.profile.achievementsList.map((achievement) => (
             <Card
               key={achievement.name}
               className="flex flex-col items-center p-5 text-center opacity-60"

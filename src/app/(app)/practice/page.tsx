@@ -8,8 +8,10 @@ import { ModeSelector } from "@/components/recording/mode-selector";
 import { RecorderPanel } from "@/components/recording/recorder-panel";
 import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
 import { analyzeAndSave } from "@/services/analysis.service";
+import { useDict } from "@/lib/i18n";
 
 export default function PracticePage() {
+  const d = useDict();
   const router = useRouter();
   const [topic, setTopic] = useState("");
   const [mode, setMode] = useState<PracticeMode>("presentation");
@@ -22,14 +24,14 @@ export default function PracticePage() {
     try {
       const session = await analyzeAndSave({
         audio,
-        topic: topic.trim() || "Untitled practice",
+        topic: topic.trim() || d.practice.untitled,
         mode,
         durationSeconds: Math.max(durationSeconds, 1),
       });
       router.push(`/results/${session.id}`);
     } catch (e) {
       setAnalyzing(false);
-      setError(e instanceof Error ? e.message : "Something went wrong.");
+      setError(e instanceof Error ? e.message : d.auth.genericError);
     }
   }
 
@@ -37,25 +39,25 @@ export default function PracticePage() {
     <div className="mx-auto max-w-2xl space-y-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-          New practice
+          {d.practice.title}
         </h1>
-        <p className="mt-1 text-sm text-muted">
-          Set the stage, hit record, and speak like the room is full.
-        </p>
+        <p className="mt-1 text-sm text-muted">{d.practice.subtitle}</p>
       </div>
 
       <div className="space-y-6">
         <Input
-          label="What are you presenting?"
+          label={d.practice.topicLabel}
           name="topic"
-          placeholder="e.g. Q3 results, thesis defense, seed pitch…"
+          placeholder={d.practice.topicPlaceholder}
           value={topic}
           onChange={(event) => setTopic(event.target.value)}
           maxLength={120}
         />
 
         <div className="space-y-2">
-          <span className="block text-sm font-medium">Practice mode</span>
+          <span className="block text-sm font-medium">
+            {d.practice.modeLabel}
+          </span>
           <ModeSelector value={mode} onChange={setMode} />
         </div>
 

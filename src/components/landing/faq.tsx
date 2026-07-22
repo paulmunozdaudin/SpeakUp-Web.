@@ -4,43 +4,17 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { Section } from "./section";
+import { useDict } from "@/lib/i18n";
 import { cn } from "@/utils/cn";
 
-const faqs = [
-  {
-    question: "How does the AI feedback work?",
-    answer:
-      "Your recording is transcribed and analyzed by speech AI models that evaluate clarity, pacing, structure, vocabulary, confidence and filler words. You get scores plus concrete, personalized suggestions.",
-  },
-  {
-    question: "Is my audio private?",
-    answer:
-      "Yes. Your recordings belong to you, are stored securely, and are never used to train models or shared with anyone. You can delete any session at any time.",
-  },
-  {
-    question: "What can I practice?",
-    answer:
-      "Anything spoken: class presentations, thesis defenses, startup pitches, job interviews, sales calls, conference talks, wedding speeches — pick a mode and start.",
-  },
-  {
-    question: "Do I need special equipment?",
-    answer:
-      "No. Any laptop or phone microphone works. You can also upload audio files recorded elsewhere.",
-  },
-  {
-    question: "Will there be video analysis?",
-    answer:
-      "It's on the roadmap. Eye contact and body language analysis are coming — your account will be ready for it the day it ships.",
-  },
-];
-
 export function Faq() {
+  const d = useDict();
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <Section id="faq" eyebrow="FAQ" title="Frequently asked questions">
+    <Section id="faq" eyebrow={d.landing.faqEyebrow} title={d.landing.faqTitle}>
       <div className="mx-auto max-w-2xl divide-y divide-border rounded-2xl border border-border bg-surface">
-        {faqs.map((faq, index) => {
+        {d.landing.faqs.map((faq, index) => {
           const isOpen = open === index;
           return (
             <div key={faq.question}>

@@ -1,33 +1,38 @@
+"use client";
+
 import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
-
-const columns = [
-  {
-    title: "Product",
-    links: [
-      { label: "Features", href: "#features" },
-      { label: "Pricing", href: "#pricing" },
-      { label: "FAQ", href: "#faq" },
-    ],
-  },
-  {
-    title: "Company",
-    links: [
-      { label: "About", href: "#" },
-      { label: "Blog", href: "#" },
-      { label: "Contact", href: "#" },
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      { label: "Privacy", href: "#" },
-      { label: "Terms", href: "#" },
-    ],
-  },
-];
+import { useDict } from "@/lib/i18n";
 
 export function Footer() {
+  const d = useDict();
+
+  const columns = [
+    {
+      title: d.landing.footerProduct,
+      links: [
+        { label: d.nav.features, href: "#features" },
+        { label: d.nav.pricing, href: "#pricing" },
+        { label: d.nav.faq, href: "#faq" },
+      ],
+    },
+    {
+      title: d.landing.footerCompany,
+      links: [
+        { label: d.landing.footerAbout, href: "#" },
+        { label: d.landing.footerBlog, href: "#" },
+        { label: d.landing.footerContact, href: "#" },
+      ],
+    },
+    {
+      title: d.landing.footerLegal,
+      links: [
+        { label: d.landing.footerPrivacy, href: "#" },
+        { label: d.landing.footerTerms, href: "#" },
+      ],
+    },
+  ];
+
   return (
     <footer className="border-t border-border bg-surface">
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
@@ -35,8 +40,7 @@ export function Footer() {
           <div>
             <Logo />
             <p className="mt-4 max-w-xs text-sm text-muted">
-              Your personal public speaking coach, available 24/7. Practice,
-              analyze, improve.
+              {d.landing.footerTagline}
             </p>
           </div>
           {columns.map((column) => (
@@ -58,7 +62,7 @@ export function Footer() {
           ))}
         </div>
         <div className="mt-12 border-t border-border pt-6 text-xs text-muted">
-          © {new Date().getFullYear()} SpeakUp. All rights reserved.
+          © {new Date().getFullYear()} SpeakUp. {d.landing.footerRights}
         </div>
       </div>
     </footer>
