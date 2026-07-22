@@ -302,6 +302,10 @@ export const en = {
       "Microphone access was denied. Allow it in your browser settings and try again.",
     micUnavailable:
       "Could not start recording. Check that a microphone is connected.",
+    networkError:
+      "Lost connection to the speech recognition service. Check your internet connection and try again.",
+    stillListening:
+      "Still listening… if you keep seeing this, check that the right microphone is selected and unmuted.",
     tooShort: "Speak for a bit longer so there's enough to analyze.",
     // Analyzing overlay
     analyzing: "Analyzing your delivery…",
@@ -729,6 +733,10 @@ export const es: Dictionary = {
       "Se denegó el acceso al micrófono. Permítelo en los ajustes del navegador e inténtalo de nuevo.",
     micUnavailable:
       "No se pudo iniciar la grabación. Comprueba que hay un micrófono conectado.",
+    networkError:
+      "Se perdió la conexión con el servicio de reconocimiento de voz. Comprueba tu conexión a internet e inténtalo de nuevo.",
+    stillListening:
+      "Sigo escuchando… si esto no cambia, comprueba que el micrófono correcto esté seleccionado y sin silenciar.",
     tooShort: "Habla un poco más para tener suficiente contenido que analizar.",
     // Overlay de análisis
     analyzing: "Analizando tu discurso…",

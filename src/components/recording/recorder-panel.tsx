@@ -2,10 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AlertTriangle, Mic, Pause, Play, Square } from "lucide-react";
+import { AlertTriangle, Ear, Mic, Pause, Play, Square } from "lucide-react";
 import { useSpeechRecorder } from "@/hooks/use-speech-recorder";
+import type { RecorderErrorCode } from "@/hooks/use-speech-recorder";
 import { Button } from "@/components/ui/button";
 import { useDict } from "@/lib/i18n";
+import type { Dictionary } from "@/lib/i18n/translations";
 import { formatDuration } from "@/utils/format";
 import { cn } from "@/utils/cn";
 import type { SpeechLanguage, TargetDuration } from "@/types";
@@ -20,6 +22,17 @@ interface RecorderPanelProps {
 /** Grace period after Stop, so the recognizer's last async result lands
  *  before we read the final transcript and hand off to analysis. */
 const STOP_GRACE_MS = 500;
+
+/** Every RecorderErrorCode must resolve to a message — the TS mapped type
+ *  makes it impossible to add a new code without wiring up its copy here. */
+function errorMessages(d: Dictionary): Record<RecorderErrorCode, string> {
+  return {
+    "mic-denied": d.practice.micDenied,
+    "mic-unavailable": d.practice.micUnavailable,
+    "not-supported": d.practice.notSupportedBody,
+    "network-error": d.practice.networkError,
+  };
+}
 
 /**
  * Live recording surface: big start/stop control, elapsed timer, elegant
@@ -68,12 +81,7 @@ export function RecorderPanel({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recorder.status]);
 
-  const errorMessage =
-    recorder.error === "mic-denied"
-      ? d.practice.micDenied
-      : recorder.error === "mic-unavailable"
-        ? d.practice.micUnavailable
-        : null;
+  const errorMessage = recorder.error ? errorMessages(d)[recorder.error] : null;
 
   if (!recorder.isSupported) {
     return (
@@ -225,6 +233,13 @@ export function RecorderPanel({
         {errorMessage && (
           <p className="mt-4 max-w-sm rounded-xl bg-danger/10 px-4 py-2.5 text-center text-sm text-danger">
             {errorMessage}
+          </p>
+        )}
+
+        {!errorMessage && isRecording && recorder.isSilentTooLong && !fullTranscript && (
+          <p className="mt-4 flex max-w-sm items-center gap-2 rounded-xl bg-warning/10 px-4 py-2.5 text-center text-sm text-warning">
+            <Ear className="h-4 w-4 shrink-0" />
+            {d.practice.stillListening}
           </p>
         )}
       </div>
