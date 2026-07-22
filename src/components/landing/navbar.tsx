@@ -41,7 +41,12 @@ export function Navbar() {
             </Button>
           </Link>
           <Link href="/signup">
-            <Button size="sm">{d.common.startPracticing}</Button>
+            <Button size="sm">
+              <span className="sm:hidden">{d.common.start}</span>
+              <span className="hidden sm:inline">
+                {d.common.startPracticing}
+              </span>
+            </Button>
           </Link>
         </div>
       </nav>

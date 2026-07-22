@@ -1,4 +1,8 @@
-/** Shared formatting helpers. */
+/** Shared formatting helpers, aware of the active UI language. */
+
+import { getLocale } from "@/lib/i18n";
+
+const localeTag = () => (getLocale() === "es" ? "es-ES" : "en-US");
 
 /** 125 -> "2:05" */
 export function formatDuration(totalSeconds: number): string {
@@ -7,21 +11,11 @@ export function formatDuration(totalSeconds: number): string {
   return `${minutes}:${seconds.toString().padStart(2, "0")}`;
 }
 
-/** ISO date -> "Jul 21, 2026" */
+/** ISO date -> "Jul 21, 2026" / "21 jul 2026" */
 export function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-US", {
+  return new Date(iso).toLocaleDateString(localeTag(), {
     month: "short",
     day: "numeric",
     year: "numeric",
-  });
-}
-
-/** ISO date -> "Jul 21, 14:30" */
-export function formatDateTime(iso: string): string {
-  return new Date(iso).toLocaleString("en-US", {
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
   });
 }

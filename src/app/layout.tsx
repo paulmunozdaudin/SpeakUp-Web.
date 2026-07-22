@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider, themeInitScript } from "@/components/theme/theme-provider";
+import { LocaleHtmlLang } from "@/components/theme/locale-html-lang";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -20,6 +21,27 @@ export const metadata: Metadata = {
   },
   description:
     "Get instant AI feedback on your clarity, confidence, pacing and delivery. Your personal public speaking coach, available 24/7.",
+  applicationName: "SpeakUp",
+  openGraph: {
+    title: "SpeakUp — Practice presentations with AI",
+    description:
+      "Get instant AI feedback on your clarity, confidence, pacing and delivery.",
+    siteName: "SpeakUp",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "SpeakUp — Practice presentations with AI",
+    description:
+      "Get instant AI feedback on your clarity, confidence, pacing and delivery.",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
+    { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+  ],
 };
 
 export default function RootLayout({
@@ -37,6 +59,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
       <body className="flex min-h-full flex-col">
+        <LocaleHtmlLang />
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

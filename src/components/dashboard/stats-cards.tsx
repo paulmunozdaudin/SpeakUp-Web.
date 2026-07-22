@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { Flame, Mic, Trophy } from "lucide-react";
 import type { UserStats } from "@/types";
 import { Card, CardTitle } from "@/components/ui/card";
@@ -61,19 +62,26 @@ export function StatsCards({
 
   return (
     <div className="grid gap-4 sm:grid-cols-3">
-      {cards.map((card) => (
-        <Card key={card.title} className="flex items-start gap-4">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-accent-soft text-accent">
-            <card.icon className="h-5 w-5" />
-          </div>
-          <div className="min-w-0">
-            <CardTitle>{card.title}</CardTitle>
-            <p className="mt-1 text-2xl font-semibold tabular-nums tracking-tight">
-              {card.value}
-            </p>
-            <p className="mt-0.5 truncate text-xs text-muted">{card.hint}</p>
-          </div>
-        </Card>
+      {cards.map((card, index) => (
+        <motion.div
+          key={card.title}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, delay: index * 0.06, ease: "easeOut" }}
+        >
+          <Card className="flex h-full items-start gap-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+              <card.icon className="h-5 w-5" />
+            </div>
+            <div className="min-w-0">
+              <CardTitle>{card.title}</CardTitle>
+              <p className="mt-1 text-2xl font-semibold tabular-nums tracking-tight">
+                {card.value}
+              </p>
+              <p className="mt-0.5 truncate text-xs text-muted">{card.hint}</p>
+            </div>
+          </Card>
+        </motion.div>
       ))}
     </div>
   );

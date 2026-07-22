@@ -115,7 +115,13 @@ export function RecorderPanel({ onFinish, disabled }: RecorderPanelProps) {
               recorder.resume();
             }
           }}
-          aria-label={isRecording ? d.practice.stop : d.practice.recording}
+          aria-label={
+            isRecording
+              ? d.practice.stop
+              : isPaused
+                ? d.practice.resume
+                : d.practice.pressMic
+          }
           className={cn(
             "relative flex h-24 w-24 cursor-pointer items-center justify-center rounded-full text-white shadow-lg transition-all duration-300 active:scale-95 disabled:opacity-50",
             isRecording

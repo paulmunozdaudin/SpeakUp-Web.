@@ -10,6 +10,7 @@ export const en = {
     signUp: "Sign up",
     logOut: "Log out",
     startPracticing: "Start practicing",
+    start: "Start",
     seeDemo: "See demo",
     cancel: "Cancel",
     delete: "Delete",
@@ -243,7 +244,6 @@ export const en = {
   },
   dashboard: {
     welcome: "Welcome back",
-    welcomeFallback: "there",
     readyFirst: "Ready for your first practice?",
     evolving: "Here's how your speaking is evolving.",
     startNewPractice: "Start new practice",
@@ -378,6 +378,7 @@ export const es: Dictionary = {
     signUp: "Registrarse",
     logOut: "Cerrar sesión",
     startPracticing: "Empieza a practicar",
+    start: "Empezar",
     seeDemo: "Ver demo",
     cancel: "Cancelar",
     delete: "Eliminar",
@@ -612,7 +613,6 @@ export const es: Dictionary = {
   },
   dashboard: {
     welcome: "Hola de nuevo",
-    welcomeFallback: "orador",
     readyFirst: "¿Lista tu primera práctica?",
     evolving: "Así está evolucionando tu forma de hablar.",
     startNewPractice: "Nueva práctica",

@@ -18,9 +18,9 @@ export default function DashboardPage() {
   const { user } = useUser();
   const { sessions, stats, loading } = useSessions();
 
-  const firstName =
-    (user?.user_metadata?.full_name as string | undefined)?.split(" ")[0] ??
-    d.dashboard.welcomeFallback;
+  const firstName = (
+    user?.user_metadata?.full_name as string | undefined
+  )?.split(" ")[0];
   const recent = sessions.slice(0, 4);
 
   // Latest session vs. the average of the ones before it → "recent improvement".
@@ -40,7 +40,7 @@ export default function DashboardPage() {
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            {d.dashboard.welcome}, {firstName}
+            {firstName ? `${d.dashboard.welcome}, ${firstName}` : d.dashboard.welcome}
           </h1>
           <p className="mt-1 text-sm text-muted">
             {stats.totalSessions === 0

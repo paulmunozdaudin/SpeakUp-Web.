@@ -14,9 +14,9 @@ export interface ButtonProps
 
 const variantClasses: Record<Variant, string> = {
   primary:
-    "bg-accent text-white hover:bg-accent-hover shadow-sm shadow-accent/20",
+    "bg-accent text-white hover:bg-accent-hover shadow-sm shadow-accent/20 hover:shadow-md hover:shadow-accent/25",
   secondary:
-    "bg-surface text-foreground border border-border hover:bg-surface-muted",
+    "bg-surface text-foreground border border-border hover:border-accent/40 hover:bg-surface-muted",
   ghost: "text-muted hover:text-foreground hover:bg-surface-muted",
   danger: "bg-danger/10 text-danger hover:bg-danger/20",
 };
@@ -36,7 +36,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       ref={ref}
       disabled={disabled || loading}
       className={cn(
-        "inline-flex cursor-pointer items-center justify-center rounded-full font-medium transition-all duration-200 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
+        "inline-flex cursor-pointer items-center justify-center rounded-full font-medium outline-none transition-all duration-200 focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50",
         variantClasses[variant],
         sizeClasses[size],
         className,
