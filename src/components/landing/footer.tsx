@@ -62,7 +62,7 @@ export function Footer() {
           ))}
         </div>
         <div className="mt-12 border-t border-border pt-6 text-xs text-muted">
-          © {new Date().getFullYear()} SpeakUp. {d.landing.footerRights}
+          © {new Date().getFullYear()} Orato AI. {d.landing.footerRights}
         </div>
       </div>
     </footer>

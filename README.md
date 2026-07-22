@@ -1,4 +1,4 @@
-# SpeakUp — Practice presentations with AI
+# Orato AI — Practice presentations with AI
 
 Your personal public speaking coach, available 24/7. Record a presentation,
 get instant AI feedback on clarity, confidence, pacing and delivery, and

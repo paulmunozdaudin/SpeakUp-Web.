@@ -1,5 +1,5 @@
 /**
- * Central domain types for SpeakUp.
+ * Central domain types for Orato AI.
  * Every feature (recording, analysis, history, profile) builds on these.
  */
 

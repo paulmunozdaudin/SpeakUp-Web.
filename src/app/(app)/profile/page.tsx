@@ -19,7 +19,7 @@ export default function ProfilePage() {
     (user?.user_metadata?.full_name as string | undefined) ??
     (isSupabaseConfigured ? "—" : d.profile.demoUser);
   const email =
-    user?.email ?? (isSupabaseConfigured ? "—" : "demo@speakup.app");
+    user?.email ?? (isSupabaseConfigured ? "—" : "demo@orato.ai");
 
   const statItems = [
     {

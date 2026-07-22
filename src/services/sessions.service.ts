@@ -21,7 +21,7 @@ import type {
 } from "@/types";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
-const LOCAL_KEY = "speakup-sessions";
+const LOCAL_KEY = "orato-sessions";
 const DEMO_USER_ID = "demo-user";
 
 export interface CreateSessionInput {
