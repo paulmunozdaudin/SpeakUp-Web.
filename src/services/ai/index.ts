@@ -1,20 +1,19 @@
 import type { AnalysisProvider } from "./provider";
-import { MockAnalysisProvider } from "./mock-provider";
+import { HeuristicAnalysisProvider } from "./heuristic-provider";
 import { OpenAIAnalysisProvider } from "./openai-provider";
 
 /**
  * Provider factory (server-side).
- * Falls back to the mock provider until OPENAI_API_KEY is set AND the real
- * pipeline is implemented — flip `USE_OPENAI` when it lands.
+ * Uses OpenAI when OPENAI_API_KEY is set; otherwise falls back to the
+ * heuristic provider, which computes real scores from the transcript
+ * without any external API — the product works end-to-end either way.
  */
-const USE_OPENAI = false; // TODO(ai): enable once OpenAIAnalysisProvider is implemented.
-
 export function getAnalysisProvider(): AnalysisProvider {
   const apiKey = process.env.OPENAI_API_KEY;
-  if (USE_OPENAI && apiKey) {
+  if (apiKey) {
     return new OpenAIAnalysisProvider(apiKey);
   }
-  return new MockAnalysisProvider();
+  return new HeuristicAnalysisProvider();
 }
 
 export type { AnalysisProvider, AnalysisRequest } from "./provider";

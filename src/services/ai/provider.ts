@@ -1,21 +1,24 @@
-import type { AnalysisResult, PracticeMode } from "@/types";
-
-/** Language the feedback should be written in. */
-export type AnalysisLocale = "en" | "es";
+import type {
+  AnalysisResult,
+  PracticeMode,
+  SpeechLanguage,
+} from "@/types";
 
 /** Everything an analysis provider needs to evaluate a practice session. */
 export interface AnalysisRequest {
-  audio: Blob;
+  transcript: string;
+  title: string;
   topic: string;
   mode: PracticeMode;
+  language: SpeechLanguage;
   durationSeconds: number;
-  locale: AnalysisLocale;
+  targetDurationMinutes: number;
 }
 
 /**
  * Contract every AI backend must implement.
- * The rest of the app depends only on this interface, so swapping the mock
- * for OpenAI (or any other vendor) is a config change, not a refactor.
+ * The rest of the app depends only on this interface, so swapping backends
+ * (heuristic today, OpenAI when a key is present) is a config change.
  */
 export interface AnalysisProvider {
   readonly name: string;

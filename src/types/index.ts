@@ -6,52 +6,98 @@
 /** Practice modes — extensible for future verticals. */
 export type PracticeMode =
   | "presentation"
-  | "interview"
   | "startup-pitch"
-  | "school"
-  | "ted-talk"
-  | "sales-pitch"
-  | "language-exam";
+  | "interview"
+  | "oral-exam"
+  | "project-defense";
 
-/** A single 0–100 metric returned by the AI analysis. */
+export const PRACTICE_MODES: PracticeMode[] = [
+  "presentation",
+  "startup-pitch",
+  "interview",
+  "oral-exam",
+  "project-defense",
+];
+
+/** Language the user speaks (and the report is written) in. */
+export type SpeechLanguage = "es" | "en";
+
+/** Target durations offered in the setup step (minutes). */
+export const TARGET_DURATIONS = [1, 3, 5, 10] as const;
+export type TargetDuration = (typeof TARGET_DURATIONS)[number];
+
+/** The 13 coaching dimensions every analysis scores 0–100. */
+export const METRIC_KEYS = [
+  "clarity",
+  "confidence",
+  "structure",
+  "pace",
+  "fluency",
+  "fillerUsage",
+  "sentenceLength",
+  "organization",
+  "persuasion",
+  "naturalness",
+  "precision",
+  "openingStrength",
+  "closingQuality",
+] as const;
+export type MetricKey = (typeof METRIC_KEYS)[number];
+
 export interface MetricScore {
   score: number; // 0–100
-  feedback: string;
+  feedback: string; // written in the session language, references real content
 }
 
-/**
- * Full structured analysis returned by the AI provider.
- * `eyeContact` and `bodyLanguage` are reserved for future video support.
- */
+export type PaceVerdict = "slow" | "ideal" | "fast";
+
+/** Full structured analysis of one practice session. */
 export interface AnalysisResult {
+  /** Schema marker + which backend produced the coach layer. */
+  version: 2;
+  provider: "openai" | "heuristic";
+  language: SpeechLanguage;
+
   overallScore: number; // 0–100
-  clarity: MetricScore;
-  confidence: MetricScore;
-  pace: MetricScore & { wordsPerMinute: number };
-  structure: MetricScore;
-  persuasiveness: MetricScore;
-  vocabulary: MetricScore;
+  metrics: Record<MetricKey, MetricScore>;
+
+  wordCount: number;
+  wordsPerMinute: number;
+  paceVerdict: PaceVerdict;
+
   fillerWords: {
-    score: number;
-    count: number;
-    words: { word: string; count: number }[];
+    total: number;
+    perMinute: number;
+    top: { word: string; count: number }[];
   };
-  /** Future: video analysis. */
-  eyeContact?: MetricScore;
-  bodyLanguage?: MetricScore;
+
+  structure: {
+    hasIntro: boolean;
+    hasBody: boolean;
+    hasConclusion: boolean;
+    commentary: string;
+  };
+
+  /** Narrative coach feedback — all reference the actual content. */
   summary: string;
-  strengths: string[];
-  weaknesses: string[];
-  tips: string[];
-  nextExercises: string[];
-  transcript?: string;
+  highlights: string[]; // what works, with specifics
+  weaknesses: string[]; // where it gets confusing / loses strength
+  recommendations: string[]; // exactly 5 concrete actions
+
+  /** Rewritten version of the speech keeping the original ideas. */
+  improvedVersion: string;
+
+  /** 5–10 questions an examiner/investor/interviewer would likely ask. */
+  audienceQuestions: string[];
+
+  transcript: string;
 }
 
 /** A saved practice session. */
 export interface PracticeSession {
   id: string;
   userId: string;
-  topic: string;
+  topic: string; // display title of the session
   mode: PracticeMode;
   durationSeconds: number;
   createdAt: string; // ISO date

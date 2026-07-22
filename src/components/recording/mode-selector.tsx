@@ -1,27 +1,18 @@
 "use client";
 
-import {
-  Briefcase,
-  GraduationCap,
-  Landmark,
-  Languages,
-  Mic2,
-  Presentation,
-  Rocket,
-} from "lucide-react";
+import { Briefcase, GraduationCap, Presentation, Rocket, ScrollText } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { PracticeMode } from "@/types";
+import { PRACTICE_MODES } from "@/types";
 import { useDict } from "@/lib/i18n";
 import { cn } from "@/utils/cn";
 
 const MODE_ICONS: Record<PracticeMode, LucideIcon> = {
   presentation: Presentation,
-  interview: Briefcase,
   "startup-pitch": Rocket,
-  school: GraduationCap,
-  "ted-talk": Landmark,
-  "sales-pitch": Mic2,
-  "language-exam": Languages,
+  interview: Briefcase,
+  "oral-exam": GraduationCap,
+  "project-defense": ScrollText,
 };
 
 export function ModeSelector({
@@ -34,8 +25,8 @@ export function ModeSelector({
   const d = useDict();
 
   return (
-    <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
-      {(Object.keys(MODE_ICONS) as PracticeMode[]).map((mode) => {
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {PRACTICE_MODES.map((mode) => {
         const Icon = MODE_ICONS[mode];
         const active = value === mode;
         return (
@@ -44,16 +35,35 @@ export function ModeSelector({
             type="button"
             onClick={() => onChange(mode)}
             className={cn(
-              "flex cursor-pointer flex-col items-start gap-2 rounded-2xl border p-4 text-left transition-all",
+              "group flex cursor-pointer items-start gap-3.5 rounded-2xl border p-4 text-left transition-all duration-200",
               active
-                ? "border-accent bg-accent-soft text-accent shadow-sm"
-                : "border-border bg-surface text-muted hover:border-accent/40 hover:text-foreground",
+                ? "border-accent bg-accent-soft shadow-sm shadow-accent/10"
+                : "border-border bg-surface hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-sm",
             )}
             aria-pressed={active}
           >
-            <Icon className="h-5 w-5" />
-            <span className="text-sm font-medium leading-tight">
-              {d.modes[mode]}
+            <span
+              className={cn(
+                "flex h-10 w-10 shrink-0 items-center justify-center rounded-xl transition-colors",
+                active
+                  ? "bg-accent text-white"
+                  : "bg-surface-muted text-muted group-hover:text-foreground",
+              )}
+            >
+              <Icon className="h-5 w-5" />
+            </span>
+            <span className="min-w-0">
+              <span
+                className={cn(
+                  "block text-sm font-semibold leading-tight",
+                  active && "text-accent",
+                )}
+              >
+                {d.modes[mode]}
+              </span>
+              <span className="mt-0.5 block text-xs text-muted">
+                {d.modeDescriptions[mode]}
+              </span>
             </span>
           </button>
         );

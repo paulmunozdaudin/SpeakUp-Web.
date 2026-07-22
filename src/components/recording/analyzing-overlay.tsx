@@ -60,7 +60,6 @@ export function AnalyzingOverlay() {
         {steps[step]}
       </motion.p>
 
-      {/* Animated equalizer bars */}
       <div className="mt-8 flex items-end gap-1.5" aria-hidden>
         {[0, 1, 2, 3, 4].map((i) => (
           <motion.span
