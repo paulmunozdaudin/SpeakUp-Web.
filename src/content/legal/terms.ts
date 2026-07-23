@@ -1,22 +1,20 @@
 import type { LegalContent } from "./types";
 
 /**
- * TEMPLATE terms of use. Every "[COMPLETAR: ...]" / "[FILL IN: ...]" marker
- * must be replaced with real information before this is legally usable —
- * see the checklist the app owner was given alongside this file. This is
- * not legal advice; have it reviewed by a lawyer before relying on it.
+ * Terms of use content. This is not legal advice — have it reviewed by a
+ * lawyer before relying on it in production.
  */
 export const termsContent: LegalContent = {
   es: {
     title: "Términos de Uso",
-    updated: "Última actualización: [COMPLETAR fecha]",
+    updated: "Última actualización: 23 de julio de 2026",
     intro:
       "Al usar Eloq AI aceptas estos términos. Léelos con calma — hemos intentado que sean claros y reflejen lo que el producto realmente hace hoy.",
     sections: [
       {
         heading: "1. Quiénes somos",
         paragraphs: [
-          "Eloq AI es un servicio operado por [COMPLETAR: nombre legal / responsable], con contacto en [COMPLETAR: email de contacto].",
+          "Eloq AI es un servicio operado por Paul Daudin Muñoz, con contacto en paulmunozdaudin@gmail.com.",
         ],
       },
       {
@@ -56,13 +54,13 @@ export const termsContent: LegalContent = {
       {
         heading: "7. Propiedad intelectual",
         paragraphs: [
-          "El diseño, la marca, el código y los contenidos propios de Eloq AI son propiedad de [COMPLETAR: nombre legal / responsable]. Las bibliotecas de código abierto utilizadas mantienen sus propias licencias.",
+          "El diseño, la marca, el código y los contenidos propios de Eloq AI son propiedad de Paul Daudin Muñoz. Las bibliotecas de código abierto utilizadas mantienen sus propias licencias.",
         ],
       },
       {
         heading: "8. Cancelación",
         paragraphs: [
-          "Puedes dejar de usar el servicio cuando quieras. Si tienes cuenta y quieres eliminarla, escríbenos a [COMPLETAR: email de contacto]. Podemos suspender o cerrar cuentas que incumplan estos términos, avisando cuando sea razonablemente posible.",
+          "Puedes dejar de usar el servicio cuando quieras. Si tienes cuenta y quieres eliminarla, escríbenos a paulmunozdaudin@gmail.com. Podemos suspender o cerrar cuentas que incumplan estos términos, avisando cuando sea razonablemente posible.",
         ],
       },
       {
@@ -80,7 +78,7 @@ export const termsContent: LegalContent = {
       {
         heading: "11. Ley aplicable",
         paragraphs: [
-          "[COMPLETAR: jurisdicción y ley aplicable, por ejemplo 'Estos términos se rigen por la legislación española, y cualquier disputa se someterá a los juzgados y tribunales de [ciudad]'].",
+          "Estos términos se rigen por la legislación española, y cualquier disputa se someterá a los juzgados y tribunales de España.",
         ],
       },
       {
@@ -93,14 +91,14 @@ export const termsContent: LegalContent = {
   },
   en: {
     title: "Terms of Use",
-    updated: "Last updated: [FILL IN date]",
+    updated: "Last updated: July 23, 2026",
     intro:
       "By using Eloq AI you agree to these terms. Take a moment to read them — we've tried to keep them clear and accurate to what the product actually does today.",
     sections: [
       {
         heading: "1. Who we are",
         paragraphs: [
-          "Eloq AI is a service operated by [FILL IN: legal name / responsible party], contactable at [FILL IN: contact email].",
+          "Eloq AI is a service operated by Paul Daudin Muñoz, contactable at paulmunozdaudin@gmail.com.",
         ],
       },
       {
@@ -140,13 +138,13 @@ export const termsContent: LegalContent = {
       {
         heading: "7. Intellectual property",
         paragraphs: [
-          "The design, branding, code and original content of Eloq AI belong to [FILL IN: legal name / responsible party]. Open-source libraries used retain their own licenses.",
+          "The design, branding, code and original content of Eloq AI belong to Paul Daudin Muñoz. Open-source libraries used retain their own licenses.",
         ],
       },
       {
         heading: "8. Cancellation",
         paragraphs: [
-          "You can stop using the service at any time. If you have an account and want it deleted, email us at [FILL IN: contact email]. We may suspend or close accounts that violate these terms, notifying you when reasonably possible.",
+          "You can stop using the service at any time. If you have an account and want it deleted, email us at paulmunozdaudin@gmail.com. We may suspend or close accounts that violate these terms, notifying you when reasonably possible.",
         ],
       },
       {
@@ -164,7 +162,7 @@ export const termsContent: LegalContent = {
       {
         heading: "11. Governing law",
         paragraphs: [
-          "[FILL IN: jurisdiction and governing law, e.g. 'These terms are governed by the laws of Spain, and any dispute will be submitted to the courts of [city]'].",
+          "These terms are governed by the laws of Spain, and any dispute will be submitted to the courts of Spain.",
         ],
       },
       {

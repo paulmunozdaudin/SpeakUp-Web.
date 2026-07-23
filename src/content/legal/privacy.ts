@@ -1,24 +1,22 @@
 import type { LegalContent } from "./types";
 
 /**
- * TEMPLATE privacy policy. Every "[COMPLETAR: ...]" / "[FILL IN: ...]"
- * marker must be replaced with real information before this is legally
- * usable — see the checklist the app owner was given alongside this file.
- * This is not legal advice; have it reviewed by a lawyer before relying on
- * it, especially given the voice-data processing involved.
+ * Privacy policy content. This is not legal advice — have it reviewed by a
+ * lawyer before relying on it in production, especially given the
+ * voice-data processing involved.
  */
 export const privacyContent: LegalContent = {
   es: {
     title: "Política de Privacidad",
-    updated: "Última actualización: [COMPLETAR fecha]",
+    updated: "Última actualización: 23 de julio de 2026",
     intro:
       "Esta política explica qué datos recoge Eloq AI, para qué los usa, con quién los comparte y qué derechos tienes sobre ellos. La hemos escrito intentando reflejar exactamente cómo funciona el producto hoy — sin florituras legales innecesarias.",
     sections: [
       {
         heading: "1. Quién es el responsable de tus datos",
         paragraphs: [
-          "[COMPLETAR: nombre legal de la persona o empresa responsable del tratamiento, NIF/CIF si aplica, dirección de contacto].",
-          "Para cualquier duda sobre esta política o tus datos, puedes escribir a [COMPLETAR: email de contacto].",
+          "Paul Daudin Muñoz es el responsable del tratamiento de tus datos en Eloq AI.",
+          "Para cualquier duda sobre esta política o tus datos, puedes escribir a paulmunozdaudin@gmail.com.",
         ],
       },
       {
@@ -58,14 +56,14 @@ export const privacyContent: LegalContent = {
         heading: "6. Cuánto tiempo conservamos tus datos",
         paragraphs: [
           "Los datos de tu cuenta y tus sesiones guardadas se conservan mientras la cuenta esté activa. Puedes borrar cualquier práctica individual en cualquier momento desde el historial.",
-          "Para eliminar tu cuenta por completo, escríbenos a [COMPLETAR: email de contacto] — hoy no existe un botón de autoservicio para ello, pero atenderemos la solicitud en un plazo razonable.",
+          "Para eliminar tu cuenta por completo, escríbenos a paulmunozdaudin@gmail.com — hoy no existe un botón de autoservicio para ello, pero atenderemos la solicitud en un plazo razonable.",
         ],
       },
       {
         heading: "7. Tus derechos",
         paragraphs: [
           "Si resides en el Espacio Económico Europeo, tienes derecho a acceder, rectificar, eliminar, limitar el tratamiento, oponerte y solicitar la portabilidad de tus datos. También puedes presentar una reclamación ante tu autoridad de protección de datos (en España, la AEPD).",
-          "Para ejercer cualquiera de estos derechos, escribe a [COMPLETAR: email de contacto].",
+          "Para ejercer cualquiera de estos derechos, escribe a paulmunozdaudin@gmail.com.",
         ],
       },
       {
@@ -96,15 +94,15 @@ export const privacyContent: LegalContent = {
   },
   en: {
     title: "Privacy Policy",
-    updated: "Last updated: [FILL IN date]",
+    updated: "Last updated: July 23, 2026",
     intro:
       "This policy explains what data Eloq AI collects, what we use it for, who we share it with, and what rights you have over it. We've tried to describe exactly how the product works today, without unnecessary legal padding.",
     sections: [
       {
         heading: "1. Who is responsible for your data",
         paragraphs: [
-          "[FILL IN: legal name of the person or company responsible for processing, registration number if applicable, contact address].",
-          "For any question about this policy or your data, write to [FILL IN: contact email].",
+          "Paul Daudin Muñoz is the data controller for Eloq AI.",
+          "For any question about this policy or your data, write to paulmunozdaudin@gmail.com.",
         ],
       },
       {
@@ -144,14 +142,14 @@ export const privacyContent: LegalContent = {
         heading: "6. How long we keep your data",
         paragraphs: [
           "Your account data and saved sessions are kept while your account is active. You can delete any individual practice at any time from your history.",
-          "To delete your account entirely, email us at [FILL IN: contact email] — there is no self-service button for this today, but we'll handle the request within a reasonable time.",
+          "To delete your account entirely, email us at paulmunozdaudin@gmail.com — there is no self-service button for this today, but we'll handle the request within a reasonable time.",
         ],
       },
       {
         heading: "7. Your rights",
         paragraphs: [
           "If you're in the European Economic Area, you have the right to access, rectify, erase, restrict processing of, object to, and request portability of your data. You may also lodge a complaint with your local data protection authority.",
-          "To exercise any of these rights, write to [FILL IN: contact email].",
+          "To exercise any of these rights, write to paulmunozdaudin@gmail.com.",
         ],
       },
       {
