@@ -1,5 +1,5 @@
 /**
- * Central domain types for Orato AI.
+ * Central domain types for Eloq AI.
  * Every feature (recording, analysis, history, profile) builds on these.
  */
 

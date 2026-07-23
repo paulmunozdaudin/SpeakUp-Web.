@@ -16,22 +16,22 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Orato AI — Practice presentations with AI",
-    template: "%s · Orato AI",
+    default: "Eloq AI — Practice presentations with AI",
+    template: "%s · Eloq AI",
   },
   description:
     "Get instant AI feedback on your clarity, confidence, pacing and delivery. Your personal public speaking coach, available 24/7.",
-  applicationName: "Orato AI",
+  applicationName: "Eloq AI",
   openGraph: {
-    title: "Orato AI — Practice presentations with AI",
+    title: "Eloq AI — Practice presentations with AI",
     description:
       "Get instant AI feedback on your clarity, confidence, pacing and delivery.",
-    siteName: "Orato AI",
+    siteName: "Eloq AI",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Orato AI — Practice presentations with AI",
+    title: "Eloq AI — Practice presentations with AI",
     description:
       "Get instant AI feedback on your clarity, confidence, pacing and delivery.",
   },

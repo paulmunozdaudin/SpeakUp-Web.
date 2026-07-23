@@ -1,4 +1,4 @@
-# Orato AI — Practice presentations with AI
+# Eloq AI — Practice presentations with AI
 
 Your personal public speaking coach, available 24/7. Record a presentation
 — live, spoken, no typing — and get a detailed AI coaching report on

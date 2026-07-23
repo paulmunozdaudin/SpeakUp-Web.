@@ -100,7 +100,7 @@ export const en = {
     testimonials: [
       {
         quote:
-          "I rehearsed my seed round pitch 14 times with Orato AI. By demo day I wasn't nervous — I was ready.",
+          "I rehearsed my seed round pitch 14 times with Eloq AI. By demo day I wasn't nervous — I was ready.",
         name: "Sofia M.",
         role: "Startup founder",
       },
@@ -126,7 +126,7 @@ export const en = {
         name: "Free",
         price: "$0",
         period: "forever",
-        description: "Perfect for trying Orato AI.",
+        description: "Perfect for trying Eloq AI.",
         features: [
           "3 practice sessions per month",
           "Core AI feedback",
@@ -531,7 +531,7 @@ export const es: Dictionary = {
     testimonials: [
       {
         quote:
-          "Ensayé mi pitch de ronda semilla 14 veces con Orato AI. El día del demo day no estaba nervioso: estaba listo.",
+          "Ensayé mi pitch de ronda semilla 14 veces con Eloq AI. El día del demo day no estaba nervioso: estaba listo.",
         name: "Sofía M.",
         role: "Fundadora de startup",
       },
@@ -558,7 +558,7 @@ export const es: Dictionary = {
         name: "Gratis",
         price: "0 €",
         period: "para siempre",
-        description: "Perfecto para probar Orato AI.",
+        description: "Perfecto para probar Eloq AI.",
         features: [
           "3 sesiones de práctica al mes",
           "Feedback esencial de IA",

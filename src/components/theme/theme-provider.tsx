@@ -19,7 +19,7 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
-const STORAGE_KEY = "orato-theme";
+const STORAGE_KEY = "eloq-theme";
 const MEDIA_QUERY = "(prefers-color-scheme: dark)";
 
 /* System dark-mode preference as an external store (SSR-safe). */

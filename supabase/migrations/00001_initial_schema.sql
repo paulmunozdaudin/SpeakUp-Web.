@@ -1,4 +1,4 @@
--- Orato AI initial schema
+-- Eloq AI initial schema
 -- Run in the Supabase SQL editor (or `supabase db push`) after creating the project.
 
 -- ── profiles ─────────────────────────────────────────────────────────────

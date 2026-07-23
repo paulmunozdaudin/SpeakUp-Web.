@@ -24,7 +24,7 @@ import type {
 } from "@/types";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
-const LOCAL_KEY = "orato-sessions";
+const LOCAL_KEY = "eloq-sessions";
 const GUEST_USER_ID = "guest";
 
 export interface CreateSessionInput {

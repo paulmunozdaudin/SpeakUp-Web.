@@ -14,8 +14,8 @@ export type Locale = "en" | "es";
 
 export const DICTIONARIES: Record<Locale, Dictionary> = { en, es };
 
-const STORAGE_KEY = "orato-locale";
-const CHANGE_EVENT = "orato-locale-change";
+const STORAGE_KEY = "eloq-locale";
+const CHANGE_EVENT = "eloq-locale-change";
 
 /** Current locale, readable outside React (e.g. services). */
 export function getLocale(): Locale {
