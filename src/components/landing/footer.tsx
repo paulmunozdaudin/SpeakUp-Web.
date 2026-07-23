@@ -27,8 +27,8 @@ export function Footer() {
     {
       title: d.landing.footerLegal,
       links: [
-        { label: d.landing.footerPrivacy, href: "#" },
-        { label: d.landing.footerTerms, href: "#" },
+        { label: d.landing.footerPrivacy, href: "/privacy" },
+        { label: d.landing.footerTerms, href: "/terms" },
       ],
     },
   ];
