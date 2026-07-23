@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import {
   History,
   LayoutDashboard,
+  LogIn,
   LogOut,
   Mic,
   User,
@@ -12,16 +13,18 @@ import {
 import { Logo } from "@/components/ui/logo";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { LanguageToggle } from "@/components/theme/language-toggle";
+import { useUser } from "@/hooks/use-user";
 import { signOut } from "@/services/auth.service";
-import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { useDict } from "@/lib/i18n";
 import { cn } from "@/utils/cn";
 
-/** Desktop sidebar + mobile bottom navigation for the authenticated app. */
+/** Desktop sidebar + mobile bottom navigation. Every link here works for
+ *  guests — logging in only adds cross-device sync, never gates a page. */
 export function Sidebar() {
   const d = useDict();
   const pathname = usePathname();
   const router = useRouter();
+  const { user } = useUser();
 
   const navItems = [
     { href: "/dashboard", label: d.nav.dashboard, icon: LayoutDashboard },
@@ -65,7 +68,7 @@ export function Sidebar() {
           ))}
         </nav>
         <div className="flex items-center justify-between border-t border-border pt-4">
-          {isSupabaseConfigured ? (
+          {user ? (
             <button
               type="button"
               onClick={handleLogout}
@@ -75,7 +78,13 @@ export function Sidebar() {
               {d.common.logOut}
             </button>
           ) : (
-            <span className="px-3 text-xs text-muted">{d.common.demoMode}</span>
+            <Link
+              href="/login"
+              className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-muted transition-colors hover:bg-surface-muted hover:text-foreground"
+            >
+              <LogIn className="h-4 w-4" />
+              {d.common.logIn}
+            </Link>
           )}
           <div className="flex items-center">
             <LanguageToggle />

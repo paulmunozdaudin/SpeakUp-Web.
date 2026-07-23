@@ -4,12 +4,15 @@
  * Sessions service: the single data-access layer for practice sessions.
  *
  * Storage strategy:
- *  - Supabase (table `practice_sessions`, RLS-protected) when configured.
- *  - localStorage fallback ("demo mode") so the product works end-to-end
- *    before any backend is provisioned.
+ *  - Signed-in user + Supabase configured -> `practice_sessions` table
+ *    (RLS-protected, synced across devices).
+ *  - Everyone else (no Supabase configured, OR Supabase configured but the
+ *    visitor isn't logged in) -> localStorage on this device.
  *
- * All pages/hooks consume THIS module — never Supabase directly — so the
- * storage backend can evolve without touching UI code.
+ * Practicing and getting AI feedback NEVER requires an account — only
+ * syncing history across devices does. This file is the one place that
+ * decision is made; every page/hook consumes THIS module, never Supabase
+ * directly.
  */
 
 import type {
@@ -22,7 +25,7 @@ import type {
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
 const LOCAL_KEY = "orato-sessions";
-const DEMO_USER_ID = "demo-user";
+const GUEST_USER_ID = "guest";
 
 export interface CreateSessionInput {
   topic: string;
@@ -31,7 +34,7 @@ export interface CreateSessionInput {
   analysis: AnalysisResult;
 }
 
-/* ── localStorage backend (demo mode) ────────────────────────────────── */
+/* ── localStorage backend (guest / no account) ───────────────────────── */
 
 function readLocal(): PracticeSession[] {
   if (typeof window === "undefined") return [];
@@ -46,7 +49,7 @@ function writeLocal(sessions: PracticeSession[]) {
   localStorage.setItem(LOCAL_KEY, JSON.stringify(sessions));
 }
 
-/* ── Supabase backend ────────────────────────────────────────────────── */
+/* ── Supabase backend (signed-in users) ──────────────────────────────── */
 
 interface SessionRow {
   id: string;
@@ -70,11 +73,26 @@ function rowToSession(row: SessionRow): PracticeSession {
   };
 }
 
+/** Resolves the current signed-in user, if any — used to decide the
+ *  storage backend for every call below. Returns null for guests, and also
+ *  when Supabase isn't configured at all. */
+async function getCurrentUserId(): Promise<{
+  supabase: ReturnType<typeof getSupabaseBrowserClient>;
+  userId: string | null;
+}> {
+  const supabase = getSupabaseBrowserClient();
+  if (!supabase) return { supabase: null, userId: null };
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return { supabase, userId: user?.id ?? null };
+}
+
 /* ── Public API ──────────────────────────────────────────────────────── */
 
 export async function listSessions(): Promise<PracticeSession[]> {
-  const supabase = getSupabaseBrowserClient();
-  if (!supabase) {
+  const { supabase, userId } = await getCurrentUserId();
+  if (!supabase || !userId) {
     return readLocal().sort(
       (a, b) => +new Date(b.createdAt) - +new Date(a.createdAt),
     );
@@ -90,8 +108,8 @@ export async function listSessions(): Promise<PracticeSession[]> {
 }
 
 export async function getSession(id: string): Promise<PracticeSession | null> {
-  const supabase = getSupabaseBrowserClient();
-  if (!supabase) {
+  const { supabase, userId } = await getCurrentUserId();
+  if (!supabase || !userId) {
     return readLocal().find((s) => s.id === id) ?? null;
   }
 
@@ -108,12 +126,12 @@ export async function getSession(id: string): Promise<PracticeSession | null> {
 export async function createSession(
   input: CreateSessionInput,
 ): Promise<PracticeSession> {
-  const supabase = getSupabaseBrowserClient();
+  const { supabase, userId } = await getCurrentUserId();
 
-  if (!supabase) {
+  if (!supabase || !userId) {
     const session: PracticeSession = {
       id: crypto.randomUUID(),
-      userId: DEMO_USER_ID,
+      userId: GUEST_USER_ID,
       createdAt: new Date().toISOString(),
       ...input,
     };
@@ -121,15 +139,10 @@ export async function createSession(
     return session;
   }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) throw new Error("Not authenticated");
-
   const { data, error } = await supabase
     .from("practice_sessions")
     .insert({
-      user_id: user.id,
+      user_id: userId,
       topic: input.topic,
       mode: input.mode,
       duration_seconds: input.durationSeconds,
@@ -143,8 +156,8 @@ export async function createSession(
 }
 
 export async function deleteSession(id: string): Promise<void> {
-  const supabase = getSupabaseBrowserClient();
-  if (!supabase) {
+  const { supabase, userId } = await getCurrentUserId();
+  if (!supabase || !userId) {
     writeLocal(readLocal().filter((s) => s.id !== id));
     return;
   }

@@ -1,10 +1,11 @@
 "use client";
 
-import { Award, Flame, Lock, Mail, Mic, Trophy, User as UserIcon } from "lucide-react";
+import Link from "next/link";
+import { Award, Flame, LogIn, Lock, Mic, Trophy, User as UserIcon } from "lucide-react";
 import { useUser } from "@/hooks/use-user";
 import { useSessions } from "@/hooks/use-sessions";
-import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDict } from "@/lib/i18n";
@@ -16,10 +17,7 @@ export default function ProfilePage() {
   const { stats, loading: sessionsLoading } = useSessions();
 
   const fullName =
-    (user?.user_metadata?.full_name as string | undefined) ??
-    (isSupabaseConfigured ? "—" : d.profile.demoUser);
-  const email =
-    user?.email ?? (isSupabaseConfigured ? "—" : "demo@orato.ai");
+    (user?.user_metadata?.full_name as string | undefined) || d.profile.guestName;
 
   const statItems = [
     {
@@ -61,8 +59,10 @@ export default function ProfilePage() {
         <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-full bg-accent-soft text-2xl font-semibold text-accent">
           {userLoading ? (
             <UserIcon className="h-8 w-8" />
-          ) : (
+          ) : user ? (
             fullName.charAt(0).toUpperCase()
+          ) : (
+            <UserIcon className="h-8 w-8" />
           )}
         </div>
         <div className="min-w-0 flex-1">
@@ -71,7 +71,7 @@ export default function ProfilePage() {
               <Skeleton className="h-6 w-40" />
               <Skeleton className="h-4 w-56" />
             </div>
-          ) : (
+          ) : user ? (
             <>
               <div className="flex flex-wrap items-center gap-2.5">
                 <h2 className="text-xl font-semibold">{fullName}</h2>
@@ -79,15 +79,32 @@ export default function ProfilePage() {
                 <Badge tone="accent">{d.profile.freePlan}</Badge>
               </div>
               <p className="mt-1 flex items-center gap-1.5 text-sm text-muted">
-                <Mail className="h-3.5 w-3.5" />
-                {email}
+                {user.email}
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <h2 className="text-xl font-semibold">{d.profile.guestName}</h2>
+                <Badge>{d.profile.guestBadge}</Badge>
+              </div>
+              <p className="mt-1 max-w-sm text-sm text-muted">
+                {d.profile.guestExplainer}
               </p>
             </>
           )}
         </div>
+        {!userLoading && !user && (
+          <Link href="/login" className="shrink-0">
+            <Button variant="secondary">
+              <LogIn className="h-4 w-4" />
+              {d.common.logIn}
+            </Button>
+          </Link>
+        )}
       </Card>
 
-      {/* Stats */}
+      {/* Stats — these already work for guests via on-device storage. */}
       <div className="grid gap-4 sm:grid-cols-3">
         {statItems.map((item) =>
           sessionsLoading ? (

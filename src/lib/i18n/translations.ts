@@ -15,7 +15,6 @@ export const en = {
     cancel: "Cancel",
     delete: "Delete",
     home: "Home",
-    demoMode: "Demo mode",
     comingSoon: "Coming soon",
   },
   nav: {
@@ -239,8 +238,8 @@ export const en = {
     passwordsDontMatch: "Passwords don't match.",
     genericError: "Something went wrong.",
     supabaseNotice:
-      "Supabase is not configured. Auth is disabled — you can still explore the app in demo mode from the",
-    supabaseNoticeLink: "dashboard",
+      "Accounts aren't set up yet, but you don't need one — you can record and get AI feedback right now from",
+    supabaseNoticeLink: "practice",
   },
   dashboard: {
     welcome: "Welcome back",
@@ -380,7 +379,10 @@ export const en = {
   profile: {
     title: "Profile",
     subtitle: "Your account and speaking journey at a glance.",
-    demoUser: "Demo user",
+    guestName: "Guest",
+    guestBadge: "Not logged in",
+    guestExplainer:
+      "Your practices are saved on this device. Log in to sync them across devices.",
     freePlan: "Free plan",
     totalPractices: "Total practices",
     averageScore: "Average score",
@@ -444,7 +446,6 @@ export const es: Dictionary = {
     cancel: "Cancelar",
     delete: "Eliminar",
     home: "Inicio",
-    demoMode: "Modo demo",
     comingSoon: "Próximamente",
   },
   nav: {
@@ -669,8 +670,8 @@ export const es: Dictionary = {
     passwordsDontMatch: "Las contraseñas no coinciden.",
     genericError: "Algo salió mal.",
     supabaseNotice:
-      "Supabase no está configurado. La autenticación está desactivada — aun así puedes explorar la app en modo demo desde el",
-    supabaseNoticeLink: "panel",
+      "Las cuentas aún no están activadas, pero no las necesitas — puedes grabarte y recibir feedback de la IA ahora mismo desde",
+    supabaseNoticeLink: "practicar",
   },
   dashboard: {
     welcome: "Hola de nuevo",
@@ -813,7 +814,10 @@ export const es: Dictionary = {
   profile: {
     title: "Perfil",
     subtitle: "Tu cuenta y tu trayectoria como orador, de un vistazo.",
-    demoUser: "Usuario demo",
+    guestName: "Invitado",
+    guestBadge: "Sin iniciar sesión",
+    guestExplainer:
+      "Tus prácticas se guardan en este dispositivo. Inicia sesión para sincronizarlas entre dispositivos.",
     freePlan: "Plan gratis",
     totalPractices: "Prácticas totales",
     averageScore: "Puntuación media",

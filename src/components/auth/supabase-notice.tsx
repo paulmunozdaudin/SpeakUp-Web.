@@ -18,7 +18,7 @@ export function SupabaseNotice() {
       <Info className="mt-0.5 h-4 w-4 shrink-0" />
       <p>
         {d.auth.supabaseNotice}{" "}
-        <a href="/dashboard" className="underline">
+        <a href="/practice" className="underline">
           {d.auth.supabaseNoticeLink}
         </a>
         .
