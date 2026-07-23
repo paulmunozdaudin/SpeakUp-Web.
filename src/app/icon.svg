@@ -1,6 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-  <rect width="24" height="24" rx="5.5" fill="#4f46e5"/>
-  <path fill="#ffffff" d="M12 3.6c-1.35 1.7-2.5 3.3-2.5 5 0 1.75 1.05 2.6 2.5 2.6s2.5-.85 2.5-2.6c0-1-.5-1.9-1.2-2.7-.1.8-.45 1.4-1 1.9.1-1 .1-2.3-.3-4.2Z"/>
+  <rect width="24" height="24" rx="5.5" fill="#161042"/>
+  <defs>
+    <linearGradient id="flame" x1="9.15" y1="3.6" x2="14.5" y2="11.2" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#8b7cf6"/>
+      <stop offset="1" stop-color="#4f46e5"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#flame)" d="M12 3.6c-1.35 1.7-2.5 3.3-2.5 5 0 1.75 1.05 2.6 2.5 2.6s2.5-.85 2.5-2.6c0-1-.5-1.9-1.2-2.7-.1.8-.45 1.4-1 1.9.1-1 .1-2.3-.3-4.2Z"/>
   <path fill="#ffffff" d="M10.05 11.6h3.9l-.75 1.4h-2.4Z"/>
   <path fill="#ffffff" d="M10.75 13.4h2.4v3.9L12 18.7l-1.25-1.4Z"/>
 </svg>
