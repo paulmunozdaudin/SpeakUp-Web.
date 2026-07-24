@@ -48,7 +48,9 @@ export const termsContent: LegalContent = {
       {
         heading: "6. Planes y pagos",
         paragraphs: [
-          "Actualmente Eloq AI es gratuito. La página de precios muestra un plan de pago futuro ('Pro') que todavía no está disponible para compra — no se realizará ningún cargo hasta que se active explícitamente un sistema de pago y aceptes términos adicionales específicos para el plan de pago.",
+          "Eloq AI ofrece un plan gratuito y un plan de pago ('Pro', 12€/mes). El plan gratuito incluye hasta 3 prácticas por mes; el plan Pro incluye prácticas ilimitadas y funciones adicionales indicadas en la página de precios en el momento de la contratación.",
+          "Los pagos se procesan a través de Stripe; nosotros no almacenamos los datos completos de tu tarjeta. La suscripción Pro se renueva automáticamente cada mes hasta que la canceles. Puedes cancelarla en cualquier momento desde tu perfil (portal de facturación) — seguirás teniendo acceso Pro hasta el final del periodo ya pagado, sin reembolso de la parte ya transcurrida salvo que la ley aplicable exija lo contrario.",
+          "Podemos cambiar el precio del plan Pro en el futuro; si te afecta como suscriptor activo, te avisaremos con antelación razonable antes de que se aplique en tu siguiente renovación.",
         ],
       },
       {
@@ -132,7 +134,9 @@ export const termsContent: LegalContent = {
       {
         heading: "6. Plans and payment",
         paragraphs: [
-          "Eloq AI is currently free. The pricing page shows a future paid plan ('Pro') that is not yet available for purchase — no charge will occur until a payment system is explicitly enabled and you accept additional terms specific to the paid plan.",
+          "Eloq AI offers a free plan and a paid plan ('Pro', €12/month). The free plan includes up to 3 practices per month; the Pro plan includes unlimited practices and any additional features listed on the pricing page at the time you subscribe.",
+          "Payments are processed through Stripe; we never store your full card details. The Pro subscription renews automatically each month until you cancel. You can cancel at any time from your profile (billing portal) — you'll keep Pro access until the end of the period already paid for, with no refund for the elapsed portion unless applicable law requires otherwise.",
+          "We may change the Pro plan's price in the future; if you're an active subscriber, we'll give you reasonable advance notice before it applies to your next renewal.",
         ],
       },
       {

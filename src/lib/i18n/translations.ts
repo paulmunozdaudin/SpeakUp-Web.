@@ -124,7 +124,7 @@ export const en = {
     plans: [
       {
         name: "Free",
-        price: "$0",
+        price: "€0",
         period: "forever",
         description: "Perfect for trying Eloq AI.",
         features: [
@@ -136,7 +136,7 @@ export const en = {
       },
       {
         name: "Pro",
-        price: "$12",
+        price: "€12",
         period: "per month",
         description: "For serious speakers who practice weekly.",
         features: [
@@ -384,6 +384,10 @@ export const en = {
     guestExplainer:
       "Your practices are saved on this device. Log in to sync them across devices.",
     freePlan: "Free plan",
+    proPlan: "Pro plan",
+    upgradeToPro: "Upgrade to Pro",
+    manageSubscription: "Manage subscription",
+    redirecting: "Redirecting…",
     totalPractices: "Total practices",
     averageScore: "Average score",
     currentStreak: "Current streak",
@@ -394,6 +398,13 @@ export const en = {
       { name: "Smooth Talker", description: "Score 90+ on clarity" },
       { name: "Marathon Speaker", description: "Complete 50 practices" },
     ],
+  },
+  billing: {
+    quotaExceeded:
+      "You've used your 3 free practices this month. Upgrade to Pro for unlimited practices.",
+    checkoutError: "Couldn't start checkout. Please try again in a moment.",
+    portalError: "Couldn't open the billing portal. Please try again.",
+    notConfigured: "Payments aren't available yet. Please try again later.",
   },
   modes: {
     presentation: "Presentation",
@@ -819,6 +830,10 @@ export const es: Dictionary = {
     guestExplainer:
       "Tus prácticas se guardan en este dispositivo. Inicia sesión para sincronizarlas entre dispositivos.",
     freePlan: "Plan gratis",
+    proPlan: "Plan Pro",
+    upgradeToPro: "Hazte Pro",
+    manageSubscription: "Gestionar suscripción",
+    redirecting: "Redirigiendo…",
     totalPractices: "Prácticas totales",
     averageScore: "Puntuación media",
     currentStreak: "Racha actual",
@@ -829,6 +844,13 @@ export const es: Dictionary = {
       { name: "Pico de oro", description: "Consigue 90+ en claridad" },
       { name: "Orador de maratón", description: "Completa 50 prácticas" },
     ],
+  },
+  billing: {
+    quotaExceeded:
+      "Has usado tus 3 prácticas gratis de este mes. Hazte Pro para prácticas ilimitadas.",
+    checkoutError: "No se pudo iniciar el pago. Inténtalo de nuevo en un momento.",
+    portalError: "No se pudo abrir el portal de facturación. Inténtalo de nuevo.",
+    notConfigured: "Los pagos aún no están disponibles. Inténtalo más tarde.",
   },
   modes: {
     presentation: "Presentación",

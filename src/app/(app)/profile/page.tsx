@@ -1,8 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
-import { Award, Flame, LogIn, Lock, Mic, Trophy, User as UserIcon } from "lucide-react";
+import {
+  Award,
+  Flame,
+  LogIn,
+  Lock,
+  Mic,
+  Sparkles,
+  Trophy,
+  User as UserIcon,
+} from "lucide-react";
 import { useUser } from "@/hooks/use-user";
+import { useProfile } from "@/hooks/use-profile";
 import { useSessions } from "@/hooks/use-sessions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,14 +21,29 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDict } from "@/lib/i18n";
 import { scoreLabelKey } from "@/utils/score";
+import { startProCheckout, openBillingPortal } from "@/services/billing.service";
 
 export default function ProfilePage() {
   const d = useDict();
   const { user, loading: userLoading } = useUser();
+  const { subscriptionStatus, loading: profileLoading } = useProfile();
   const { stats, loading: sessionsLoading } = useSessions();
+  const [billingPending, setBillingPending] = useState(false);
+  const [billingError, setBillingError] = useState<string | null>(null);
 
   const fullName =
     (user?.user_metadata?.full_name as string | undefined) || d.profile.guestName;
+  const isPro = subscriptionStatus === "pro";
+
+  async function handleBillingClick() {
+    setBillingError(null);
+    setBillingPending(true);
+    const result = isPro ? await openBillingPortal() : await startProCheckout();
+    if (!result.ok) {
+      setBillingError(result.error ?? d.billing.checkoutError);
+      setBillingPending(false);
+    }
+  }
 
   const statItems = [
     {
@@ -75,8 +101,13 @@ export default function ProfilePage() {
             <>
               <div className="flex flex-wrap items-center gap-2.5">
                 <h2 className="text-xl font-semibold">{fullName}</h2>
-                {/* TODO(stripe): read real subscription status from Stripe. */}
-                <Badge tone="accent">{d.profile.freePlan}</Badge>
+                {profileLoading ? (
+                  <Skeleton className="h-5 w-16" />
+                ) : (
+                  <Badge tone={isPro ? "accent" : undefined}>
+                    {isPro ? d.profile.proPlan : d.profile.freePlan}
+                  </Badge>
+                )}
               </div>
               <p className="mt-1 flex items-center gap-1.5 text-sm text-muted">
                 {user.email}
@@ -101,6 +132,27 @@ export default function ProfilePage() {
               {d.common.logIn}
             </Button>
           </Link>
+        )}
+        {!userLoading && user && !profileLoading && (
+          <div className="shrink-0 text-right">
+            <Button
+              variant={isPro ? "secondary" : "primary"}
+              loading={billingPending}
+              onClick={handleBillingClick}
+            >
+              {!billingPending && !isPro && <Sparkles className="h-4 w-4" />}
+              {billingPending
+                ? d.profile.redirecting
+                : isPro
+                  ? d.profile.manageSubscription
+                  : d.profile.upgradeToPro}
+            </Button>
+            {billingError && (
+              <p className="mt-2 max-w-56 text-xs text-red-500">
+                {billingError}
+              </p>
+            )}
+          </div>
         )}
       </Card>
 

@@ -23,9 +23,15 @@ import type {
   UserStats,
 } from "@/types";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
+import { getLocale, DICTIONARIES } from "@/lib/i18n";
 
 const LOCAL_KEY = "eloq-sessions";
 const GUEST_USER_ID = "guest";
+
+/** Free-plan sessions per calendar month — matches the pricing page copy.
+ *  Guests (no account) are never capped; the limit only applies once
+ *  practices start syncing to a real account, to give Pro a reason to exist. */
+const FREE_MONTHLY_SESSION_LIMIT = 3;
 
 export interface CreateSessionInput {
   topic: string;
@@ -137,6 +143,28 @@ export async function createSession(
     };
     writeLocal([session, ...readLocal()]);
     return session;
+  }
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("subscription_status")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (profile?.subscription_status !== "pro") {
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const { count } = await supabase
+      .from("practice_sessions")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .gte("created_at", startOfMonth.toISOString());
+
+    if ((count ?? 0) >= FREE_MONTHLY_SESSION_LIMIT) {
+      throw new Error(DICTIONARIES[getLocale()].billing.quotaExceeded);
+    }
   }
 
   const { data, error } = await supabase

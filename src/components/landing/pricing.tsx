@@ -1,18 +1,34 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "./section";
 import { useDict } from "@/lib/i18n";
+import { useUser } from "@/hooks/use-user";
+import { startProCheckout } from "@/services/billing.service";
 import { cn } from "@/utils/cn";
 
-/* TODO(stripe): wire plans to Stripe Checkout. Plan IDs live in env vars. */
 const HIGHLIGHTED_INDEX = 1; // "Pro"
 
 export function Pricing() {
   const d = useDict();
+  const { user } = useUser();
+  const [checkoutPending, setCheckoutPending] = useState(false);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+
+  async function handleProClick() {
+    setCheckoutError(null);
+    setCheckoutPending(true);
+    const result = await startProCheckout();
+    if (!result.ok) {
+      setCheckoutError(result.error ?? d.billing.checkoutError);
+      setCheckoutPending(false);
+    }
+    // On success the browser is already navigating away to Stripe.
+  }
 
   return (
     <Section
@@ -61,14 +77,33 @@ export function Pricing() {
                   </li>
                 ))}
               </ul>
-              <Link href="/signup" className="mt-8">
-                <Button
-                  variant={highlighted ? "primary" : "secondary"}
-                  className="w-full"
-                >
-                  {plan.cta}
-                </Button>
-              </Link>
+
+              {highlighted && user ? (
+                <div className="mt-8">
+                  <Button
+                    variant="primary"
+                    className="w-full"
+                    loading={checkoutPending}
+                    onClick={handleProClick}
+                  >
+                    {checkoutPending ? d.profile.redirecting : plan.cta}
+                  </Button>
+                  {checkoutError && (
+                    <p className="mt-2 text-xs text-red-500">
+                      {checkoutError}
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <Link href="/signup" className="mt-8">
+                  <Button
+                    variant={highlighted ? "primary" : "secondary"}
+                    className="w-full"
+                  >
+                    {plan.cta}
+                  </Button>
+                </Link>
+              )}
             </div>
           );
         })}
