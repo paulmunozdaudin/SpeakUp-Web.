@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import Stripe from "stripe";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getStripeClient } from "@/lib/stripe/server";
 import { isStripeConfigured } from "@/lib/stripe/config";
@@ -35,25 +36,35 @@ export async function POST(request: Request) {
     );
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("stripe_customer_id")
-    .eq("id", user.id)
-    .maybeSingle();
+  try {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("stripe_customer_id")
+      .eq("id", user.id)
+      .maybeSingle();
 
-  const customerId = profile?.stripe_customer_id as string | undefined;
-  if (!customerId) {
-    return NextResponse.json(
-      { error: "No active subscription found." },
-      { status: 404 },
-    );
+    const customerId = profile?.stripe_customer_id as string | undefined;
+    if (!customerId) {
+      return NextResponse.json(
+        { error: "No active subscription found." },
+        { status: 404 },
+      );
+    }
+
+    const origin = new URL(request.url).origin;
+    const session = await stripe.billingPortal.sessions.create({
+      customer: customerId,
+      return_url: `${origin}/profile`,
+    });
+
+    return NextResponse.json({ url: session.url });
+  } catch (err) {
+    const message =
+      err instanceof Stripe.errors.StripeError
+        ? err.message
+        : err instanceof Error
+          ? err.message
+          : "Could not open the billing portal. Please try again.";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-
-  const origin = new URL(request.url).origin;
-  const session = await stripe.billingPortal.sessions.create({
-    customer: customerId,
-    return_url: `${origin}/profile`,
-  });
-
-  return NextResponse.json({ url: session.url });
 }

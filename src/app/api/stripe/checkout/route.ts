@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import Stripe from "stripe";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { getStripeClient } from "@/lib/stripe/server";
 import { isStripeConfigured, STRIPE_PRICE_ID_PRO } from "@/lib/stripe/config";
@@ -40,32 +41,46 @@ export async function POST(request: Request) {
     );
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("stripe_customer_id")
-    .eq("id", user.id)
-    .maybeSingle();
+  try {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("stripe_customer_id")
+      .eq("id", user.id)
+      .maybeSingle();
 
-  const existingCustomerId = profile?.stripe_customer_id as string | undefined;
-  const origin = new URL(request.url).origin;
+    const existingCustomerId = profile?.stripe_customer_id as
+      | string
+      | undefined;
+    const origin = new URL(request.url).origin;
 
-  const session = await stripe.checkout.sessions.create({
-    mode: "subscription",
-    line_items: [{ price: STRIPE_PRICE_ID_PRO, quantity: 1 }],
-    customer: existingCustomerId,
-    customer_email: existingCustomerId ? undefined : (user.email ?? undefined),
-    client_reference_id: user.id,
-    subscription_data: { metadata: { supabase_user_id: user.id } },
-    success_url: `${origin}/profile?checkout=success`,
-    cancel_url: `${origin}/profile?checkout=cancelled`,
-  });
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      line_items: [{ price: STRIPE_PRICE_ID_PRO, quantity: 1 }],
+      customer: existingCustomerId,
+      customer_email: existingCustomerId
+        ? undefined
+        : (user.email ?? undefined),
+      client_reference_id: user.id,
+      subscription_data: { metadata: { supabase_user_id: user.id } },
+      success_url: `${origin}/profile?checkout=success`,
+      cancel_url: `${origin}/profile?checkout=cancelled`,
+    });
 
-  if (!session.url) {
-    return NextResponse.json(
-      { error: "Could not start checkout. Please try again." },
-      { status: 502 },
-    );
+    if (!session.url) {
+      return NextResponse.json(
+        { error: "Could not start checkout. Please try again." },
+        { status: 502 },
+      );
+    }
+
+    return NextResponse.json({ url: session.url });
+  } catch (err) {
+    const message =
+      err instanceof Stripe.errors.StripeError
+        ? err.message
+        : err instanceof Error
+          ? err.message
+          : "Could not start checkout. Please try again.";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
-
-  return NextResponse.json({ url: session.url });
 }
