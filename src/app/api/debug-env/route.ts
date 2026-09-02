@@ -24,5 +24,9 @@ export async function GET() {
     STRIPE_WEBHOOK_SECRET: describe("STRIPE_WEBHOOK_SECRET"),
     STRIPE_PRICE_ID_PRO: describe("STRIPE_PRICE_ID_PRO"),
     SUPABASE_SERVICE_ROLE_KEY: describe("SUPABASE_SERVICE_ROLE_KEY"),
+    // These two are NEXT_PUBLIC_ — already embedded in the client bundle,
+    // so showing them here (partial) exposes nothing new.
+    NEXT_PUBLIC_SUPABASE_URL: describe("NEXT_PUBLIC_SUPABASE_URL"),
+    NEXT_PUBLIC_SUPABASE_ANON_KEY: describe("NEXT_PUBLIC_SUPABASE_ANON_KEY"),
   });
 }
