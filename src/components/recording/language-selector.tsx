@@ -6,6 +6,7 @@ import { cn } from "@/utils/cn";
 const OPTIONS: { value: SpeechLanguage; label: string; flag: string }[] = [
   { value: "es", label: "Español", flag: "🇪🇸" },
   { value: "en", label: "English", flag: "🇺🇸" },
+  { value: "fr", label: "Français", flag: "🇫🇷" },
 ];
 
 export function LanguageSelector({
@@ -16,7 +17,7 @@ export function LanguageSelector({
   onChange: (language: SpeechLanguage) => void;
 }) {
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className="grid grid-cols-3 gap-2">
       {OPTIONS.map((option) => {
         const active = value === option.value;
         return (

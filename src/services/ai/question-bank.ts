@@ -9,6 +9,55 @@ export const AUDIENCE_QUESTIONS: Record<
   SpeechLanguage,
   Record<PracticeMode, string[]>
 > = {
+  fr: {
+    presentation: [
+      "Quelle est l'idée principale que vous voulez que nous retenions sur {topic} ?",
+      "Quelles sources appuient ce que vous avez présenté ?",
+      "Comment {topic} affecte-t-il votre public au quotidien ?",
+      "Quelle partie de votre présentation est la plus discutable, et pourquoi ?",
+      "Si vous n'aviez que 30 secondes, comment résumeriez-vous votre message ?",
+      "Qu'avez-vous appris en préparant cette présentation ?",
+      "Quelles questions attendiez-vous de notre part ?",
+    ],
+    "startup-pitch": [
+      "Quelle est la taille réelle de votre marché et comment l'avez-vous calculée ?",
+      "Qu'est-ce qui vous différencie de la concurrence existante sur {topic} ?",
+      "Quel est votre modèle de revenus et votre coût d'acquisition client ?",
+      "Quelle traction avez-vous aujourd'hui : utilisateurs, revenus, accords ?",
+      "Pourquoi votre équipe est-elle la bonne pour exécuter ce projet ?",
+      "Combien levez-vous et à quoi cela servira-t-il ?",
+      "Quel est le plus grand risque, et comment le limitez-vous ?",
+      "Que se passe-t-il si un acteur établi copie votre idée ?",
+    ],
+    interview: [
+      "Pourquoi voulez-vous exactement ce poste ?",
+      "Parlez-moi d'un problème difficile que vous avez résolu, et comment.",
+      "Quel est votre plus grand point faible, et que faites-vous pour l'améliorer ?",
+      "Où vous voyez-vous dans cinq ans ?",
+      "Décrivez un conflit d'équipe et comment vous l'avez géré.",
+      "Qu'est-ce qui vous distingue des autres candidats ?",
+      "Quelles questions avez-vous pour nous ?",
+    ],
+    "oral-exam": [
+      "Définissez les concepts clés de {topic} avec vos propres mots.",
+      "Quels auteurs ou théories fondent votre exposé ?",
+      "Donnez un exemple concret illustrant ce que vous avez expliqué.",
+      "Quelles sont les limites de l'approche que vous avez présentée ?",
+      "Comment {topic} se rattache-t-il au reste du programme ?",
+      "Si vous refaisiez cet exposé, que changeriez-vous ?",
+      "Expliquez, étape par étape, la partie que vous jugez la plus complexe.",
+    ],
+    "project-defense": [
+      "Quel problème concret votre projet résout-il, et pour qui ?",
+      "Justifiez les choix méthodologiques que vous avez faits sur {topic}.",
+      "Quelles alternatives avez-vous écartées, et pourquoi ?",
+      "Quelles sont les principales limites de vos résultats ?",
+      "Comment avez-vous validé que votre solution fonctionne ?",
+      "Que feriez-vous différemment si vous recommenciez ?",
+      "Quelles perspectives futures propose votre projet ?",
+      "Quelle contribution originale apporte votre travail par rapport à l'existant ?",
+    ],
+  },
   es: {
     presentation: [
       "¿Cuál es la idea principal que quieres que recordemos sobre {topic}?",

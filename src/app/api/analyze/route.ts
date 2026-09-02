@@ -26,7 +26,7 @@ function isValidBody(body: unknown): body is AnalyzeBody {
     typeof b.topic === "string" &&
     typeof b.mode === "string" &&
     PRACTICE_MODES.includes(b.mode as PracticeMode) &&
-    (b.language === "es" || b.language === "en") &&
+    (b.language === "es" || b.language === "en" || b.language === "fr") &&
     typeof b.durationSeconds === "number" &&
     typeof b.targetDurationMinutes === "number"
   );

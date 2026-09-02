@@ -38,6 +38,7 @@ interface UseSpeechRecorderResult {
 const BCP47: Record<SpeechLanguage, string> = {
   es: "es-ES",
   en: "en-US",
+  fr: "fr-FR",
 };
 
 /** After this many consecutive failed (re)starts, stop retrying and surface

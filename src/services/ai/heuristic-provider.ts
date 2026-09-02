@@ -142,6 +142,125 @@ function buildCopy(language: SpeechLanguage) {
         `En conclusión: ${topic ? `${topic} — ` : ""}esta es la idea que me gustaría que os llevarais hoy. Gracias.`,
     };
   }
+  if (language === "fr") {
+    return {
+      paceFeedback: (s: TranscriptStats) =>
+        s.paceVerdict === "fast"
+          ? `Vous avez parlé à ${s.wordsPerMinute} mots par minute — trop rapide. Visez 120–150 et marquez une pause après chaque idée clé.`
+          : s.paceVerdict === "slow"
+            ? `Vous avez parlé à ${s.wordsPerMinute} mots par minute — un peu lent. Resserrez les transitions pour garder l'attention.`
+            : `Vous avez parlé à ${s.wordsPerMinute} mots par minute, dans la zone idéale (110–165).`,
+      fillerFeedback: (s: TranscriptStats) =>
+        s.fillerTotal === 0
+          ? "Aucun tic de langage détecté — un discours très propre."
+          : `Vous avez utilisé ${s.fillerTotal} tics de langage (${s.fillerPerMinute}/min). Le plus fréquent : « ${s.fillerTop[0]?.word} » × ${s.fillerTop[0]?.count}. Remplacez-les par de courtes pauses.`,
+      sentenceFeedback: (s: TranscriptStats) =>
+        s.longSentenceCount > 0
+          ? `Votre phrase la plus longue fait ${s.longestSentenceWords} mots (« ${shortQuote(s.longestSentence, 60)} »). Divisez-la en deux ou trois idées.`
+          : `Vos phrases font en moyenne ${Math.round(s.avgSentenceLength)} mots — une longueur facile à suivre.`,
+      clarityHigh: "Les idées passent dès la première écoute ; vous gardez des phrases directes.",
+      clarityLow: (s: TranscriptStats) =>
+        `Certains passages sont difficiles à suivre : ${s.longSentenceCount > 0 ? "des phrases trop longues" : "des idées enchaînées sans pause"} et ${s.fillerTotal} tics de langage diluent le message.`,
+      confidenceHigh: "Vous paraissez sûr de vous : peu d'hésitations, des affirmations directes.",
+      confidenceLow: (s: TranscriptStats) =>
+        s.hedgeCount > 0
+          ? `Je détecte ${s.hedgeCount} expressions de doute (« je pense que », « peut-être »…). Affirmez avec des données plutôt que de nuancer chaque idée.`
+          : `${s.fillerPerMinute} tics de langage par minute nuisent à votre assurance, même si vous n'employez pas d'expressions de doute. Remplacez-les par des pauses pour paraître plus sûr de vous.`,
+      structureFeedback: (s: TranscriptStats) => {
+        const missing = [
+          !s.hasIntro && "une introduction qui présente le sujet",
+          !s.hasConclusion && "une conclusion qui résume et clôt le propos",
+        ].filter(Boolean);
+        return missing.length === 0
+          ? "Le discours a une ouverture, un développement et une conclusion reconnaissables."
+          : `Il manque au discours ${missing.join(" et ")}.`;
+      },
+      fluencyHigh: "Le discours coule sans coupures notables.",
+      fluencyLow: (s: TranscriptStats) =>
+        `${s.fillerTotal} tics de langage et des relances courtes cassent le rythme. Travaillez les transitions entre les idées.`,
+      organizationHigh: (s: TranscriptStats) =>
+        `Vous utilisez ${s.connectorCount} connecteurs logiques (« premièrement », « de plus », « enfin »…), ce qui ordonne le message.`,
+      organizationLow:
+        "Vous utilisez à peine des connecteurs (« premièrement », « de plus », « en résumé »). Ajoutez-en pour guider l'auditeur.",
+      persuasionHigh: (s: TranscriptStats) =>
+        `Vous appuyez vos idées avec ${s.evidenceCount} références à des données ou exemples : cela convainc.`,
+      persuasionLow:
+        "Les exemples et données concrètes manquent. Un chiffre ou un cas réel convainc plus qu'un adjectif.",
+      naturalnessHigh: "Le ton est conversationnel et engageant, jamais lu.",
+      naturalnessLow: (s: TranscriptStats) =>
+        s.repeatedWords.length > 0
+          ? `Vous répétez beaucoup « ${s.repeatedWords[0].word} » (${s.repeatedWords[0].count} fois) ; variez le vocabulaire pour sonner plus naturel.`
+          : "Certains passages sonnent mécaniques ; variez le rythme et l'intonation.",
+      precisionHigh: "Vocabulaire varié et précis pour le sujet.",
+      precisionLow: (s: TranscriptStats) =>
+        s.repeatedWords.length > 0
+          ? `Le mot « ${s.repeatedWords[0].word} » apparaît ${s.repeatedWords[0].count} fois. Cherchez des synonymes et des termes plus spécifiques.`
+          : "Le vocabulaire reste générique ; utilisez des termes propres à votre sujet.",
+      openingHigh: (s: TranscriptStats) =>
+        `Votre ouverture (« ${shortQuote(s.firstSentence, 60)} ») situe l'auditeur dès la première seconde.`,
+      openingLow: (s: TranscriptStats) =>
+        `Votre première phrase (« ${shortQuote(s.firstSentence, 60)} ») n'accroche pas. Ouvrez avec une question, un chiffre ou une promesse claire.`,
+      closingHigh: (s: TranscriptStats) =>
+        `Vous concluez avec une conclusion reconnaissable (« ${shortQuote(s.lastSentence, 60)} »).`,
+      closingLow:
+        "Le discours s'arrête brusquement, sans résumé ni appel à l'action. Les 15 dernières secondes sont celles dont on se souvient.",
+      summary: (s: TranscriptStats, overall: number, title: string) =>
+        `Analyse de « ${title} » : ${s.wordCount} mots à ${s.wordsPerMinute} mpm avec ${s.fillerTotal} tics de langage. Score global ${overall}/100. ${
+          s.hasIntro && s.hasConclusion
+            ? "La structure est complète ; la prochaine étape se joue sur l'exécution."
+            : "Le plus urgent est de compléter la structure : " +
+              [!s.hasIntro && "introduction", !s.hasConclusion && "conclusion"]
+                .filter(Boolean)
+                .join(" et ") +
+              "."
+        }`,
+      recommendations: (s: TranscriptStats): string[] => {
+        const recs: string[] = [];
+        if (s.fillerTotal > 2 && s.fillerTop[0])
+          recs.push(
+            `Réenregistrez en évitant de dire « ${s.fillerTop[0].word} » (aujourd'hui : ${s.fillerTop[0].count} fois). Quand vous le sentez venir, marquez une pause d'une seconde.`,
+          );
+        if (!s.hasConclusion)
+          recs.push(
+            "Écrivez et mémorisez une phrase finale commençant par « En conclusion… » qui résume votre idée centrale en moins de 20 mots.",
+          );
+        if (!s.hasIntro)
+          recs.push(
+            "Préparez une ouverture de 2 phrases : ce que vous allez raconter et pourquoi cela concerne votre public. Dites-la avant d'entrer dans le vif du sujet.",
+          );
+        if (s.paceVerdict !== "ideal")
+          recs.push(
+            s.paceVerdict === "fast"
+              ? `Passez de ${s.wordsPerMinute} à ~140 mpm : marquez une pause d'une seconde après chaque idée et respirez avant chaque nouvelle idée.`
+              : `Passez de ${s.wordsPerMinute} à ~130 mpm : entraînez-vous avec un chronomètre et supprimez les silences entre les phrases.`,
+          );
+        if (s.longSentenceCount > 0)
+          recs.push(
+            `Divisez votre phrase la plus longue (${s.longestSentenceWords} mots) en deux : une idée par phrase, un point entre chaque.`,
+          );
+        if (s.evidenceCount < 2)
+          recs.push(
+            "Ajoutez au moins une donnée chiffrée et un exemple concret pour appuyer votre argument principal.",
+          );
+        if (s.connectorCount < 2)
+          recs.push(
+            "Structurez le discours avec trois connecteurs explicites : « premièrement », « de plus » et « enfin ».",
+          );
+        if (s.hedgeCount > 2)
+          recs.push(
+            `Supprimez les ${s.hedgeCount} expressions de doute (« je pense que », « peut-être ») : affirmez, puis appuyez-vous sur un fait.`,
+          );
+        recs.push(
+          "Réenregistrez ce même discours demain et comparez les deux scores : c'est l'amélioration mesurée qui se consolide.",
+        );
+        return recs.slice(0, 5);
+      },
+      improvedIntro: (title: string, topic: string) =>
+        `Aujourd'hui, je voudrais vous parler de ${topic || title}. Dans les prochaines minutes, vous verrez pourquoi c'est important et ce que je propose.`,
+      improvedClosing: (topic: string) =>
+        `En conclusion : ${topic ? `${topic} — ` : ""}voici l'idée que j'aimerais que vous reteniez aujourd'hui. Merci.`,
+    };
+  }
   return {
     paceFeedback: (s: TranscriptStats) =>
       s.paceVerdict === "fast"

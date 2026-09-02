@@ -15,6 +15,25 @@ import type { PaceVerdict, SpeechLanguage } from "@/types";
 /* ── Lexicons ────────────────────────────────────────────────────────── */
 
 const FILLERS: Record<SpeechLanguage, string[]> = {
+  fr: [
+    "euh",
+    "euhh",
+    "hein",
+    "bah",
+    "ben",
+    "genre",
+    "du coup",
+    "en fait",
+    "en gros",
+    "bon",
+    "voilà",
+    "quoi",
+    "tu vois",
+    "disons",
+    "je veux dire",
+    "enfin bref",
+    "comme qui dirait",
+  ],
   es: [
     "eh",
     "ehh",
@@ -54,6 +73,20 @@ const FILLERS: Record<SpeechLanguage, string[]> = {
 };
 
 const CONNECTORS: Record<SpeechLanguage, string[]> = {
+  fr: [
+    "premièrement",
+    "d'abord",
+    "deuxièmement",
+    "de plus",
+    "par ailleurs",
+    "cependant",
+    "par exemple",
+    "par conséquent",
+    "donc",
+    "enfin",
+    "pour finir",
+    "en résumé",
+  ],
   es: [
     "primero",
     "en primer lugar",
@@ -85,6 +118,18 @@ const CONNECTORS: Record<SpeechLanguage, string[]> = {
 };
 
 const INTRO_MARKERS: Record<SpeechLanguage, string[]> = {
+  fr: [
+    "bonjour",
+    "bonsoir",
+    "je m'appelle",
+    "je suis",
+    "aujourd'hui je vais",
+    "aujourd'hui je veux",
+    "je vais vous parler",
+    "je vais vous présenter",
+    "le sujet de",
+    "je commence par",
+  ],
   es: [
     "hola",
     "buenos días",
@@ -114,6 +159,17 @@ const INTRO_MARKERS: Record<SpeechLanguage, string[]> = {
 };
 
 const CLOSING_MARKERS: Record<SpeechLanguage, string[]> = {
+  fr: [
+    "en conclusion",
+    "pour conclure",
+    "pour terminer",
+    "en résumé",
+    "en somme",
+    "enfin",
+    "pour finir",
+    "merci",
+    "merci de votre attention",
+  ],
   es: [
     "en conclusión",
     "para terminar",
@@ -138,16 +194,23 @@ const CLOSING_MARKERS: Record<SpeechLanguage, string[]> = {
 };
 
 const HEDGES: Record<SpeechLanguage, string[]> = {
+  fr: ["je pense que", "peut-être", "je suppose", "je ne suis pas sûr", "plus ou moins", "un peu", "il me semble"],
   es: ["creo que", "quizás", "quizá", "a lo mejor", "supongo", "no estoy seguro", "más o menos", "un poco"],
   en: ["i think", "maybe", "perhaps", "i guess", "i suppose", "not sure", "more or less", "a little bit"],
 };
 
 const EVIDENCE_MARKERS: Record<SpeechLanguage, string[]> = {
+  fr: ["par exemple", "parce que", "données", "selon", "un cas", "démontre", "résultat"],
   es: ["por ejemplo", "porque", "datos", "según", "un caso", "demuestra", "resultado"],
   en: ["for example", "because", "data", "according to", "a case", "shows", "result"],
 };
 
 const STOPWORDS: Record<SpeechLanguage, Set<string>> = {
+  fr: new Set(
+    "le la les un une des et ou mais de du à au aux que qui se par pour est sont dans sur avec ce cette ces il elle ils elles nous vous je tu on en ne pas plus comme si ça cela être avoir fait faire très aussi bien tout tous toute toutes quand où entre leur leurs mon ma mes ton ta tes son sa ses notre votre alors donc sans sous chez".split(
+      " ",
+    ),
+  ),
   es: new Set(
     "el la los las un una unos unas y o pero de del a al en que se por con para es son está están como más su sus lo mi nos si no ya muy este esta esto eso esa hay fue ser han he tiene tienen también cuando donde entre sobre les nosotros vosotros ellos yo tú usted".split(
       " ",

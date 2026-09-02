@@ -20,7 +20,7 @@ export const PRACTICE_MODES: PracticeMode[] = [
 ];
 
 /** Language the user speaks (and the report is written) in. */
-export type SpeechLanguage = "es" | "en";
+export type SpeechLanguage = "es" | "en" | "fr";
 
 /** Target durations offered in the setup step (minutes). */
 export const TARGET_DURATIONS = [1, 3, 5, 10] as const;

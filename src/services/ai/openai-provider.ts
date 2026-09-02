@@ -15,6 +15,13 @@ import { HeuristicAnalysisProvider } from "./heuristic-provider";
 const MODEL = "gpt-4o-mini";
 
 const MODE_LABELS: Record<SpeechLanguage, Record<string, string>> = {
+  fr: {
+    presentation: "présentation libre",
+    "startup-pitch": "pitch de startup devant des investisseurs",
+    interview: "entretien d'embauche",
+    "oral-exam": "examen oral académique",
+    "project-defense": "soutenance de projet",
+  },
   es: {
     presentation: "presentación libre",
     "startup-pitch": "pitch de startup ante inversores",
@@ -32,9 +39,13 @@ const MODE_LABELS: Record<SpeechLanguage, Record<string, string>> = {
 };
 
 function systemPrompt(language: SpeechLanguage): string {
-  return language === "es"
-    ? `Eres un coach profesional de comunicación y oratoria con 20 años de experiencia. Analizas transcripciones reales de discursos y das feedback específico, honesto y accionable — nunca genérico. Siempre citas o parafraseas fragmentos reales de la transcripción para justificar tus puntuaciones. Respondes ÚNICAMENTE con JSON válido que cumpla el esquema indicado, sin texto adicional.`
-    : `You are a professional communication and public-speaking coach with 20 years of experience. You analyze real speech transcripts and give specific, honest, actionable feedback — never generic. You always quote or paraphrase real fragments from the transcript to justify your scores. You respond ONLY with valid JSON matching the given schema, no extra text.`;
+  if (language === "es") {
+    return `Eres un coach profesional de comunicación y oratoria con 20 años de experiencia. Analizas transcripciones reales de discursos y das feedback específico, honesto y accionable — nunca genérico. Siempre citas o parafraseas fragmentos reales de la transcripción para justificar tus puntuaciones. Respondes ÚNICAMENTE con JSON válido que cumpla el esquema indicado, sin texto adicional.`;
+  }
+  if (language === "fr") {
+    return `Vous êtes un coach professionnel en communication et prise de parole en public avec 20 ans d'expérience. Vous analysez de vraies transcriptions de discours et donnez un retour spécifique, honnête et actionnable — jamais générique. Vous citez ou paraphrasez toujours de vrais extraits de la transcription pour justifier vos notes. Vous répondez UNIQUEMENT avec du JSON valide respectant le schéma indiqué, sans texte supplémentaire.`;
+  }
+  return `You are a professional communication and public-speaking coach with 20 years of experience. You analyze real speech transcripts and give specific, honest, actionable feedback — never generic. You always quote or paraphrase real fragments from the transcript to justify your scores. You respond ONLY with valid JSON matching the given schema, no extra text.`;
 }
 
 function userPrompt(request: AnalysisRequest): string {
@@ -82,6 +93,43 @@ Responde con este JSON exacto (sin markdown, sin comentarios):
   "recommendations": ["exactamente 5 acciones MUY concretas y específicas, no genéricas"],
   "improvedVersion": "reescritura completa del discurso, mismo idioma, misma idea, mucho mejor redactada y estructurada, longitud similar",
   "audienceQuestions": ["entre 5 y 10 preguntas que haría un profesor/inversor/entrevistador/tribunal según el modo, específicas al contenido real"]
+}`;
+  }
+
+  if (request.language === "fr") {
+    return `MODE : ${modeLabel}
+TITRE : ${request.title}
+SUJET : ${request.topic || "(non spécifié)"}
+DURÉE VISÉE : ${request.targetDurationMinutes} minutes
+DURÉE RÉELLE : ${Math.round(request.durationSeconds)} secondes
+
+DONNÉES OBJECTIVES DÉJÀ CALCULÉES (utilisez-les, ne les recalculez pas) :
+- Mots au total : ${stats.wordCount}
+- Mots par minute : ${stats.wordsPerMinute} (verdict : ${stats.paceVerdict})
+- Tics de langage détectés : ${stats.fillerTotal} (${stats.fillerPerMinute}/min). Top : ${stats.fillerTop.map((f) => `"${f.word}"×${f.count}`).join(", ") || "aucun"}
+- Longueur moyenne des phrases : ${Math.round(stats.avgSentenceLength)} mots. Phrase la plus longue : ${stats.longestSentenceWords} mots.
+- Introduction détectée : ${stats.hasIntro ? "oui" : "non"}. Conclusion détectée : ${stats.hasConclusion ? "oui" : "non"}.
+- Première phrase : "${stats.firstSentence}"
+- Dernière phrase : "${stats.lastSentence}"
+
+TRANSCRIPTION COMPLÈTE :
+"""
+${request.transcript}
+"""
+
+Évaluez ces 13 dimensions (0-100 chacune), chacune avec un retour citant du contenu RÉEL de la transcription : ${metricList}.
+(clarity=clarté, confidence=confiance, structure=structure, pace=rythme, fluency=fluidité, fillerUsage=usage des tics de langage où 100=aucun tic, sentenceLength=longueur des phrases, organization=organisation, persuasion=persuasion, naturalness=naturel, precision=précision du langage, openingStrength=force de l'ouverture, closingQuality=qualité de la conclusion)
+
+Répondez avec ce JSON exact (sans markdown, sans commentaires) :
+{
+  "overallScore": number,
+  "metrics": { "<chaque clé ci-dessus>": { "score": number, "feedback": "string citant du contenu réel" } },
+  "summary": "string : résumé exécutif de l'analyse, 2-3 phrases, avec des données concrètes",
+  "highlights": ["3 points forts spécifiques citant la transcription"],
+  "weaknesses": ["3 points faibles spécifiques citant la transcription"],
+  "recommendations": ["exactement 5 actions TRÈS concrètes et spécifiques, jamais génériques"],
+  "improvedVersion": "réécriture complète du discours, même langue, même idée, bien mieux rédigée et structurée, longueur similaire",
+  "audienceQuestions": ["entre 5 et 10 questions qu'un professeur/investisseur/recruteur/jury poserait selon le mode, spécifiques au contenu réel"]
 }`;
   }
 
