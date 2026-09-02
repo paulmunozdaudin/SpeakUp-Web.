@@ -40,6 +40,7 @@ export function Pricing() {
       <div className="grid gap-4 md:grid-cols-3">
         {d.landing.plans.map((plan, index) => {
           const highlighted = index === HIGHLIGHTED_INDEX;
+          const isFreePlan = index === 0;
           return (
             <div
               key={plan.name}
@@ -95,7 +96,7 @@ export function Pricing() {
                   )}
                 </div>
               ) : (
-                <Link href="/signup" className="mt-8">
+                <Link href={isFreePlan ? "/practice" : "/signup"} className="mt-8">
                   <Button
                     variant={highlighted ? "primary" : "secondary"}
                     className="w-full"

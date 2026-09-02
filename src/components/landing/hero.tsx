@@ -58,7 +58,7 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.24 }}
           className="mt-10 flex flex-col items-center gap-3 sm:flex-row"
         >
-          <Link href="/signup">
+          <Link href="/practice">
             <Button size="lg">
               <Mic className="h-4.5 w-4.5" />
               {d.common.startPracticing}

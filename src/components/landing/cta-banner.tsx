@@ -29,7 +29,7 @@ export function CtaBanner() {
           <p className="relative mx-auto mt-4 max-w-md text-white/80">
             {d.landing.ctaSubtitle}
           </p>
-          <Link href="/signup" className="relative mt-8 inline-block">
+          <Link href="/practice" className="relative mt-8 inline-block">
             <Button
               size="lg"
               className="bg-white text-accent hover:bg-white/90"

@@ -40,7 +40,7 @@ export function Navbar() {
               {d.common.logIn}
             </Button>
           </Link>
-          <Link href="/signup">
+          <Link href="/practice">
             <Button size="sm">
               <span className="sm:hidden">{d.common.start}</span>
               <span className="hidden sm:inline">
