@@ -34,14 +34,18 @@ export default function PracticePage() {
     title: "",
     topic: "",
     targetDurationMinutes: 3,
-    language: getLocale(),
+    // SSR-safe default (matches getServerLocale()) — the server can't see
+    // localStorage or the URL, so both are applied for real in the effect
+    // below right after mount instead of here.
+    language: "en",
   }));
 
   // Deep links from marketing pages (e.g. ?mode=grand-oral&lang=fr) preselect
-  // a mode/language so a visitor lands ready to just hit record. Applied in
-  // an effect (not the initial state) because the server can't see
-  // window.location.search — computing it up front would desync the SSR
-  // markup from the client's first render.
+  // a mode/language so a visitor lands ready to just hit record; otherwise
+  // this falls back to the visitor's stored/browser locale. Applied in an
+  // effect (not the initial state) because the server can't see
+  // window.location.search or localStorage — computing it up front would
+  // desync the SSR markup from the client's first render.
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const modeParam = params.get("mode");
@@ -49,21 +53,20 @@ export default function PracticePage() {
     const mode = PRACTICE_MODES.includes(modeParam as PracticeMode)
       ? (modeParam as PracticeMode)
       : null;
-    const language: SpeechLanguage | null =
+    const language: SpeechLanguage =
       langParam === "es" || langParam === "en" || langParam === "fr"
         ? langParam
-        : null;
-    if (mode || language) {
-      // Reading the URL is exactly the "external platform API" case this
-      // rule's own guidance carves out — there's no React state to derive
-      // this from, and it can only be known once mounted in the browser.
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setConfig((c) => ({
-        ...c,
-        ...(mode ? { mode } : {}),
-        ...(language ? { language } : {}),
-      }));
-    }
+        : getLocale();
+    // Reading the URL/localStorage is exactly the "external platform API"
+    // case this rule's own guidance carves out — there's no React state
+    // to derive this from, and it can only be known once mounted in the
+    // browser.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setConfig((c) => ({
+      ...c,
+      ...(mode ? { mode } : {}),
+      language,
+    }));
   }, []);
   const [titleError, setTitleError] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);

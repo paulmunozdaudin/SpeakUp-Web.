@@ -8,11 +8,11 @@
  */
 
 import { useCallback, useSyncExternalStore } from "react";
-import { en, es, type Dictionary } from "./translations";
+import { en, es, fr, type Dictionary } from "./translations";
 
-export type Locale = "en" | "es";
+export type Locale = "en" | "es" | "fr";
 
-export const DICTIONARIES: Record<Locale, Dictionary> = { en, es };
+export const DICTIONARIES: Record<Locale, Dictionary> = { en, es, fr };
 
 const STORAGE_KEY = "eloq-locale";
 const CHANGE_EVENT = "eloq-locale-change";
@@ -21,9 +21,12 @@ const CHANGE_EVENT = "eloq-locale-change";
 export function getLocale(): Locale {
   if (typeof window === "undefined") return "en";
   const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored === "en" || stored === "es") return stored;
+  if (stored === "en" || stored === "es" || stored === "fr") return stored;
   // First visit: follow the browser language.
-  return navigator.language.toLowerCase().startsWith("es") ? "es" : "en";
+  const lang = navigator.language.toLowerCase();
+  if (lang.startsWith("es")) return "es";
+  if (lang.startsWith("fr")) return "fr";
+  return "en";
 }
 
 export function setLocale(locale: Locale) {

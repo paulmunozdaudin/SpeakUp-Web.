@@ -91,6 +91,92 @@ export const termsContent: LegalContent = {
       },
     ],
   },
+  fr: {
+    title: "Conditions d'Utilisation",
+    updated: "Dernière mise à jour : 23 juillet 2026",
+    intro:
+      "En utilisant Eloq AI, tu acceptes ces conditions. Prends un moment pour les lire — nous avons essayé de les garder claires et fidèles à ce que le produit fait réellement aujourd'hui.",
+    sections: [
+      {
+        heading: "1. Qui nous sommes",
+        paragraphs: [
+          "Eloq AI est un service exploité par Paul Daudin Muñoz, joignable à paulmunozdaudin@gmail.com.",
+        ],
+      },
+      {
+        heading: "2. Ce qu'est le service",
+        paragraphs: [
+          "Eloq AI te permet d'enregistrer des présentations orales, de les transcrire automatiquement, et de recevoir une analyse générée par intelligence artificielle (notes, résumé, recommandations, questions d'entraînement et une version réécrite de ton discours).",
+          "Le retour que tu reçois est généré automatiquement et peut contenir des erreurs, des imprécisions ou des omissions. Ce n'est pas un conseil professionnel, médical, psychologique ou juridique, et il ne doit pas être ta seule préparation pour des décisions à fort enjeu (par exemple un véritable entretien d'embauche ou une soutenance académique) sans ton propre jugement en complément.",
+        ],
+      },
+      {
+        heading: "3. Qui peut l'utiliser",
+        paragraphs: [
+          "Tu dois avoir au moins 16 ans, ou l'âge minimum de consentement numérique de ton pays, pour créer un compte. Si tu es plus jeune, tu as besoin du consentement de ton représentant légal.",
+          "Tu peux utiliser le mode invité (sans compte) pour t'entraîner ; dans ce cas, ton historique est stocké uniquement dans ton propre navigateur et reste sous ta responsabilité.",
+        ],
+      },
+      {
+        heading: "4. Ton contenu",
+        paragraphs: [
+          "Le texte transcrit de tes entraînements et les rapports générés restent les tiens. Tu nous accordes une licence limitée pour les traiter uniquement dans le but de te fournir le service (transcrire, analyser et t'afficher ton historique).",
+          "Ne mets pas en ligne et ne génère pas de contenu illégal, diffamatoire, harcelant, ou portant atteinte aux droits de tiers en utilisant le service.",
+        ],
+      },
+      {
+        heading: "5. Utilisation acceptable",
+        paragraphs: [
+          "Tu ne dois pas tenter de surcharger, pirater, désassembler, ni accéder sans autorisation à des parties du service ou de ses systèmes. Tu ne dois pas utiliser le service pour entraîner des modèles d'IA concurrents en extrayant son contenu de façon massive et automatisée.",
+          "Nous nous réservons le droit de suspendre ou de supprimer les comptes qui enfreignent ces conditions.",
+        ],
+      },
+      {
+        heading: "6. Formules et paiement",
+        paragraphs: [
+          "Eloq AI propose une formule gratuite et une formule payante (« Pro », 12€/mois). La formule gratuite inclut jusqu'à 3 entraînements par mois ; la formule Pro inclut des entraînements illimités et les fonctionnalités supplémentaires indiquées sur la page des tarifs au moment de la souscription.",
+          "Les paiements sont traités via Stripe ; nous ne stockons jamais les données complètes de ta carte. L'abonnement Pro se renouvelle automatiquement chaque mois jusqu'à ce que tu l'annules. Tu peux l'annuler à tout moment depuis ton profil (portail de facturation) — tu conserveras l'accès Pro jusqu'à la fin de la période déjà payée, sans remboursement de la partie déjà écoulée, sauf si la loi applicable l'exige.",
+          "Nous pouvons modifier le prix de la formule Pro à l'avenir ; si tu es abonné actif, nous te préviendrons avec un délai raisonnable avant que cela s'applique à ton prochain renouvellement.",
+        ],
+      },
+      {
+        heading: "7. Propriété intellectuelle",
+        paragraphs: [
+          "Le design, la marque, le code et les contenus propres à Eloq AI appartiennent à Paul Daudin Muñoz. Les bibliothèques open source utilisées conservent leurs propres licences.",
+        ],
+      },
+      {
+        heading: "8. Résiliation",
+        paragraphs: [
+          "Tu peux arrêter d'utiliser le service à tout moment. Si tu as un compte et souhaites le supprimer, écris-nous à paulmunozdaudin@gmail.com. Nous pouvons suspendre ou fermer les comptes qui enfreignent ces conditions, en te prévenant lorsque cela est raisonnablement possible.",
+        ],
+      },
+      {
+        heading: "9. Le service est fourni « tel quel »",
+        paragraphs: [
+          "Eloq AI est fourni sans garantie de disponibilité ininterrompue, d'absence d'erreurs, ou d'adéquation à un usage particulier. Nous faisons de notre mieux pour le maintenir en bon fonctionnement, mais nous ne pouvons pas le garantir à 100 %.",
+        ],
+      },
+      {
+        heading: "10. Limitation de responsabilité",
+        paragraphs: [
+          "Dans la mesure maximale permise par la loi, nous ne serons pas responsables des dommages indirects, accessoires ou consécutifs découlant de l'utilisation du service, y compris des décisions prises sur la base du retour généré par l'IA.",
+        ],
+      },
+      {
+        heading: "11. Loi applicable",
+        paragraphs: [
+          "Ces conditions sont régies par le droit espagnol, et tout litige sera soumis aux tribunaux d'Espagne.",
+        ],
+      },
+      {
+        heading: "12. Modifications de ces conditions",
+        paragraphs: [
+          "Nous pouvons mettre à jour ces conditions occasionnellement. Si le changement est significatif, nous mettrons à jour la date indiquée ci-dessus et, le cas échéant, nous te préviendrons par d'autres moyens.",
+        ],
+      },
+    ],
+  },
   en: {
     title: "Terms of Use",
     updated: "Last updated: July 23, 2026",

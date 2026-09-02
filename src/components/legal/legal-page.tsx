@@ -5,13 +5,14 @@ import { ArrowLeft } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { LanguageToggle } from "@/components/theme/language-toggle";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
-import { useLocale } from "@/lib/i18n";
+import { useDict, useLocale } from "@/lib/i18n";
 import type { LegalContent } from "@/content/legal/types";
 
 /** Shared reading layout for /privacy and /terms — follows the site's
- *  language toggle, so switching EN/ES anywhere carries over here too. */
+ *  language toggle, so switching languages anywhere carries over here too. */
 export function LegalPage({ content }: { content: LegalContent }) {
   const { locale } = useLocale();
+  const d = useDict();
   const doc = content[locale];
 
   return (
@@ -24,7 +25,7 @@ export function LegalPage({ content }: { content: LegalContent }) {
             className="inline-flex items-center gap-1.5 px-2 text-sm text-muted transition-colors hover:text-foreground"
           >
             <ArrowLeft className="h-4 w-4" />
-            {locale === "es" ? "Inicio" : "Home"}
+            {d.common.home}
           </Link>
           <LanguageToggle />
           <ThemeToggle />

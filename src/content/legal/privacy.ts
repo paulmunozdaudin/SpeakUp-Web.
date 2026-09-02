@@ -94,6 +94,94 @@ export const privacyContent: LegalContent = {
       },
     ],
   },
+  fr: {
+    title: "Politique de Confidentialité",
+    updated: "Dernière mise à jour : 23 juillet 2026",
+    intro:
+      "Cette politique explique quelles données Eloq AI collecte, à quoi elles servent, avec qui elles sont partagées et quels droits tu as sur elles. Nous avons essayé de décrire exactement comment le produit fonctionne aujourd'hui, sans fioritures juridiques inutiles.",
+    sections: [
+      {
+        heading: "1. Qui est responsable de tes données",
+        paragraphs: [
+          "Paul Daudin Muñoz est le responsable du traitement de tes données sur Eloq AI.",
+          "Pour toute question sur cette politique ou sur tes données, tu peux écrire à paulmunozdaudin@gmail.com.",
+        ],
+      },
+      {
+        heading: "2. Quelles données nous collectons",
+        paragraphs: [
+          "Données de compte (seulement si tu t'inscris) : nom, email et mot de passe. Nous ne voyons jamais ton mot de passe en clair — il est géré de façon chiffrée par Supabase, notre fournisseur d'authentification.",
+          "Contenu de tes entraînements : le titre et le sujet que tu saisis, le mode choisi, la durée, la transcription textuelle de ce que tu dis, et le rapport généré par l'IA (notes, résumé, recommandations). Nous ne stockons pas l'audio de ta voix — il est converti en texte puis supprimé.",
+          "Si tu t'entraînes sans être connecté, ton historique est stocké uniquement dans le stockage local de ton propre navigateur. Il n'atteint jamais nos serveurs de façon permanente.",
+          "Données de facturation (seulement si tu souscris au plan Pro) : ton email et le statut de ton abonnement. Les données de paiement elles-mêmes (numéro de carte, etc.) sont collectées et stockées directement par Stripe, pas par nous.",
+          "Données techniques de base : adresse IP et journaux d'accès standard générés par notre hébergeur (Vercel) lors de la mise à disposition du site, à des fins de sécurité et de disponibilité.",
+        ],
+      },
+      {
+        heading: "3. Comment ta voix est transcrite",
+        paragraphs: [
+          "La transcription en direct est réalisée par ton navigateur lui-même (l'API de reconnaissance vocale de Chrome/Edge), pas par nos serveurs. Selon le navigateur, cela peut signifier que ton audio est envoyé au service de reconnaissance vocale de l'éditeur du navigateur (par exemple Google pour Chrome) pour le convertir en texte. Ce traitement est régi par la politique de confidentialité de cet éditeur, pas par la nôtre.",
+          "Nous ne recevons ni ne stockons jamais l'audio brut : seulement le texte obtenu, que tu peux relire avant qu'il ne soit analysé.",
+        ],
+      },
+      {
+        heading: "4. Avec qui nous partageons des données",
+        paragraphs: [
+          "Supabase (hébergement de la base de données et authentification) : si tu as un compte, il stocke ton profil et l'historique de tes entraînements.",
+          "Stripe : si tu souscris au plan Pro, il traite ton paiement. Stripe reçoit directement ton email et les détails de ta carte — nous ne voyons ni ne stockons jamais ton numéro de carte complet. De Stripe, nous ne recevons qu'un identifiant client et le statut de ton abonnement (actif, annulé, etc.).",
+          "OpenAI : uniquement si l'exploitant de ce site a activé cette option, le texte de ta transcription est envoyé à l'API d'OpenAI pour générer le retour. Selon la politique d'OpenAI pour son API, ces données ne sont pas utilisées pour entraîner ses modèles. Si cette option n'est pas activée, l'analyse est réalisée par un moteur propre, sans quitter notre infrastructure.",
+          "Vercel : notre hébergeur, qui traite les requêtes techniques nécessaires pour servir le site.",
+          "Nous ne vendons pas tes données à des tiers. Nous ne partageons pas ton contenu à des fins publicitaires.",
+        ],
+      },
+      {
+        heading: "5. Pourquoi nous traitons tes données",
+        paragraphs: [
+          "Pour te fournir le service que tu as demandé (base légale : exécution d'un contrat/relation d'usage).",
+          "Pour améliorer le produit et corriger des bugs (base légale : intérêt légitime).",
+          "Pour respecter des obligations légales le cas échéant.",
+        ],
+      },
+      {
+        heading: "6. Combien de temps nous conservons tes données",
+        paragraphs: [
+          "Les données de ton compte et tes sessions enregistrées sont conservées tant que ton compte est actif. Tu peux supprimer n'importe quel entraînement individuel à tout moment depuis ton historique.",
+          "Pour supprimer ton compte entièrement, écris-nous à paulmunozdaudin@gmail.com — il n'existe pas encore de bouton en libre-service pour cela, mais nous traiterons ta demande dans un délai raisonnable.",
+        ],
+      },
+      {
+        heading: "7. Tes droits",
+        paragraphs: [
+          "Si tu résides dans l'Espace économique européen, tu as le droit d'accéder à tes données, de les rectifier, de les supprimer, d'en limiter le traitement, de t'y opposer et d'en demander la portabilité. Tu peux aussi déposer une réclamation auprès de ton autorité de protection des données (par exemple la CNIL en France, ou l'AEPD en Espagne, où est basé le responsable du traitement).",
+          "Pour exercer l'un de ces droits, écris à paulmunozdaudin@gmail.com.",
+        ],
+      },
+      {
+        heading: "8. Mineurs",
+        paragraphs: [
+          "Ce service ne s'adresse pas aux mineurs de moins de 16 ans. Si tu as moins de cet âge, tu as besoin du consentement de ton représentant légal pour créer un compte.",
+        ],
+      },
+      {
+        heading: "9. Cookies et stockage local",
+        paragraphs: [
+          "Nous utilisons le stockage local du navigateur pour mémoriser ta langue, ton thème (clair/sombre) et, si tu t'entraînes sans compte, ton historique de sessions. Si tu es connecté, Supabase utilise des cookies techniques nécessaires pour maintenir ta session. Nous n'utilisons pas de cookies publicitaires ni de suivi tiers.",
+        ],
+      },
+      {
+        heading: "10. Sécurité",
+        paragraphs: [
+          "Nous appliquons des mesures techniques raisonnables pour protéger tes données, mais aucun système n'est sécurisé à 100 %. Si nous détectons une violation qui te concerne, nous te la notifierons conformément à la réglementation applicable.",
+        ],
+      },
+      {
+        heading: "11. Modifications de cette politique",
+        paragraphs: [
+          "Si nous mettons à jour cette politique de façon significative, nous changerons la date indiquée ci-dessus et, le cas échéant, nous te préviendrons par d'autres moyens.",
+        ],
+      },
+    ],
+  },
   en: {
     title: "Privacy Policy",
     updated: "Last updated: July 23, 2026",
