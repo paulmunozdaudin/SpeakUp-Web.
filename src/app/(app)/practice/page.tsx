@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { PracticeMode, SpeechLanguage, TargetDuration } from "@/types";
+import { PRACTICE_MODES } from "@/types";
 import { getLocale } from "@/lib/i18n";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -35,6 +36,35 @@ export default function PracticePage() {
     targetDurationMinutes: 3,
     language: getLocale(),
   }));
+
+  // Deep links from marketing pages (e.g. ?mode=grand-oral&lang=fr) preselect
+  // a mode/language so a visitor lands ready to just hit record. Applied in
+  // an effect (not the initial state) because the server can't see
+  // window.location.search — computing it up front would desync the SSR
+  // markup from the client's first render.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const modeParam = params.get("mode");
+    const langParam = params.get("lang");
+    const mode = PRACTICE_MODES.includes(modeParam as PracticeMode)
+      ? (modeParam as PracticeMode)
+      : null;
+    const language: SpeechLanguage | null =
+      langParam === "es" || langParam === "en" || langParam === "fr"
+        ? langParam
+        : null;
+    if (mode || language) {
+      // Reading the URL is exactly the "external platform API" case this
+      // rule's own guidance carves out — there's no React state to derive
+      // this from, and it can only be known once mounted in the browser.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setConfig((c) => ({
+        ...c,
+        ...(mode ? { mode } : {}),
+        ...(language ? { language } : {}),
+      }));
+    }
+  }, []);
   const [titleError, setTitleError] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);

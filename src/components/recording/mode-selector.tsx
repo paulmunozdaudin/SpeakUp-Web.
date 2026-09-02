@@ -1,6 +1,15 @@
 "use client";
 
-import { Briefcase, GraduationCap, Presentation, Rocket, ScrollText } from "lucide-react";
+import {
+  Award,
+  BookMarked,
+  BookOpen,
+  Briefcase,
+  GraduationCap,
+  Presentation,
+  Rocket,
+  ScrollText,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { PracticeMode } from "@/types";
 import { PRACTICE_MODES } from "@/types";
@@ -13,6 +22,9 @@ const MODE_ICONS: Record<PracticeMode, LucideIcon> = {
   interview: Briefcase,
   "oral-exam": GraduationCap,
   "project-defense": ScrollText,
+  "brevet-oral": BookOpen,
+  "bac-francais-oral": BookMarked,
+  "grand-oral": Award,
 };
 
 export function ModeSelector({

@@ -9,7 +9,10 @@ export type PracticeMode =
   | "startup-pitch"
   | "interview"
   | "oral-exam"
-  | "project-defense";
+  | "project-defense"
+  | "brevet-oral"
+  | "bac-francais-oral"
+  | "grand-oral";
 
 export const PRACTICE_MODES: PracticeMode[] = [
   "presentation",
@@ -17,6 +20,9 @@ export const PRACTICE_MODES: PracticeMode[] = [
   "interview",
   "oral-exam",
   "project-defense",
+  "brevet-oral",
+  "bac-francais-oral",
+  "grand-oral",
 ];
 
 /** Language the user speaks (and the report is written) in. */

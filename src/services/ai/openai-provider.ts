@@ -21,6 +21,9 @@ const MODE_LABELS: Record<SpeechLanguage, Record<string, string>> = {
     interview: "entretien d'embauche",
     "oral-exam": "examen oral académique",
     "project-defense": "soutenance de projet",
+    "brevet-oral": "oral du Brevet (soutenance de projet devant un jury de collège)",
+    "bac-francais-oral": "oral du Bac de Français (explication linéaire et entretien)",
+    "grand-oral": "Grand Oral du Bac (soutenance d'une question devant un jury)",
   },
   es: {
     presentation: "presentación libre",
@@ -28,6 +31,9 @@ const MODE_LABELS: Record<SpeechLanguage, Record<string, string>> = {
     interview: "entrevista de trabajo",
     "oral-exam": "examen oral académico",
     "project-defense": "defensa de proyecto",
+    "brevet-oral": "oral del Brevet francés (defensa de proyecto ante un jurado de secundaria)",
+    "bac-francais-oral": "oral del Bac de Francés (explicación de texto y entrevista)",
+    "grand-oral": "Grand Oral del Bachillerato francés (defensa de una pregunta ante un jurado)",
   },
   en: {
     presentation: "open presentation",
@@ -35,6 +41,9 @@ const MODE_LABELS: Record<SpeechLanguage, Record<string, string>> = {
     interview: "job interview",
     "oral-exam": "academic oral exam",
     "project-defense": "project defense",
+    "brevet-oral": "French Brevet oral exam (project defense before a middle-school panel)",
+    "bac-francais-oral": "French Bac de Français oral exam (text explication and interview)",
+    "grand-oral": "French Bac Grand Oral (defending a prepared question before a panel)",
   },
 };
 
