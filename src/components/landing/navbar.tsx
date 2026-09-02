@@ -40,6 +40,11 @@ export function Navbar() {
               {d.common.logIn}
             </Button>
           </Link>
+          <Link href="/signup" className="hidden sm:block">
+            <Button variant="secondary" size="sm">
+              {d.common.signUp}
+            </Button>
+          </Link>
           <Link href="/practice">
             <Button size="sm">
               <span className="sm:hidden">{d.common.start}</span>
