@@ -70,6 +70,10 @@ export async function POST(request: Request) {
       subscription_data: { metadata: { supabase_user_id: user.id } },
       success_url: `${origin}/profile?checkout=success`,
       cancel_url: `${origin}/profile?checkout=cancelled`,
+      // Managed Payments (Stripe's merchant-of-record mode) requires every
+      // product to have a tax code — not something this app uses. Opt out
+      // rather than assign tax codes to a product that isn't taxed via Stripe.
+      managed_payments: { enabled: false },
     });
 
     if (!session.url) {
