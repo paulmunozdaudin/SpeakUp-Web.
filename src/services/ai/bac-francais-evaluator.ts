@@ -181,14 +181,23 @@ const HONEST_LIMIT_FEEDBACK: Record<SpeechLanguage, string> = {
   en: "Detailed literary analysis isn't available without the advanced AI coach — this score is a generic estimate.",
 };
 
+const PACE_VERDICT_LABEL: Record<SpeechLanguage, Record<"slow" | "ideal" | "fast", string>> = {
+  fr: { slow: "trop lent", ideal: "idéal", fast: "trop rapide" },
+  es: { slow: "demasiado lento", ideal: "ideal", fast: "demasiado rápido" },
+  en: { slow: "too slow", ideal: "ideal", fast: "too fast" },
+};
+
 /** Without OpenAI, literary judgment (analyse littéraire, maîtrise de
- *  l'œuvre…) can't genuinely be assessed — those dimensions get an honest
- *  mid-range placeholder rather than a fabricated precise score. The
- *  measurable dimensions (fluency, pace, fillers, time) still use real
- *  transcript stats, same as the rest of the app's heuristic fallback. */
+ *  l'œuvre…) can't genuinely be assessed — those 6 dimensions get an
+ *  honest mid-range placeholder rather than a fabricated precise score.
+ *  The other 6 (fluency, vocabulary, pace, fillers, time, oral expression)
+ *  are genuinely measurable from the transcript, so they get real scores
+ *  AND real feedback quoting the actual numbers — not the literary-judgment
+ *  caveat, which would be a non-sequitur next to a real measurement. */
 function heuristicEvaluation(input: EvaluateInput): BacFrancaisEvaluation {
   const stats = analyzeTranscript(input.transcript, input.language, input.durationSeconds);
   const honestFeedback = HONEST_LIMIT_FEEDBACK[input.language];
+  const paceLabel = PACE_VERDICT_LABEL[input.language][stats.paceVerdict];
 
   const fillerScore = Math.max(15, 100 - stats.fillerPerMinute * 10);
   const paceScore = stats.paceVerdict === "ideal" ? 85 : 55;
@@ -203,8 +212,35 @@ function heuristicEvaluation(input: EvaluateInput): BacFrancaisEvaluation {
   const vocabularyScore = Math.max(30, Math.min(90, Math.round((uniqueWords / totalWords) * 220)));
 
   const targetSeconds = input.targetDurationMinutes * 60;
+  const actualMinutes = Math.round(input.durationSeconds / 60);
   const timeDelta = Math.abs(input.durationSeconds - targetSeconds) / Math.max(targetSeconds, 1);
   const timeManagementScore = Math.max(20, Math.round(100 - timeDelta * 100));
+
+  const fluencyFeedback: Record<SpeechLanguage, string> = {
+    fr: `${stats.fillerTotal} tic(s) de langage détecté(s) (${stats.fillerPerMinute}/min) — c'est ce qui pèse le plus sur la fluidité mesurée.`,
+    es: `${stats.fillerTotal} muletilla(s) detectada(s) (${stats.fillerPerMinute}/min) — es lo que más pesa en la fluidez medida.`,
+    en: `${stats.fillerTotal} filler word(s) detected (${stats.fillerPerMinute}/min) — the biggest factor weighing on measured fluency.`,
+  };
+  const vocabularyFeedback: Record<SpeechLanguage, string> = {
+    fr: `Diversité lexicale mesurée sur ${totalWords} mots prononcés, dont ${uniqueWords} mots distincts.`,
+    es: `Diversidad léxica medida sobre ${totalWords} palabras pronunciadas, de las cuales ${uniqueWords} son distintas.`,
+    en: `Lexical diversity measured over ${totalWords} spoken words, of which ${uniqueWords} are distinct.`,
+  };
+  const paceFeedback: Record<SpeechLanguage, string> = {
+    fr: `Débit mesuré : ${stats.wordsPerMinute} mots/minute (${paceLabel}).`,
+    es: `Ritmo medido: ${stats.wordsPerMinute} palabras/minuto (${paceLabel}).`,
+    en: `Measured pace: ${stats.wordsPerMinute} words/minute (${paceLabel}).`,
+  };
+  const timeManagementFeedback: Record<SpeechLanguage, string> = {
+    fr: `Durée réelle : ${actualMinutes} min pour un objectif de ${input.targetDurationMinutes} min.`,
+    es: `Duración real: ${actualMinutes} min para un objetivo de ${input.targetDurationMinutes} min.`,
+    en: `Actual duration: ${actualMinutes} min against a ${input.targetDurationMinutes} min target.`,
+  };
+  const oralExpressionFeedback: Record<SpeechLanguage, string> = {
+    fr: "Estimation combinant le débit et la fluidité mesurés sur la transcription.",
+    es: "Estimación que combina el ritmo y la fluidez medidos en la transcripción.",
+    en: "Estimate combining the measured pace and fluency from the transcript.",
+  };
 
   const dimensions: BacFrancaisEvaluation["dimensions"] = {
     explicationQuality: { score: 60, feedback: honestFeedback },
@@ -213,12 +249,15 @@ function heuristicEvaluation(input: EvaluateInput): BacFrancaisEvaluation {
     workMastery: { score: 55, feedback: honestFeedback },
     answerRelevance: { score: 60, feedback: honestFeedback },
     argumentation: { score: 58, feedback: honestFeedback },
-    oralExpression: { score: Math.round((fluencyScore + paceScore) / 2), feedback: honestFeedback },
-    fluency: { score: fluencyScore, feedback: honestFeedback },
-    vocabulary: { score: vocabularyScore, feedback: honestFeedback },
-    pace: { score: paceScore, feedback: honestFeedback },
-    fillerWords: { score: fillerScore, feedback: honestFeedback },
-    timeManagement: { score: timeManagementScore, feedback: honestFeedback },
+    oralExpression: {
+      score: Math.round((fluencyScore + paceScore) / 2),
+      feedback: oralExpressionFeedback[input.language],
+    },
+    fluency: { score: fluencyScore, feedback: fluencyFeedback[input.language] },
+    vocabulary: { score: vocabularyScore, feedback: vocabularyFeedback[input.language] },
+    pace: { score: paceScore, feedback: paceFeedback[input.language] },
+    fillerWords: { score: fillerScore, feedback: fluencyFeedback[input.language] },
+    timeManagement: { score: timeManagementScore, feedback: timeManagementFeedback[input.language] },
   };
 
   const grade20 =

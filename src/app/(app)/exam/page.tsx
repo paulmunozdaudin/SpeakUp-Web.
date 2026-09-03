@@ -116,10 +116,8 @@ export default function ExamModePage() {
     if (isExamMode(modeParam)) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setMode(modeParam);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setPresentationMinutes(DEFAULT_PRESENTATION_MINUTES[modeParam]);
     }
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLanguage(nextLanguage);
 
     if (repeatId) {
