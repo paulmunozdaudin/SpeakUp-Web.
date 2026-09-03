@@ -113,6 +113,45 @@ export interface AnalysisResult {
   audienceQuestions: string[];
 
   transcript: string;
+
+  /** The text/reference the student provided for a Bac de Français oral —
+   *  kept so "Refaire cet oral" can restore the exact same prompt. */
+  sourceText?: string;
+
+  /** Bac de Français-specific evaluation — only populated for
+   *  mode === "bac-francais-oral". Deliberately separate from `metrics`:
+   *  a Bac de Français jury doesn't score "opening strength" or
+   *  "persuasion", it scores literary analysis and mastery of the text. */
+  bacFrancais?: BacFrancaisEvaluation;
+}
+
+/** The 12 dimensions a real Bac de Français oral jury actually scores —
+ *  distinct from the generic 13-metric coaching rubric used elsewhere. */
+export const BAC_FRANCAIS_DIMENSIONS = [
+  "explicationQuality",
+  "literaryAnalysis",
+  "textMastery",
+  "workMastery",
+  "answerRelevance",
+  "argumentation",
+  "oralExpression",
+  "fluency",
+  "vocabulary",
+  "pace",
+  "fillerWords",
+  "timeManagement",
+] as const;
+export type BacFrancaisDimension = (typeof BAC_FRANCAIS_DIMENSIONS)[number];
+
+export interface BacFrancaisEvaluation {
+  /** Estimated grade out of 20 — the scale a Bac de Français jury actually
+   *  uses, computed directly rather than derived from overallScore. */
+  grade20: number;
+  dimensions: Record<BacFrancaisDimension, MetricScore>;
+  strengths: string[];
+  improvements: string[];
+  /** Exactly 3 concrete priorities to work on before the real exam. */
+  priorities: string[];
 }
 
 /** A saved practice session. */

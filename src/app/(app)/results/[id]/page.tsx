@@ -3,7 +3,7 @@
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { FileQuestion } from "lucide-react";
+import { FileQuestion, RotateCcw } from "lucide-react";
 import type { PracticeSession } from "@/types";
 import { getSession } from "@/services/sessions.service";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ScoreHeader } from "@/components/results/score-header";
 import { ExamGradeCard } from "@/components/results/exam-grade-card";
+import { BacFrancaisResultCard } from "@/components/results/bac-francais-result-card";
 import { MetricsGrid } from "@/components/results/metrics-grid";
 import { FillerWordsCard } from "@/components/results/filler-words-card";
 import { StructureCard } from "@/components/results/structure-card";
@@ -93,10 +94,20 @@ export default function ResultsPage({
       />
 
       {isExamMode && (
-        <ExamGradeCard
-          overallScore={analysis.overallScore}
-          durationSeconds={session.durationSeconds}
-        />
+        <>
+          <ExamGradeCard
+            overallScore={analysis.overallScore}
+            durationSeconds={session.durationSeconds}
+            grade20={analysis.bacFrancais?.grade20}
+          />
+          <Link
+            href={`/exam?mode=${session.mode}&lang=${analysis.language}&repeat=${session.id}`}
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline"
+          >
+            <RotateCcw className="h-3.5 w-3.5" />
+            {d.examMode.redoExam}
+          </Link>
+        </>
       )}
 
       <ResultsTabs
@@ -115,6 +126,9 @@ export default function ResultsPage({
         >
           {tab === "overview" && (
             <div className="space-y-4">
+              {analysis.bacFrancais && (
+                <BacFrancaisResultCard evaluation={analysis.bacFrancais} />
+              )}
               <div className="grid gap-4 lg:grid-cols-2">
                 <StructureCard structure={analysis.structure} />
                 <FillerWordsCard fillerWords={analysis.fillerWords} />

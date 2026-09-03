@@ -21,13 +21,17 @@ const EXPECTED_MAX_SECONDS = 1200;
 export function ExamGradeCard({
   overallScore,
   durationSeconds,
+  /** Bac de Français: the dedicated literary-rubric grade, preferred over
+   *  the generic overallScore/5 conversion when available. */
+  grade20,
 }: {
   overallScore: number;
   durationSeconds: number;
+  grade20?: number;
 }) {
   const d = useDict();
-  const grade = (overallScore / 5).toFixed(1);
-  const tone = scoreTone(overallScore);
+  const grade = (grade20 ?? overallScore / 5).toFixed(1);
+  const tone = scoreTone(grade20 !== undefined ? grade20 * 5 : overallScore);
 
   const timeVerdict =
     durationSeconds < EXPECTED_MIN_SECONDS

@@ -21,6 +21,8 @@ export interface AnalyzeInput {
   language: SpeechLanguage;
   durationSeconds: number;
   targetDurationMinutes: number;
+  /** Bac de Français only: the text/reference being examined on. */
+  textContext?: string;
 }
 
 export async function analyzeAndSave(

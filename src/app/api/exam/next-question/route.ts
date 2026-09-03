@@ -20,11 +20,15 @@ interface NextQuestionBody {
    *  questions are grounded in what they actually said here, not just the
    *  topic string. */
   presentation: string;
+  /** Bac de Français only: the actual text/reference being examined on —
+   *  questions probe the text and the work, not just the exposé. */
+  textContext?: string;
   history: Turn[];
 }
 
 /** Keeps the prompt bounded regardless of how long the presentation ran. */
 const MAX_PRESENTATION_CHARS = 6000;
+const MAX_TEXT_CONTEXT_CHARS = 6000;
 
 function isValidBody(body: unknown): body is NextQuestionBody {
   if (!body || typeof body !== "object") return false;
@@ -35,6 +39,7 @@ function isValidBody(body: unknown): body is NextQuestionBody {
     (b.language === "es" || b.language === "en" || b.language === "fr") &&
     typeof b.topic === "string" &&
     typeof b.presentation === "string" &&
+    (b.textContext === undefined || typeof b.textContext === "string") &&
     Array.isArray(b.history) &&
     b.history.every(
       (t) =>
@@ -79,21 +84,26 @@ function systemPrompt(language: SpeechLanguage, mode: ExamMode): string {
 function userPrompt(
   topic: string,
   presentation: string,
+  textContext: string | undefined,
   history: Turn[],
   language: SpeechLanguage,
 ): string {
   const truncatedPresentation = presentation.slice(0, MAX_PRESENTATION_CHARS);
+  const truncatedText = textContext?.trim().slice(0, MAX_TEXT_CONTEXT_CHARS);
   const exchange = history
     .map((t, i) => `Q${i + 1}: ${t.question}\nR${i + 1}: ${t.answer}`)
     .join("\n\n");
 
   if (language === "fr") {
-    return `SUJET : ${topic || "(non précisé)"}\n\nEXPOSÉ DE L'ÉLÈVE :\n"""\n${truncatedPresentation}\n"""\n\nÉCHANGE DEPUIS L'EXPOSÉ :\n${exchange || "(aucun pour l'instant, c'est ta première question)"}\n\nPose la question suivante (une seule question, sans préambule ni guillemets).`;
+    const textBlock = truncatedText ? `TEXTE ÉTUDIÉ :\n"""\n${truncatedText}\n"""\n\n` : "";
+    return `SUJET : ${topic || "(non précisé)"}\n\n${textBlock}EXPOSÉ DE L'ÉLÈVE :\n"""\n${truncatedPresentation}\n"""\n\nÉCHANGE DEPUIS L'EXPOSÉ :\n${exchange || "(aucun pour l'instant, c'est ta première question)"}\n\nPose la question suivante (une seule question, sans préambule ni guillemets)${truncatedText ? ", en te basant si possible sur le texte étudié" : ""}.`;
   }
   if (language === "es") {
-    return `TEMA: ${topic || "(no especificado)"}\n\nEXPOSICIÓN DEL ESTUDIANTE:\n"""\n${truncatedPresentation}\n"""\n\nCONVERSACIÓN DESDE LA EXPOSICIÓN:\n${exchange || "(ninguna todavía, es tu primera pregunta)"}\n\nFormula la siguiente pregunta (una sola pregunta, sin preámbulo ni comillas).`;
+    const textBlock = truncatedText ? `TEXTO ESTUDIADO:\n"""\n${truncatedText}\n"""\n\n` : "";
+    return `TEMA: ${topic || "(no especificado)"}\n\n${textBlock}EXPOSICIÓN DEL ESTUDIANTE:\n"""\n${truncatedPresentation}\n"""\n\nCONVERSACIÓN DESDE LA EXPOSICIÓN:\n${exchange || "(ninguna todavía, es tu primera pregunta)"}\n\nFormula la siguiente pregunta (una sola pregunta, sin preámbulo ni comillas)${truncatedText ? ", basándote si es posible en el texto estudiado" : ""}.`;
   }
-  return `TOPIC: ${topic || "(not specified)"}\n\nSTUDENT'S PRESENTATION:\n"""\n${truncatedPresentation}\n"""\n\nEXCHANGE SINCE THE PRESENTATION:\n${exchange || "(none yet, this is your first question)"}\n\nAsk the next question (one question only, no preamble or quotation marks).`;
+  const textBlock = truncatedText ? `STUDIED TEXT:\n"""\n${truncatedText}\n"""\n\n` : "";
+  return `TOPIC: ${topic || "(not specified)"}\n\n${textBlock}STUDENT'S PRESENTATION:\n"""\n${truncatedPresentation}\n"""\n\nEXCHANGE SINCE THE PRESENTATION:\n${exchange || "(none yet, this is your first question)"}\n\nAsk the next question (one question only, no preamble or quotation marks)${truncatedText ? ", grounded in the studied text where possible" : ""}.`;
 }
 
 async function generateWithOpenAI(
@@ -102,6 +112,7 @@ async function generateWithOpenAI(
   language: SpeechLanguage,
   topic: string,
   presentation: string,
+  textContext: string | undefined,
   history: Turn[],
 ): Promise<string | null> {
   try {
@@ -116,7 +127,7 @@ async function generateWithOpenAI(
         temperature: 0.6,
         messages: [
           { role: "system", content: systemPrompt(language, mode) },
-          { role: "user", content: userPrompt(topic, presentation, history, language) },
+          { role: "user", content: userPrompt(topic, presentation, textContext, history, language) },
         ],
       }),
       signal: AbortSignal.timeout(20_000),
@@ -174,6 +185,7 @@ export async function POST(request: Request) {
           body.language,
           body.topic,
           body.presentation,
+          body.textContext,
           body.history,
         ))) ||
       heuristicNextQuestion(body.mode, body.language, body.topic, body.history);

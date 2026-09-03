@@ -4,16 +4,26 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Award, BookMarked, BookOpen, GraduationCap, LineChart, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  Award,
+  BookMarked,
+  BookOpen,
+  GraduationCap,
+  LineChart,
+  Loader2,
+} from "lucide-react";
 import type { SpeechLanguage, TargetDuration } from "@/types";
 import { useDict } from "@/lib/i18n";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { DurationSelector } from "@/components/recording/duration-selector";
 import { LanguageSelector } from "@/components/recording/language-selector";
 import { RecorderPanel } from "@/components/recording/recorder-panel";
 import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
 import { analyzeAndSave } from "@/services/analysis.service";
+import { getSession } from "@/services/sessions.service";
 import { AUDIENCE_QUESTIONS } from "@/services/ai/question-bank";
 import { cn } from "@/utils/cn";
 
@@ -37,6 +47,7 @@ const DEFAULT_PRESENTATION_MINUTES: Record<ExamMode, TargetDuration> = {
 /** How many jury follow-up questions come after the presentation. */
 const INTERVIEW_QUESTIONS = 3;
 const PER_TURN_TARGET_MINUTES: TargetDuration = 1;
+const MIN_TEXT_PASTE_CHARS = 40;
 
 interface Turn {
   question: string;
@@ -61,15 +72,17 @@ function fallbackQuestion(
 /**
  * "Mode Examinateur IA" — a realistic simulation of the three French oral
  * exams, matching their actual structure: the student first gives their
- * full presentation uninterrupted (exposé), then the jury asks follow-up
- * questions grounded in what was actually said, before the whole exchange
- * goes through the same analysis pipeline as every other session.
+ * full presentation uninterrupted (exposé — for the Bac de Français, the
+ * explication linéaire of a text they provide up front), then the jury
+ * asks follow-up questions grounded in what was actually said, before the
+ * whole exchange goes through the same analysis pipeline as every other
+ * session (plus a dedicated literary rubric for the Bac de Français).
  */
 export default function ExamModePage() {
   const d = useDict();
   const router = useRouter();
 
-  const [step, setStep] = useState<"setup" | "presentation" | "interview">("setup");
+  const [step, setStep] = useState<"setup" | "text" | "presentation" | "interview">("setup");
   const [mode, setMode] = useState<ExamMode>("brevet-oral");
   const [topic, setTopic] = useState("");
   const [topicError, setTopicError] = useState(false);
@@ -78,13 +91,26 @@ export default function ExamModePage() {
     DEFAULT_PRESENTATION_MINUTES["brevet-oral"],
   );
 
+  // Bac de Français only: the text the student will be examined on.
+  const [textInputMode, setTextInputMode] = useState<"paste" | "reference">("paste");
+  const [textPaste, setTextPaste] = useState("");
+  const [refAuthor, setRefAuthor] = useState("");
+  const [refWork, setRefWork] = useState("");
+  const [refPassage, setRefPassage] = useState("");
+  const [textError, setTextError] = useState(false);
+  const [textContext, setTextContext] = useState("");
+
   // Deep links from the "PRÉPARE TON ORAL" landing section preselect the
-  // exam type/language; applied post-mount for the same SSR-safety reason
-  // as the generic /practice page (window/localStorage aren't visible server-side).
+  // exam type/language; a `repeat=<sessionId>` link (from "Refaire cet
+  // oral" on the results page) prefills the same topic/text so the student
+  // can redo the exact same prompt and compare scores. Applied post-mount
+  // for the same SSR-safety reason as the generic /practice page
+  // (window/localStorage/session lookups aren't available server-side).
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const modeParam = params.get("mode");
     const langParam = params.get("lang");
+    const repeatId = params.get("repeat");
     const nextLanguage: SpeechLanguage =
       langParam === "es" || langParam === "en" || langParam === "fr" ? langParam : "fr";
     if (isExamMode(modeParam)) {
@@ -95,6 +121,25 @@ export default function ExamModePage() {
     }
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLanguage(nextLanguage);
+
+    if (repeatId) {
+      getSession(repeatId).then((session) => {
+        if (!session || !isExamMode(session.mode)) return;
+        const modeLabelPrefix = `${d.modes[session.mode]} — `;
+        const rawTopic = session.topic.startsWith(modeLabelPrefix)
+          ? session.topic.slice(modeLabelPrefix.length)
+          : session.topic;
+        setMode(session.mode);
+        setPresentationMinutes(DEFAULT_PRESENTATION_MINUTES[session.mode]);
+        setLanguage(session.analysis.language);
+        setTopic(rawTopic);
+        if (session.analysis.sourceText) {
+          setTextInputMode("paste");
+          setTextPaste(session.analysis.sourceText);
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [presentationTranscript, setPresentationTranscript] = useState("");
@@ -107,16 +152,14 @@ export default function ExamModePage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const isBacFrancais = mode === "bac-francais-oral";
+
   function handleModeChange(next: ExamMode) {
     setMode(next);
     setPresentationMinutes(DEFAULT_PRESENTATION_MINUTES[next]);
   }
 
-  function handleStart() {
-    if (!topic.trim()) {
-      setTopicError(true);
-      return;
-    }
+  function beginPresentation() {
     setError(null);
     setPresentationTranscript("");
     setPresentationDurationSeconds(0);
@@ -125,12 +168,58 @@ export default function ExamModePage() {
     setStep("presentation");
   }
 
+  function handleStart() {
+    if (!topic.trim()) {
+      setTopicError(true);
+      return;
+    }
+    if (isBacFrancais) {
+      setStep("text");
+      return;
+    }
+    beginPresentation();
+  }
+
+  function handleTextContinue() {
+    const context =
+      textInputMode === "paste"
+        ? textPaste.trim()
+        : [
+            refAuthor.trim() && `${d.examMode.textReferenceAuthorLabel} : ${refAuthor.trim()}`,
+            refWork.trim() && `${d.examMode.textReferenceWorkLabel} : ${refWork.trim()}`,
+            refPassage.trim() &&
+              `${d.examMode.textReferencePassageLabel} : ${refPassage.trim()}`,
+          ]
+            .filter(Boolean)
+            .join("\n");
+
+    const valid =
+      textInputMode === "paste"
+        ? textPaste.trim().length >= MIN_TEXT_PASTE_CHARS
+        : refAuthor.trim().length > 0 && refWork.trim().length > 0;
+
+    if (!valid) {
+      setTextError(true);
+      return;
+    }
+    setTextError(false);
+    setTextContext(context);
+    beginPresentation();
+  }
+
   async function requestNextQuestion(presentation: string, history: Turn[]) {
     try {
       const response = await fetch("/api/exam/next-question", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode, language, topic: topic.trim(), presentation, history }),
+        body: JSON.stringify({
+          mode,
+          language,
+          topic: topic.trim(),
+          presentation,
+          textContext: textContext || undefined,
+          history,
+        }),
       });
       const body = await response.json().catch(() => null);
       if (response.ok && typeof body?.question === "string" && body.question.trim()) {
@@ -162,10 +251,13 @@ export default function ExamModePage() {
 
   async function finishExam(finalTurns: Turn[]) {
     setAnalyzing(true);
+    const presentationLabel = isBacFrancais
+      ? d.examMode.explicationSectionLabel
+      : d.examMode.presentationSectionLabel;
     const interviewTranscript = finalTurns
       .map((t) => `${d.examMode.examinerAsks} ${t.question}\n${t.answer}`)
       .join("\n\n");
-    const transcript = `[${d.examMode.presentationSectionLabel}]\n${presentationTranscript}\n\n[${d.examMode.interviewSectionLabel}]\n${interviewTranscript}`;
+    const transcript = `[${presentationLabel}]\n${presentationTranscript}\n\n[${d.examMode.interviewSectionLabel}]\n${interviewTranscript}`;
     const totalDuration =
       presentationDurationSeconds + finalTurns.reduce((sum, t) => sum + t.durationSeconds, 0);
 
@@ -178,6 +270,7 @@ export default function ExamModePage() {
         language,
         durationSeconds: Math.max(totalDuration, 1),
         targetDurationMinutes: presentationMinutes + INTERVIEW_QUESTIONS * PER_TURN_TARGET_MINUTES,
+        textContext: isBacFrancais ? textContext || undefined : undefined,
       });
       router.push(`/results/${session.id}`);
     } catch (e) {
@@ -300,6 +393,114 @@ export default function ExamModePage() {
           </motion.div>
         )}
 
+        {step === "text" && (
+          <motion.div
+            key="text"
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 16 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="space-y-6"
+          >
+            <div className="flex items-center justify-between">
+              <button
+                type="button"
+                onClick={() => setStep("setup")}
+                className="inline-flex cursor-pointer items-center gap-1.5 text-sm text-muted transition-colors hover:text-foreground"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                {d.practice.backToSetup}
+              </button>
+            </div>
+
+            <div>
+              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+                {d.examMode.textStepTitle}
+              </h1>
+              <p className="mt-1.5 text-sm text-muted">{d.examMode.textStepSubtitle}</p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              {(["paste", "reference"] as const).map((option) => (
+                <button
+                  key={option}
+                  type="button"
+                  onClick={() => {
+                    setTextInputMode(option);
+                    setTextError(false);
+                  }}
+                  className={cn(
+                    "flex h-11 cursor-pointer items-center justify-center rounded-xl border text-sm font-medium transition-colors",
+                    textInputMode === option
+                      ? "border-accent bg-accent-soft text-accent"
+                      : "border-border bg-surface text-muted hover:text-foreground",
+                  )}
+                >
+                  {option === "paste" ? d.examMode.textModePaste : d.examMode.textModeReference}
+                </button>
+              ))}
+            </div>
+
+            {textInputMode === "paste" ? (
+              <Textarea
+                label={d.examMode.textPasteLabel}
+                name="textPaste"
+                placeholder={d.examMode.textPastePlaceholder}
+                value={textPaste}
+                onChange={(event) => {
+                  setTextPaste(event.target.value);
+                  setTextError(false);
+                }}
+                rows={10}
+                maxLength={20000}
+              />
+            ) : (
+              <div className="space-y-4">
+                <Input
+                  label={d.examMode.textReferenceAuthorLabel}
+                  name="refAuthor"
+                  placeholder={d.examMode.textReferenceAuthorPlaceholder}
+                  value={refAuthor}
+                  onChange={(event) => {
+                    setRefAuthor(event.target.value);
+                    setTextError(false);
+                  }}
+                  maxLength={120}
+                />
+                <Input
+                  label={d.examMode.textReferenceWorkLabel}
+                  name="refWork"
+                  placeholder={d.examMode.textReferenceWorkPlaceholder}
+                  value={refWork}
+                  onChange={(event) => {
+                    setRefWork(event.target.value);
+                    setTextError(false);
+                  }}
+                  maxLength={160}
+                />
+                <Input
+                  label={d.examMode.textReferencePassageLabel}
+                  name="refPassage"
+                  placeholder={d.examMode.textReferencePassagePlaceholder}
+                  value={refPassage}
+                  onChange={(event) => setRefPassage(event.target.value)}
+                  maxLength={200}
+                />
+              </div>
+            )}
+
+            {textError && (
+              <p className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
+                {d.examMode.textRequired}
+              </p>
+            )}
+
+            <Button size="lg" className="w-full" onClick={handleTextContinue}>
+              {d.practice.continueToRecording}
+            </Button>
+          </motion.div>
+        )}
+
         {step === "presentation" && (
           <motion.div
             key="presentation"
@@ -312,7 +513,7 @@ export default function ExamModePage() {
             <div className="flex items-center justify-between">
               <button
                 type="button"
-                onClick={() => setStep("setup")}
+                onClick={() => setStep(isBacFrancais ? "text" : "setup")}
                 disabled={loadingNextQuestion}
                 className="inline-flex cursor-pointer items-center gap-1.5 text-sm text-muted transition-colors hover:text-foreground disabled:opacity-50"
               >
@@ -325,11 +526,15 @@ export default function ExamModePage() {
               <div className="flex items-center gap-2 text-accent">
                 <Icon className="h-4 w-4" />
                 <span className="text-xs font-semibold uppercase tracking-wide">
-                  {d.examMode.presentationSectionLabel}
+                  {isBacFrancais
+                    ? d.examMode.explicationSectionLabel
+                    : d.examMode.presentationSectionLabel}
                 </span>
               </div>
               <h2 className="mt-1 text-lg font-semibold tracking-tight">
-                {d.examMode.presentationStepSubtitle}
+                {isBacFrancais
+                  ? d.examMode.explicationStepSubtitle
+                  : d.examMode.presentationStepSubtitle}
               </h2>
               <p className="mt-1 text-sm text-muted">{topic}</p>
             </div>

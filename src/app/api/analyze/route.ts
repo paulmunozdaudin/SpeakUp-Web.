@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { PracticeMode, SpeechLanguage } from "@/types";
 import { PRACTICE_MODES } from "@/types";
 import { getAnalysisProvider } from "@/services/ai";
+import { evaluateBacFrancaisOral } from "@/services/ai/bac-francais-evaluator";
 
 export const runtime = "nodejs";
 export const maxDuration = 60; // the LLM call can take a while
@@ -14,6 +15,10 @@ interface AnalyzeBody {
   language: SpeechLanguage;
   durationSeconds: number;
   targetDurationMinutes: number;
+  /** The text/reference a Bac de Français oral is being examined on —
+   *  triggers the dedicated literary-analysis evaluation on top of the
+   *  generic one. Unused for every other mode. */
+  textContext?: string;
 }
 
 function isValidBody(body: unknown): body is AnalyzeBody {
@@ -28,7 +33,8 @@ function isValidBody(body: unknown): body is AnalyzeBody {
     PRACTICE_MODES.includes(b.mode as PracticeMode) &&
     (b.language === "es" || b.language === "en" || b.language === "fr") &&
     typeof b.durationSeconds === "number" &&
-    typeof b.targetDurationMinutes === "number"
+    typeof b.targetDurationMinutes === "number" &&
+    (b.textContext === undefined || typeof b.textContext === "string")
   );
 }
 
@@ -67,6 +73,17 @@ export async function POST(request: Request) {
 
     const provider = getAnalysisProvider();
     const analysis = await provider.analyze(body);
+
+    if (body.mode === "bac-francais-oral" && body.textContext?.trim()) {
+      analysis.sourceText = body.textContext.trim();
+      analysis.bacFrancais = await evaluateBacFrancaisOral({
+        textContext: body.textContext.trim(),
+        transcript: body.transcript,
+        language: body.language,
+        durationSeconds: body.durationSeconds,
+        targetDurationMinutes: body.targetDurationMinutes,
+      });
+    }
 
     return NextResponse.json(analysis);
   } catch (error) {
