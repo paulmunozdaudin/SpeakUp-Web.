@@ -1,14 +1,10 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-  useSyncExternalStore,
-} from "react";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
 
+/** "system" may still linger in a returning visitor's localStorage from
+ *  before dark became the default regardless of OS preference — accepted
+ *  on read and resolved to dark, but never written again. */
 type Theme = "light" | "dark" | "system";
 
 interface ThemeContextValue {
@@ -20,33 +16,21 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 const STORAGE_KEY = "eloq-theme";
-const MEDIA_QUERY = "(prefers-color-scheme: dark)";
-
-/* System dark-mode preference as an external store (SSR-safe). */
-function subscribeToSystemTheme(callback: () => void) {
-  const media = window.matchMedia(MEDIA_QUERY);
-  media.addEventListener("change", callback);
-  return () => media.removeEventListener("change", callback);
-}
-
-const getSystemDark = () => window.matchMedia(MEDIA_QUERY).matches;
-const getServerSystemDark = () => false;
 
 function readStoredTheme(): Theme {
-  if (typeof window === "undefined") return "system";
-  return (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? "system";
+  // Dark by default on a visitor's first-ever visit — the toggle lets them
+  // switch to light, and that explicit choice is what gets stored and
+  // respected on every later visit.
+  if (typeof window === "undefined") return "dark";
+  return (localStorage.getItem(STORAGE_KEY) as Theme | null) ?? "dark";
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setThemeState] = useState<Theme>(readStoredTheme);
-  const systemDark = useSyncExternalStore(
-    subscribeToSystemTheme,
-    getSystemDark,
-    getServerSystemDark,
-  );
 
-  const resolvedTheme: "light" | "dark" =
-    theme === "dark" || (theme === "system" && systemDark) ? "dark" : "light";
+  // Dark unless the visitor explicitly chose light — covers a fresh visit
+  // (no stored value) and a legacy "system" value the same way.
+  const resolvedTheme: "light" | "dark" = theme === "light" ? "light" : "dark";
 
   // Keep the <html> class in sync (the init script handles first paint).
   useEffect(() => {
@@ -79,9 +63,7 @@ export const themeInitScript = `
 (function () {
   try {
     var t = localStorage.getItem("${STORAGE_KEY}");
-    var dark = t === "dark" || ((t === null || t === "system") &&
-      window.matchMedia("${MEDIA_QUERY}").matches);
-    if (dark) document.documentElement.classList.add("dark");
+    if (t !== "light") document.documentElement.classList.add("dark");
   } catch (e) {}
 })();
 `;
