@@ -24,6 +24,7 @@ export const en = {
     faq: "FAQ",
     dashboard: "Dashboard",
     practice: "Practice",
+    examMode: "French Exams",
     history: "History",
     profile: "Profile",
   },
@@ -451,6 +452,35 @@ export const en = {
     fair: "Fair",
     needsWork: "Needs work",
   },
+  examMode: {
+    setupTitle: "AI Examiner Mode",
+    setupSubtitle:
+      "Eloq won't take the exam for you — it trains you so you're ready on the day.",
+    topicLabel: {
+      "brevet-oral": "Your Brevet project subject",
+      "bac-francais-oral": "The text you'll be examined on",
+      "grand-oral": "Your Grand Oral question",
+    },
+    topicPlaceholder: {
+      "brevet-oral": "e.g. Renewable energy in my region",
+      "bac-francais-oral": "e.g. Excerpt from Dom Juan, Molière",
+      "grand-oral": "e.g. How is AI transforming medicine?",
+    },
+    startExam: "Start the exam",
+    disclaimer:
+      "Eloq doesn't take the exam for you — it trains you to do better on the real day.",
+    examinerAsks: "The examiner asks:",
+    questionProgress: "Question {current} / {total}",
+    examinerThinking: "The examiner is preparing the next question…",
+    finishNow: "End the exam now",
+    gradeLabel: "Estimated grade",
+    outOf20: "/20",
+    timeManagementLabel: "Time management",
+    timeGood: "Good pacing for an oral exam.",
+    timeShort: "Your answers were short — develop your ideas further.",
+    timeLong: "You're running long — practice being more concise.",
+    examinerBadge: "AI Examiner Mode",
+  },
 };
 
 export type Dictionary = typeof en;
@@ -475,6 +505,7 @@ export const es: Dictionary = {
     faq: "FAQ",
     dashboard: "Panel",
     practice: "Practicar",
+    examMode: "Exámenes franceses",
     history: "Historial",
     profile: "Perfil",
   },
@@ -906,6 +937,35 @@ export const es: Dictionary = {
     fair: "Regular",
     needsWork: "A mejorar",
   },
+  examMode: {
+    setupTitle: "Modo Examinador IA",
+    setupSubtitle:
+      "Eloq no hace el examen por ti: te entrena para que estés listo el día real.",
+    topicLabel: {
+      "brevet-oral": "El tema de tu proyecto del Brevet",
+      "bac-francais-oral": "El texto sobre el que te examinarán",
+      "grand-oral": "Tu pregunta del Grand Oral",
+    },
+    topicPlaceholder: {
+      "brevet-oral": "ej. Las energías renovables en mi región",
+      "bac-francais-oral": "ej. Fragmento de Dom Juan, Molière",
+      "grand-oral": "ej. ¿Cómo transforma la IA la medicina?",
+    },
+    startExam: "Empezar el examen",
+    disclaimer:
+      "Eloq no hace el examen por ti: te entrena para que lo hagas mejor el día real.",
+    examinerAsks: "El examinador pregunta:",
+    questionProgress: "Pregunta {current} / {total}",
+    examinerThinking: "El examinador está preparando la siguiente pregunta…",
+    finishNow: "Terminar el examen ahora",
+    gradeLabel: "Nota estimada",
+    outOf20: "/20",
+    timeManagementLabel: "Gestión del tiempo",
+    timeGood: "Buen ritmo para un examen oral.",
+    timeShort: "Tus respuestas fueron cortas: desarrolla más tus ideas.",
+    timeLong: "Te estás alargando: practica ser más conciso.",
+    examinerBadge: "Modo Examinador IA",
+  },
 };
 
 export const fr: Dictionary = {
@@ -928,6 +988,7 @@ export const fr: Dictionary = {
     faq: "FAQ",
     dashboard: "Tableau de bord",
     practice: "Entraînement",
+    examMode: "Oraux 🇫🇷",
     history: "Historique",
     profile: "Profil",
   },
@@ -1352,5 +1413,34 @@ export const fr: Dictionary = {
     good: "Bien",
     fair: "Moyen",
     needsWork: "À travailler",
+  },
+  examMode: {
+    setupTitle: "Mode Examinateur IA",
+    setupSubtitle:
+      "Eloq ne passe pas l'examen à ta place : il t'entraîne pour que tu sois prêt(e) le jour J.",
+    topicLabel: {
+      "brevet-oral": "Le sujet de ton projet de Brevet",
+      "bac-francais-oral": "Le texte sur lequel tu seras interrogé(e)",
+      "grand-oral": "Ta question de Grand Oral",
+    },
+    topicPlaceholder: {
+      "brevet-oral": "ex. Les énergies renouvelables dans ma région",
+      "bac-francais-oral": "ex. Extrait de Dom Juan, Molière",
+      "grand-oral": "ex. Comment l'IA transforme-t-elle la médecine ?",
+    },
+    startExam: "Commencer l'examen",
+    disclaimer:
+      "Eloq ne passe pas l'examen à ta place : il t'entraîne pour que tu sois prêt(e) le jour J.",
+    examinerAsks: "L'examinateur demande :",
+    questionProgress: "Question {current} / {total}",
+    examinerThinking: "L'examinateur prépare la question suivante…",
+    finishNow: "Terminer l'examen maintenant",
+    gradeLabel: "Note estimée",
+    outOf20: "/20",
+    timeManagementLabel: "Gestion du temps",
+    timeGood: "Bon rythme pour un oral.",
+    timeShort: "Tes réponses étaient courtes : développe davantage tes idées.",
+    timeLong: "Tu prends trop de temps : entraîne-toi à être plus concis(e).",
+    examinerBadge: "Mode Examinateur IA",
   },
 };

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  GraduationCap,
   History,
   LayoutDashboard,
   LogIn,
@@ -29,6 +30,7 @@ export function Sidebar() {
   const navItems = [
     { href: "/dashboard", label: d.nav.dashboard, icon: LayoutDashboard },
     { href: "/practice", label: d.nav.practice, icon: Mic },
+    { href: "/exam", label: d.nav.examMode, icon: GraduationCap },
     { href: "/history", label: d.nav.history, icon: History },
     { href: "/profile", label: d.nav.profile, icon: User },
   ];

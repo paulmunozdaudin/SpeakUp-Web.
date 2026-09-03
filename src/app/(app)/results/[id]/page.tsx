@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ScoreHeader } from "@/components/results/score-header";
+import { ExamGradeCard } from "@/components/results/exam-grade-card";
 import { MetricsGrid } from "@/components/results/metrics-grid";
 import { FillerWordsCard } from "@/components/results/filler-words-card";
 import { StructureCard } from "@/components/results/structure-card";
@@ -68,6 +69,10 @@ export default function ResultsPage({
   }
 
   const { analysis } = session;
+  const isExamMode =
+    session.mode === "brevet-oral" ||
+    session.mode === "bac-francais-oral" ||
+    session.mode === "grand-oral";
 
   const tabs: { key: TabKey; label: string }[] = [
     { key: "overview", label: d.results.tabOverview },
@@ -86,6 +91,13 @@ export default function ResultsPage({
         durationSeconds={session.durationSeconds}
         analysis={analysis}
       />
+
+      {isExamMode && (
+        <ExamGradeCard
+          overallScore={analysis.overallScore}
+          durationSeconds={session.durationSeconds}
+        />
+      )}
 
       <ResultsTabs
         tabs={tabs}
