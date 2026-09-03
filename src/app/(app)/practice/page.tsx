@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { PracticeMode, SpeechLanguage, TargetDuration } from "@/types";
-import { PRACTICE_MODES } from "@/types";
+import { GENERIC_PRACTICE_MODES } from "@/types";
 import { getLocale } from "@/lib/i18n";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -50,7 +50,7 @@ export default function PracticePage() {
     const params = new URLSearchParams(window.location.search);
     const modeParam = params.get("mode");
     const langParam = params.get("lang");
-    const mode = PRACTICE_MODES.includes(modeParam as PracticeMode)
+    const mode = GENERIC_PRACTICE_MODES.includes(modeParam as PracticeMode)
       ? (modeParam as PracticeMode)
       : null;
     const language: SpeechLanguage =

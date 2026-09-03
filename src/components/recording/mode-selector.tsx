@@ -12,10 +12,13 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { PracticeMode } from "@/types";
-import { PRACTICE_MODES } from "@/types";
+import { GENERIC_PRACTICE_MODES } from "@/types";
 import { useDict } from "@/lib/i18n";
 import { cn } from "@/utils/cn";
 
+/** Kept as a full Record (incl. the French exam modes) purely so indexing
+ *  stays type-safe — only GENERIC_PRACTICE_MODES is actually rendered here.
+ *  The exam modes' icons are used by /exam instead. */
 const MODE_ICONS: Record<PracticeMode, LucideIcon> = {
   presentation: Presentation,
   "startup-pitch": Rocket,
@@ -38,7 +41,7 @@ export function ModeSelector({
 
   return (
     <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-      {PRACTICE_MODES.map((mode) => {
+      {GENERIC_PRACTICE_MODES.map((mode) => {
         const Icon = MODE_ICONS[mode];
         const active = value === mode;
         return (

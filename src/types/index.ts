@@ -25,6 +25,22 @@ export const PRACTICE_MODES: PracticeMode[] = [
   "grand-oral",
 ];
 
+/** The three French exam modes — only practiced through the dedicated
+ *  "Mode Examinateur IA" flow (/exam), never through the generic /practice
+ *  recorder, so they're excluded from PRACTICE_MODES wherever it drives
+ *  that generic UI (mode picker, deep-link validation). */
+export const FRENCH_EXAM_MODES: PracticeMode[] = [
+  "brevet-oral",
+  "bac-francais-oral",
+  "grand-oral",
+];
+
+/** PRACTICE_MODES minus the French exam modes — what the generic /practice
+ *  flow actually offers. */
+export const GENERIC_PRACTICE_MODES: PracticeMode[] = PRACTICE_MODES.filter(
+  (mode) => !FRENCH_EXAM_MODES.includes(mode),
+);
+
 /** Language the user speaks (and the report is written) in. */
 export type SpeechLanguage = "es" | "en" | "fr";
 
