@@ -13,7 +13,7 @@ import { createHash } from "node:crypto";
 // prefix/suffix/length check would miss, without ever displaying the
 // secret itself.
 const KNOWN_GOOD_STRIPE_SECRET_KEY_SHA256 =
-  "54aa734f3274f5893d633c2b97133a42280dccf864c979d52aa4e2902bc02e37";
+  "fa895cd2d29bc05ab5390575020453d8443db9ee3ce66c9d73e620f03d1f7994";
 
 export async function GET() {
   function sha256(value: string) {
