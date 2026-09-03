@@ -48,18 +48,24 @@ export async function POST(request: Request) {
       .eq("id", user.id)
       .maybeSingle();
 
+    // Supabase returns an unset column as null, not undefined — passing
+    // `customer: null` alongside `customer_email` explicitly sends both
+    // keys, which Stripe rejects ("You may only specify one of these
+    // parameters"). Only include whichever one actually applies.
     const existingCustomerId = profile?.stripe_customer_id as
       | string
+      | null
       | undefined;
     const origin = new URL(request.url).origin;
+
+    const customerParams = existingCustomerId
+      ? { customer: existingCustomerId }
+      : { customer_email: user.email ?? undefined };
 
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: STRIPE_PRICE_ID_PRO, quantity: 1 }],
-      customer: existingCustomerId,
-      customer_email: existingCustomerId
-        ? undefined
-        : (user.email ?? undefined),
+      ...customerParams,
       client_reference_id: user.id,
       subscription_data: { metadata: { supabase_user_id: user.id } },
       success_url: `${origin}/profile?checkout=success`,
