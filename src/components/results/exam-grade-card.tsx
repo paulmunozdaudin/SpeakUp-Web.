@@ -6,10 +6,11 @@ import { useDict } from "@/lib/i18n";
 import { cn } from "@/utils/cn";
 import { scoreTone, SCORE_TONE_TEXT } from "@/utils/score";
 
-/** Answers under 2min total read as rushed, over 8min as running long — a
- *  reasonable range for a 4-question simulated oral exchange. */
-const EXPECTED_MIN_SECONDS = 120;
-const EXPECTED_MAX_SECONDS = 480;
+/** Under 5min total reads as rushed, over 20min as running long — a
+ *  reasonable range now that the simulation includes a full presentation
+ *  (5-10min) plus the jury's follow-up questions. */
+const EXPECTED_MIN_SECONDS = 300;
+const EXPECTED_MAX_SECONDS = 1200;
 
 /**
  * Shown at the top of the results page only for the three French exam

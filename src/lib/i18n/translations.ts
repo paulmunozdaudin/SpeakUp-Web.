@@ -469,6 +469,10 @@ export const en = {
     startExam: "Start the exam",
     disclaimer:
       "Eloq doesn't take the exam for you — it trains you to do better on the real day.",
+    presentationSectionLabel: "Presentation",
+    presentationStepSubtitle: "Give your presentation as if the jury were in front of you.",
+    movingToInterview: "The jury is reviewing your presentation and preparing its first question…",
+    interviewSectionLabel: "Interview with the jury",
     examinerAsks: "The examiner asks:",
     questionProgress: "Question {current} / {total}",
     examinerThinking: "The examiner is preparing the next question…",
@@ -990,6 +994,10 @@ export const es: Dictionary = {
     startExam: "Empezar el examen",
     disclaimer:
       "Eloq no hace el examen por ti: te entrena para que lo hagas mejor el día real.",
+    presentationSectionLabel: "Exposición",
+    presentationStepSubtitle: "Haz tu exposición como si el tribunal estuviera delante de ti.",
+    movingToInterview: "El tribunal está repasando tu exposición y preparando su primera pregunta…",
+    interviewSectionLabel: "Entrevista con el tribunal",
     examinerAsks: "El examinador pregunta:",
     questionProgress: "Pregunta {current} / {total}",
     examinerThinking: "El examinador está preparando la siguiente pregunta…",
@@ -1503,6 +1511,10 @@ export const fr: Dictionary = {
     startExam: "Commencer l'examen",
     disclaimer:
       "Eloq ne passe pas l'examen à ta place : il t'entraîne pour que tu sois prêt(e) le jour J.",
+    presentationSectionLabel: "Exposé",
+    presentationStepSubtitle: "Fais ton exposé comme si le jury était devant toi.",
+    movingToInterview: "Le jury relit ton exposé et prépare sa première question…",
+    interviewSectionLabel: "Entretien avec le jury",
     examinerAsks: "L'examinateur demande :",
     questionProgress: "Question {current} / {total}",
     examinerThinking: "L'examinateur prépare la question suivante…",

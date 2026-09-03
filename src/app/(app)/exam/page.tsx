@@ -9,6 +9,7 @@ import type { SpeechLanguage, TargetDuration } from "@/types";
 import { useDict } from "@/lib/i18n";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { DurationSelector } from "@/components/recording/duration-selector";
 import { LanguageSelector } from "@/components/recording/language-selector";
 import { RecorderPanel } from "@/components/recording/recorder-panel";
 import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
@@ -25,8 +26,16 @@ const EXAM_ICONS: Record<ExamMode, typeof BookOpen> = {
   "grand-oral": Award,
 };
 
-/** Total Q&A turns per simulated exam, and the soft per-answer time target. */
-const TOTAL_QUESTIONS = 4;
+/** Suggested presentation length per exam type — close to the real exam's
+ *  exposé duration, but always adjustable via the duration selector. */
+const DEFAULT_PRESENTATION_MINUTES: Record<ExamMode, TargetDuration> = {
+  "brevet-oral": 5,
+  "bac-francais-oral": 5,
+  "grand-oral": 10,
+};
+
+/** How many jury follow-up questions come after the presentation. */
+const INTERVIEW_QUESTIONS = 3;
 const PER_TURN_TARGET_MINUTES: TargetDuration = 1;
 
 interface Turn {
@@ -39,28 +48,35 @@ function isExamMode(value: string | null): value is ExamMode {
   return !!value && (EXAM_MODES as readonly string[]).includes(value);
 }
 
-function openingQuestion(mode: ExamMode, language: SpeechLanguage, topic: string) {
+function fallbackQuestion(
+  mode: ExamMode,
+  language: SpeechLanguage,
+  topic: string,
+  historyLength: number,
+) {
   const bank = AUDIENCE_QUESTIONS[language][mode];
-  return bank[0].replace("{topic}", topic || "");
+  return bank[historyLength % bank.length].replace("{topic}", topic || "");
 }
 
 /**
- * "Mode Examinateur IA" — a turn-based oral exam simulation for the three
- * French exam verticals (Brevet, Bac de Français, Grand Oral). Unlike the
- * generic /practice flow (one continuous recording), this asks a question,
- * records the student's spoken answer, then asks a follow-up based on what
- * they actually said — like a real jury probing deeper — before handing the
- * full exchange to the same analysis pipeline as every other session.
+ * "Mode Examinateur IA" — a realistic simulation of the three French oral
+ * exams, matching their actual structure: the student first gives their
+ * full presentation uninterrupted (exposé), then the jury asks follow-up
+ * questions grounded in what was actually said, before the whole exchange
+ * goes through the same analysis pipeline as every other session.
  */
 export default function ExamModePage() {
   const d = useDict();
   const router = useRouter();
 
-  const [step, setStep] = useState<"setup" | "exam">("setup");
+  const [step, setStep] = useState<"setup" | "presentation" | "interview">("setup");
   const [mode, setMode] = useState<ExamMode>("brevet-oral");
   const [topic, setTopic] = useState("");
   const [topicError, setTopicError] = useState(false);
   const [language, setLanguage] = useState<SpeechLanguage>("fr");
+  const [presentationMinutes, setPresentationMinutes] = useState<TargetDuration>(
+    DEFAULT_PRESENTATION_MINUTES["brevet-oral"],
+  );
 
   // Deep links from the "PRÉPARE TON ORAL" landing section preselect the
   // exam type/language; applied post-mount for the same SSR-safety reason
@@ -71,12 +87,18 @@ export default function ExamModePage() {
     const langParam = params.get("lang");
     const nextLanguage: SpeechLanguage =
       langParam === "es" || langParam === "en" || langParam === "fr" ? langParam : "fr";
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (isExamMode(modeParam)) setMode(modeParam);
+    if (isExamMode(modeParam)) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setMode(modeParam);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setPresentationMinutes(DEFAULT_PRESENTATION_MINUTES[modeParam]);
+    }
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLanguage(nextLanguage);
   }, []);
 
+  const [presentationTranscript, setPresentationTranscript] = useState("");
+  const [presentationDurationSeconds, setPresentationDurationSeconds] = useState(0);
   const [turns, setTurns] = useState<Turn[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState("");
   const [questionNumber, setQuestionNumber] = useState(1);
@@ -85,25 +107,67 @@ export default function ExamModePage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  function handleModeChange(next: ExamMode) {
+    setMode(next);
+    setPresentationMinutes(DEFAULT_PRESENTATION_MINUTES[next]);
+  }
+
   function handleStart() {
     if (!topic.trim()) {
       setTopicError(true);
       return;
     }
     setError(null);
+    setPresentationTranscript("");
+    setPresentationDurationSeconds(0);
     setTurns([]);
-    setQuestionNumber(1);
-    setCurrentQuestion(openingQuestion(mode, language, topic.trim()));
     setRecorderKey((k) => k + 1);
-    setStep("exam");
+    setStep("presentation");
+  }
+
+  async function requestNextQuestion(presentation: string, history: Turn[]) {
+    try {
+      const response = await fetch("/api/exam/next-question", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode, language, topic: topic.trim(), presentation, history }),
+      });
+      const body = await response.json().catch(() => null);
+      if (response.ok && typeof body?.question === "string" && body.question.trim()) {
+        return body.question as string;
+      }
+    } catch {
+      // fall through to the local fallback below
+    }
+    return fallbackQuestion(mode, language, topic.trim(), history.length);
+  }
+
+  async function handlePresentationFinish(transcript: string, durationSeconds: number) {
+    if (transcript.trim().split(/\s+/).filter(Boolean).length < 20) {
+      setError(d.practice.tooShort);
+      setRecorderKey((k) => k + 1);
+      return;
+    }
+    setError(null);
+    setPresentationTranscript(transcript);
+    setPresentationDurationSeconds(durationSeconds);
+    setLoadingNextQuestion(true);
+    const question = await requestNextQuestion(transcript, []);
+    setCurrentQuestion(question);
+    setQuestionNumber(1);
+    setRecorderKey((k) => k + 1);
+    setLoadingNextQuestion(false);
+    setStep("interview");
   }
 
   async function finishExam(finalTurns: Turn[]) {
     setAnalyzing(true);
-    const transcript = finalTurns
+    const interviewTranscript = finalTurns
       .map((t) => `${d.examMode.examinerAsks} ${t.question}\n${t.answer}`)
       .join("\n\n");
-    const totalDuration = finalTurns.reduce((sum, t) => sum + t.durationSeconds, 0);
+    const transcript = `[${d.examMode.presentationSectionLabel}]\n${presentationTranscript}\n\n[${d.examMode.interviewSectionLabel}]\n${interviewTranscript}`;
+    const totalDuration =
+      presentationDurationSeconds + finalTurns.reduce((sum, t) => sum + t.durationSeconds, 0);
 
     try {
       const session = await analyzeAndSave({
@@ -113,7 +177,7 @@ export default function ExamModePage() {
         mode,
         language,
         durationSeconds: Math.max(totalDuration, 1),
-        targetDurationMinutes: TOTAL_QUESTIONS * PER_TURN_TARGET_MINUTES,
+        targetDurationMinutes: presentationMinutes + INTERVIEW_QUESTIONS * PER_TURN_TARGET_MINUTES,
       });
       router.push(`/results/${session.id}`);
     } catch (e) {
@@ -122,7 +186,7 @@ export default function ExamModePage() {
     }
   }
 
-  async function handleTurnFinish(transcript: string, durationSeconds: number) {
+  async function handleInterviewTurnFinish(transcript: string, durationSeconds: number) {
     if (transcript.trim().split(/\s+/).filter(Boolean).length < 4) {
       setError(d.practice.tooShort);
       setRecorderKey((k) => k + 1);
@@ -132,29 +196,17 @@ export default function ExamModePage() {
     const nextTurns = [...turns, { question: currentQuestion, answer: transcript, durationSeconds }];
     setTurns(nextTurns);
 
-    if (nextTurns.length >= TOTAL_QUESTIONS) {
+    if (nextTurns.length >= INTERVIEW_QUESTIONS) {
       await finishExam(nextTurns);
       return;
     }
 
     setLoadingNextQuestion(true);
-    try {
-      const response = await fetch("/api/exam/next-question", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode, language, topic: topic.trim(), history: nextTurns }),
-      });
-      const body = await response.json().catch(() => null);
-      const nextQuestion: string =
-        response.ok && typeof body?.question === "string"
-          ? body.question
-          : openingQuestion(mode, language, topic.trim());
-      setCurrentQuestion(nextQuestion);
-      setQuestionNumber((n) => n + 1);
-      setRecorderKey((k) => k + 1);
-    } finally {
-      setLoadingNextQuestion(false);
-    }
+    const question = await requestNextQuestion(presentationTranscript, nextTurns);
+    setCurrentQuestion(question);
+    setQuestionNumber((n) => n + 1);
+    setRecorderKey((k) => k + 1);
+    setLoadingNextQuestion(false);
   }
 
   const Icon = EXAM_ICONS[mode];
@@ -162,7 +214,7 @@ export default function ExamModePage() {
   return (
     <div className="mx-auto max-w-2xl">
       <AnimatePresence mode="wait">
-        {step === "setup" ? (
+        {step === "setup" && (
           <motion.div
             key="setup"
             initial={{ opacity: 0, x: -16 }}
@@ -200,7 +252,7 @@ export default function ExamModePage() {
                   <button
                     key={m}
                     type="button"
-                    onClick={() => setMode(m)}
+                    onClick={() => handleModeChange(m)}
                     className={cn(
                       "flex cursor-pointer flex-col items-center gap-2 rounded-2xl border p-4 text-center text-xs font-medium transition-colors",
                       mode === m
@@ -228,9 +280,15 @@ export default function ExamModePage() {
               maxLength={200}
             />
 
-            <div className="space-y-2">
-              <span className="block text-sm font-medium">{d.practice.languageLabel}</span>
-              <LanguageSelector value={language} onChange={setLanguage} />
+            <div className="grid gap-6 sm:grid-cols-2">
+              <div className="space-y-2">
+                <span className="block text-sm font-medium">{d.practice.durationLabel}</span>
+                <DurationSelector value={presentationMinutes} onChange={setPresentationMinutes} />
+              </div>
+              <div className="space-y-2">
+                <span className="block text-sm font-medium">{d.practice.languageLabel}</span>
+                <LanguageSelector value={language} onChange={setLanguage} />
+              </div>
             </div>
 
             <Button size="lg" className="w-full" onClick={handleStart}>
@@ -240,9 +298,11 @@ export default function ExamModePage() {
               {d.examMode.disclaimer}
             </p>
           </motion.div>
-        ) : (
+        )}
+
+        {step === "presentation" && (
           <motion.div
-            key="exam"
+            key="presentation"
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 16 }}
@@ -253,16 +313,65 @@ export default function ExamModePage() {
               <button
                 type="button"
                 onClick={() => setStep("setup")}
-                disabled={analyzing}
+                disabled={loadingNextQuestion}
                 className="inline-flex cursor-pointer items-center gap-1.5 text-sm text-muted transition-colors hover:text-foreground disabled:opacity-50"
               >
                 <ArrowLeft className="h-4 w-4" />
                 {d.practice.backToSetup}
               </button>
+            </div>
+
+            <div>
+              <div className="flex items-center gap-2 text-accent">
+                <Icon className="h-4 w-4" />
+                <span className="text-xs font-semibold uppercase tracking-wide">
+                  {d.examMode.presentationSectionLabel}
+                </span>
+              </div>
+              <h2 className="mt-1 text-lg font-semibold tracking-tight">
+                {d.examMode.presentationStepSubtitle}
+              </h2>
+              <p className="mt-1 text-sm text-muted">{topic}</p>
+            </div>
+
+            {loadingNextQuestion ? (
+              <div className="flex items-center gap-2 rounded-3xl border border-accent/30 bg-accent-soft p-5 text-sm text-accent">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                {d.examMode.movingToInterview}
+              </div>
+            ) : (
+              <RecorderPanel
+                key={recorderKey}
+                language={language}
+                targetDurationMinutes={presentationMinutes}
+                onFinish={handlePresentationFinish}
+                disabled={analyzing}
+              />
+            )}
+
+            {error && (
+              <p className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">{error}</p>
+            )}
+          </motion.div>
+        )}
+
+        {step === "interview" && (
+          <motion.div
+            key="interview"
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 16 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="space-y-6"
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-semibold uppercase tracking-wide text-accent">
+                {d.examMode.interviewSectionLabel}
+              </span>
               <span className="text-xs font-medium tabular-nums text-muted">
                 {d.examMode.questionProgress
                   .replace("{current}", String(questionNumber))
-                  .replace("{total}", String(TOTAL_QUESTIONS))}
+                  .replace("{total}", String(INTERVIEW_QUESTIONS))}
               </span>
             </div>
 
@@ -288,7 +397,7 @@ export default function ExamModePage() {
                 key={recorderKey}
                 language={language}
                 targetDurationMinutes={PER_TURN_TARGET_MINUTES}
-                onFinish={handleTurnFinish}
+                onFinish={handleInterviewTurnFinish}
                 disabled={analyzing}
               />
             )}
