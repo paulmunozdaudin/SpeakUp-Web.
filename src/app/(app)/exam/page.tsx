@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Award, BookMarked, BookOpen, GraduationCap, Loader2 } from "lucide-react";
+import { ArrowLeft, Award, BookMarked, BookOpen, GraduationCap, LineChart, Loader2 } from "lucide-react";
 import type { SpeechLanguage, TargetDuration } from "@/types";
 import { useDict } from "@/lib/i18n";
 import { Input } from "@/components/ui/input";
@@ -170,17 +171,26 @@ export default function ExamModePage() {
             transition={{ duration: 0.25, ease: "easeOut" }}
             className="space-y-6"
           >
-            <div>
-              <div className="flex items-center gap-2 text-accent">
-                <GraduationCap className="h-5 w-5" />
-                <span className="text-sm font-semibold uppercase tracking-wide">
-                  {d.examMode.examinerBadge}
-                </span>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 text-accent">
+                  <GraduationCap className="h-5 w-5" />
+                  <span className="text-sm font-semibold uppercase tracking-wide">
+                    {d.examMode.examinerBadge}
+                  </span>
+                </div>
+                <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+                  {d.examMode.setupTitle}
+                </h1>
+                <p className="mt-1.5 text-sm text-muted">{d.examMode.setupSubtitle}</p>
               </div>
-              <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-                {d.examMode.setupTitle}
-              </h1>
-              <p className="mt-1.5 text-sm text-muted">{d.examMode.setupSubtitle}</p>
+              <Link
+                href="/exam/progress"
+                className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap text-sm font-medium text-accent hover:underline"
+              >
+                <LineChart className="h-4 w-4" />
+                {d.examMode.progressPageTitle}
+              </Link>
             </div>
 
             <div className="grid grid-cols-3 gap-2">
