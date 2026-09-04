@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Section } from "./section";
 import { useDict } from "@/lib/i18n";
 import { useUser } from "@/hooks/use-user";
-import { startProCheckout } from "@/services/billing.service";
+import { startProCheckout, PRO_CHECKOUT_ENABLED } from "@/services/billing.service";
 import { cn } from "@/utils/cn";
 
 const HIGHLIGHTED_INDEX = 1; // "Pro"
@@ -79,7 +79,11 @@ export function Pricing() {
                 ))}
               </ul>
 
-              {highlighted && user ? (
+              {highlighted && !PRO_CHECKOUT_ENABLED ? (
+                <Button variant="secondary" className="mt-8 w-full" disabled>
+                  {d.common.comingSoon}
+                </Button>
+              ) : highlighted && user ? (
                 <div className="mt-8">
                   <Button
                     variant="primary"

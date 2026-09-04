@@ -21,7 +21,7 @@ import { Card, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDict } from "@/lib/i18n";
 import { scoreLabelKey } from "@/utils/score";
-import { startProCheckout, openBillingPortal } from "@/services/billing.service";
+import { startProCheckout, openBillingPortal, PRO_CHECKOUT_ENABLED } from "@/services/billing.service";
 
 export default function ProfilePage() {
   const d = useDict();
@@ -135,18 +135,24 @@ export default function ProfilePage() {
         )}
         {!userLoading && user && !profileLoading && (
           <div className="shrink-0 text-right">
-            <Button
-              variant={isPro ? "secondary" : "primary"}
-              loading={billingPending}
-              onClick={handleBillingClick}
-            >
-              {!billingPending && !isPro && <Sparkles className="h-4 w-4" />}
-              {billingPending
-                ? d.profile.redirecting
-                : isPro
-                  ? d.profile.manageSubscription
-                  : d.profile.upgradeToPro}
-            </Button>
+            {!isPro && !PRO_CHECKOUT_ENABLED ? (
+              <Button variant="secondary" disabled>
+                {d.common.comingSoon}
+              </Button>
+            ) : (
+              <Button
+                variant={isPro ? "secondary" : "primary"}
+                loading={billingPending}
+                onClick={handleBillingClick}
+              >
+                {!billingPending && !isPro && <Sparkles className="h-4 w-4" />}
+                {billingPending
+                  ? d.profile.redirecting
+                  : isPro
+                    ? d.profile.manageSubscription
+                    : d.profile.upgradeToPro}
+              </Button>
+            )}
             {billingError && (
               <p className="mt-2 max-w-56 text-xs text-red-500">
                 {billingError}
