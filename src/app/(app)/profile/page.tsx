@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import {
   Award,
+  Check,
   Flame,
   LogIn,
   Lock,
@@ -22,6 +23,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useDict } from "@/lib/i18n";
 import { scoreLabelKey } from "@/utils/score";
 import { startProCheckout, openBillingPortal, PRO_CHECKOUT_ENABLED } from "@/services/billing.service";
+import { joinProWaitlist } from "@/services/waitlist.service";
 
 export default function ProfilePage() {
   const d = useDict();
@@ -30,6 +32,7 @@ export default function ProfilePage() {
   const { stats, loading: sessionsLoading } = useSessions();
   const [billingPending, setBillingPending] = useState(false);
   const [billingError, setBillingError] = useState<string | null>(null);
+  const [waitlistJoined, setWaitlistJoined] = useState(false);
 
   const fullName =
     (user?.user_metadata?.full_name as string | undefined) || d.profile.guestName;
@@ -43,6 +46,19 @@ export default function ProfilePage() {
       setBillingError(result.error ?? d.billing.checkoutError);
       setBillingPending(false);
     }
+  }
+
+  async function handleWaitlistClick() {
+    if (!user?.email) return;
+    setBillingError(null);
+    setBillingPending(true);
+    const result = await joinProWaitlist(user.email);
+    setBillingPending(false);
+    if (!result.ok) {
+      setBillingError(result.error ?? d.billing.waitlistError);
+      return;
+    }
+    setWaitlistJoined(true);
   }
 
   const statItems = [
@@ -136,9 +152,21 @@ export default function ProfilePage() {
         {!userLoading && user && !profileLoading && (
           <div className="shrink-0 text-right">
             {!isPro && !PRO_CHECKOUT_ENABLED ? (
-              <Button variant="secondary" disabled>
-                {d.common.comingSoon}
-              </Button>
+              waitlistJoined ? (
+                <Badge tone="success">
+                  <Check className="h-3.5 w-3.5" />
+                  {d.billing.waitlistSuccess}
+                </Badge>
+              ) : (
+                <Button
+                  variant="secondary"
+                  loading={billingPending}
+                  onClick={handleWaitlistClick}
+                >
+                  {!billingPending && <Sparkles className="h-4 w-4" />}
+                  {d.billing.waitlistCta}
+                </Button>
+              )
             ) : (
               <Button
                 variant={isPro ? "secondary" : "primary"}
