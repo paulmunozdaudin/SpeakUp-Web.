@@ -13,6 +13,7 @@ import {
   LineChart,
   Loader2,
 } from "lucide-react";
+import { track } from "@vercel/analytics";
 import type { TargetDuration } from "@/types";
 import { fr as d } from "@/lib/i18n/translations";
 import { Input } from "@/components/ui/input";
@@ -151,6 +152,7 @@ export default function ExamModePage() {
   }
 
   function beginPresentation() {
+    track("exam_started", { mode });
     setError(null);
     setPresentationTranscript("");
     setPresentationDurationSeconds(0);
@@ -263,6 +265,7 @@ export default function ExamModePage() {
         targetDurationMinutes: presentationMinutes + INTERVIEW_QUESTIONS * PER_TURN_TARGET_MINUTES,
         textContext: isBacFrancais ? textContext || undefined : undefined,
       });
+      track("exam_completed", { mode });
       router.push(`/results/${session.id}`);
     } catch (e) {
       setAnalyzing(false);

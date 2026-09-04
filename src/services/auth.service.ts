@@ -6,6 +6,7 @@
  * so swapping/extending the auth backend stays a one-file change.
  */
 
+import { track } from "@vercel/analytics";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 
 export interface AuthResult {
@@ -36,6 +37,7 @@ export async function signUp(
   });
 
   if (error) return { ok: false, error: error.message };
+  track("signup_completed");
   return {
     ok: true,
     needsEmailConfirmation: data.user !== null && data.session === null,
