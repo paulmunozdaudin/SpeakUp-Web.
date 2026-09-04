@@ -96,26 +96,26 @@ export const en = {
           "Get a detailed report with personalized tips and exercises. Repeat and watch your score rise.",
       },
     ],
-    testimonialsEyebrow: "Testimonials",
-    testimonialsTitle: "Loved by speakers at every level",
+    testimonialsEyebrow: "Why Eloq AI",
+    testimonialsTitle: "Built for real practice, not just recording",
     testimonials: [
       {
-        quote:
-          "I rehearsed my seed round pitch 14 times with Eloq AI. By demo day I wasn't nervous — I was ready.",
-        name: "Sofia M.",
-        role: "Startup founder",
+        stat: "13",
+        title: "Coaching dimensions",
+        description:
+          "Every session scores clarity, confidence, structure, pace and more — not just a vague overall grade.",
       },
       {
-        quote:
-          "My filler-word count dropped from 42 to 6 in three weeks. My students noticed before I did.",
-        name: "Daniel R.",
-        role: "University lecturer",
+        stat: "24/7",
+        title: "No appointment needed",
+        description:
+          "Practice at midnight before an interview, or five minutes before you're due in the room.",
       },
       {
-        quote:
-          "It's like having a speaking coach in my pocket. I practice on my commute before every client meeting.",
-        name: "Amara K.",
-        role: "Sales lead",
+        stat: "0",
+        title: "Signup required to start",
+        description:
+          "Try a full practice as a guest — create an account only if you want your history saved.",
       },
     ],
     pricingEyebrow: "Pricing",
@@ -653,26 +653,26 @@ export const es: Dictionary = {
           "Recibe un informe detallado con consejos y ejercicios personalizados. Repite y mira subir tu puntuación.",
       },
     ],
-    testimonialsEyebrow: "Testimonios",
-    testimonialsTitle: "Oradores de todos los niveles lo adoran",
+    testimonialsEyebrow: "Por qué Eloq AI",
+    testimonialsTitle: "Pensado para practicar de verdad, no solo grabarte",
     testimonials: [
       {
-        quote:
-          "Ensayé mi pitch de ronda semilla 14 veces con Eloq AI. El día del demo day no estaba nervioso: estaba listo.",
-        name: "Sofía M.",
-        role: "Fundadora de startup",
+        stat: "13",
+        title: "Dimensiones analizadas",
+        description:
+          "Cada sesión puntúa claridad, confianza, estructura, ritmo y más — no una nota vaga y ya está.",
       },
       {
-        quote:
-          "Mis muletillas bajaron de 42 a 6 en tres semanas. Mis alumnos lo notaron antes que yo.",
-        name: "Daniel R.",
-        role: "Profesor universitario",
+        stat: "24/7",
+        title: "Sin cita previa",
+        description:
+          "Practica a medianoche antes de una entrevista, o cinco minutos antes de entrar a la sala.",
       },
       {
-        quote:
-          "Es como llevar un coach de oratoria en el bolsillo. Practico de camino a cada reunión con clientes.",
-        name: "Amara K.",
-        role: "Responsable de ventas",
+        stat: "0",
+        title: "Registro necesario para empezar",
+        description:
+          "Prueba una práctica completa como invitado — crea una cuenta solo si quieres guardar tu historial.",
       },
     ],
     pricingEyebrow: "Precios",
@@ -1212,26 +1212,26 @@ export const fr: Dictionary = {
           "Reçois un rapport détaillé avec des conseils et exercices personnalisés. Recommence et regarde ton score grimper.",
       },
     ],
-    testimonialsEyebrow: "Témoignages",
-    testimonialsTitle: "Adopté par des orateurs de tous niveaux",
+    testimonialsEyebrow: "Pourquoi Eloq AI",
+    testimonialsTitle: "Conçu pour vraiment s'entraîner, pas juste s'enregistrer",
     testimonials: [
       {
-        quote:
-          "J'ai répété mon pitch de levée de fonds 14 fois avec Eloq AI. Le jour de la démo, je n'étais pas stressé — j'étais prêt.",
-        name: "Sofia M.",
-        role: "Fondatrice de startup",
+        stat: "13",
+        title: "Dimensions analysées",
+        description:
+          "Chaque session note la clarté, la confiance, la structure, le rythme et plus — pas juste une note vague.",
       },
       {
-        quote:
-          "Mes tics de langage sont passés de 42 à 6 en trois semaines. Mes étudiants l'ont remarqué avant moi.",
-        name: "Daniel R.",
-        role: "Enseignant-chercheur",
+        stat: "24/7",
+        title: "Sans rendez-vous",
+        description:
+          "Entraîne-toi à minuit avant un entretien, ou cinq minutes avant d'entrer dans la salle.",
       },
       {
-        quote:
-          "C'est comme avoir un coach de prise de parole dans la poche. Je m'entraîne dans les transports avant chaque rendez-vous client.",
-        name: "Amara K.",
-        role: "Responsable commerciale",
+        stat: "0",
+        title: "Inscription nécessaire pour commencer",
+        description:
+          "Essaie une session complète en tant qu'invité — crée un compte seulement si tu veux garder ton historique.",
       },
     ],
     pricingEyebrow: "Tarifs",
