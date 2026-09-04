@@ -1,6 +1,6 @@
 "use client";
 
-import { useDict } from "@/lib/i18n";
+import { fr as d } from "@/lib/i18n/translations";
 import { formatDate } from "@/utils/format";
 
 const WIDTH = 600;
@@ -16,7 +16,6 @@ export function ExamEvolutionChart({
   /** Oldest first. */
   sessions: { createdAt: string; analysis: { overallScore: number } }[];
 }) {
-  const d = useDict();
 
   if (sessions.length < 2) {
     return <p className="text-sm text-muted">{d.examMode.needMoreSessions}</p>;

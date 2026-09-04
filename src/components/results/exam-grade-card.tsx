@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Clock3, GraduationCap } from "lucide-react";
-import { useDict } from "@/lib/i18n";
+import { fr as d } from "@/lib/i18n/translations";
 import { cn } from "@/utils/cn";
 import { scoreTone, SCORE_TONE_TEXT } from "@/utils/score";
 
@@ -29,7 +29,6 @@ export function ExamGradeCard({
   durationSeconds: number;
   grade20?: number;
 }) {
-  const d = useDict();
   const grade = (grade20 ?? overallScore / 5).toFixed(1);
   const tone = scoreTone(grade20 !== undefined ? grade20 * 5 : overallScore);
 

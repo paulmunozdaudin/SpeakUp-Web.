@@ -19,7 +19,7 @@ import type { BacFrancaisDimension, BacFrancaisEvaluation } from "@/types";
 import { BAC_FRANCAIS_DIMENSIONS } from "@/types";
 import { MetricCard } from "./metric-card";
 import { Card, CardTitle } from "@/components/ui/card";
-import { useDict } from "@/lib/i18n";
+import { fr as d } from "@/lib/i18n/translations";
 
 const DIMENSION_ICONS: Record<BacFrancaisDimension, LucideIcon> = {
   explicationQuality: BookOpenCheck,
@@ -48,7 +48,6 @@ export function BacFrancaisResultCard({
 }: {
   evaluation: BacFrancaisEvaluation;
 }) {
-  const d = useDict();
   const hasFeedback =
     evaluation.strengths.length > 0 ||
     evaluation.improvements.length > 0 ||

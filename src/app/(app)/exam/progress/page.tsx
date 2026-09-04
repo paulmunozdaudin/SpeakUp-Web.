@@ -11,7 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ExamEvolutionChart } from "@/components/exam/evolution-chart";
 import { computeExamProgress, type ReadinessTier } from "@/services/exam-progress";
-import { useDict } from "@/lib/i18n";
+import { fr as d } from "@/lib/i18n/translations";
 
 const EXAM_MODES = ["brevet-oral", "bac-francais-oral", "grand-oral"] as const;
 type ExamMode = (typeof EXAM_MODES)[number];
@@ -34,7 +34,6 @@ function isExamMode(mode: PracticeMode): mode is ExamMode {
 }
 
 export default function ExamProgressPage() {
-  const d = useDict();
   const { sessions, loading } = useSessions();
 
   if (loading) {
@@ -92,7 +91,7 @@ export default function ExamProgressPage() {
                 </Badge>
               </div>
               <Link
-                href={`/exam?mode=${mode}&lang=fr`}
+                href={`/exam?mode=${mode}`}
                 className="text-sm font-medium text-accent hover:underline"
               >
                 {d.examMode.newSimulation}

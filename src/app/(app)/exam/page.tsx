@@ -13,13 +13,12 @@ import {
   LineChart,
   Loader2,
 } from "lucide-react";
-import type { SpeechLanguage, TargetDuration } from "@/types";
-import { useDict } from "@/lib/i18n";
+import type { TargetDuration } from "@/types";
+import { fr as d } from "@/lib/i18n/translations";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { DurationSelector } from "@/components/recording/duration-selector";
-import { LanguageSelector } from "@/components/recording/language-selector";
 import { RecorderPanel } from "@/components/recording/recorder-panel";
 import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
 import { analyzeAndSave } from "@/services/analysis.service";
@@ -29,6 +28,13 @@ import { cn } from "@/utils/cn";
 
 const EXAM_MODES = ["brevet-oral", "bac-francais-oral", "grand-oral"] as const;
 type ExamMode = (typeof EXAM_MODES)[number];
+
+/** These three exam types only make sense practiced in French — the real
+ *  Brevet, Bac de Français and Grand Oral are never sat in another
+ *  language, so unlike the generic /practice recorder, this whole flow
+ *  (copy, jury questions, recording language) is French-only, matching
+ *  the "PRÉPARE TON ORAL" landing section it's linked from. */
+const LANGUAGE = "fr" as const;
 
 const EXAM_ICONS: Record<ExamMode, typeof BookOpen> = {
   "brevet-oral": BookOpen,
@@ -59,13 +65,8 @@ function isExamMode(value: string | null): value is ExamMode {
   return !!value && (EXAM_MODES as readonly string[]).includes(value);
 }
 
-function fallbackQuestion(
-  mode: ExamMode,
-  language: SpeechLanguage,
-  topic: string,
-  historyLength: number,
-) {
-  const bank = AUDIENCE_QUESTIONS[language][mode];
+function fallbackQuestion(mode: ExamMode, topic: string, historyLength: number) {
+  const bank = AUDIENCE_QUESTIONS[LANGUAGE][mode];
   return bank[historyLength % bank.length].replace("{topic}", topic || "");
 }
 
@@ -79,14 +80,12 @@ function fallbackQuestion(
  * session (plus a dedicated literary rubric for the Bac de Français).
  */
 export default function ExamModePage() {
-  const d = useDict();
   const router = useRouter();
 
   const [step, setStep] = useState<"setup" | "text" | "presentation" | "interview">("setup");
   const [mode, setMode] = useState<ExamMode>("brevet-oral");
   const [topic, setTopic] = useState("");
   const [topicError, setTopicError] = useState(false);
-  const [language, setLanguage] = useState<SpeechLanguage>("fr");
   const [presentationMinutes, setPresentationMinutes] = useState<TargetDuration>(
     DEFAULT_PRESENTATION_MINUTES["brevet-oral"],
   );
@@ -101,24 +100,20 @@ export default function ExamModePage() {
   const [textContext, setTextContext] = useState("");
 
   // Deep links from the "PRÉPARE TON ORAL" landing section preselect the
-  // exam type/language; a `repeat=<sessionId>` link (from "Refaire cet
-  // oral" on the results page) prefills the same topic/text so the student
-  // can redo the exact same prompt and compare scores. Applied post-mount
-  // for the same SSR-safety reason as the generic /practice page
-  // (window/localStorage/session lookups aren't available server-side).
+  // exam type; a `repeat=<sessionId>` link (from "Refaire cet oral" on the
+  // results page) prefills the same topic/text so the student can redo the
+  // exact same prompt and compare scores. Applied post-mount for the same
+  // SSR-safety reason as the generic /practice page (window/localStorage/
+  // session lookups aren't available server-side).
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const modeParam = params.get("mode");
-    const langParam = params.get("lang");
     const repeatId = params.get("repeat");
-    const nextLanguage: SpeechLanguage =
-      langParam === "es" || langParam === "en" || langParam === "fr" ? langParam : "fr";
     if (isExamMode(modeParam)) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setMode(modeParam);
       setPresentationMinutes(DEFAULT_PRESENTATION_MINUTES[modeParam]);
     }
-    setLanguage(nextLanguage);
 
     if (repeatId) {
       getSession(repeatId).then((session) => {
@@ -129,7 +124,6 @@ export default function ExamModePage() {
           : session.topic;
         setMode(session.mode);
         setPresentationMinutes(DEFAULT_PRESENTATION_MINUTES[session.mode]);
-        setLanguage(session.analysis.language);
         setTopic(rawTopic);
         if (session.analysis.sourceText) {
           setTextInputMode("paste");
@@ -137,7 +131,6 @@ export default function ExamModePage() {
         }
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [presentationTranscript, setPresentationTranscript] = useState("");
@@ -212,7 +205,7 @@ export default function ExamModePage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           mode,
-          language,
+          language: LANGUAGE,
           topic: topic.trim(),
           presentation,
           textContext: textContext || undefined,
@@ -226,7 +219,7 @@ export default function ExamModePage() {
     } catch {
       // fall through to the local fallback below
     }
-    return fallbackQuestion(mode, language, topic.trim(), history.length);
+    return fallbackQuestion(mode, topic.trim(), history.length);
   }
 
   async function handlePresentationFinish(transcript: string, durationSeconds: number) {
@@ -265,7 +258,7 @@ export default function ExamModePage() {
         title: `${d.modes[mode]} — ${topic.trim()}`,
         topic: topic.trim(),
         mode,
-        language,
+        language: LANGUAGE,
         durationSeconds: Math.max(totalDuration, 1),
         targetDurationMinutes: presentationMinutes + INTERVIEW_QUESTIONS * PER_TURN_TARGET_MINUTES,
         textContext: isBacFrancais ? textContext || undefined : undefined,
@@ -371,15 +364,9 @@ export default function ExamModePage() {
               maxLength={200}
             />
 
-            <div className="grid gap-6 sm:grid-cols-2">
-              <div className="space-y-2">
-                <span className="block text-sm font-medium">{d.practice.durationLabel}</span>
-                <DurationSelector value={presentationMinutes} onChange={setPresentationMinutes} />
-              </div>
-              <div className="space-y-2">
-                <span className="block text-sm font-medium">{d.practice.languageLabel}</span>
-                <LanguageSelector value={language} onChange={setLanguage} />
-              </div>
+            <div className="space-y-2">
+              <span className="block text-sm font-medium">{d.practice.durationLabel}</span>
+              <DurationSelector value={presentationMinutes} onChange={setPresentationMinutes} />
             </div>
 
             <Button size="lg" className="w-full" onClick={handleStart}>
@@ -545,7 +532,7 @@ export default function ExamModePage() {
             ) : (
               <RecorderPanel
                 key={recorderKey}
-                language={language}
+                language={LANGUAGE}
                 targetDurationMinutes={presentationMinutes}
                 onFinish={handlePresentationFinish}
                 disabled={analyzing}
@@ -598,7 +585,7 @@ export default function ExamModePage() {
             {!loadingNextQuestion && (
               <RecorderPanel
                 key={recorderKey}
-                language={language}
+                language={LANGUAGE}
                 targetDurationMinutes={PER_TURN_TARGET_MINUTES}
                 onFinish={handleInterviewTurnFinish}
                 disabled={analyzing}

@@ -15,9 +15,9 @@ export default function LandingPage() {
       <Navbar />
       <main className="flex-1">
         <Hero />
+        <FrenchExams />
         <Features />
         <HowItWorks />
-        <FrenchExams />
         <Testimonials />
         <Pricing />
         <Faq />

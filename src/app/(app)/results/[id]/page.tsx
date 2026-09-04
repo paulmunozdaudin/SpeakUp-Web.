@@ -20,6 +20,7 @@ import { TranscriptCard } from "@/components/results/transcript-card";
 import { ImprovedVersionCard } from "@/components/results/improved-version-card";
 import { ResultsTabs } from "@/components/results/results-tabs";
 import { useDict } from "@/lib/i18n";
+import { fr } from "@/lib/i18n/translations";
 
 type TabKey = "overview" | "metrics" | "transcript" | "improved" | "questions";
 
@@ -101,11 +102,11 @@ export default function ResultsPage({
             grade20={analysis.bacFrancais?.grade20}
           />
           <Link
-            href={`/exam?mode=${session.mode}&lang=${analysis.language}&repeat=${session.id}`}
+            href={`/exam?mode=${session.mode}&repeat=${session.id}`}
             className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline"
           >
             <RotateCcw className="h-3.5 w-3.5" />
-            {d.examMode.redoExam}
+            {fr.examMode.redoExam}
           </Link>
         </>
       )}
