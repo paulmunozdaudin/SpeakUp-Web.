@@ -138,7 +138,7 @@ export const en = {
       },
       {
         name: "Pro",
-        price: "€12",
+        price: "€7.99",
         period: "per month",
         description: "For serious speakers who practice weekly.",
         features: [
@@ -721,7 +721,7 @@ export const es: Dictionary = {
       },
       {
         name: "Pro",
-        price: "12 €",
+        price: "7,99 €",
         period: "al mes",
         description: "Para quienes se toman en serio practicar cada semana.",
         features: [
@@ -1305,7 +1305,7 @@ export const fr: Dictionary = {
       },
       {
         name: "Pro",
-        price: "€12",
+        price: "7,99 €",
         period: "par mois",
         description: "Pour les orateurs sérieux qui s'entraînent chaque semaine.",
         features: [

@@ -48,7 +48,7 @@ export const termsContent: LegalContent = {
       {
         heading: "6. Planes y pagos",
         paragraphs: [
-          "Eloq AI ofrece un plan gratuito y un plan de pago ('Pro', 12€/mes). El plan gratuito incluye hasta 3 prácticas por semana; el plan Pro incluye prácticas ilimitadas y funciones adicionales indicadas en la página de precios en el momento de la contratación.",
+          "Eloq AI ofrece un plan gratuito y un plan de pago ('Pro', 7,99€/mes). El plan gratuito incluye hasta 3 prácticas por semana; el plan Pro incluye prácticas ilimitadas y funciones adicionales indicadas en la página de precios en el momento de la contratación.",
           "Los pagos se procesan a través de Stripe; nosotros no almacenamos los datos completos de tu tarjeta. La suscripción Pro se renueva automáticamente cada mes hasta que la canceles. Puedes cancelarla en cualquier momento desde tu perfil (portal de facturación) — seguirás teniendo acceso Pro hasta el final del periodo ya pagado, sin reembolso de la parte ya transcurrida salvo que la ley aplicable exija lo contrario.",
           "Podemos cambiar el precio del plan Pro en el futuro; si te afecta como suscriptor activo, te avisaremos con antelación razonable antes de que se aplique en tu siguiente renovación.",
         ],
@@ -134,7 +134,7 @@ export const termsContent: LegalContent = {
       {
         heading: "6. Formules et paiement",
         paragraphs: [
-          "Eloq AI propose une formule gratuite et une formule payante (« Pro », 12€/mois). La formule gratuite inclut jusqu'à 3 entraînements par semaine ; la formule Pro inclut des entraînements illimités et les fonctionnalités supplémentaires indiquées sur la page des tarifs au moment de la souscription.",
+          "Eloq AI propose une formule gratuite et une formule payante (« Pro », 7,99€/mois). La formule gratuite inclut jusqu'à 3 entraînements par semaine ; la formule Pro inclut des entraînements illimités et les fonctionnalités supplémentaires indiquées sur la page des tarifs au moment de la souscription.",
           "Les paiements sont traités via Stripe ; nous ne stockons jamais les données complètes de ta carte. L'abonnement Pro se renouvelle automatiquement chaque mois jusqu'à ce que tu l'annules. Tu peux l'annuler à tout moment depuis ton profil (portail de facturation) — tu conserveras l'accès Pro jusqu'à la fin de la période déjà payée, sans remboursement de la partie déjà écoulée, sauf si la loi applicable l'exige.",
           "Nous pouvons modifier le prix de la formule Pro à l'avenir ; si tu es abonné actif, nous te préviendrons avec un délai raisonnable avant que cela s'applique à ton prochain renouvellement.",
         ],
@@ -220,7 +220,7 @@ export const termsContent: LegalContent = {
       {
         heading: "6. Plans and payment",
         paragraphs: [
-          "Eloq AI offers a free plan and a paid plan ('Pro', €12/month). The free plan includes up to 3 practices per week; the Pro plan includes unlimited practices and any additional features listed on the pricing page at the time you subscribe.",
+          "Eloq AI offers a free plan and a paid plan ('Pro', €7.99/month). The free plan includes up to 3 practices per week; the Pro plan includes unlimited practices and any additional features listed on the pricing page at the time you subscribe.",
           "Payments are processed through Stripe; we never store your full card details. The Pro subscription renews automatically each month until you cancel. You can cancel at any time from your profile (billing portal) — you'll keep Pro access until the end of the period already paid for, with no refund for the elapsed portion unless applicable law requires otherwise.",
           "We may change the Pro plan's price in the future; if you're an active subscriber, we'll give you reasonable advance notice before it applies to your next renewal.",
         ],
