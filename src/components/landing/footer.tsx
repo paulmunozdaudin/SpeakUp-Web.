@@ -4,6 +4,10 @@ import Link from "next/link";
 import { Logo } from "@/components/ui/logo";
 import { useDict } from "@/lib/i18n";
 
+/** Shown as the literal address (not a translated "Contact" label) so it
+ *  works as a fallback on devices where mailto: silently does nothing. */
+const SUPPORT_EMAIL = "paulmunozdaudin@gmail.com";
+
 export function Footer() {
   const d = useDict();
 
@@ -21,7 +25,7 @@ export function Footer() {
       links: [
         { label: d.landing.footerAbout, href: "#" },
         { label: d.landing.footerBlog, href: "#" },
-        { label: d.landing.footerContact, href: "mailto:paulmunozdaudin@gmail.com" },
+        { label: SUPPORT_EMAIL, href: `mailto:${SUPPORT_EMAIL}` },
       ],
     },
     {

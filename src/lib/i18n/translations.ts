@@ -203,7 +203,6 @@ export const en = {
     footerLegal: "Legal",
     footerAbout: "About",
     footerBlog: "Blog",
-    footerContact: "Contact",
     footerPrivacy: "Privacy",
     footerTerms: "Terms",
     footerRights: "All rights reserved.",
@@ -405,7 +404,8 @@ export const en = {
     ],
     supportTitle: "Need help?",
     supportDescription: "Found a bug or have a question? Write to us and we'll get back to you.",
-    supportCta: "Contact support",
+    supportEmailCopy: "Copy email",
+    supportEmailCopied: "Copied!",
   },
   billing: {
     quotaExceeded:
@@ -786,7 +786,6 @@ export const es: Dictionary = {
     footerLegal: "Legal",
     footerAbout: "Sobre nosotros",
     footerBlog: "Blog",
-    footerContact: "Contacto",
     footerPrivacy: "Privacidad",
     footerTerms: "Términos",
     footerRights: "Todos los derechos reservados.",
@@ -991,7 +990,8 @@ export const es: Dictionary = {
     ],
     supportTitle: "¿Necesitas ayuda?",
     supportDescription: "¿Has encontrado un fallo o tienes una duda? Escríbenos y te responderemos.",
-    supportCta: "Contactar con soporte",
+    supportEmailCopy: "Copiar email",
+    supportEmailCopied: "¡Copiado!",
   },
   billing: {
     quotaExceeded:
@@ -1370,7 +1370,6 @@ export const fr: Dictionary = {
     footerLegal: "Mentions légales",
     footerAbout: "À propos",
     footerBlog: "Blog",
-    footerContact: "Contact",
     footerPrivacy: "Confidentialité",
     footerTerms: "Conditions",
     footerRights: "Tous droits réservés.",
@@ -1569,7 +1568,8 @@ export const fr: Dictionary = {
     ],
     supportTitle: "Besoin d'aide ?",
     supportDescription: "Tu as trouvé un bug ou tu as une question ? Écris-nous, on te répondra.",
-    supportCta: "Contacter le support",
+    supportEmailCopy: "Copier l'email",
+    supportEmailCopied: "Copié !",
   },
   billing: {
     quotaExceeded:

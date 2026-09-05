@@ -20,11 +20,17 @@ import { useSessions } from "@/hooks/use-sessions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
+import { CopyButton } from "@/components/ui/copy-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useDict } from "@/lib/i18n";
 import { scoreLabelKey } from "@/utils/score";
 import { startProCheckout, openBillingPortal, PRO_CHECKOUT_ENABLED } from "@/services/billing.service";
 import { joinProWaitlist } from "@/services/waitlist.service";
+
+/** Shown as plain, copyable text (not just a mailto: link) because
+ *  mailto: silently does nothing on devices with no default mail app
+ *  configured (common on Android/Windows browsers using webmail). */
+const SUPPORT_EMAIL = "paulmunozdaudin@gmail.com";
 
 export default function ProfilePage() {
   const d = useDict();
@@ -253,12 +259,19 @@ export default function ProfilePage() {
             <p className="mt-0.5 text-sm text-muted">{d.profile.supportDescription}</p>
           </div>
         </div>
-        <a href="mailto:paulmunozdaudin@gmail.com" className="shrink-0">
-          <Button variant="secondary">
-            <Mail className="h-4 w-4" />
-            {d.profile.supportCta}
-          </Button>
-        </a>
+        <div className="flex shrink-0 flex-wrap items-center gap-2">
+          <a
+            href={`mailto:${SUPPORT_EMAIL}`}
+            className="text-sm font-medium text-accent underline-offset-4 hover:underline"
+          >
+            {SUPPORT_EMAIL}
+          </a>
+          <CopyButton
+            text={SUPPORT_EMAIL}
+            copyLabel={d.profile.supportEmailCopy}
+            copiedLabel={d.profile.supportEmailCopied}
+          />
+        </div>
       </Card>
     </div>
   );
