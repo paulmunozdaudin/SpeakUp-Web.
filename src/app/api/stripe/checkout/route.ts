@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { getSupabaseAdminClient } from "@/lib/supabase/admin";
 import { getStripeClient } from "@/lib/stripe/server";
 import { isStripeConfigured, STRIPE_PRICE_ID_PRO } from "@/lib/stripe/config";
 
@@ -102,8 +103,11 @@ export async function POST(request: Request) {
           ? session.customer
           : session.customer?.id;
       if (newCustomerId) {
-        await supabase
-          .from("profiles")
+        // billing columns can only be written by the service role (see
+        // migration 00004) — the user's own session client would be
+        // silently reverted by the protective trigger.
+        await getSupabaseAdminClient()
+          ?.from("profiles")
           .update({ stripe_customer_id: newCustomerId })
           .eq("id", user.id);
       }
