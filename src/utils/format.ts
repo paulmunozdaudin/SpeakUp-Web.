@@ -2,7 +2,13 @@
 
 import { getLocale } from "@/lib/i18n";
 
-const localeTag = () => (getLocale() === "es" ? "es-ES" : "en-US");
+const LOCALE_TAGS: Record<ReturnType<typeof getLocale>, string> = {
+  es: "es-ES",
+  fr: "fr-FR",
+  en: "en-US",
+};
+
+const localeTag = () => LOCALE_TAGS[getLocale()];
 
 /** 125 -> "2:05" */
 export function formatDuration(totalSeconds: number): string {
