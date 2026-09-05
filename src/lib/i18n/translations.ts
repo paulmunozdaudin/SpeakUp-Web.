@@ -222,7 +222,7 @@ export const en = {
     haveAccount: "Already have an account?",
     checkInbox: "Check your inbox",
     confirmationSent:
-      "We sent you a confirmation link. Click it to activate your account, then log in.",
+      "We sent you a confirmation link. Click it to activate your account, then log in. Don't see it? Check your spam/junk folder.",
     backToLogin: "Back to login",
     forgotTitle: "Reset your password",
     forgotSubtitle: "Enter your email and we'll send you a reset link.",
@@ -805,7 +805,7 @@ export const es: Dictionary = {
     haveAccount: "¿Ya tienes cuenta?",
     checkInbox: "Revisa tu bandeja de entrada",
     confirmationSent:
-      "Te hemos enviado un enlace de confirmación. Haz clic para activar tu cuenta y luego inicia sesión.",
+      "Te hemos enviado un enlace de confirmación. Haz clic para activar tu cuenta y luego inicia sesión. ¿No lo ves? Revisa la carpeta de spam/correo no deseado.",
     backToLogin: "Volver a iniciar sesión",
     forgotTitle: "Restablece tu contraseña",
     forgotSubtitle: "Escribe tu email y te enviaremos un enlace.",
@@ -1389,7 +1389,7 @@ export const fr: Dictionary = {
     haveAccount: "Tu as déjà un compte ?",
     checkInbox: "Vérifie ta boîte mail",
     confirmationSent:
-      "Nous t'avons envoyé un lien de confirmation. Clique dessus pour activer ton compte, puis connecte-toi.",
+      "Nous t'avons envoyé un lien de confirmation. Clique dessus pour activer ton compte, puis connecte-toi. Tu ne le vois pas ? Vérifie ton dossier spam/indésirables.",
     backToLogin: "Retour à la connexion",
     forgotTitle: "Réinitialise ton mot de passe",
     forgotSubtitle: "Indique ton email et nous t'enverrons un lien de réinitialisation.",
