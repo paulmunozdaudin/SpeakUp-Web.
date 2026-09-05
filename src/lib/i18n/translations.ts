@@ -130,7 +130,7 @@ export const en = {
         period: "forever",
         description: "Perfect for trying Eloq AI.",
         features: [
-          "3 practice sessions per month",
+          "3 practice sessions per week",
           "Core AI feedback",
           "Session history",
         ],
@@ -710,7 +710,7 @@ export const es: Dictionary = {
         period: "para siempre",
         description: "Perfecto para probar Eloq AI.",
         features: [
-          "3 sesiones de práctica al mes",
+          "3 sesiones de práctica a la semana",
           "Feedback esencial de IA",
           "Historial de sesiones",
         ],
@@ -1291,7 +1291,7 @@ export const fr: Dictionary = {
         period: "pour toujours",
         description: "Parfait pour découvrir Eloq AI.",
         features: [
-          "3 sessions d'entraînement par mois",
+          "3 sessions d'entraînement par semaine",
           "Retour IA essentiel",
           "Historique des sessions",
         ],
