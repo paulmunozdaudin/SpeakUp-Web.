@@ -5,6 +5,12 @@ import { motion } from "framer-motion";
 import { Gauge, Mic, Sparkles } from "lucide-react";
 import type { AnalysisResult, PracticeMode } from "@/types";
 import { FRENCH_EXAM_MODES } from "@/types";
+
+function practiceAgainHref(mode: PracticeMode, language: AnalysisResult["language"]): string {
+  if (FRENCH_EXAM_MODES.includes(mode)) return `/exam?mode=${mode}&lang=${language}`;
+  if (mode === "interview") return "/interview";
+  return "/practice";
+}
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ScoreRing } from "@/components/ui/score-ring";
@@ -33,13 +39,6 @@ export function ScoreHeader({
   analysis: AnalysisResult;
 }) {
   const d = useDict();
-  // /practice no longer offers the French exam modes (they only exist under
-  // "Mode Examinateur IA"), so "practice again" on one of those sessions
-  // has to reopen /exam instead, or it'd land on a mode picker that can't
-  // actually redo the same kind of session.
-  const practiceAgainHref = FRENCH_EXAM_MODES.includes(mode)
-    ? `/exam?mode=${mode}&lang=${analysis.language}`
-    : "/practice";
   const paceLabel =
     analysis.paceVerdict === "slow"
       ? d.results.paceSlow
@@ -83,7 +82,7 @@ export function ScoreHeader({
             {analysis.summary}
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-3">
-            <Link href={practiceAgainHref}>
+            <Link href={practiceAgainHref(mode, analysis.language)}>
               <Button>
                 <Mic className="h-4 w-4" />
                 {d.results.practiceAgain}

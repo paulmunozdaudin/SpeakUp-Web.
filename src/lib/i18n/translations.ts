@@ -25,6 +25,7 @@ export const en = {
     dashboard: "Dashboard",
     practice: "Practice",
     examMode: "French Exams",
+    interviewMode: "Interview",
     history: "History",
     profile: "Profile",
   },
@@ -562,6 +563,22 @@ export const en = {
       closingQuality: "Always end with one clear summary sentence — never just trail off.",
     },
   },
+  interviewMode: {
+    setupTitle: "AI Interviewer Mode",
+    setupSubtitle:
+      "Practice a real job interview — the AI asks questions like a real hiring manager and follows up on what you actually say.",
+    interviewerBadge: "AI Interviewer Mode",
+    roleLabel: "Role you're interviewing for",
+    rolePlaceholder: "e.g. Frontend Developer",
+    companyLabel: "Company (optional)",
+    companyPlaceholder: "e.g. Acme Inc.",
+    startInterview: "Start the interview",
+    disclaimer: "Eloq doesn't decide if you get the job — it trains you to interview better.",
+    interviewerAsks: "The interviewer asks:",
+    questionProgress: "Question {current} / {total}",
+    interviewerThinking: "The interviewer is preparing the next question…",
+    finishNow: "End the interview now",
+  },
 };
 
 export type Dictionary = typeof en;
@@ -587,6 +604,7 @@ export const es: Dictionary = {
     dashboard: "Panel",
     practice: "Practicar",
     examMode: "Exámenes franceses",
+    interviewMode: "Entrevista",
     history: "Historial",
     profile: "Perfil",
   },
@@ -1128,6 +1146,22 @@ export const es: Dictionary = {
       closingQuality: "Termina siempre con una frase de cierre clara, nunca dejes la respuesta a medias.",
     },
   },
+  interviewMode: {
+    setupTitle: "Modo Entrevistador IA",
+    setupSubtitle:
+      "Practica una entrevista de trabajo real — la IA pregunta como un reclutador de verdad y repregunta según lo que respondas.",
+    interviewerBadge: "Modo Entrevistador IA",
+    roleLabel: "Puesto al que te presentas",
+    rolePlaceholder: "ej. Desarrollador Frontend",
+    companyLabel: "Empresa (opcional)",
+    companyPlaceholder: "ej. Acme S.A.",
+    startInterview: "Empezar la entrevista",
+    disclaimer: "Eloq no decide si te contratan: te entrena para que entrevistes mejor.",
+    interviewerAsks: "El entrevistador pregunta:",
+    questionProgress: "Pregunta {current} / {total}",
+    interviewerThinking: "El entrevistador está preparando la siguiente pregunta…",
+    finishNow: "Terminar la entrevista ahora",
+  },
 };
 
 export const fr: Dictionary = {
@@ -1151,6 +1185,7 @@ export const fr: Dictionary = {
     dashboard: "Tableau de bord",
     practice: "Entraînement",
     examMode: "Oraux 🇫🇷",
+    interviewMode: "Entretien",
     history: "Historique",
     profile: "Profil",
   },
@@ -1685,5 +1720,21 @@ export const fr: Dictionary = {
       openingStrength: "Écris et mémorise ta phrase d'accroche : une question ou un chiffre marquant.",
       closingQuality: "Termine toujours par une phrase de synthèse claire, jamais en laissant la réponse en suspens.",
     },
+  },
+  interviewMode: {
+    setupTitle: "Mode Recruteur IA",
+    setupSubtitle:
+      "Entraîne-toi à un véritable entretien d'embauche — l'IA pose des questions comme un vrai recruteur et rebondit sur tes réponses.",
+    interviewerBadge: "Mode Recruteur IA",
+    roleLabel: "Poste pour lequel tu passes l'entretien",
+    rolePlaceholder: "ex. Développeur Frontend",
+    companyLabel: "Entreprise (optionnel)",
+    companyPlaceholder: "ex. Acme SAS",
+    startInterview: "Commencer l'entretien",
+    disclaimer: "Eloq ne décide pas si tu es embauché(e) : il t'entraîne à mieux passer l'entretien.",
+    interviewerAsks: "Le recruteur demande :",
+    questionProgress: "Question {current} / {total}",
+    interviewerThinking: "Le recruteur prépare la question suivante…",
+    finishNow: "Terminer l'entretien maintenant",
   },
 };

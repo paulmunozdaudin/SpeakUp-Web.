@@ -35,10 +35,17 @@ export const FRENCH_EXAM_MODES: PracticeMode[] = [
   "grand-oral",
 ];
 
-/** PRACTICE_MODES minus the French exam modes — what the generic /practice
- *  flow actually offers. */
+/** Modes practiced through their own dedicated interactive flow instead of
+ *  the generic single-take /practice recorder: the three French exams
+ *  (/exam) and the job interview (/interview) — both simulate a real
+ *  back-and-forth with an AI asking follow-up questions grounded in what
+ *  was actually said, which the generic flow doesn't do. */
+export const DEDICATED_FLOW_MODES: PracticeMode[] = [...FRENCH_EXAM_MODES, "interview"];
+
+/** PRACTICE_MODES minus the dedicated-flow modes — what the generic
+ *  /practice flow actually offers. */
 export const GENERIC_PRACTICE_MODES: PracticeMode[] = PRACTICE_MODES.filter(
-  (mode) => !FRENCH_EXAM_MODES.includes(mode),
+  (mode) => !DEDICATED_FLOW_MODES.includes(mode),
 );
 
 /** Language the user speaks (and the report is written) in. */
