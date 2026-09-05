@@ -8,6 +8,7 @@ import {
   Flame,
   LogIn,
   Lock,
+  Mail,
   Mic,
   Sparkles,
   Trophy,
@@ -240,6 +241,25 @@ export default function ProfilePage() {
           ))}
         </div>
       </section>
+
+      {/* Support */}
+      <Card className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+            <Mail className="h-5 w-5" />
+          </div>
+          <div>
+            <CardTitle>{d.profile.supportTitle}</CardTitle>
+            <p className="mt-0.5 text-sm text-muted">{d.profile.supportDescription}</p>
+          </div>
+        </div>
+        <a href="mailto:paulmunozdaudin@gmail.com" className="shrink-0">
+          <Button variant="secondary">
+            <Mail className="h-4 w-4" />
+            {d.profile.supportCta}
+          </Button>
+        </a>
+      </Card>
     </div>
   );
 }

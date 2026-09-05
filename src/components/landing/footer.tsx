@@ -21,7 +21,7 @@ export function Footer() {
       links: [
         { label: d.landing.footerAbout, href: "#" },
         { label: d.landing.footerBlog, href: "#" },
-        { label: d.landing.footerContact, href: "#" },
+        { label: d.landing.footerContact, href: "mailto:paulmunozdaudin@gmail.com" },
       ],
     },
     {

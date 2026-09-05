@@ -28,10 +28,20 @@ import { getLocale, DICTIONARIES } from "@/lib/i18n";
 const LOCAL_KEY = "eloq-sessions";
 const GUEST_USER_ID = "guest";
 
-/** Free-plan sessions per calendar month — matches the pricing page copy.
- *  Guests (no account) are never capped; the limit only applies once
- *  practices start syncing to a real account, to give Pro a reason to exist. */
-const FREE_MONTHLY_SESSION_LIMIT = 3;
+/** Free-plan sessions per calendar week (Monday-Sunday) — matches the
+ *  pricing page copy. Guests (no account) are never capped; the limit only
+ *  applies once practices start syncing to a real account, to give Pro a
+ *  reason to exist. */
+const FREE_WEEKLY_SESSION_LIMIT = 3;
+
+/** Midnight of the Monday that starts the current calendar week. */
+function startOfWeek(): Date {
+  const date = new Date();
+  const daysSinceMonday = (date.getDay() + 6) % 7;
+  date.setDate(date.getDate() - daysSinceMonday);
+  date.setHours(0, 0, 0, 0);
+  return date;
+}
 
 export interface CreateSessionInput {
   topic: string;
@@ -152,17 +162,13 @@ export async function createSession(
     .maybeSingle();
 
   if (profile?.subscription_status !== "pro") {
-    const startOfMonth = new Date();
-    startOfMonth.setDate(1);
-    startOfMonth.setHours(0, 0, 0, 0);
-
     const { count } = await supabase
       .from("practice_sessions")
       .select("id", { count: "exact", head: true })
       .eq("user_id", userId)
-      .gte("created_at", startOfMonth.toISOString());
+      .gte("created_at", startOfWeek().toISOString());
 
-    if ((count ?? 0) >= FREE_MONTHLY_SESSION_LIMIT) {
+    if ((count ?? 0) >= FREE_WEEKLY_SESSION_LIMIT) {
       throw new Error(DICTIONARIES[getLocale()].billing.quotaExceeded);
     }
   }

@@ -403,10 +403,13 @@ export const en = {
       { name: "Smooth Talker", description: "Score 90+ on clarity" },
       { name: "Marathon Speaker", description: "Complete 50 practices" },
     ],
+    supportTitle: "Need help?",
+    supportDescription: "Found a bug or have a question? Write to us and we'll get back to you.",
+    supportCta: "Contact support",
   },
   billing: {
     quotaExceeded:
-      "You've used your 3 free practices this month. Upgrade to Pro for unlimited practices.",
+      "You've used your 3 free practices this week. Upgrade to Pro for unlimited practices.",
     checkoutError: "Couldn't start checkout. Please try again in a moment.",
     portalError: "Couldn't open the billing portal. Please try again.",
     notConfigured: "Payments aren't available yet. Please try again later.",
@@ -986,10 +989,13 @@ export const es: Dictionary = {
       { name: "Pico de oro", description: "Consigue 90+ en claridad" },
       { name: "Orador de maratón", description: "Completa 50 prácticas" },
     ],
+    supportTitle: "¿Necesitas ayuda?",
+    supportDescription: "¿Has encontrado un fallo o tienes una duda? Escríbenos y te responderemos.",
+    supportCta: "Contactar con soporte",
   },
   billing: {
     quotaExceeded:
-      "Has usado tus 3 prácticas gratis de este mes. Hazte Pro para prácticas ilimitadas.",
+      "Has usado tus 3 prácticas gratis de esta semana. Hazte Pro para prácticas ilimitadas.",
     checkoutError: "No se pudo iniciar el pago. Inténtalo de nuevo en un momento.",
     portalError: "No se pudo abrir el portal de facturación. Inténtalo de nuevo.",
     notConfigured: "Los pagos aún no están disponibles. Inténtalo más tarde.",
@@ -1561,10 +1567,13 @@ export const fr: Dictionary = {
       { name: "Beau parleur", description: "Obtiens 90+ en clarté" },
       { name: "Marathonien de l'oral", description: "Termine 50 entraînements" },
     ],
+    supportTitle: "Besoin d'aide ?",
+    supportDescription: "Tu as trouvé un bug ou tu as une question ? Écris-nous, on te répondra.",
+    supportCta: "Contacter le support",
   },
   billing: {
     quotaExceeded:
-      "Tu as utilisé tes 3 entraînements gratuits de ce mois-ci. Passe à Pro pour des entraînements illimités.",
+      "Tu as utilisé tes 3 entraînements gratuits de cette semaine. Passe à Pro pour des entraînements illimités.",
     checkoutError: "Impossible de démarrer le paiement. Réessaie dans un instant.",
     portalError: "Impossible d'ouvrir le portail de facturation. Réessaie.",
     notConfigured: "Les paiements ne sont pas encore disponibles. Réessaie plus tard.",
