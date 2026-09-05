@@ -23,7 +23,7 @@ import { DurationSelector } from "@/components/recording/duration-selector";
 import { RecorderPanel } from "@/components/recording/recorder-panel";
 import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
 import { analyzeAndSave } from "@/services/analysis.service";
-import { getSession } from "@/services/sessions.service";
+import { checkFreeQuota, getSession } from "@/services/sessions.service";
 import { AUDIENCE_QUESTIONS } from "@/services/ai/question-bank";
 import { cn } from "@/utils/cn";
 
@@ -151,9 +151,18 @@ export default function ExamModePage() {
     setPresentationMinutes(DEFAULT_PRESENTATION_MINUTES[next]);
   }
 
-  function beginPresentation() {
-    track("exam_started", { mode });
+  async function beginPresentation() {
     setError(null);
+    // Checked before recording even opens — a full exam run (presentation +
+    // 3 jury turns, several OpenAI calls) would otherwise be wasted on a
+    // free user already over quota, only to fail at the very last step.
+    try {
+      await checkFreeQuota();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : d.auth.genericError);
+      return;
+    }
+    track("exam_started", { mode });
     setPresentationTranscript("");
     setPresentationDurationSeconds(0);
     setTurns([]);
@@ -375,6 +384,9 @@ export default function ExamModePage() {
             <Button size="lg" className="w-full" onClick={handleStart}>
               {d.examMode.startExam}
             </Button>
+            {error && (
+              <p className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">{error}</p>
+            )}
             <p className="text-center text-xs leading-relaxed text-muted">
               {d.examMode.disclaimer}
             </p>
@@ -486,6 +498,9 @@ export default function ExamModePage() {
             <Button size="lg" className="w-full" onClick={handleTextContinue}>
               {d.practice.continueToRecording}
             </Button>
+            {error && (
+              <p className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">{error}</p>
+            )}
           </motion.div>
         )}
 

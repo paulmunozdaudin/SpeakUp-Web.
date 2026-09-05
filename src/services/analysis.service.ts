@@ -11,7 +11,7 @@ import type {
   PracticeSession,
   SpeechLanguage,
 } from "@/types";
-import { createSession } from "./sessions.service";
+import { checkFreeQuota, createSession } from "./sessions.service";
 
 export interface AnalyzeInput {
   transcript: string;
@@ -28,6 +28,11 @@ export interface AnalyzeInput {
 export async function analyzeAndSave(
   input: AnalyzeInput,
 ): Promise<PracticeSession> {
+  // Checked before spending an OpenAI call — a free-plan user over quota
+  // would otherwise pay for (and immediately lose) a full AI analysis
+  // before createSession() rejects the insert.
+  await checkFreeQuota();
+
   const response = await fetch("/api/analyze", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

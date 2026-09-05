@@ -139,6 +139,34 @@ export async function getSession(id: string): Promise<PracticeSession | null> {
   return data ? rowToSession(data as SessionRow) : null;
 }
 
+/** Throws if a signed-in free-plan user has hit their weekly session cap.
+ *  A no-op for guests (never capped) and Pro users. Callers should run this
+ *  BEFORE spending an OpenAI call on analysis, not just before the DB
+ *  insert — otherwise a capped user still pays for (and immediately loses)
+ *  a full AI analysis before being told they're over quota. */
+export async function checkFreeQuota(): Promise<void> {
+  const { supabase, userId } = await getCurrentUserId();
+  if (!supabase || !userId) return;
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("subscription_status")
+    .eq("id", userId)
+    .maybeSingle();
+
+  if (profile?.subscription_status === "pro") return;
+
+  const { count } = await supabase
+    .from("practice_sessions")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .gte("created_at", startOfWeek().toISOString());
+
+  if ((count ?? 0) >= FREE_WEEKLY_SESSION_LIMIT) {
+    throw new Error(DICTIONARIES[getLocale()].billing.quotaExceeded);
+  }
+}
+
 export async function createSession(
   input: CreateSessionInput,
 ): Promise<PracticeSession> {
@@ -155,23 +183,9 @@ export async function createSession(
     return session;
   }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("subscription_status")
-    .eq("id", userId)
-    .maybeSingle();
-
-  if (profile?.subscription_status !== "pro") {
-    const { count } = await supabase
-      .from("practice_sessions")
-      .select("id", { count: "exact", head: true })
-      .eq("user_id", userId)
-      .gte("created_at", startOfWeek().toISOString());
-
-    if ((count ?? 0) >= FREE_WEEKLY_SESSION_LIMIT) {
-      throw new Error(DICTIONARIES[getLocale()].billing.quotaExceeded);
-    }
-  }
+  // Re-checked here (not just before the OpenAI call in analyzeAndSave) as
+  // defense-in-depth against a race between two concurrent submissions.
+  await checkFreeQuota();
 
   const { data, error } = await supabase
     .from("practice_sessions")

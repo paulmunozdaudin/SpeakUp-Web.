@@ -12,6 +12,7 @@ import { LanguageSelector } from "@/components/recording/language-selector";
 import { RecorderPanel } from "@/components/recording/recorder-panel";
 import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
 import { analyzeAndSave } from "@/services/analysis.service";
+import { checkFreeQuota } from "@/services/sessions.service";
 import { AUDIENCE_QUESTIONS } from "@/services/ai/question-bank";
 
 /** How many questions make up one mock interview. */
@@ -61,12 +62,21 @@ export default function InterviewModePage() {
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  function handleStart() {
+  async function handleStart() {
     if (!role.trim()) {
       setRoleError(true);
       return;
     }
     setError(null);
+    // Checked before recording even opens — a full mock interview (5
+    // OpenAI-generated follow-ups) would otherwise be wasted on a free user
+    // already over quota, only to fail at the very last step.
+    try {
+      await checkFreeQuota();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : d.auth.genericError);
+      return;
+    }
     setTurns([]);
     setQuestionNumber(1);
     setCurrentQuestion(fallbackQuestion(language, 0));
@@ -201,6 +211,9 @@ export default function InterviewModePage() {
             <Button size="lg" className="w-full" onClick={handleStart}>
               {d.interviewMode.startInterview}
             </Button>
+            {error && (
+              <p className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">{error}</p>
+            )}
             <p className="text-center text-xs leading-relaxed text-muted">
               {d.interviewMode.disclaimer}
             </p>

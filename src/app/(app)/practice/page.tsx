@@ -15,6 +15,7 @@ import { LanguageSelector } from "@/components/recording/language-selector";
 import { RecorderPanel } from "@/components/recording/recorder-panel";
 import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
 import { analyzeAndSave } from "@/services/analysis.service";
+import { checkFreeQuota } from "@/services/sessions.service";
 import { useDict } from "@/lib/i18n";
 
 interface SessionConfig {
@@ -73,9 +74,19 @@ export default function PracticePage() {
   const [error, setError] = useState<string | null>(null);
   const [recorderKey, setRecorderKey] = useState(0);
 
-  function handleContinue() {
+  async function handleContinue() {
     if (!config.title.trim()) {
       setTitleError(true);
+      return;
+    }
+    setError(null);
+    // Checked before the recorder even opens — otherwise a free user over
+    // quota would record a full take and pay for an AI analysis that
+    // createSession() rejects at the very last step.
+    try {
+      await checkFreeQuota();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : d.auth.genericError);
       return;
     }
     setStep("record");
@@ -189,6 +200,11 @@ export default function PracticePage() {
               {d.practice.continueToRecording}
               <ArrowRight className="h-4.5 w-4.5" />
             </Button>
+            {error && (
+              <p className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
+                {error}
+              </p>
+            )}
           </motion.div>
         ) : (
           <motion.div
