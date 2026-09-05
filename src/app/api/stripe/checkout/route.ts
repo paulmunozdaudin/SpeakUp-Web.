@@ -58,14 +58,9 @@ export async function POST(request: Request) {
       | undefined;
     const origin = new URL(request.url).origin;
 
-    const customerParams = existingCustomerId
-      ? { customer: existingCustomerId }
-      : { customer_email: user.email ?? undefined };
-
-    const session = await stripe.checkout.sessions.create({
+    const baseParams: Stripe.Checkout.SessionCreateParams = {
       mode: "subscription",
       line_items: [{ price: STRIPE_PRICE_ID_PRO, quantity: 1 }],
-      ...customerParams,
       client_reference_id: user.id,
       subscription_data: { metadata: { supabase_user_id: user.id } },
       success_url: `${origin}/profile?checkout=success`,
@@ -74,7 +69,30 @@ export async function POST(request: Request) {
       // VAT/sales tax across the EU is calculated and remitted automatically
       // — the Pro product carries the SaaS tax code this requires.
       managed_payments: { enabled: true },
-    });
+    };
+
+    let session: Stripe.Checkout.Session;
+    try {
+      session = await stripe.checkout.sessions.create(
+        existingCustomerId
+          ? { ...baseParams, customer: existingCustomerId }
+          : { ...baseParams, customer_email: user.email ?? undefined },
+      );
+    } catch (err) {
+      // A customer ID saved while Stripe was in test mode doesn't exist once
+      // the account goes live (test and live are separate universes) — fall
+      // back to creating a fresh customer instead of failing the checkout.
+      const isStaleCustomer =
+        existingCustomerId &&
+        err instanceof Stripe.errors.StripeInvalidRequestError &&
+        err.param === "customer";
+      if (!isStaleCustomer) throw err;
+
+      session = await stripe.checkout.sessions.create({
+        ...baseParams,
+        customer_email: user.email ?? undefined,
+      });
+    }
 
     if (!session.url) {
       return NextResponse.json(
