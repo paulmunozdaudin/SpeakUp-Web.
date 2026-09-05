@@ -92,6 +92,21 @@ export async function POST(request: Request) {
         ...baseParams,
         customer_email: user.email ?? undefined,
       });
+
+      // Repair the stale mapping now, not just on checkout.session.completed
+      // — otherwise every Upgrade click repeats this same fallback and
+      // leaves behind another orphaned live-mode Customer if the session
+      // is abandoned before paying.
+      const newCustomerId =
+        typeof session.customer === "string"
+          ? session.customer
+          : session.customer?.id;
+      if (newCustomerId) {
+        await supabase
+          .from("profiles")
+          .update({ stripe_customer_id: newCustomerId })
+          .eq("id", user.id);
+      }
     }
 
     if (!session.url) {
