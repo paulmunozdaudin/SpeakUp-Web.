@@ -12,13 +12,11 @@ export interface BillingResult {
 }
 
 /**
- * Stripe is still in test mode — real payments aren't legally possible yet
- * (pending the founder's majority + auto-entrepreneur registration in
- * October). Upgrade CTAs read this instead of starting a checkout a real
- * visitor could actually land in, so nobody hits a broken/test payment
- * flow. Flip to true once Stripe goes live for real.
+ * Stripe is live: the account is owned and operated by the founder's
+ * mother (an autónoma), since Stripe requires an adult account holder.
+ * Upgrade CTAs start a real checkout instead of the Pro waitlist.
  */
-export const PRO_CHECKOUT_ENABLED = false;
+export const PRO_CHECKOUT_ENABLED = true;
 
 async function startFlow(path: string): Promise<BillingResult> {
   const response = await fetch(path, { method: "POST" });
