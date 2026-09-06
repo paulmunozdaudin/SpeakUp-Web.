@@ -52,21 +52,21 @@ export function Sidebar() {
   return (
     <>
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r border-border bg-surface px-4 py-6 md:flex">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border bg-surface px-4 py-6 md:flex">
         <Logo href="/dashboard" className="px-2" />
-        <nav className="mt-10 flex flex-1 flex-col gap-1">
+        <nav className="mt-10 flex flex-1 flex-col gap-2">
           {items.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+                "flex items-center gap-3.5 rounded-xl px-4 py-3.5 text-base font-medium transition-colors",
                 item.active
                   ? "bg-accent-soft text-accent"
                   : "text-muted hover:bg-surface-muted hover:text-foreground",
               )}
             >
-              <item.icon className="h-4.5 w-4.5" />
+              <item.icon className="h-5.5 w-5.5" />
               {item.label}
             </Link>
           ))}
