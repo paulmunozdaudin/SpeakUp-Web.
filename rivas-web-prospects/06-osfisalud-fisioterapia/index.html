@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fisioterapia y osteopatía en San Fernando de Henares | Osfisalud</title>
+<meta name="description" content="Osfisalud, clínica de fisioterapia y osteopatía en San Fernando de Henares (Madrid). Valoración 5.0 en Google con 49 reseñas. Pide tu cita en el 644 12 35 66.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --bg-warm:#F4EFE6;
+    --brand:#2E5D50;
+    --brand-light:#7FA596;
+    --ink:#2B2B2B;
+    --ink-soft:#5A5A54;
+    --white:#FFFFFF;
+    --ring: rgba(46,93,80,0.18);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+    --shadow-soft: 0 10px 30px rgba(43,43,43,0.08);
+    --shadow-hover: 0 16px 40px rgba(43,43,43,0.14);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Inter', system-ui, -apple-system, sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Sora', system-ui, sans-serif;
+    color:var(--ink);
+    margin:0 0 0.5em 0;
+    line-height:1.2;
+  }
+  p{margin:0 0 1em 0;}
+  a{color:inherit;text-decoration:none;}
+  img,svg{display:block;max-width:100%;}
+  ul{margin:0;padding:0;list-style:none;}
+  section{padding:clamp(3.5rem,7vw,7rem) 0;}
+  .container{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 clamp(1.25rem,4vw,2.5rem);
+  }
+  .bg-warm{background:var(--bg-warm);}
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:.5em;
+    font-family:'Sora', sans-serif;
+    font-weight:600;
+    font-size:.78rem;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--brand);
+    background:rgba(46,93,80,0.08);
+    padding:.45em 1em;
+    border-radius:999px;
+    margin-bottom:1.25rem;
+  }
+  .section-head{
+    max-width:640px;
+    margin:0 0 clamp(2rem,4vw,3rem) 0;
+  }
+  .section-head.center{margin-left:auto;margin-right:auto;text-align:center;}
+  .section-head h2{font-size:clamp(1.7rem,3.4vw,2.5rem);}
+  .section-head p{color:var(--ink-soft);font-size:clamp(1rem,1.6vw,1.1rem);}
+
+  /* reveal animations */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+
+  /* ---------- HEADER ---------- */
+  .site-header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    background:rgba(255,255,255,0.88);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(43,43,43,0.06);
+    transition:box-shadow .3s ease;
+  }
+  .site-header.scrolled{box-shadow:0 6px 24px rgba(43,43,43,0.06);}
+  .header-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0.9rem clamp(1.25rem,4vw,2.5rem);
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+    font-family:'Sora', sans-serif;
+    font-weight:700;
+    font-size:1.15rem;
+    color:var(--brand);
+  }
+  .brand .logo-mark{width:34px;height:34px;flex-shrink:0;}
+  nav.main-nav{display:flex;align-items:center;gap:clamp(1rem,2vw,2rem);}
+  nav.main-nav a{
+    font-size:.95rem;
+    font-weight:500;
+    color:var(--ink);
+    position:relative;
+    padding:.3rem 0;
+  }
+  nav.main-nav a:not(.cta-btn)::after{
+    content:'';
+    position:absolute;left:0;bottom:-2px;
+    width:0;height:2px;background:var(--brand);
+    transition:width .25s ease;
+  }
+  nav.main-nav a:not(.cta-btn):hover::after{width:100%;}
+
+  .cta-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:.5em;
+    background:var(--brand);
+    color:#fff;
+    font-family:'Sora', sans-serif;
+    font-weight:600;
+    font-size:.92rem;
+    padding:.75em 1.5em;
+    border-radius:999px;
+    box-shadow:0 6px 18px rgba(46,93,80,0.25);
+    transition:transform .22s ease, box-shadow .22s ease, background .22s ease;
+    border:none;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .cta-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 24px rgba(46,93,80,0.32);
+    background:#264f44;
+  }
+  .cta-btn.ghost{
+    background:transparent;
+    color:var(--brand);
+    border:1.5px solid var(--brand);
+    box-shadow:none;
+  }
+  .cta-btn.ghost:hover{background:rgba(46,93,80,0.08);box-shadow:none;}
+
+  .menu-toggle{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+    width:40px;height:40px;
+    background:none;border:none;cursor:pointer;
+    padding:0;
+  }
+  .menu-toggle span{
+    display:block;height:2px;width:24px;background:var(--ink);
+    margin:0 auto;border-radius:2px;
+    transition:transform .3s ease, opacity .3s ease;
+  }
+  .menu-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .menu-toggle.open span:nth-child(2){opacity:0;}
+  .menu-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:clamp(7.5rem,14vw,10rem) 0 clamp(3rem,6vw,5rem) 0;
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(180deg, #FBF8F2 0%, var(--bg) 100%);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.1fr 0.9fr;
+    gap:clamp(2rem,5vw,4rem);
+    align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem,5vw,3.4rem);
+    letter-spacing:-.01em;
+  }
+  .hero h1 .accent{color:var(--brand);}
+  .hero p.lead{
+    font-size:clamp(1.05rem,1.8vw,1.2rem);
+    color:var(--ink-soft);
+    max-width:480px;
+  }
+  .hero-actions{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1.75rem;}
+  .hero-meta{
+    display:flex;
+    align-items:center;
+    gap:.9rem;
+    margin-top:2.25rem;
+    font-size:.92rem;
+    color:var(--ink-soft);
+  }
+  .hero-meta .stars{display:flex;gap:2px;}
+  .hero-meta strong{color:var(--ink);font-family:'Sora',sans-serif;}
+
+  .hero-visual{
+    position:relative;
+    aspect-ratio:1/1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .hero-blob{
+    position:absolute;
+    inset:0;
+    border-radius:42% 58% 63% 37% / 45% 40% 60% 55%;
+    background:linear-gradient(135deg, #E7EFE9 0%, #F4EFE6 55%, #DDE9E2 100%);
+    animation:blobMove 12s ease-in-out infinite alternate;
+  }
+  @keyframes blobMove{
+    0%{border-radius:42% 58% 63% 37% / 45% 40% 60% 55%;}
+    100%{border-radius:58% 42% 40% 60% / 55% 62% 38% 45%;}
+  }
+  .hero-illustration{position:relative;width:72%;height:72%;}
+
+  /* ---------- SOCIAL PROOF ---------- */
+  .proof{
+    background:var(--brand);
+    color:#fff;
+  }
+  .proof .container{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:clamp(1.5rem,4vw,4rem);
+    text-align:center;
+    padding-top:clamp(2.5rem,5vw,3.5rem);
+    padding-bottom:clamp(2.5rem,5vw,3.5rem);
+  }
+  .proof-stat{display:flex;flex-direction:column;align-items:center;gap:.4rem;}
+  .proof-stat .big{
+    font-family:'Sora',sans-serif;
+    font-weight:700;
+    font-size:clamp(2.2rem,4vw,3rem);
+    display:flex;
+    align-items:baseline;
+    gap:.15em;
+  }
+  .proof-stat .stars{display:flex;gap:3px;margin:.2rem 0;}
+  .proof-stat .label{font-size:.92rem;color:rgba(255,255,255,0.82);max-width:220px;}
+  .proof-divider{width:1px;height:56px;background:rgba(255,255,255,0.25);}
+
+  /* ---------- SERVICES ---------- */
+  .services-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+    gap:clamp(1.25rem,2.5vw,1.75rem);
+  }
+  .service-card{
+    background:var(--white);
+    border:1px solid rgba(43,43,43,0.07);
+    border-radius:var(--radius-md);
+    padding:clamp(1.5rem,3vw,2rem);
+    box-shadow:var(--shadow-soft);
+    transition:transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+  }
+  .service-card:hover{
+    transform:translateY(-6px);
+    box-shadow:var(--shadow-hover);
+    border-color:rgba(46,93,80,0.18);
+  }
+  .service-icon{
+    width:52px;height:52px;
+    border-radius:16px;
+    background:rgba(46,93,80,0.09);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:1.1rem;
+  }
+  .service-icon svg{width:28px;height:28px;}
+  .service-card h3{font-size:1.15rem;margin-bottom:.5rem;}
+  .service-card p{color:var(--ink-soft);font-size:.95rem;margin:0;}
+
+  /* ---------- WHY US ---------- */
+  .why-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(2rem,5vw,4rem);
+    align-items:center;
+  }
+  .why-list{display:flex;flex-direction:column;gap:1.5rem;}
+  .why-item{display:flex;gap:1rem;align-items:flex-start;}
+  .why-item .icon-wrap{
+    width:46px;height:46px;flex-shrink:0;
+    border-radius:14px;
+    background:var(--brand);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .why-item .icon-wrap svg{width:24px;height:24px;stroke:#fff;}
+  .why-item h3{font-size:1.05rem;margin-bottom:.3rem;}
+  .why-item p{color:var(--ink-soft);font-size:.94rem;margin:0;}
+
+  .why-visual{
+    position:relative;
+    border-radius:var(--radius-lg);
+    background:linear-gradient(155deg, var(--brand) 0%, #234a40 100%);
+    aspect-ratio:4/5;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    padding:2rem;
+  }
+  .why-visual svg{width:80%;height:80%;}
+
+  /* ---------- GALLERY ---------- */
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    grid-auto-rows:220px;
+    gap:1rem;
+  }
+  .gallery-item{
+    position:relative;
+    border-radius:var(--radius-md);
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .gallery-item:hover{transform:scale(1.02);box-shadow:var(--shadow-hover);}
+  .gallery-item svg{width:56%;height:56%;position:relative;z-index:1;}
+  .gallery-item.tall{grid-row:span 2;}
+  .g1{background:linear-gradient(145deg,#DCE8E1,#F4EFE6);}
+  .g2{background:linear-gradient(145deg,#2E5D50,#4C7B6C);}
+  .g2 svg{stroke:#fff;}
+  .g3{background:linear-gradient(145deg,#F4EFE6,#C9DBD1);}
+  .g4{background:linear-gradient(145deg,#7FA596,#2E5D50);}
+  .g4 svg{stroke:#fff;}
+  .g5{background:linear-gradient(145deg,#EFE7D8,#DCE8E1);}
+  .g6{background:linear-gradient(145deg,#234a40,#2E5D50);}
+  .g6 svg{stroke:#fff;}
+  .gallery-caption{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:.85rem;
+    margin-top:1.25rem;
+    font-style:italic;
+  }
+
+  /* ---------- LOCATION ---------- */
+  .location-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(2rem,5vw,4rem);
+    align-items:center;
+  }
+  .info-card{
+    background:var(--white);
+    border-radius:var(--radius-lg);
+    padding:clamp(1.75rem,3vw,2.5rem);
+    box-shadow:var(--shadow-soft);
+  }
+  .info-row{
+    display:flex;
+    gap:1rem;
+    align-items:flex-start;
+    padding:1.1rem 0;
+    border-bottom:1px solid rgba(43,43,43,0.07);
+  }
+  .info-row:last-of-type{border-bottom:none;}
+  .info-row .icon-wrap{
+    width:42px;height:42px;flex-shrink:0;
+    border-radius:12px;
+    background:rgba(46,93,80,0.09);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .info-row .icon-wrap svg{width:22px;height:22px;stroke:var(--brand);}
+  .info-row h4{font-size:.98rem;margin-bottom:.2rem;}
+  .info-row p{color:var(--ink-soft);font-size:.92rem;margin:0;}
+  .info-row a{color:var(--brand);font-weight:500;}
+  .info-card .cta-btn{margin-top:1.5rem;width:100%;justify-content:center;}
+
+  .map-visual{
+    position:relative;
+    border-radius:var(--radius-lg);
+    background:var(--bg-warm);
+    aspect-ratio:4/3.4;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .map-visual svg{width:70%;height:70%;}
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta{
+    background:linear-gradient(155deg, var(--brand) 0%, #234a40 100%);
+    color:#fff;
+    text-align:center;
+    border-radius:var(--radius-lg);
+    margin:0 clamp(1.25rem,4vw,2.5rem);
+    padding:clamp(3rem,6vw,5rem) clamp(1.5rem,4vw,3rem);
+  }
+  .final-cta-wrap{max-width:1180px;margin:0 auto;}
+  .final-cta h2{color:#fff;font-size:clamp(1.8rem,3.6vw,2.6rem);}
+  .final-cta p{color:rgba(255,255,255,0.85);max-width:520px;margin:0 auto 1.75rem auto;font-size:1.05rem;}
+  .final-cta .cta-btn{background:#fff;color:var(--brand);}
+  .final-cta .cta-btn:hover{background:#F4EFE6;}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    padding:clamp(2.5rem,5vw,3.5rem) 0 1.5rem 0;
+    background:var(--bg-warm);
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1fr;
+    gap:2.5rem;
+    padding-bottom:2rem;
+    border-bottom:1px solid rgba(43,43,43,0.1);
+  }
+  .footer-brand{display:flex;align-items:center;gap:.6rem;font-family:'Sora',sans-serif;font-weight:700;font-size:1.1rem;color:var(--brand);margin-bottom:.75rem;}
+  .footer-brand .logo-mark{width:28px;height:28px;}
+  footer p{color:var(--ink-soft);font-size:.92rem;}
+  footer h5{font-family:'Sora',sans-serif;font-size:.9rem;color:var(--ink);margin-bottom:.9rem;}
+  footer ul li{margin-bottom:.6rem;font-size:.92rem;color:var(--ink-soft);}
+  footer ul li a:hover{color:var(--brand);}
+  .footer-bottom{
+    display:flex;
+    flex-wrap:wrap;
+    gap:1rem;
+    justify-content:space-between;
+    align-items:center;
+    padding-top:1.5rem;
+    font-size:.82rem;
+    color:var(--ink-soft);
+  }
+  .disclaimer-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:.5em;
+    background:rgba(46,93,80,0.08);
+    color:var(--brand);
+    padding:.5em 1em;
+    border-radius:999px;
+    font-size:.8rem;
+    font-weight:500;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 900px){
+    .hero-grid, .why-grid, .location-grid{grid-template-columns:1fr;}
+    .hero-visual{order:-1;max-width:340px;margin:0 auto 1rem auto;width:100%;}
+    .why-visual{order:-1;max-width:340px;margin:0 auto;width:100%;}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+    .gallery-item.tall{grid-row:span 1;}
+    .footer-grid{grid-template-columns:1fr;gap:1.75rem;}
+  }
+  @media (max-width: 720px){
+    nav.main-nav{
+      position:fixed;
+      top:64px;left:0;right:0;
+      background:#fff;
+      flex-direction:column;
+      align-items:stretch;
+      gap:0;
+      padding:.5rem 1.25rem 1.5rem 1.25rem;
+      box-shadow:0 12px 24px rgba(43,43,43,0.08);
+      transform:translateY(-130%);
+      opacity:0;
+      pointer-events:none;
+      transition:transform .3s ease, opacity .3s ease;
+    }
+    nav.main-nav.open{transform:translateY(0);opacity:1;pointer-events:auto;}
+    nav.main-nav a{padding:.85rem 0;border-bottom:1px solid rgba(43,43,43,0.06);}
+    nav.main-nav a.cta-btn{margin-top:.75rem;justify-content:center;}
+    .menu-toggle{display:flex;}
+    .gallery-grid{grid-template-columns:1fr 1fr;grid-auto-rows:160px;}
+    .proof-divider{display:none;}
+  }
+  @media (max-width: 480px){
+    .gallery-grid{grid-template-columns:1fr;grid-auto-rows:180px;}
+    .hero-actions{flex-direction:column;align-items:stretch;}
+    .hero-actions .cta-btn{justify-content:center;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="siteHeader">
+  <div class="header-inner">
+    <a href="#top" class="brand">
+      <svg class="logo-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="20" cy="20" r="19" fill="#2E5D50"/>
+        <path d="M13 26c0-3 2-5 4-7s3-4 3-6.5S18.5 8 16 8" stroke="#F4EFE6" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+        <circle cx="16" cy="8" r="1.6" fill="#F4EFE6"/>
+        <path d="M20 30c2-4 4-6 7-6s5 2.5 5-1" stroke="#7FA596" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+      </svg>
+      Osfisalud
+    </a>
+    <nav class="main-nav" id="mainNav">
+      <a href="#tratamientos">Tratamientos</a>
+      <a href="#por-que-elegirnos">Por qué elegirnos</a>
+      <a href="#opiniones">Opiniones</a>
+      <a href="#ubicacion">Ubicación</a>
+      <a href="tel:+34644123566" class="cta-btn">Pedir cita</a>
+    </nav>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy reveal">
+        <div class="eyebrow">Fisioterapia · Osteopatía · San Fernando de Henares</div>
+        <h1>Recupera tu movilidad y tu bienestar <span class="accent">sin prisas y sin dolor</span></h1>
+        <p class="lead">En Osfisalud combinamos fisioterapia y osteopatía con un trato cercano para que vuelvas a moverte con confianza, en el centro de San Fernando de Henares.</p>
+        <div class="hero-actions">
+          <a href="tel:+34644123566" class="cta-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Pedir cita
+          </a>
+          <a href="#tratamientos" class="cta-btn ghost">Ver tratamientos</a>
+        </div>
+        <div class="hero-meta">
+          <span class="stars" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2E5D50"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2E5D50"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2E5D50"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2E5D50"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#2E5D50"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>
+          </span>
+          <span><strong>5.0</strong> valoración en Google · 49 reseñas</span>
+        </div>
+      </div>
+      <div class="hero-visual reveal">
+        <div class="hero-blob" aria-hidden="true"></div>
+        <svg class="hero-illustration" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración esquemática de columna vertebral y manos de terapia">
+          <path d="M110 20 C118 45 100 55 110 78 C120 100 100 112 110 135 C120 157 102 170 110 195" stroke="#2E5D50" stroke-width="4" stroke-linecap="round" fill="none"/>
+          <circle cx="110" cy="20" r="6" fill="#2E5D50"/>
+          <circle cx="110" cy="55" r="4" fill="#7FA596"/>
+          <circle cx="110" cy="90" r="4" fill="#7FA596"/>
+          <circle cx="110" cy="125" r="4" fill="#7FA596"/>
+          <circle cx="110" cy="160" r="4" fill="#7FA596"/>
+          <circle cx="110" cy="195" r="6" fill="#2E5D50"/>
+          <path d="M50 150 C40 140 38 122 52 116 C60 112 68 116 72 124 C78 112 96 112 100 126 C104 138 92 150 76 162 C68 168 58 160 50 150Z" fill="#2E5D50" opacity="0.85"/>
+          <path d="M35 60 C60 40 90 42 100 60" stroke="#7FA596" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.7"/>
+          <path d="M40 68 C62 52 86 54 96 68" stroke="#7FA596" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <section class="proof" id="opiniones">
+    <div class="container reveal">
+      <div class="proof-stat">
+        <div class="big">5.0
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="#F4EFE6" style="margin-left:.2rem"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>
+        </div>
+        <div class="stars" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#F4EFE6"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#F4EFE6"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#F4EFE6"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#F4EFE6"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="#F4EFE6"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>
+        </div>
+        <div class="label">Valoración en Google, basada en 49 reseñas de pacientes</div>
+      </div>
+      <div class="proof-divider" aria-hidden="true"></div>
+      <div class="proof-stat">
+        <div class="big">49</div>
+        <div class="label">Reseñas verificadas de pacientes en Google</div>
+      </div>
+      <div class="proof-divider" aria-hidden="true"></div>
+      <div class="proof-stat">
+        <div class="big">100%</div>
+        <div class="label">Atención cercana y personalizada, sesión a sesión</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRATAMIENTOS -->
+  <section id="tratamientos">
+    <div class="container">
+      <div class="section-head center reveal">
+        <div class="eyebrow">Tratamientos</div>
+        <h2>Cuidamos tu cuerpo con un enfoque completo</h2>
+        <p>Desde la primera valoración hasta la recuperación total, adaptamos cada sesión a lo que tu cuerpo necesita.</p>
+      </div>
+      <div class="services-grid reveal">
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2E5D50" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3a2 2 0 0 1 2 2v6l3-1a2 2 0 0 1 2.5 2l-.7 3.5a4 4 0 0 1-3.9 3.2H9.5a4 4 0 0 1-3.6-2.2L4 12"/><path d="M11 11V5"/></svg>
+          </div>
+          <h3>Fisioterapia convencional</h3>
+          <p>Tratamiento manual y técnicas específicas para aliviar el dolor y recuperar la función del cuerpo.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2E5D50" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3-1 4 1 7s-1 4 1 7c1 1.5 0 3-1 4" /><circle cx="12" cy="3" r="1.4" fill="#2E5D50" stroke="none"/></svg>
+          </div>
+          <h3>Osteopatía</h3>
+          <p>Terapia manual que busca el origen del problema, trabajando el equilibrio global del cuerpo.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2E5D50" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 4l-3 7h4l-3 9 7-11h-4l3-5z"/></svg>
+          </div>
+          <h3>Lesiones deportivas</h3>
+          <p>Valoración y tratamiento de lesiones musculares y articulares para volver a la actividad con seguridad.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2E5D50" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12a8 8 0 0 1 8-8" /><path d="M20 12a8 8 0 0 1-8 8" /><path d="M4 12l3-3M4 12l3 3" /><path d="M20 12l-3-3M20 12l-3 3" /></svg>
+          </div>
+          <h3>Rehabilitación</h3>
+          <p>Programas de recuperación progresiva tras lesiones, cirugías o periodos de inmovilización.</p>
+        </div>
+        <div class="service-card">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#2E5D50" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8c0-2.5-2-4-4-2-1 1-1.5 2-2 3-.5-1-1-2-2-3-2-2-4-.5-4 2 0 3.5 4 7 8 10 4-3 8-6.5 8-10z"/></svg>
+          </div>
+          <h3>Terapia manual</h3>
+          <p>Técnicas de movilización y masoterapia orientadas a reducir tensión y mejorar la movilidad articular.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POR QUÉ ELEGIRNOS -->
+  <section class="bg-warm" id="por-que-elegirnos">
+    <div class="container why-grid">
+      <div class="why-visual reveal">
+        <svg viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración de manos de terapia y ondas de movimiento">
+          <path d="M60 150c-16 4-30-8-30-24 0-12 10-20 20-18 2-10 12-16 22-12 6-16 26-18 34-4 12-4 26 6 24 20 10 4 14 18 6 26-6 6-16 6-22 2" stroke="#F4EFE6" stroke-width="3" fill="none" opacity="0.55"/>
+          <path d="M50 110c8-10 18-14 30-14s24 6 32 16" stroke="#F4EFE6" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path d="M45 135c4-4 10-6 16-6" stroke="#7FA596" stroke-width="3" stroke-linecap="round"/>
+          <ellipse cx="100" cy="150" rx="46" ry="30" fill="#F4EFE6" opacity="0.15"/>
+          <path d="M70 150c4-10 12-16 22-16 4-8 14-12 22-8 8-4 18 2 18 12 0 12-10 22-26 26-16-2-32-8-36-14z" fill="#F4EFE6"/>
+          <path d="M40 70l8 8 8-14 6 10 6-6" stroke="#F4EFE6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.85"/>
+        </svg>
+      </div>
+      <div class="why-copy reveal">
+        <div class="eyebrow">Por qué elegirnos</div>
+        <h2>Un trato cercano, con resultados que hablan por sí solos</h2>
+        <div class="why-list">
+          <div class="why-item">
+            <div class="icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.7 7-6.3-3.8L5.7 21l1.7-7L2 9.2l7.1-.6z"/></svg>
+            </div>
+            <div>
+              <h3>Valoración perfecta de nuestros pacientes</h3>
+              <p>5.0 sobre 5 en Google con 49 reseñas, reflejo de la confianza que depositan en nosotros.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>
+            </div>
+            <div>
+              <h3>Trato cercano en cada visita</h3>
+              <p>Te escuchamos y adaptamos el tratamiento a tu ritmo, sin prisas ni sesiones estandarizadas.</p>
+            </div>
+          </div>
+          <div class="why-item">
+            <div class="icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            </div>
+            <div>
+              <h3>Enfoque integral del bienestar</h3>
+              <p>Fisioterapia y osteopatía combinadas para tratar la causa del problema, no solo el síntoma.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section id="instalaciones">
+    <div class="container">
+      <div class="section-head center reveal">
+        <div class="eyebrow">Nuestro espacio</div>
+        <h2>Un entorno pensado para tu recuperación</h2>
+        <p>Espacios amplios y luminosos, diseñados para que cada sesión sea tranquila y cómoda.</p>
+      </div>
+      <div class="gallery-grid reveal">
+        <div class="gallery-item tall g1">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#2E5D50" stroke-width="3" stroke-linecap="round" aria-hidden="true"><rect x="20" y="30" width="60" height="18" rx="9"/><path d="M30 48v14M70 48v14M25 62h50"/><circle cx="50" cy="20" r="6"/></svg>
+        </div>
+        <div class="gallery-item g2">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M25 70c0-20 10-35 25-35s25 15 25 35"/><path d="M50 35v-15"/></svg>
+        </div>
+        <div class="gallery-item g3">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#2E5D50" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M20 55c8-15 18-15 30 0s22 15 30 0" /><path d="M20 70c8-15 18-15 30 0s22 15 30 0" /></svg>
+        </div>
+        <div class="gallery-item g4">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M50 78C34 66 22 55 22 42a14 14 0 0 1 28-4 14 14 0 0 1 28 4c0 13-12 24-28 36z"/></svg>
+        </div>
+        <div class="gallery-item tall g5">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#2E5D50" stroke-width="3" stroke-linecap="round" aria-hidden="true"><circle cx="50" cy="30" r="10"/><path d="M50 40v20M35 45l15 5 15-5M40 75l10-15 10 15"/></svg>
+        </div>
+        <div class="gallery-item g6">
+          <svg viewBox="0 0 100 100" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M20 50h15l8-18 12 36 8-18h17"/></svg>
+        </div>
+      </div>
+      <p class="gallery-caption">Nuestra clínica — ilustración de referencia, no fotografía real.</p>
+    </div>
+  </section>
+
+  <!-- UBICACIÓN -->
+  <section class="bg-warm" id="ubicacion">
+    <div class="container location-grid">
+      <div class="reveal">
+        <div class="eyebrow">Ubicación</div>
+        <h2>Visítanos en San Fernando de Henares</h2>
+        <div class="info-card">
+          <div class="info-row">
+            <div class="icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#2E5D50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <h4>Dirección</h4>
+              <p>C. Gabriel Celaya, 6, San Fernando de Henares, Madrid</p>
+            </div>
+          </div>
+          <div class="info-row">
+            <div class="icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#2E5D50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <h4>Teléfono</h4>
+              <p><a href="tel:+34644123566">644 12 35 66</a></p>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps/search/?api=1&query=C.%20Gabriel%20Celaya%2C%206%2C%20San%20Fernando%20de%20Henares%2C%20Madrid" target="_blank" rel="noopener" class="cta-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 20l-5.5 2 2-15L15 4l5.5-2-2 15z"/><path d="M9 5v15M15 4v15"/></svg>
+            Cómo llegar
+          </a>
+        </div>
+      </div>
+      <div class="map-visual reveal">
+        <svg viewBox="0 0 220 200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustración esquemática de mapa">
+          <path d="M20 160c20-30 40 10 60-10s30-40 55-30 45 20 65-5" stroke="#2E5D50" stroke-width="2.5" stroke-dasharray="1 10" stroke-linecap="round" opacity="0.5"/>
+          <path d="M110 40c-16 0-28 12-28 28 0 20 28 52 28 52s28-32 28-52c0-16-12-28-28-28z" fill="#2E5D50"/>
+          <circle cx="110" cy="68" r="10" fill="#F4EFE6"/>
+          <ellipse cx="110" cy="128" rx="34" ry="7" fill="#2E5D50" opacity="0.12"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section>
+    <div class="final-cta reveal">
+      <div class="final-cta-wrap">
+        <h2>Reserva tu primera cita</h2>
+        <p>Cuéntanos cómo te sientes y demos juntos el primer paso hacia tu recuperación.</p>
+        <a href="tel:+34644123566" class="cta-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Llamar al 644 12 35 66
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <svg class="logo-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="20" cy="20" r="19" fill="#2E5D50"/>
+            <path d="M13 26c0-3 2-5 4-7s3-4 3-6.5S18.5 8 16 8" stroke="#F4EFE6" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+          </svg>
+          Osfisalud
+        </div>
+        <p>Clínica de fisioterapia y osteopatía en San Fernando de Henares, Madrid.</p>
+        <span class="disclaimer-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          Propuesta de diseño de demostración — no es la web oficial de Osfisalud
+        </span>
+      </div>
+      <div>
+        <h5>Navegación</h5>
+        <ul>
+          <li><a href="#tratamientos">Tratamientos</a></li>
+          <li><a href="#por-que-elegirnos">Por qué elegirnos</a></li>
+          <li><a href="#opiniones">Opiniones</a></li>
+          <li><a href="#ubicacion">Ubicación</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="tel:+34644123566">644 12 35 66</a></li>
+          <li>C. Gabriel Celaya, 6</li>
+          <li>San Fernando de Henares, Madrid</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Osfisalud. Diseño de demostración comercial.</span>
+      <span>5.0★ en Google · 49 reseñas</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Header shadow on scroll
+  var header = document.getElementById('siteHeader');
+  function onScroll(){
+    if(window.scrollY > 12){ header.classList.add('scrolled'); }
+    else{ header.classList.remove('scrolled'); }
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+
+  // Mobile menu toggle
+  var toggle = document.getElementById('menuToggle');
+  var nav = document.getElementById('mainNav');
+  toggle.addEventListener('click', function(){
+    var isOpen = nav.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  nav.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', function(){
+      nav.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Reveal on scroll
+  if('IntersectionObserver' in window){
+    var revealEls = document.querySelectorAll('.reveal');
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.15, rootMargin:'0px 0px -40px 0px'});
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('is-visible'); });
+  }
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Taller mecánico en Rivas-Vaciamadrid | JM Talleres Rivas</title>
+<meta name="description" content="JM Talleres Rivas: taller mecánico multimarca en Rivas-Vaciamadrid. Neumáticos, diagnosis electrónica, frenos, pre-ITV y más. Valoración 4.8★ en Google (270 reseñas). Pide cita o llama ahora.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --carbon-1:#1A1A1A;
+    --carbon-2:#232323;
+    --bone:#F4F1EC;
+    --orange:#FF5A1F;
+    --steel:#9CA3AF;
+    --carbon-1-rgb:26,26,26;
+    --border-soft: rgba(244,241,236,0.10);
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--carbon-1);
+    color:var(--bone);
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    font-weight:400;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;}
+  h1,h2,h3,h4{
+    font-family:'Barlow Condensed', 'Arial Narrow', sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.03em;
+    margin:0 0 .5em;
+    line-height:1.05;
+    font-weight:700;
+  }
+  p{margin:0 0 1em;}
+  a{color:inherit;text-decoration:none;}
+  ul{margin:0;padding:0;list-style:none;}
+  section{padding:clamp(3.5rem,7vw,7rem) clamp(1.25rem,5vw,4rem);}
+  .container{max-width:1180px;margin:0 auto;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:.5em;
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    font-size:.8rem;
+    color:var(--orange);
+    margin-bottom:1rem;
+  }
+  .eyebrow::before{
+    content:"";
+    width:28px;height:2px;
+    background:var(--orange);
+    display:inline-block;
+  }
+
+  /* ---------- BUTTONS ---------- */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    font-size:1.05rem;
+    padding:.95em 1.9em;
+    border-radius:3px;
+    border:2px solid transparent;
+    cursor:pointer;
+    transition:transform .18s ease, box-shadow .18s ease, background-color .18s ease, color .18s ease, border-color .18s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:var(--orange);
+    color:#1A1A1A;
+    box-shadow:0 4px 0 rgba(0,0,0,.25);
+  }
+  .btn-primary:hover{
+    transform:translateY(-2px);
+    box-shadow:0 8px 16px rgba(255,90,31,.35);
+    background:#ff6c37;
+  }
+  .btn-primary:active{transform:translateY(0);box-shadow:0 2px 0 rgba(0,0,0,.25);}
+  .btn-outline{
+    background:transparent;
+    color:var(--bone);
+    border-color:rgba(244,241,236,.35);
+  }
+  .btn-outline:hover{
+    border-color:var(--orange);
+    color:var(--orange);
+    transform:translateY(-2px);
+  }
+
+  /* ---------- HEADER ---------- */
+  header.site-header{
+    position:fixed;top:0;left:0;right:0;z-index:1000;
+    background:rgba(26,26,26,.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .nav-wrap{
+    max-width:1180px;margin:0 auto;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:.85rem clamp(1.25rem,5vw,2.5rem);
+  }
+  .brand{
+    display:flex;align-items:center;gap:.6rem;
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:800;
+    font-size:1.35rem;
+    letter-spacing:.02em;
+    text-transform:uppercase;
+    color:var(--bone);
+  }
+  .brand .brand-mark{
+    width:38px;height:38px;flex:none;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--orange);
+    border-radius:4px;
+  }
+  .brand .brand-mark svg{width:22px;height:22px;stroke:#1A1A1A;}
+  .brand small{
+    display:block;
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    text-transform:none;
+    letter-spacing:0;
+    font-size:.62rem;
+    color:var(--steel);
+  }
+  nav.main-nav{display:flex;align-items:center;gap:2.1rem;}
+  nav.main-nav a.nav-link{
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    font-size:.95rem;
+    color:var(--bone);
+    position:relative;
+    padding:.3rem 0;
+  }
+  nav.main-nav a.nav-link::after{
+    content:"";position:absolute;left:0;bottom:0;
+    width:0;height:2px;background:var(--orange);
+    transition:width .2s ease;
+  }
+  nav.main-nav a.nav-link:hover::after{width:100%;}
+  nav.main-nav a.nav-link:hover{color:var(--orange);}
+  .header-actions{display:flex;align-items:center;gap:1rem;}
+  .call-btn-header{
+    display:inline-flex;align-items:center;gap:.55em;
+    background:var(--orange);color:#1A1A1A;
+    font-family:'Barlow Condensed',sans-serif;
+    font-weight:700;text-transform:uppercase;letter-spacing:.03em;
+    font-size:.95rem;
+    padding:.65em 1.3em;border-radius:3px;
+    transition:background-color .18s ease, transform .18s ease;
+  }
+  .call-btn-header:hover{background:#ff6c37;transform:translateY(-2px);}
+  .call-btn-header svg{width:16px;height:16px;stroke:#1A1A1A;}
+
+  .hamburger{
+    display:none;
+    width:42px;height:42px;
+    background:transparent;border:1px solid var(--border-soft);border-radius:3px;
+    align-items:center;justify-content:center;
+    cursor:pointer;
+  }
+  .hamburger svg{width:20px;height:20px;stroke:var(--bone);}
+
+  @media (max-width:860px){
+    nav.main-nav{
+      position:fixed;top:64px;left:0;right:0;
+      flex-direction:column;align-items:flex-start;gap:0;
+      background:var(--carbon-2);
+      border-bottom:1px solid var(--border-soft);
+      max-height:0;overflow:hidden;
+      transition:max-height .28s ease;
+    }
+    nav.main-nav.open{max-height:340px;}
+    nav.main-nav a.nav-link{
+      width:100%;padding:1rem clamp(1.25rem,5vw,2.5rem);
+      border-bottom:1px solid var(--border-soft);
+    }
+    .call-btn-header span{display:none;}
+    .call-btn-header{padding:.65em .8em;}
+    .hamburger{display:flex;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding-top:calc(64px + clamp(3rem,8vw,6rem));
+    padding-bottom:clamp(3rem,8vw,6rem);
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(255,90,31,.14), transparent 55%),
+      repeating-linear-gradient(135deg, rgba(244,241,236,.03) 0 2px, transparent 2px 26px),
+      var(--carbon-1);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .hero-grid{
+    max-width:1180px;margin:0 auto;
+    display:grid;grid-template-columns:1.15fr .85fr;gap:clamp(2rem,5vw,4rem);
+    align-items:center;
+  }
+  @media (max-width:920px){.hero-grid{grid-template-columns:1fr;}}
+  .hero h1{
+    font-size:clamp(2.5rem,6.4vw,4.6rem);
+    color:var(--bone);
+  }
+  .hero h1 .accent{color:var(--orange);}
+  .hero .lead{
+    font-size:clamp(1.02rem,1.6vw,1.2rem);
+    color:var(--steel);
+    max-width:46ch;
+  }
+  .hero-cta-row{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1.8rem;}
+  .hero-meta{
+    display:flex;flex-wrap:wrap;gap:1.6rem;
+    margin-top:2.4rem;padding-top:1.6rem;
+    border-top:1px solid var(--border-soft);
+  }
+  .hero-meta div{display:flex;align-items:center;gap:.6rem;}
+  .hero-meta svg{width:20px;height:20px;stroke:var(--orange);flex:none;}
+  .hero-meta span{font-size:.9rem;color:var(--steel);}
+  .hero-meta strong{color:var(--bone);font-weight:600;display:block;font-size:.95rem;}
+
+  .hero-visual{
+    position:relative;
+    aspect-ratio:1/1;
+    border-radius:8px;
+    border:1px solid var(--border-soft);
+    background:
+      repeating-linear-gradient(0deg, rgba(255,90,31,.07) 0 1px, transparent 1px 34px),
+      repeating-linear-gradient(90deg, rgba(255,90,31,.07) 0 1px, transparent 1px 34px),
+      linear-gradient(160deg, #262626, #1c1c1c 60%);
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+  }
+  .hero-visual svg{width:62%;height:62%;stroke:var(--bone);opacity:.92;}
+  .hero-visual::after{
+    content:"Vista del taller — ilustración de referencia";
+    position:absolute;left:0;right:0;bottom:0;
+    font-size:.7rem;letter-spacing:.04em;color:var(--steel);
+    background:rgba(0,0,0,.45);
+    padding:.5em .8em;
+    text-align:center;
+  }
+
+  /* ---------- SOCIAL PROOF ---------- */
+  .social-proof{
+    background:var(--carbon-2);
+    border-bottom:1px solid var(--border-soft);
+  }
+  .proof-inner{
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:clamp(1.5rem,5vw,4rem);
+    text-align:center;
+  }
+  .rating-big{display:flex;flex-direction:column;align-items:center;gap:.4rem;}
+  .rating-big .num{
+    font-family:'Barlow Condensed',sans-serif;font-weight:800;
+    font-size:clamp(3rem,7vw,4.2rem);color:var(--bone);line-height:1;
+  }
+  .stars{display:flex;gap:.2rem;}
+  .stars svg{width:22px;height:22px;fill:var(--orange);stroke:var(--orange);}
+  .rating-sub{color:var(--steel);font-size:.92rem;}
+  .rating-sub strong{color:var(--bone);}
+  .proof-divider{width:1px;height:56px;background:var(--border-soft);}
+  @media (max-width:640px){.proof-divider{display:none;}}
+  .proof-note{max-width:32ch;color:var(--steel);font-size:.92rem;text-align:left;}
+  @media (max-width:640px){.proof-note{text-align:center;}}
+
+  /* ---------- SERVICES ---------- */
+  .section-head{max-width:60ch;margin-bottom:clamp(2rem,4vw,3rem);}
+  .section-head h2{font-size:clamp(2rem,4.4vw,3rem);}
+  .section-head p{color:var(--steel);font-size:1.02rem;}
+
+  .services-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:1.4rem;
+  }
+  .service-card{
+    background:var(--carbon-2);
+    border:1px solid var(--border-soft);
+    border-radius:6px;
+    padding:1.9rem 1.6rem;
+    transition:transform .22s ease, border-color .22s ease, box-shadow .22s ease;
+  }
+  .service-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(255,90,31,.5);
+    box-shadow:0 14px 28px rgba(0,0,0,.35);
+  }
+  .service-card .icon-box{
+    width:52px;height:52px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(255,90,31,.12);
+    border-radius:6px;margin-bottom:1.1rem;
+  }
+  .service-card .icon-box svg{width:28px;height:28px;stroke:var(--orange);}
+  .service-card h3{font-size:1.3rem;color:var(--bone);margin-bottom:.4rem;}
+  .service-card p{color:var(--steel);font-size:.94rem;margin-bottom:0;}
+  .service-card .note{
+    display:inline-block;margin-top:.7rem;
+    font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--orange);
+    border:1px solid rgba(255,90,31,.4);
+    padding:.25em .6em;border-radius:3px;
+  }
+
+  /* ---------- WHY US ---------- */
+  .why-us{background:var(--carbon-2);border-top:1px solid var(--border-soft);border-bottom:1px solid var(--border-soft);}
+  .why-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:1.6rem;
+  }
+  .why-card{
+    display:flex;gap:1.1rem;
+    padding:1.4rem 0;
+    border-top:1px solid var(--border-soft);
+  }
+  .why-card .why-num{
+    font-family:'Barlow Condensed',sans-serif;font-weight:800;
+    font-size:2.2rem;color:var(--orange);line-height:1;flex:none;
+    min-width:2.2ch;
+  }
+  .why-card h3{font-size:1.15rem;color:var(--bone);margin-bottom:.35rem;}
+  .why-card p{color:var(--steel);font-size:.92rem;margin-bottom:0;}
+
+  /* ---------- GALLERY ---------- */
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:1.2rem;
+  }
+  .gallery-block{
+    position:relative;
+    aspect-ratio:4/3;
+    border-radius:6px;
+    border:1px solid var(--border-soft);
+    overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .gallery-block svg{width:44%;height:44%;stroke:var(--bone);opacity:.85;position:relative;z-index:2;}
+  .gallery-block::after{
+    content:"Ilustración de referencia";
+    position:absolute;left:0;right:0;bottom:0;z-index:3;
+    font-size:.65rem;color:var(--steel);
+    background:rgba(0,0,0,.5);
+    padding:.4em .6em;text-align:center;letter-spacing:.03em;
+  }
+  .g-1{background:repeating-linear-gradient(45deg, #2a2a2a 0 18px, #232323 18px 36px);}
+  .g-2{background:repeating-linear-gradient(0deg, rgba(255,90,31,.16) 0 6px, #1e1e1e 6px 26px);}
+  .g-3{background:
+      repeating-linear-gradient(0deg, rgba(244,241,236,.06) 0 1px, transparent 1px 22px),
+      repeating-linear-gradient(90deg, rgba(244,241,236,.06) 0 1px, transparent 1px 22px),
+      #202020;}
+  .g-4{background:linear-gradient(135deg, #262626, #171717 70%);}
+  .g-5{background:repeating-linear-gradient(135deg, #262626 0 14px, #1c1c1c 14px 28px);}
+  .g-6{background:radial-gradient(circle at 30% 30%, rgba(255,90,31,.18), transparent 60%), #1e1e1e;}
+
+  /* ---------- LOCATION ---------- */
+  .location{
+    display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,3.5rem);
+    align-items:center;
+  }
+  @media (max-width:860px){.location{grid-template-columns:1fr;}}
+  .loc-card{
+    background:var(--carbon-2);
+    border:1px solid var(--border-soft);
+    border-radius:6px;
+    padding:2rem;
+  }
+  .loc-row{display:flex;gap:1rem;margin-bottom:1.4rem;}
+  .loc-row:last-child{margin-bottom:0;}
+  .loc-row svg{width:24px;height:24px;stroke:var(--orange);flex:none;}
+  .loc-row h4{font-size:1.05rem;color:var(--bone);margin-bottom:.2rem;font-family:'Inter',sans-serif;text-transform:none;letter-spacing:0;font-weight:600;}
+  .loc-row p{color:var(--steel);font-size:.92rem;margin-bottom:0;}
+  .map-visual{
+    aspect-ratio:1/1;border-radius:6px;border:1px solid var(--border-soft);
+    background:
+      radial-gradient(circle at 50% 50%, rgba(255,90,31,.16), transparent 60%),
+      repeating-linear-gradient(0deg, rgba(244,241,236,.05) 0 1px, transparent 1px 40px),
+      repeating-linear-gradient(90deg, rgba(244,241,236,.05) 0 1px, transparent 1px 40px),
+      #1e1e1e;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+  }
+  .map-visual svg{width:80px;height:80px;stroke:var(--orange);}
+  .map-visual::after{
+    content:"Mapa ilustrativo — usa el botón para abrir Google Maps";
+    position:absolute;left:0;right:0;bottom:0;
+    font-size:.68rem;color:var(--steel);background:rgba(0,0,0,.5);
+    padding:.5em;text-align:center;
+  }
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta{
+    text-align:center;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,90,31,.18), transparent 60%),
+      var(--carbon-2);
+    border-top:1px solid var(--border-soft);
+  }
+  .final-cta h2{font-size:clamp(2rem,5vw,3.4rem);max-width:22ch;margin-left:auto;margin-right:auto;}
+  .final-cta p{color:var(--steel);max-width:50ch;margin-left:auto;margin-right:auto;font-size:1.05rem;}
+  .final-cta .hero-cta-row{justify-content:center;}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--carbon-1);
+    padding:clamp(2.5rem,5vw,3.5rem) clamp(1.25rem,5vw,4rem) 1.5rem;
+    border-top:1px solid var(--border-soft);
+  }
+  .footer-inner{
+    max-width:1180px;margin:0 auto;
+    display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2.5rem;
+  }
+  @media (max-width:760px){.footer-inner{grid-template-columns:1fr;}}
+  .footer-inner h4{font-size:.85rem;letter-spacing:.1em;color:var(--orange);margin-bottom:1rem;}
+  .footer-inner p, .footer-inner a{color:var(--steel);font-size:.92rem;}
+  .footer-inner li{margin-bottom:.55rem;display:flex;gap:.6rem;align-items:flex-start;}
+  .footer-inner li svg{width:16px;height:16px;stroke:var(--orange);flex:none;margin-top:.15em;}
+  .footer-inner a:hover{color:var(--bone);}
+  .footer-brand{display:flex;align-items:center;gap:.6rem;margin-bottom:.8rem;}
+  .footer-brand .brand-mark{width:34px;height:34px;background:var(--orange);border-radius:4px;display:flex;align-items:center;justify-content:center;}
+  .footer-brand .brand-mark svg{width:20px;height:20px;stroke:#1A1A1A;}
+  .footer-brand span{font-family:'Barlow Condensed',sans-serif;font-weight:800;text-transform:uppercase;font-size:1.2rem;color:var(--bone);}
+  .disclaimer{
+    max-width:1180px;margin:2.5rem auto 0;
+    padding-top:1.5rem;border-top:1px solid var(--border-soft);
+    color:#7a7a7a;font-size:.78rem;line-height:1.6;
+  }
+  .disclaimer strong{color:var(--steel);}
+
+  /* ---------- REVEAL ANIM ---------- */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .6s ease, transform .6s ease;}
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-wrap">
+    <a href="#top" class="brand" aria-label="JM Talleres Rivas — inicio">
+      <span class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.6 5.1L3 17.5V21h3.5l6.1-6.1a4 4 0 0 0 5.1-5.6l-2.6 2.6a1.5 1.5 0 0 1-2.1-2.1z"></path></svg>
+      </span>
+      <span>JM Talleres Rivas<small>Taller mecánico multimarca</small></span>
+    </a>
+
+    <nav class="main-nav" id="mainNav">
+      <a class="nav-link" href="#servicios">Servicios</a>
+      <a class="nav-link" href="#por-que-elegirnos">Por qué elegirnos</a>
+      <a class="nav-link" href="#opiniones">Opiniones</a>
+      <a class="nav-link" href="#ubicacion">Ubicación</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="call-btn-header" href="tel:+34606428440">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.2z"></path></svg>
+        <span>Llamar ahora</span>
+      </a>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mainNav">
+        <svg id="hamburgerIcon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">Rivas-Vaciamadrid · Taller multimarca</span>
+        <h1 id="hero-title">Tu coche, en manos <span class="accent">de confianza</span>, en el centro de Rivas</h1>
+        <p class="lead">Reparación, mantenimiento y diagnosis para cualquier marca. Trabajo serio, plazos claros y un taller que lleva años ganándose la confianza de sus vecinos de Rivas-Vaciamadrid.</p>
+        <div class="hero-cta-row">
+          <a href="tel:+34606428440" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.2z"></path></svg>
+            Llamar ahora
+          </a>
+          <a href="#ubicacion" class="btn btn-outline">Pide cita</a>
+        </div>
+
+        <div class="hero-meta">
+          <div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.4-9.3-10A6 6 0 0 1 12 3.8 6 6 0 0 1 21.3 11c-2.3 4.6-9.3 10-9.3 10z"></path><circle cx="12" cy="10.5" r="2.3"></circle></svg>
+            <span><strong>Pl. de Pablo Picasso, 6</strong>Rivas-Vaciamadrid, 28523</span>
+          </div>
+          <div>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"></path><circle cx="12" cy="12" r="9"></circle></svg>
+            <span><strong>606 42 84 40</strong>Llamada directa al taller</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="9"></circle>
+          <circle cx="12" cy="12" r="3.4"></circle>
+          <line x1="12" y1="3" x2="12" y2="6.2"></line>
+          <line x1="12" y1="17.8" x2="12" y2="21"></line>
+          <line x1="3" y1="12" x2="6.2" y2="12"></line>
+          <line x1="17.8" y1="12" x2="21" y2="12"></line>
+          <line x1="5.6" y1="5.6" x2="7.8" y2="7.8"></line>
+          <line x1="16.2" y1="16.2" x2="18.4" y2="18.4"></line>
+          <line x1="5.6" y1="18.4" x2="7.8" y2="16.2"></line>
+          <line x1="16.2" y1="7.8" x2="18.4" y2="5.6"></line>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <section class="social-proof" id="opiniones" aria-labelledby="proof-title">
+    <h2 id="proof-title" class="visually-hidden" style="position:absolute;left:-9999px;">Valoración de clientes</h2>
+    <div class="container proof-inner">
+      <div class="rating-big reveal">
+        <div class="num">4.8</div>
+        <div class="stars" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9.5 16.7 14.2 18.2 21 12 17.3 5.8 21 7.3 14.2 2 9.5 9 9"></polygon></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9.5 16.7 14.2 18.2 21 12 17.3 5.8 21 7.3 14.2 2 9.5 9 9"></polygon></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9.5 16.7 14.2 18.2 21 12 17.3 5.8 21 7.3 14.2 2 9.5 9 9"></polygon></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9.5 16.7 14.2 18.2 21 12 17.3 5.8 21 7.3 14.2 2 9.5 9 9"></polygon></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15 9 22 9.5 16.7 14.2 18.2 21 12 17.3 5.8 21 7.3 14.2 2 9.5 9 9"></polygon></svg>
+        </div>
+        <div class="rating-sub">Valoración en Google · <strong>270 reseñas</strong></div>
+      </div>
+      <div class="proof-divider" aria-hidden="true"></div>
+      <p class="proof-note reveal">Cientos de clientes de Rivas-Vaciamadrid y alrededores confían su coche a JM Talleres Rivas año tras año. Esa valoración se construye con trabajo bien hecho, no con marketing.</p>
+    </div>
+  </section>
+
+  <!-- SERVICIOS -->
+  <section id="servicios" aria-labelledby="servicios-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Qué hacemos</span>
+        <h2 id="servicios-title">Servicios del taller</h2>
+        <p>Todo lo que tu coche necesita, sea de la marca que sea, en un único taller de confianza en Rivas.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.6 5.1L3 17.5V21h3.5l6.1-6.1a4 4 0 0 0 5.1-5.6l-2.6 2.6a1.5 1.5 0 0 1-2.1-2.1z"></path></svg>
+          </div>
+          <h3>Reparación y mantenimiento</h3>
+          <p>Revisiones periódicas y reparaciones mecánicas para todas las marcas, con diagnóstico claro antes de tocar nada.</p>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="12" r="2.6"></circle><line x1="12" y1="3" x2="12" y2="6"></line><line x1="12" y1="18" x2="12" y2="21"></line><line x1="3" y1="12" x2="6" y2="12"></line><line x1="18" y1="12" x2="21" y2="12"></line></svg>
+          </div>
+          <h3>Cambio de neumáticos</h3>
+          <p>Montaje, equilibrado y sustitución de neumáticos, revisando presión y desgaste para que rindas kilómetros seguros.</p>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="7" width="13" height="10" rx="1.4"></rect><line x1="20" y1="10" x2="20" y2="14"></line><line x1="8" y1="10.5" x2="8" y2="13.5"></line><line x1="6.5" y1="12" x2="9.5" y2="12"></line></svg>
+          </div>
+          <h3>Diagnosis electrónica</h3>
+          <p>Equipos de diagnóstico para localizar averías eléctricas y electrónicas con precisión antes de intervenir.</p>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"></circle><circle cx="12" cy="12" r="3"></circle><line x1="12" y1="3.5" x2="12" y2="6.2"></line><line x1="12" y1="17.8" x2="12" y2="20.5"></line><line x1="3.5" y1="12" x2="6.2" y2="12"></line><line x1="17.8" y1="12" x2="20.5" y2="12"></line></svg>
+          </div>
+          <h3>Frenos y suspensión</h3>
+          <p>Revisión y sustitución de pastillas, discos y elementos de suspensión para que el coche responda como debe.</p>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 0 0 0 18 9 9 0 0 0 0-18z"></path><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
+          </div>
+          <h3>Revisiones pre-ITV</h3>
+          <p>Comprobamos los puntos críticos antes de tu cita de ITV para que la pases sin sorpresas ni segundos viajes.</p>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v2"></path><path d="M12 19v2"></path><path d="M3 12h2"></path><path d="M19 12h2"></path><circle cx="12" cy="12" r="5.5"></circle></svg>
+          </div>
+          <h3>Climatización</h3>
+          <p>Carga y revisión del aire acondicionado para que el clima del coche funcione cuando lo necesitas.</p>
+        </div>
+      </div>
+      <p style="margin-top:1.2rem;font-size:.85rem;color:var(--steel);">¿Necesitas un coche de sustitución mientras reparamos el tuyo? <a href="tel:+34606428440" style="color:var(--orange);text-decoration:underline;">Consulta disponibilidad llamando</a>.</p>
+    </div>
+  </section>
+
+  <!-- POR QUÉ ELEGIRNOS -->
+  <section class="why-us" id="por-que-elegirnos" aria-labelledby="why-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Nuestra diferencia</span>
+        <h2 id="why-title">Por qué elegir JM Talleres Rivas</h2>
+      </div>
+
+      <div class="why-grid">
+        <div class="why-card reveal">
+          <span class="why-num">01</span>
+          <div>
+            <h3>Valoración de 4.8 sobre 5</h3>
+            <p>270 reseñas en Google respaldan un trabajo constante, hecho bien y a tiempo, taller tras taller de coche.</p>
+          </div>
+        </div>
+        <div class="why-card reveal">
+          <span class="why-num">02</span>
+          <div>
+            <h3>En pleno centro de Rivas</h3>
+            <p>Ubicados en Plaza de Pablo Picasso, 6, con fácil acceso para dejar y recoger el coche sin complicarte el día.</p>
+          </div>
+        </div>
+        <div class="why-card reveal">
+          <span class="why-num">03</span>
+          <div>
+            <h3>Multimarca, un solo taller</h3>
+            <p>No importa la marca de tu coche: reparamos y mantenemos vehículos de todo tipo con el mismo criterio técnico.</p>
+          </div>
+        </div>
+        <div class="why-card reveal">
+          <span class="why-num">04</span>
+          <div>
+            <h3>Clientes que repiten</h3>
+            <p>Buena parte de quienes vienen ya nos conocían por recomendación de otro vecino de Rivas-Vaciamadrid.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section aria-labelledby="galeria-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">El taller</span>
+        <h2 id="galeria-title">Nuestras instalaciones</h2>
+        <p>Estas imágenes son ilustraciones de referencia realizadas para esta propuesta de diseño, no fotografías reales del taller.</p>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-block g-1 reveal" role="img" aria-label="Zona de elevadores del taller, ilustración de referencia">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20V6l7-3 7 3v14"></path><path d="M9 20v-6h6v6"></path></svg>
+        </div>
+        <div class="gallery-block g-2 reveal" role="img" aria-label="Zona de neumáticos, ilustración de referencia">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+        </div>
+        <div class="gallery-block g-3 reveal" role="img" aria-label="Zona de diagnóstico electrónico, ilustración de referencia">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="6" width="16" height="12" rx="1.5"></rect><path d="M8 10h3v4H8z"></path><line x1="14" y1="10" x2="17" y2="10"></line><line x1="14" y1="14" x2="17" y2="14"></line></svg>
+        </div>
+        <div class="gallery-block g-4 reveal" role="img" aria-label="Recepción del taller, ilustración de referencia">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"></path><path d="M5 21V9l7-5 7 5v12"></path><path d="M10 21v-6h4v6"></path></svg>
+        </div>
+        <div class="gallery-block g-5 reveal" role="img" aria-label="Zona de herramientas, ilustración de referencia">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.6 5.1L3 17.5V21h3.5l6.1-6.1a4 4 0 0 0 5.1-5.6l-2.6 2.6a1.5 1.5 0 0 1-2.1-2.1z"></path></svg>
+        </div>
+        <div class="gallery-block g-6 reveal" role="img" aria-label="Zona de baterías, ilustración de referencia">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="10" rx="1.5"></rect><line x1="7" y1="8" x2="7" y2="5.5"></line><line x1="17" y1="8" x2="17" y2="5.5"></line><line x1="9" y1="12" x2="9" y2="14"></line><line x1="15" y1="12" x2="15" y2="14"></line></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UBICACIÓN -->
+  <section id="ubicacion" aria-labelledby="ubicacion-title">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Cómo llegar</span>
+        <h2 id="ubicacion-title">Ubicación en Rivas-Vaciamadrid</h2>
+      </div>
+
+      <div class="location">
+        <div class="loc-card reveal">
+          <div class="loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.4-9.3-10A6 6 0 0 1 12 3.8 6 6 0 0 1 21.3 11c-2.3 4.6-9.3 10-9.3 10z"></path><circle cx="12" cy="10.5" r="2.3"></circle></svg>
+            <div>
+              <h4>Dirección</h4>
+              <p>Pl. de Pablo Picasso, 6, 28523, Rivas-Vaciamadrid, Madrid</p>
+            </div>
+          </div>
+          <div class="loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.2z"></path></svg>
+            <div>
+              <h4>Teléfono</h4>
+              <p><a href="tel:+34606428440" style="color:var(--bone);">606 42 84 40</a></p>
+            </div>
+          </div>
+          <div class="loc-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"></path><circle cx="12" cy="12" r="9"></circle></svg>
+            <div>
+              <h4>Horario</h4>
+              <p>Consulta horario y disponibilidad llamando al taller.</p>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps/search/?api=1&query=Pl.%20de%20Pablo%20Picasso%2C%206%2C%2028523%2C%20Rivas-Vaciamadrid%2C%20Madrid" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:1.6rem;width:100%;">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.4-9.3-10A6 6 0 0 1 12 3.8 6 6 0 0 1 21.3 11c-2.3 4.6-9.3 10-9.3 10z"></path><circle cx="12" cy="10.5" r="2.3"></circle></svg>
+            Cómo llegar
+          </a>
+        </div>
+
+        <div class="map-visual reveal" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.4-9.3-10A6 6 0 0 1 12 3.8 6 6 0 0 1 21.3 11c-2.3 4.6-9.3 10-9.3 10z"></path><circle cx="12" cy="10.5" r="2.6"></circle></svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="final-cta" aria-labelledby="cta-final-title">
+    <div class="container">
+      <span class="eyebrow" style="justify-content:center;">Rivas-Vaciamadrid</span>
+      <h2 id="cta-final-title">Lleva tu coche a un taller en el que confían cientos de vecinos de Rivas</h2>
+      <p>Cuéntanos qué le pasa a tu coche y te decimos, sin rodeos, qué necesita.</p>
+      <div class="hero-cta-row">
+        <a href="tel:+34606428440" class="btn btn-primary">Llamar ahora · 606 42 84 40</a>
+        <a href="#ubicacion" class="btn btn-outline">Pide cita</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.6 5.1L3 17.5V21h3.5l6.1-6.1a4 4 0 0 0 5.1-5.6l-2.6 2.6a1.5 1.5 0 0 1-2.1-2.1z"></path></svg>
+        </span>
+        <span>JM Talleres Rivas</span>
+      </div>
+      <p>Taller mecánico multimarca en Rivas-Vaciamadrid. Reparación, neumáticos, diagnosis, frenos y más.</p>
+    </div>
+
+    <div>
+      <h4>Contacto</h4>
+      <ul>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.2z"></path></svg>
+          <a href="tel:+34606428440">606 42 84 40</a>
+        </li>
+        <li>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.4-9.3-10A6 6 0 0 1 12 3.8 6 6 0 0 1 21.3 11c-2.3 4.6-9.3 10-9.3 10z"></path><circle cx="12" cy="10.5" r="2.3"></circle></svg>
+          <span>Pl. de Pablo Picasso, 6, 28523, Rivas-Vaciamadrid</span>
+        </li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Enlaces</h4>
+      <ul>
+        <li><a href="#servicios">Servicios</a></li>
+        <li><a href="#por-que-elegirnos">Por qué elegirnos</a></li>
+        <li><a href="#opiniones">Opiniones</a></li>
+        <li><a href="#ubicacion">Ubicación</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="disclaimer">
+    <strong>Aviso:</strong> esta página es una propuesta de diseño de demostración creada de forma no solicitada para mostrar cómo podría ser la web de JM Talleres Rivas. No es la web oficial del negocio, no ha sido publicada por JM Talleres Rivas ni sustituye a sus canales de contacto habituales. Los datos de dirección, teléfono y valoración proceden de fuentes públicas indexadas y se muestran a título ilustrativo dentro de esta propuesta comercial.
+  </p>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var hamburgerBtn = document.getElementById('hamburgerBtn');
+  var mainNav = document.getElementById('mainNav');
+
+  if (hamburgerBtn && mainNav) {
+    hamburgerBtn.addEventListener('click', function(){
+      var isOpen = mainNav.classList.toggle('open');
+      hamburgerBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+
+    var navLinks = mainNav.querySelectorAll('a.nav-link');
+    for (var i = 0; i < navLinks.length; i++) {
+      navLinks[i].addEventListener('click', function(){
+        mainNav.classList.remove('open');
+        hamburgerBtn.setAttribute('aria-expanded', 'false');
+      });
+    }
+  }
+
+  // Scroll reveal animation
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(function(el){ observer.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+})();
+</script>
+
+</body>
+</html>

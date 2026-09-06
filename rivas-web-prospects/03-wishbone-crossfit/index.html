@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Box de CrossFit en Rivas-Vaciamadrid | Wishbone CrossFit</title>
+<meta name="description" content="Wishbone CrossFit: box de CrossFit, boxeo, entrenamiento personal y nutrición en Rivas-Vaciamadrid. Valoración 4.9/5 en Google (105 reseñas). Acceso accesible en silla de ruedas. Reserva tu clase gratis.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black: #0D0D0D;
+    --black-2: #161616;
+    --white: #F5F5F5;
+    --lime: #C6FF3D;
+    --gray: #4B4B4B;
+    --gray-soft: #8A8A8A;
+    --radius: 2px;
+    --maxw: 1240px;
+  }
+
+  *,*::before,*::after{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin:0;
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1,h2,h3, .display{
+    font-family: 'Bebas Neue', 'Anton', Impact, sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    line-height: 0.95;
+    margin: 0;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+  img{ max-width: 100%; display:block; }
+  ul{ list-style: none; margin:0; padding:0; }
+  button{ font-family: inherit; }
+
+  .wrap{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 48px);
+  }
+
+  .lime{ color: var(--lime); }
+
+  /* ============ BUTTONS ============ */
+  .btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: clamp(0.85rem, 1.4vw, 1rem);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 16px 30px;
+    border-radius: var(--radius);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+    white-space: nowrap;
+  }
+  .btn-primary{
+    background: var(--lime);
+    color: var(--black);
+  }
+  .btn-primary:hover{
+    transform: translateY(-2px) scale(1.02);
+    background: #d7ff6b;
+  }
+  .btn-outline{
+    background: transparent;
+    color: var(--white);
+    border-color: var(--gray);
+  }
+  .btn-outline:hover{
+    border-color: var(--lime);
+    color: var(--lime);
+    transform: translateY(-2px);
+  }
+
+  /* ============ HEADER ============ */
+  header{
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(13,13,13,0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(75,75,75,0.4);
+  }
+  .nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 76px;
+  }
+  .logo{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.03em;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+  .logo .dot{ color: var(--lime); }
+
+  .nav-links{
+    display: flex;
+    align-items: center;
+    gap: clamp(16px, 3vw, 40px);
+  }
+  .nav-links a:not(.btn){
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    position: relative;
+    padding: 6px 0;
+    transition: color .2s ease;
+  }
+  .nav-links a:not(.btn):hover{ color: var(--lime); }
+  .nav-links a:not(.btn)::after{
+    content:'';
+    position:absolute; left:0; bottom:0;
+    width:0; height:2px;
+    background: var(--lime);
+    transition: width .25s ease;
+  }
+  .nav-links a:not(.btn):hover::after{ width:100%; }
+
+  .nav-cta-desktop{ display: inline-flex; }
+  .btn-primary.small{ padding: 12px 22px; font-size: 0.8rem; }
+
+  .burger{
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 32px; height: 32px;
+    background: none; border: none;
+    cursor: pointer;
+    z-index: 110;
+  }
+  .burger span{
+    display:block;
+    height: 2px;
+    width: 100%;
+    background: var(--white);
+    transition: transform .25s ease, opacity .25s ease, background .25s ease;
+  }
+  .burger.open span:nth-child(1){ transform: translateY(7px) rotate(45deg); background: var(--lime); }
+  .burger.open span:nth-child(2){ opacity: 0; }
+  .burger.open span:nth-child(3){ transform: translateY(-7px) rotate(-45deg); background: var(--lime); }
+
+  .mobile-menu{
+    position: fixed;
+    inset: 76px 0 0 0;
+    background: var(--black);
+    z-index: 99;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    transform: translateX(100%);
+    transition: transform .35s ease;
+  }
+  .mobile-menu.open{ transform: translateX(0); }
+  .mobile-menu a:not(.btn){
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    letter-spacing: 0.02em;
+  }
+
+  @media (max-width: 860px){
+    .nav-links{ display: none; }
+    .burger{ display: flex; }
+  }
+
+  /* ============ SECTION BASE ============ */
+  section{ position: relative; }
+  .section-pad{ padding: clamp(64px, 10vw, 140px) 0; }
+  .eyebrow{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--lime);
+    margin-bottom: 18px;
+  }
+  .eyebrow::before{
+    content:'';
+    width: 26px; height: 2px;
+    background: var(--lime);
+    display: inline-block;
+  }
+  .section-title{
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    margin-bottom: 20px;
+  }
+  .section-sub{
+    max-width: 620px;
+    color: var(--gray-soft);
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    line-height: 1.6;
+  }
+
+  .reveal{
+    opacity: 0;
+    transform: translateY(36px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.in-view{ opacity: 1; transform: translateY(0); }
+  .reveal-stagger.in-view > *{ transition-delay: calc(var(--i, 0) * 90ms); }
+
+  /* ============ HERO ============ */
+  .hero{
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding-top: 76px;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 10%, rgba(198,255,61,0.10), transparent 60%),
+      repeating-linear-gradient(135deg, rgba(255,255,255,0.025) 0 2px, transparent 2px 42px),
+      var(--black);
+    overflow: hidden;
+  }
+  .hero-inner{
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 40px;
+    align-items: end;
+    width: 100%;
+  }
+  .hero h1{
+    font-size: clamp(3rem, 9.5vw, 7.2rem);
+    color: var(--white);
+  }
+  .hero h1 .lime{ -webkit-text-stroke: 0; }
+  .hero-lead{
+    color: var(--gray-soft);
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    max-width: 480px;
+    margin: 26px 0 34px;
+  }
+  .hero-loc{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--lime);
+    margin-bottom: 22px;
+  }
+  .hero-actions{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: center;
+  }
+  .hero-side{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    border-left: 1px solid var(--gray);
+    padding-left: 28px;
+  }
+  .hero-side .num{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    color: var(--lime);
+    line-height: 0.9;
+  }
+  .hero-side .label{
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gray-soft);
+    text-align: right;
+  }
+  @media (max-width: 760px){
+    .hero-inner{ grid-template-columns: 1fr; }
+    .hero-side{ border-left:none; border-top: 1px solid var(--gray); padding-left:0; padding-top: 20px; flex-direction: row; align-items:center; justify-content: space-between; }
+    .hero-side .label{ text-align:left; }
+  }
+
+  .scroll-cue{
+    position: absolute;
+    bottom: 28px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items:center; gap:8px;
+    color: var(--gray-soft);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .scroll-cue .line{
+    width: 1px; height: 34px;
+    background: linear-gradient(var(--lime), transparent);
+    animation: scrollpulse 1.8s infinite ease-in-out;
+  }
+  @keyframes scrollpulse{
+    0%{ transform: scaleY(0.3); transform-origin: top; }
+    50%{ transform: scaleY(1); transform-origin: top; }
+    100%{ transform: scaleY(0.3); transform-origin: top; }
+  }
+
+  /* ============ SOCIAL PROOF ============ */
+  .proof{
+    background: var(--black-2);
+    border-top: 1px solid var(--gray);
+    border-bottom: 1px solid var(--gray);
+  }
+  .proof-grid{
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(24px, 6vw, 72px);
+    align-items: center;
+  }
+  .proof-score{
+    text-align: center;
+  }
+  .proof-score .stat{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4.5rem, 12vw, 8rem);
+    color: var(--lime);
+    line-height: 0.85;
+  }
+  .stars{ display:flex; gap:6px; margin: 14px 0 10px; justify-content:center; }
+  .stars svg{ width: clamp(22px,3vw,32px); height: clamp(22px,3vw,32px); fill: var(--lime); }
+  .proof-score .rcount{
+    font-size: 0.95rem;
+    color: var(--gray-soft);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+  .proof-copy h3{
+    font-size: clamp(1.6rem, 3.4vw, 2.4rem);
+    margin-bottom: 14px;
+  }
+  .proof-copy p{
+    color: var(--gray-soft);
+    max-width: 520px;
+    font-size: 1.02rem;
+  }
+  @media (max-width: 700px){
+    .proof-grid{ grid-template-columns: 1fr; text-align: center; }
+    .proof-copy p{ margin: 0 auto; }
+  }
+
+  /* ============ SERVICES ============ */
+  .services-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    background: var(--gray);
+    border: 1px solid var(--gray);
+    margin-top: 56px;
+  }
+  .service-card{
+    background: var(--black);
+    padding: 40px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    transition: background .3s ease, transform .3s ease;
+  }
+  .service-card:hover{
+    background: var(--black-2);
+    transform: translateY(-6px);
+  }
+  .service-icon{
+    width: 52px; height: 52px;
+    display: flex; align-items:center; justify-content:center;
+    border: 2px solid var(--lime);
+    border-radius: 50%;
+  }
+  .service-icon svg{ width: 26px; height: 26px; stroke: var(--lime); fill: none; }
+  .service-card h3{
+    font-size: 1.6rem;
+    letter-spacing: 0.01em;
+  }
+  .service-card p{
+    color: var(--gray-soft);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  @media (max-width: 980px){
+    .services-grid{ grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px){
+    .services-grid{ grid-template-columns: 1fr; }
+  }
+
+  /* ============ WHY ============ */
+  .why{ background: var(--black-2); }
+  .why-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+    margin-top: 56px;
+  }
+  .why-card{
+    padding: 32px 24px;
+    border: 1px solid var(--gray);
+    border-radius: var(--radius);
+    background: linear-gradient(180deg, rgba(198,255,61,0.03), transparent 60%);
+    transition: border-color .25s ease, transform .25s ease;
+  }
+  .why-card:hover{ border-color: var(--lime); transform: translateY(-4px); }
+  .why-card svg{ width: 34px; height: 34px; stroke: var(--lime); fill:none; margin-bottom: 18px; }
+  .why-card h4{
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 10px;
+  }
+  .why-card p{ color: var(--gray-soft); font-size: 0.92rem; line-height: 1.55; }
+  @media (max-width: 980px){ .why-grid{ grid-template-columns: repeat(2,1fr);} }
+  @media (max-width: 560px){ .why-grid{ grid-template-columns: 1fr; } }
+
+  /* ============ GALLERY ============ */
+  .gallery-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    margin-top: 56px;
+  }
+  .gallery-item{
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border: 1px solid var(--gray);
+  }
+  .gallery-item .tex{
+    position: absolute; inset:0;
+    transition: transform .5s ease, filter .5s ease;
+  }
+  .gallery-item:hover .tex{ transform: scale(1.08); filter: brightness(1.15); }
+  .g1 .tex{ background:
+      repeating-linear-gradient(45deg, rgba(198,255,61,0.16) 0 3px, transparent 3px 26px),
+      linear-gradient(160deg, #1c1c1c, #0a0a0a); }
+  .g2 .tex{ background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 18px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 18px),
+      radial-gradient(circle at 30% 30%, #222, #0a0a0a 70%); }
+  .g3 .tex{ background:
+      repeating-linear-gradient(-45deg, rgba(198,255,61,0.1) 0 2px, transparent 2px 20px),
+      conic-gradient(from 45deg, #151515, #1f1f1f, #0d0d0d); }
+  .g4 .tex{ background:
+      repeating-linear-gradient(20deg, rgba(255,255,255,0.04) 0 4px, transparent 4px 30px),
+      linear-gradient(200deg, #191919, #060606); }
+  .g5 .tex{ background:
+      repeating-radial-gradient(circle at 50% 50%, rgba(198,255,61,0.08) 0 2px, transparent 2px 24px),
+      linear-gradient(120deg, #101010, #1c1c1c); }
+  .g6 .tex{ background:
+      repeating-linear-gradient(70deg, rgba(255,255,255,0.045) 0 2px, transparent 2px 16px),
+      linear-gradient(160deg, #141414, #050505); }
+  .gallery-item .g-icon{
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    width: 30%; height: 30%;
+    stroke: rgba(245,245,245,0.18);
+    fill: none;
+    stroke-width: 1.2;
+  }
+  .gallery-item .g-tag{
+    position: absolute; left:0; right:0; bottom:0;
+    padding: 8px 12px;
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    color: rgba(245,245,245,0.55);
+    background: linear-gradient(0deg, rgba(0,0,0,0.75), transparent);
+  }
+  @media (max-width: 760px){ .gallery-grid{ grid-template-columns: repeat(2,1fr);} }
+
+  /* ============ SCHEDULE / LOCATION ============ */
+  .info-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px;
+    margin-top: 56px;
+    background: var(--gray);
+    border: 1px solid var(--gray);
+  }
+  .info-panel{
+    background: var(--black);
+    padding: clamp(28px, 4vw, 48px);
+  }
+  .info-panel h3{
+    font-family: 'Inter', sans-serif;
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 24px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .info-panel h3 svg{ width:22px; height:22px; stroke: var(--lime); fill:none; }
+  .sched-row{
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(75,75,75,0.5);
+    font-size: 0.95rem;
+  }
+  .sched-row:last-child{ border-bottom:none; }
+  .sched-row .d{ color: var(--white); font-weight: 700; }
+  .sched-row .h{ color: var(--gray-soft); }
+  .sched-row.closed .h{ color: #ff6b6b; }
+  .addr-block p{ color: var(--gray-soft); margin: 0 0 22px; font-size: 1rem; line-height: 1.6; }
+  .addr-block .phone{
+    display:block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--lime);
+    margin-bottom: 26px;
+    letter-spacing: 0.02em;
+  }
+  @media (max-width: 760px){ .info-grid{ grid-template-columns: 1fr; } }
+
+  /* ============ FINAL CTA ============ */
+  .final-cta{
+    text-align:center;
+    background:
+      radial-gradient(ellipse 70% 70% at 50% 30%, rgba(198,255,61,0.12), transparent 65%),
+      var(--black-2);
+    border-top: 1px solid var(--gray);
+  }
+  .final-cta h2{
+    font-size: clamp(2.6rem, 8vw, 6rem);
+    margin-bottom: 10px;
+  }
+  .final-cta .sub{
+    color: var(--gray-soft);
+    font-size: clamp(1rem,1.6vw,1.2rem);
+    max-width: 520px;
+    margin: 0 auto 38px;
+  }
+
+  /* ============ FOOTER ============ */
+  footer{
+    background: var(--black);
+    border-top: 1px solid var(--gray);
+    padding: 56px 0 28px;
+  }
+  .foot-grid{
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr;
+    gap: 36px;
+    margin-bottom: 40px;
+  }
+  .foot-logo{
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 14px;
+  }
+  footer p{ color: var(--gray-soft); font-size: 0.9rem; line-height: 1.6; }
+  footer h5{
+    font-family:'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  footer li{ margin-bottom: 10px; }
+  footer a.flink{ color: var(--gray-soft); font-size: 0.9rem; transition: color .2s ease; }
+  footer a.flink:hover{ color: var(--lime); }
+  .foot-bottom{
+    border-top: 1px solid var(--gray);
+    padding-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .foot-note{
+    font-size: 0.78rem;
+    color: var(--gray-soft);
+  }
+  .foot-disclaimer{
+    font-size: 0.75rem;
+    color: #6a6a6a;
+    border: 1px dashed var(--gray);
+    padding: 10px 16px;
+    border-radius: var(--radius);
+    display: inline-block;
+    margin-top: 18px;
+  }
+  @media (max-width: 760px){
+    .foot-grid{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav wrap">
+    <a href="#" class="logo">WISHBONE<span class="dot">.</span></a>
+    <ul class="nav-links">
+      <li><a href="#entrenamientos">Entrenamientos</a></li>
+      <li><a href="#por-que">Por qué Wishbone</a></li>
+      <li><a href="#opiniones">Opiniones</a></li>
+      <li><a href="#ubicacion">Ubicación</a></li>
+      <li class="nav-cta-desktop"><a class="btn btn-primary small" href="tel:+34628810418">Reserva tu clase gratis</a></li>
+    </ul>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#entrenamientos">Entrenamientos</a>
+    <a href="#por-que">Por qué Wishbone</a>
+    <a href="#opiniones">Opiniones</a>
+    <a href="#ubicacion">Ubicación</a>
+    <a class="btn btn-primary" href="tel:+34628810418">Reserva tu clase gratis</a>
+  </div>
+</header>
+
+<main>
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero">
+    <div class="wrap hero-inner">
+      <div>
+        <div class="hero-loc">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 12 2a7 7 0 0 1 7 7.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          Rivas-Vaciamadrid
+        </div>
+        <h1>DEJA DE<br>ENTRENAR<span class="lime">.</span><br>EMPIEZA A<br>TRANSFORMARTE<span class="lime">.</span></h1>
+        <p class="hero-lead">CrossFit, boxeo, entrenamiento personal y nutrición bajo un mismo techo en Rivas-Vaciamadrid. Una comunidad que te empuja, un box abierto a todos los niveles.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="tel:+34628810418">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            Reserva tu clase gratis
+          </a>
+          <a class="btn btn-outline" href="#entrenamientos">Ver entrenamientos</a>
+        </div>
+      </div>
+      <div class="hero-side">
+        <span class="num" data-count="4.9" data-decimals="1">0.0</span>
+        <span class="label">Valoración en Google<br>105 reseñas</span>
+      </div>
+    </div>
+    <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+  </section>
+
+  <!-- ===================== SOCIAL PROOF ===================== -->
+  <section class="proof section-pad" id="opiniones">
+    <div class="wrap proof-grid reveal">
+      <div class="proof-score">
+        <span class="stat" data-count="4.9" data-decimals="1">0.0</span>
+        <div class="stars" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 1.5l3.09 6.26 6.91 1-5 4.87 1.18 6.87L12 17.27l-6.18 3.23L7 13.63l-5-4.87 6.91-1L12 1.5z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 1.5l3.09 6.26 6.91 1-5 4.87 1.18 6.87L12 17.27l-6.18 3.23L7 13.63l-5-4.87 6.91-1L12 1.5z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 1.5l3.09 6.26 6.91 1-5 4.87 1.18 6.87L12 17.27l-6.18 3.23L7 13.63l-5-4.87 6.91-1L12 1.5z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 1.5l3.09 6.26 6.91 1-5 4.87 1.18 6.87L12 17.27l-6.18 3.23L7 13.63l-5-4.87 6.91-1L12 1.5z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M12 1.5l3.09 6.26 6.91 1-5 4.87 1.18 6.87L12 17.27l-6.18 3.23L7 13.63l-5-4.87 6.91-1L12 1.5z"/></svg>
+        </div>
+        <span class="rcount"><span data-count="105" data-decimals="0">0</span> reseñas en Google</span>
+      </div>
+      <div class="proof-copy">
+        <h3>La valoración habla por el ambiente del box.</h3>
+        <p>4.9 sobre 5 con 105 reseñas en Google no se consigue con una clase suelta: se construye entrenamiento a entrenamiento, con una comunidad que se conoce por el nombre y coaches que corrigen cada movimiento.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SERVICES ===================== -->
+  <section class="section-pad" id="entrenamientos">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">Disciplinas</div>
+        <h2 class="section-title">Entrena distinto<br>cada semana.</h2>
+        <p class="section-sub">CrossFit como base, y todo lo que necesitas alrededor para rendir más y moverte mejor.</p>
+      </div>
+
+      <div class="services-grid reveal reveal-stagger">
+        <div class="service-card" style="--i:0">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h2M20 12h2M6 8v8M18 8v8M6 12h12"/></svg>
+          </div>
+          <h3>CrossFit</h3>
+          <p>Entrenamiento funcional de alta intensidad, en grupo, con WODs distintos cada día para no estancarte nunca.</p>
+        </div>
+        <div class="service-card" style="--i:1">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15a5 5 0 1 1 3-9M7 15h9a3 3 0 0 0 0-6h-1M7 15v3a2 2 0 0 0 2 2h1"/></svg>
+          </div>
+          <h3>Boxeo</h3>
+          <p>Técnica, saco y potencia. Combina el boxeo con tu rutina para trabajar cardio, reflejos y descarga real.</p>
+        </div>
+        <div class="service-card" style="--i:2">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+          </div>
+          <h3>Entrenamiento personal</h3>
+          <p>Sesiones uno a uno diseñadas para tu objetivo concreto, con seguimiento directo de un coach.</p>
+        </div>
+        <div class="service-card" style="--i:3">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C9 6 7 9.5 7 13a5 5 0 0 0 10 0c0-3.5-2-7-5-11z"/></svg>
+          </div>
+          <h3>Nutrición</h3>
+          <p>Servicio de nutricionista para que lo que comes acompañe lo que entrenas, no lo frene.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WHY ===================== -->
+  <section class="why section-pad" id="por-que">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">Por qué Wishbone</div>
+        <h2 class="section-title">No es un gimnasio.<br>Es tu box.</h2>
+        <p class="section-sub">Lo que nos diferencia no es el material, es cómo se entrena aquí.</p>
+      </div>
+
+      <div class="why-grid reveal reveal-stagger">
+        <div class="why-card" style="--i:0">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-1a7 7 0 0 1 14 0v1"/><path d="M16 3.5a4 4 0 0 1 0 7"/><path d="M22 21v-1a7 7 0 0 0-5-6.7"/></svg>
+          <h4>Comunidad real</h4>
+          <p>Nadie entrena solo. Cada clase es en grupo, con coaches que te conocen por tu nombre y tu nivel.</p>
+        </div>
+        <div class="why-card" style="--i:1">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="18" r="1.4"/><path d="M12 12l4-2M12 6v2"/></svg>
+          <h4>Accesible en silla de ruedas</h4>
+          <p>Instalaciones pensadas para que entrenar aquí no tenga barreras de entrada.</p>
+        </div>
+        <div class="why-card" style="--i:2">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <h4>Horario amplio</h4>
+          <p>De 7:00 a 22:00 entre semana. Entrena antes de trabajar, a mediodía o al salir.</p>
+        </div>
+        <div class="why-card" style="--i:3">
+          <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1.5l3.09 6.26 6.91 1-5 4.87 1.18 6.87L12 17.27l-6.18 3.23L7 13.63l-5-4.87 6.91-1L12 1.5z"/></svg>
+          <h4>4.9 en Google</h4>
+          <p>105 reseñas respaldan un box donde la gente vuelve a entrenar semana tras semana.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== GALLERY ===================== -->
+  <section class="section-pad">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">El box</div>
+        <h2 class="section-title">Así se entrena<br>en Wishbone.</h2>
+      </div>
+
+      <div class="gallery-grid reveal">
+        <div class="gallery-item g1">
+          <div class="tex"></div>
+          <svg class="g-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M2 12h2M20 12h2M6 8v8M18 8v8M6 12h12"/></svg>
+          <div class="g-tag">Interior del box — ilustración de referencia, no fotografía real</div>
+        </div>
+        <div class="gallery-item g2">
+          <div class="tex"></div>
+          <svg class="g-icon" viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+          <div class="g-tag">Interior del box — ilustración de referencia, no fotografía real</div>
+        </div>
+        <div class="gallery-item g3">
+          <div class="tex"></div>
+          <svg class="g-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M4 20c4-8 8-14 8-14s4 6 8 14"/><path d="M7 20h10"/></svg>
+          <div class="g-tag">Interior del box — ilustración de referencia, no fotografía real</div>
+        </div>
+        <div class="gallery-item g4">
+          <div class="tex"></div>
+          <svg class="g-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M7 15a5 5 0 1 1 3-9M7 15h9a3 3 0 0 0 0-6h-1M7 15v3a2 2 0 0 0 2 2h1"/></svg>
+          <div class="g-tag">Interior del box — ilustración de referencia, no fotografía real</div>
+        </div>
+        <div class="gallery-item g5">
+          <div class="tex"></div>
+          <svg class="g-icon" viewBox="0 0 24 24" stroke-width="1.5"><path d="M3 12c2-4 4-6 4-6s2 2 4 6-2 6-4 6-6-2-4-6z"/></svg>
+          <div class="g-tag">Interior del box — ilustración de referencia, no fotografía real</div>
+        </div>
+        <div class="gallery-item g6">
+          <div class="tex"></div>
+          <svg class="g-icon" viewBox="0 0 24 24" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+          <div class="g-tag">Interior del box — ilustración de referencia, no fotografía real</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SCHEDULE / LOCATION ===================== -->
+  <section class="section-pad" id="ubicacion">
+    <div class="wrap">
+      <div class="reveal">
+        <div class="eyebrow">Horario y ubicación</div>
+        <h2 class="section-title">Búscanos<br>en Rivas.</h2>
+      </div>
+
+      <div class="info-grid reveal">
+        <div class="info-panel">
+          <h3>
+            <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+            Horario
+          </h3>
+          <div class="sched-row"><span class="d">Lunes a viernes</span><span class="h">7:00 – 22:00</span></div>
+          <div class="sched-row"><span class="d">Sábado</span><span class="h">9:00 – 13:00</span></div>
+          <div class="sched-row closed"><span class="d">Domingo</span><span class="h">Cerrado</span></div>
+        </div>
+        <div class="info-panel addr-block">
+          <h3>
+            <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 21s-7-6.1-7-11.5A7 7 0 0 1 12 2a7 7 0 0 1 7 7.5C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            Dirección
+          </h3>
+          <p>C. Joaquín Sorolla, 7<br>28522, Rivas-Vaciamadrid, Madrid</p>
+          <span class="phone">628 81 04 18</span>
+          <a class="btn btn-outline" href="https://www.google.com/maps/search/?api=1&query=C.%20Joaqu%C3%ADn%20Sorolla%2C%207%2C%2028522%2C%20Rivas-Vaciamadrid%2C%20Madrid" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 20l-5.447-2.724A1 1 0 0 1 3 16.382V5.618a1 1 0 0 1 1.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0 0 21 18.382V7.618a1 1 0 0 0-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+            Cómo llegar
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FINAL CTA ===================== -->
+  <section class="final-cta section-pad">
+    <div class="wrap reveal">
+      <h2>TU PRIMERA<br>CLASE<span class="lime">,</span><br>GRATIS<span class="lime">.</span></h2>
+      <p class="sub">Ven a probar un WOD real, conoce a los coaches y decide si Wishbone es tu box. Sin compromiso.</p>
+      <a class="btn btn-primary" href="tel:+34628810418">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Llama al 628 81 04 18
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">WISHBONE<span class="lime">.</span></div>
+        <p>Box de CrossFit en Rivas-Vaciamadrid. CrossFit, boxeo, entrenamiento personal y nutrición en un mismo espacio.</p>
+        <div class="foot-disclaimer">Propuesta de diseño de demostración — no es la web oficial de Wishbone CrossFit.</div>
+      </div>
+      <div>
+        <h5>Contacto</h5>
+        <ul>
+          <li><a class="flink" href="tel:+34628810418">628 81 04 18</a></li>
+          <li><a class="flink" href="https://www.google.com/maps/search/?api=1&query=C.%20Joaqu%C3%ADn%20Sorolla%2C%207%2C%2028522%2C%20Rivas-Vaciamadrid%2C%20Madrid" target="_blank" rel="noopener">C. Joaquín Sorolla, 7, Rivas-Vaciamadrid</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Navegación</h5>
+        <ul>
+          <li><a class="flink" href="#entrenamientos">Entrenamientos</a></li>
+          <li><a class="flink" href="#por-que">Por qué Wishbone</a></li>
+          <li><a class="flink" href="#opiniones">Opiniones</a></li>
+          <li><a class="flink" href="#ubicacion">Ubicación</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span class="foot-note">© 2026 Wishbone CrossFit — Rivas-Vaciamadrid, Madrid.</span>
+      <span class="foot-note">Horario: L-V 7:00–22:00 · Sáb 9:00–13:00 · Dom cerrado</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // Mobile menu
+  var burger = document.getElementById('burger');
+  var menu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', function(){
+    var open = menu.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      menu.classList.remove('open');
+      burger.classList.remove('open');
+      burger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Scroll reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('in-view'); });
+  }
+
+  // Animated counters
+  var counters = document.querySelectorAll('[data-count]');
+  function animateCounter(el){
+    var target = parseFloat(el.getAttribute('data-count'));
+    var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+    var duration = 1400;
+    var start = null;
+
+    function step(ts){
+      if(start === null) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var value = target * eased;
+      el.textContent = decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString();
+      if(progress < 1){
+        window.requestAnimationFrame(step);
+      } else {
+        el.textContent = decimals > 0 ? target.toFixed(decimals) : target.toString();
+      }
+    }
+    window.requestAnimationFrame(step);
+  }
+
+  if('IntersectionObserver' in window){
+    var counterIo = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          animateCounter(entry.target);
+          counterIo.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.6 });
+    counters.forEach(function(el){ counterIo.observe(el); });
+  } else {
+    counters.forEach(function(el){
+      var target = parseFloat(el.getAttribute('data-count'));
+      var decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
+      el.textContent = decimals > 0 ? target.toFixed(decimals) : target.toString();
+    });
+  }
+
+  // Sticky header shadow on scroll (subtle)
+  var header = document.querySelector('header');
+  window.addEventListener('scroll', function(){
+    if(window.scrollY > 10){
+      header.style.borderBottomColor = 'rgba(198,255,61,0.25)';
+    } else {
+      header.style.borderBottomColor = 'rgba(75,75,75,0.4)';
+    }
+  }, { passive: true });
+
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pizzería artesana en Arganda del Rey | El Taller Arganda</title>
+<meta name="description" content="El Taller Arganda: pizzas artesanas al horno de leña, smash burgers y cócteles en Arganda del Rey, Madrid. Abierto viernes noche, sábados y domingos. Reserva tu mesa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,900;1,400;1,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --charcoal:#2B2321;
+    --charcoal-2:#352A27;
+    --cream:#FBF3E7;
+    --cream-2:#F3E6D3;
+    --terracotta:#C1502E;
+    --terracotta-dark:#9B3E22;
+    --mustard:#E3A857;
+    --line-on-dark: rgba(251,243,231,0.14);
+    --line-on-light: rgba(43,35,33,0.12);
+    --shadow: 0 18px 40px rgba(20,14,10,0.28);
+    --radius: 18px;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--charcoal);
+    font-family:"Work Sans", "Segoe UI", sans-serif;
+    font-weight:400;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; }
+  h1,h2,h3,h4{
+    font-family:"Fraunces", Georgia, serif;
+    line-height:1.08;
+    margin:0 0 .5em;
+    font-weight:900;
+    letter-spacing:-0.01em;
+  }
+  p{ margin:0 0 1em; }
+  .container{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 clamp(20px, 5vw, 48px);
+  }
+  section{ position:relative; }
+  .section-pad{ padding:clamp(64px, 9vw, 120px) 0; }
+  .on-dark{ background:var(--charcoal); color:var(--cream); }
+  .on-dark h1,.on-dark h2,.on-dark h3,.on-dark h4{ color:var(--cream); }
+  .on-light{ background:var(--cream); color:var(--charcoal); }
+
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:.5em;
+    font-family:"Work Sans", sans-serif;
+    font-weight:600;
+    font-size: clamp(.72rem,1.4vw,.82rem);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--terracotta);
+    margin-bottom:1em;
+  }
+  .on-dark .eyebrow{ color:var(--mustard); }
+  .eyebrow::before{
+    content:"";
+    width:26px; height:2px;
+    background:currentColor;
+    display:inline-block;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:.6em;
+    padding:.95em 1.7em;
+    border-radius:999px;
+    font-family:"Work Sans", sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    text-decoration:none;
+    border:2px solid transparent;
+    cursor:pointer;
+    transition:transform .22s ease, box-shadow .22s ease, background-color .22s ease, color .22s ease, border-color .22s ease;
+    white-space:nowrap;
+  }
+  .btn svg{ flex:none; }
+  .btn-primary{
+    background:var(--terracotta);
+    color:var(--cream);
+    box-shadow: 0 10px 24px rgba(193,80,46,0.35);
+  }
+  .btn-primary:hover{
+    transform:translateY(-3px);
+    box-shadow: 0 16px 30px rgba(193,80,46,0.45);
+    background:var(--terracotta-dark);
+  }
+  .btn-outline{
+    background:transparent;
+    color:var(--cream);
+    border-color: rgba(251,243,231,0.5);
+  }
+  .btn-outline:hover{
+    transform:translateY(-3px);
+    border-color:var(--cream);
+    background:rgba(251,243,231,0.08);
+  }
+  .btn-outline.dark-variant{
+    color:var(--charcoal);
+    border-color: rgba(43,35,33,0.35);
+  }
+  .btn-outline.dark-variant:hover{
+    border-color:var(--charcoal);
+    background:rgba(43,35,33,0.06);
+  }
+
+  /* ---------- HEADER ---------- */
+  header.site{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    background:rgba(43,35,33,0.92);
+    backdrop-filter:saturate(140%) blur(10px);
+    border-bottom:1px solid var(--line-on-dark);
+  }
+  .nav-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px clamp(20px,5vw,48px);
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:.6em;
+    font-family:"Fraunces", serif;
+    font-weight:900;
+    font-size:1.18rem;
+    color:var(--cream);
+    text-decoration:none;
+    letter-spacing:-0.01em;
+  }
+  .brand svg{ flex:none; }
+  nav.main-nav{
+    display:flex;
+    align-items:center;
+    gap:clamp(18px,2.6vw,34px);
+  }
+  nav.main-nav a.nav-link{
+    color:var(--cream);
+    text-decoration:none;
+    font-size:.95rem;
+    font-weight:500;
+    opacity:.88;
+    position:relative;
+    padding:4px 0;
+  }
+  nav.main-nav a.nav-link::after{
+    content:"";
+    position:absolute; left:0; right:0; bottom:-3px;
+    height:2px; background:var(--mustard);
+    transform:scaleX(0); transform-origin:left;
+    transition:transform .25s ease;
+  }
+  nav.main-nav a.nav-link:hover{ opacity:1; }
+  nav.main-nav a.nav-link:hover::after{ transform:scaleX(1); }
+
+  .header-actions{ display:flex; align-items:center; gap:14px; }
+  .btn-header{ padding:.7em 1.35em; font-size:.92rem; }
+
+  .burger{
+    display:none;
+    background:none;
+    border:1px solid var(--line-on-dark);
+    border-radius:10px;
+    width:44px; height:44px;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+  }
+  .burger span, .burger span::before, .burger span::after{
+    content:""; display:block;
+    width:20px; height:2px;
+    background:var(--cream);
+    position:relative;
+    transition:transform .25s ease, opacity .25s ease;
+  }
+  .burger span::before{ position:absolute; top:-6px; }
+  .burger span::after{ position:absolute; top:6px; }
+  .burger[aria-expanded="true"] span{ background:transparent; }
+  .burger[aria-expanded="true"] span::before{ transform:rotate(45deg); top:0; }
+  .burger[aria-expanded="true"] span::after{ transform:rotate(-45deg); top:0; }
+
+  .mobile-drawer{
+    display:none;
+    flex-direction:column;
+    gap:2px;
+    background:var(--charcoal);
+    border-top:1px solid var(--line-on-dark);
+    padding: 10px clamp(20px,5vw,48px) 24px;
+  }
+  .mobile-drawer.open{ display:flex; }
+  .mobile-drawer a{
+    color:var(--cream);
+    text-decoration:none;
+    padding:14px 4px;
+    border-bottom:1px solid var(--line-on-dark);
+    font-weight:500;
+  }
+  .mobile-drawer .btn{ margin-top:16px; align-self:flex-start; }
+
+  @media (max-width: 860px){
+    nav.main-nav{ display:none; }
+    .header-actions .btn-header{ display:none; }
+    .burger{ display:flex; }
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(ellipse 900px 600px at 82% -10%, rgba(227,168,87,0.20), transparent 60%),
+      radial-gradient(ellipse 700px 500px at 6% 110%, rgba(193,80,46,0.28), transparent 60%),
+      var(--charcoal);
+    color:var(--cream);
+    padding-top: clamp(150px, 22vw, 210px);
+    padding-bottom: clamp(80px, 10vw, 130px);
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1.15fr .85fr;
+    gap: clamp(30px, 5vw, 60px);
+    align-items:center;
+  }
+  .hero h1{
+    font-size: clamp(2.5rem, 5.4vw, 4.4rem);
+    font-style:normal;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:600;
+    color:var(--mustard);
+  }
+  .hero-sub{
+    font-size: clamp(1.02rem, 1.6vw, 1.2rem);
+    max-width: 46ch;
+    color:rgba(251,243,231,0.86);
+  }
+  .hero-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-top: 2em;
+  }
+  .hero-meta{
+    display:flex;
+    gap: clamp(18px,3vw,36px);
+    margin-top: 2.6em;
+    flex-wrap:wrap;
+  }
+  .hero-meta .item{
+    display:flex;
+    align-items:center;
+    gap:.6em;
+    font-size:.92rem;
+    color:rgba(251,243,231,0.78);
+  }
+  .hero-meta .item strong{ color:var(--cream); font-weight:600; }
+
+  .hero-art{
+    position:relative;
+    aspect-ratio: 1/1;
+    max-width:440px;
+    margin:0 auto;
+  }
+  .hero-art .ring{
+    position:absolute; inset:0;
+    border-radius:50%;
+    border:1.5px dashed rgba(227,168,87,0.35);
+    animation: spin 40s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .hero-art .plate{
+    position:absolute; inset:8%;
+    border-radius:50%;
+    background: radial-gradient(circle at 38% 32%, #E7B86A 0%, #C1502E 46%, #8F3A20 100%);
+    box-shadow: inset 0 0 0 10px rgba(43,35,33,0.35), var(--shadow);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .hero-art .flame-badge{
+    position:absolute;
+    bottom:-6%; left:-6%;
+    background:var(--mustard);
+    color:var(--charcoal);
+    width:96px; height:96px;
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: var(--shadow);
+  }
+
+  /* ---------- SOCIAL PROOF ---------- */
+  .rating-band{
+    padding: clamp(46px,6vw,70px) 0;
+    border-top:1px solid var(--line-on-light);
+    border-bottom:1px solid var(--line-on-light);
+  }
+  .rating-flex{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap: clamp(20px,4vw,54px);
+    text-align:center;
+  }
+  .rating-score{
+    display:flex;
+    align-items:baseline;
+    gap:.2em;
+  }
+  .rating-score .num{
+    font-family:"Fraunces", serif;
+    font-weight:900;
+    font-size: clamp(2.6rem,5vw,3.4rem);
+    color:var(--terracotta);
+  }
+  .rating-score .of5{
+    font-size:1.1rem;
+    color: rgba(43,35,33,0.55);
+    font-weight:500;
+  }
+  .rating-block{ display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .stars{ display:flex; gap:4px; }
+  .rating-count{ font-weight:600; font-size:1.02rem; }
+  .rating-note{ font-size:.85rem; color:rgba(43,35,33,0.6); }
+  .divider-v{ width:1px; height:52px; background:var(--line-on-light); }
+  @media (max-width:640px){ .divider-v{ display:none; } }
+
+  /* ---------- GASTRONOMY ---------- */
+  .head-block{ max-width:640px; }
+  .head-block.center{ margin-left:auto; margin-right:auto; text-align:center; }
+  .head-block h2{ font-size: clamp(1.9rem, 3.6vw, 2.7rem); }
+  .head-block .lead{ font-size:1.05rem; opacity:.86; max-width:56ch; }
+
+  .card-grid-3{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+    margin-top: 48px;
+  }
+  @media (max-width:900px){ .card-grid-3{ grid-template-columns: 1fr; } }
+
+  .food-card{
+    background: var(--charcoal-2);
+    border:1px solid var(--line-on-dark);
+    border-radius: var(--radius);
+    padding: 34px 30px;
+    transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  }
+  .food-card:hover{
+    transform: translateY(-8px);
+    box-shadow: var(--shadow);
+    border-color: rgba(227,168,87,0.4);
+  }
+  .food-card .icon-wrap{
+    width:64px; height:64px;
+    border-radius:16px;
+    background: rgba(227,168,87,0.12);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom: 22px;
+  }
+  .food-card h3{ font-size:1.32rem; color:var(--cream); margin-bottom:.4em; }
+  .food-card p{ color:rgba(251,243,231,0.72); font-size:.96rem; margin-bottom:0; }
+
+  /* ---------- DIFFERENTIATION ---------- */
+  .diff-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+  }
+  @media (max-width:900px){ .diff-grid{ grid-template-columns: 1fr; } }
+  .diff-item{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .diff-item .icon-wrap{
+    width:58px; height:58px;
+    border-radius:50%;
+    background: var(--terracotta);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 10px 20px rgba(193,80,46,0.3);
+  }
+  .diff-item h3{ font-size:1.2rem; color:var(--charcoal); }
+  .diff-item p{ color: rgba(43,35,33,0.72); font-size:.96rem; margin-bottom:0; }
+
+  .founder-strip{
+    margin-top: 56px;
+    background: var(--cream-2);
+    border:1px solid var(--line-on-light);
+    border-radius: var(--radius);
+    padding: clamp(26px,4vw,40px);
+    display:flex;
+    align-items:center;
+    gap: 28px;
+    flex-wrap:wrap;
+  }
+  .founder-strip .badge-num{
+    font-family:"Fraunces", serif;
+    font-weight:900;
+    font-size: clamp(2.6rem,5vw,3.6rem);
+    color:var(--terracotta);
+    line-height:1;
+  }
+  .founder-strip .badge-num span{
+    display:block;
+    font-family:"Work Sans", sans-serif;
+    font-weight:600;
+    font-size:.72rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:rgba(43,35,33,0.6);
+    margin-top:6px;
+  }
+  .founder-strip p{ margin:0; max-width:60ch; font-size:1rem; }
+  .founder-strip strong{ color:var(--terracotta); }
+
+  /* ---------- GALLERY ---------- */
+  .gallery-note{
+    font-size:.82rem;
+    color: rgba(251,243,231,0.55);
+    margin-top: -8px;
+    margin-bottom: 36px;
+    font-style:italic;
+  }
+  .gallery-grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width:900px){ .gallery-grid{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width:560px){ .gallery-grid{ grid-template-columns: 1fr; } }
+
+  .gallery-tile{
+    position:relative;
+    aspect-ratio: 4/3;
+    border-radius: 16px;
+    overflow:hidden;
+    display:flex;
+    align-items:flex-end;
+    padding: 18px;
+    isolation:isolate;
+    transition: transform .35s ease;
+  }
+  .gallery-tile:hover{ transform: scale(1.025); }
+  .gallery-tile::before{
+    content:"";
+    position:absolute; inset:0;
+    z-index:0;
+  }
+  .gallery-tile .g-label{
+    position:relative; z-index:2;
+    color: var(--cream);
+    font-family:"Fraunces", serif;
+    font-weight:600;
+    font-style:italic;
+    font-size:1.05rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  }
+  .gallery-tile svg.texture{
+    position:absolute; inset:0; z-index:1;
+    width:100%; height:100%;
+    opacity:.55;
+  }
+  .g1::before{ background: radial-gradient(circle at 30% 20%, #E3A857, #C1502E 65%, #7B331C 100%); }
+  .g2::before{ background: linear-gradient(135deg, #9B3E22, #2B2321 75%); }
+  .g3::before{ background: radial-gradient(circle at 70% 75%, #E7B86A, #9B3E22 70%); }
+  .g4::before{ background: linear-gradient(160deg, #2B2321, #C1502E 120%); }
+  .g5::before{ background: radial-gradient(circle at 50% 30%, #E3A857 0%, #7B331C 80%); }
+  .g6::before{ background: linear-gradient(200deg, #C1502E, #2B2321 80%); }
+
+  /* ---------- SCHEDULE + LOCATION ---------- */
+  .sched-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(30px,5vw,70px);
+    align-items:start;
+  }
+  @media (max-width:860px){ .sched-grid{ grid-template-columns:1fr; } }
+
+  .hours-card{
+    background: var(--charcoal-2);
+    border:1px solid var(--line-on-dark);
+    border-radius: var(--radius);
+    padding: clamp(28px,4vw,40px);
+  }
+  .hours-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line-on-dark);
+    gap: 12px;
+    flex-wrap:wrap;
+  }
+  .hours-row:last-child{ border-bottom:none; }
+  .hours-row .day{ font-weight:600; font-size:1.02rem; }
+  .hours-row .time{ color: var(--mustard); font-weight:600; text-align:right; }
+  .hours-row.closed .day{ opacity:.5; }
+  .hours-row.closed .time{ color: rgba(251,243,231,0.45); font-weight:400; }
+  .hours-flag{
+    display:inline-flex;
+    align-items:center;
+    gap:.5em;
+    background: rgba(227,168,87,0.14);
+    color: var(--mustard);
+    padding:.5em 1em;
+    border-radius:999px;
+    font-size:.82rem;
+    font-weight:600;
+    margin-top: 22px;
+  }
+
+  .location-card{
+    background: var(--cream-2);
+    border:1px solid var(--line-on-light);
+    border-radius: var(--radius);
+    padding: clamp(28px,4vw,40px);
+    display:flex;
+    flex-direction:column;
+    gap: 20px;
+  }
+  .loc-row{ display:flex; gap:16px; align-items:flex-start; }
+  .loc-row .icon-wrap{
+    width:46px; height:46px; flex:none;
+    border-radius:12px;
+    background: rgba(193,80,46,0.1);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .loc-row h4{ font-family:"Work Sans",sans-serif; font-weight:600; font-size:1rem; margin:0 0 .2em; color:var(--charcoal); }
+  .loc-row p{ margin:0; font-size:.95rem; color: rgba(43,35,33,0.75); }
+  .location-card .btn{ align-self:flex-start; margin-top:4px; }
+
+  .map-decor{
+    margin-top:4px;
+    border-radius: 14px;
+    overflow:hidden;
+    border:1px solid var(--line-on-light);
+  }
+
+  /* ---------- FINAL CTA ---------- */
+  .final-cta{
+    background:
+      radial-gradient(ellipse 800px 400px at 20% 0%, rgba(227,168,87,0.35), transparent 60%),
+      linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-dark) 100%);
+    color: var(--cream);
+    text-align:center;
+  }
+  .final-cta h2{ font-size: clamp(2.1rem,4.4vw,3.4rem); color:var(--cream); }
+  .final-cta p{ font-size:1.08rem; color: rgba(251,243,231,0.9); max-width:56ch; margin-left:auto; margin-right:auto; }
+  .final-cta .btn-primary{ background:var(--charcoal); color:var(--cream); box-shadow:0 14px 30px rgba(0,0,0,0.3); }
+  .final-cta .btn-primary:hover{ background:#181211; }
+  .final-cta .btn-outline{ border-color: rgba(251,243,231,0.55); }
+
+  /* ---------- FOOTER ---------- */
+  footer.site-footer{
+    background: var(--charcoal);
+    color: rgba(251,243,231,0.75);
+    padding: 56px 0 26px;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--line-on-dark);
+  }
+  @media (max-width:760px){ .footer-grid{ grid-template-columns:1fr; gap:30px; } }
+  .footer-brand{ display:flex; align-items:center; gap:.6em; color:var(--cream); font-family:"Fraunces",serif; font-weight:900; font-size:1.15rem; margin-bottom:.6em; }
+  .footer-col h4{ color:var(--cream); font-family:"Work Sans",sans-serif; font-weight:600; font-size:.85rem; letter-spacing:.08em; text-transform:uppercase; margin-bottom:1em; }
+  .footer-col p, .footer-col a{ font-size:.92rem; color:rgba(251,243,231,0.72); text-decoration:none; display:block; margin-bottom:.6em; }
+  .footer-col a:hover{ color:var(--mustard); }
+  .footer-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    flex-wrap:wrap;
+    padding-top: 26px;
+    font-size:.82rem;
+    color: rgba(251,243,231,0.5);
+  }
+  .footer-disclaimer{
+    max-width:640px;
+    font-style:italic;
+  }
+
+  /* ---------- reveal-on-scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform: translateY(28px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.in-view{ opacity:1; transform:none; }
+
+  .sr-only{
+    position:absolute; width:1px; height:1px;
+    padding:0; margin:-1px; overflow:hidden;
+    clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="nav-wrap">
+    <a href="#top" class="brand" aria-label="El Taller Arganda — inicio">
+      <svg width="30" height="30" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M24 4c-3 6-8 8-8 15a8 8 0 0 0 16 0c0-3-1.5-5-3-7 .3 3-1 4.5-2.5 4.5C28 16.5 28 12 24 4Z" fill="#E3A857"/>
+        <path d="M24 12c-1.6 3.4-4.4 4.6-4.4 8.4A4.4 4.4 0 0 0 24 24.8" stroke="#C1502E" stroke-width="2" stroke-linecap="round" fill="none"/>
+      </svg>
+      El Taller Arganda
+    </a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a class="nav-link" href="#cocina">Nuestra cocina</a>
+      <a class="nav-link" href="#horario">Horario</a>
+      <a class="nav-link" href="#opiniones">Opiniones</a>
+      <a class="nav-link" href="#ubicacion">Ubicación</a>
+    </nav>
+    <div class="header-actions">
+      <a href="tel:+34918700448" class="btn btn-primary btn-header">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.6 10.8a15.7 15.7 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 8.9 8.9 0 0 0 2.8.45 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A16 16 0 0 1 3 5a1 1 0 0 1 1-1h3.3a1 1 0 0 1 1 1 8.9 8.9 0 0 0 .45 2.8 1 1 0 0 1-.25 1L6.6 10.8Z" fill="currentColor"/></svg>
+        Reservar mesa
+      </a>
+      <button class="burger" id="burgerBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileDrawer">
+        <span></span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-drawer" id="mobileDrawer">
+    <a href="#cocina">Nuestra cocina</a>
+    <a href="#horario">Horario</a>
+    <a href="#opiniones">Opiniones</a>
+    <a href="#ubicacion">Ubicación</a>
+    <a href="tel:+34918700448" class="btn btn-primary">Reservar mesa · 918 70 04 48</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow">Horno de leña · Arganda del Rey</div>
+        <h1>Pizza artesana con alma de <em>brasa y leña</em>, hecha para el fin de semana</h1>
+        <p class="hero-sub">En El Taller Arganda cocinamos con ingredientes gourmet y fuego de leña: pizzas de corteza fina y sabor intenso, smash burgers jugosas y cócteles bien hechos, en un ambiente pensado para disfrutar sin prisa.</p>
+        <div class="hero-actions">
+          <a href="tel:+34918700448" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.6 10.8a15.7 15.7 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 8.9 8.9 0 0 0 2.8.45 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A16 16 0 0 1 3 5a1 1 0 0 1 1-1h3.3a1 1 0 0 1 1 1 8.9 8.9 0 0 0 .45 2.8 1 1 0 0 1-.25 1L6.6 10.8Z" fill="currentColor"/></svg>
+            Reservar mesa
+          </a>
+          <a href="#horario" class="btn btn-outline">Ver el horario</a>
+        </div>
+        <div class="hero-meta">
+          <div class="item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="#E3A857" stroke-width="1.6"/><path d="M12 7v5l3.2 2" stroke="#E3A857" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <span><strong>Vie</strong> cena · <strong>Sáb–Dom</strong> comida y cena</span>
+          </div>
+          <div class="item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-6-7-11.5A7 7 0 0 1 12 3a7 7 0 0 1 7 6.5C19 15 12 21 12 21Z" stroke="#E3A857" stroke-width="1.6"/><circle cx="12" cy="9.5" r="2.4" stroke="#E3A857" stroke-width="1.6"/></svg>
+            <span>Arganda del Rey, Madrid</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="ring"></div>
+        <div class="plate">
+          <svg width="62%" height="62%" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="46" fill="none" stroke="#FBF3E7" stroke-width="1.4" stroke-opacity=".55"/>
+            <path d="M50 4 L50 96 M50 50 L92 26 M50 50 L92 74 M50 50 L8 26 M50 50 L8 74" stroke="#FBF3E7" stroke-width="1.2" stroke-opacity=".4"/>
+            <circle cx="34" cy="36" r="4" fill="#FBF3E7" opacity=".85"/>
+            <circle cx="63" cy="30" r="3.4" fill="#FBF3E7" opacity=".7"/>
+            <circle cx="70" cy="58" r="4" fill="#FBF3E7" opacity=".85"/>
+            <circle cx="40" cy="68" r="3" fill="#FBF3E7" opacity=".7"/>
+            <circle cx="55" cy="52" r="2.6" fill="#FBF3E7" opacity=".6"/>
+          </svg>
+        </div>
+        <div class="flame-badge">
+          <svg width="42" height="42" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <path d="M24 4c-3 6-8 8-8 15a8 8 0 0 0 16 0c0-3-1.5-5-3-7 .3 3-1 4.5-2.5 4.5C28 16.5 28 12 24 4Z" fill="#C1502E"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SOCIAL PROOF ================= -->
+  <section class="rating-band on-light" id="opiniones">
+    <div class="container reveal">
+      <div class="rating-flex">
+        <div class="rating-block">
+          <div class="rating-score"><span class="num">4.4</span><span class="of5">/5</span></div>
+          <div class="stars" aria-hidden="true" id="starsRow"></div>
+          <div class="rating-count">Valoración en Google</div>
+          <div class="rating-note">253 reseñas verificadas en Google</div>
+        </div>
+        <div class="divider-v"></div>
+        <div class="rating-block">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M24 4c-3 6-8 8-8 15a8 8 0 0 0 16 0c0-3-1.5-5-3-7 .3 3-1 4.5-2.5 4.5C28 16.5 28 12 24 4Z" fill="#C1502E" transform="translate(-14,-2) scale(.5)"/><path d="M3 21a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3H3Z" fill="#C1502E"/></svg>
+          <div class="rating-count">Desde 2022</div>
+          <div class="rating-note">Con más de 30 años de oficio detrás</div>
+        </div>
+        <div class="divider-v"></div>
+        <div class="rating-block">
+          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-6-7-11.5A7 7 0 0 1 12 3a7 7 0 0 1 7 6.5C19 15 12 21 12 21Z" fill="#C1502E"/></svg>
+          <div class="rating-count">Arganda del Rey</div>
+          <div class="rating-note">Camino de San Martín de la Vega, 11</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GASTRONOMY ================= -->
+  <section class="section-pad on-dark" id="cocina">
+    <div class="container">
+      <div class="head-block reveal">
+        <div class="eyebrow">Lo que sale de nuestra cocina</div>
+        <h2>Fuego de leña, producto gourmet y buena mesa de fin de semana</h2>
+        <p class="lead">Tres formas de disfrutar en El Taller Arganda: pizza cocida a fuego vivo, hamburguesas smash de corteza dorada y una carta de cócteles pensada para alargar la sobremesa.</p>
+      </div>
+
+      <div class="card-grid-3">
+        <article class="food-card reveal">
+          <div class="icon-wrap">
+            <svg width="30" height="30" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+              <path d="M6 40 42 40 42 30 6 30Z" fill="#9B3E22"/>
+              <path d="M6 30 24 8 42 30Z" fill="none" stroke="#E3A857" stroke-width="2.4" stroke-linejoin="round"/>
+              <path d="M24 8c-2.5 5-6.5 6.5-6.5 12a6.5 6.5 0 0 0 13 0c0-2.4-1.2-4-2.4-5.6.2 2.4-.8 3.6-2 3.6-1.9 0-1.9-3.6-2.1-10Z" fill="#C1502E"/>
+            </svg>
+          </div>
+          <h3>Pizza al horno de leña</h3>
+          <p>Masa de fermentación lenta y corteza fina, cocida a alta temperatura con leña real, coronada con ingredientes de calidad gourmet.</p>
+        </article>
+
+        <article class="food-card reveal">
+          <div class="icon-wrap">
+            <svg width="30" height="30" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+              <ellipse cx="24" cy="16" rx="15" ry="6" fill="#E3A857"/>
+              <rect x="9" y="16" width="30" height="6" fill="#C1502E"/>
+              <ellipse cx="24" cy="22" rx="15" ry="6" fill="#9B3E22"/>
+              <rect x="9" y="22" width="30" height="5" fill="#7B331C"/>
+              <ellipse cx="24" cy="27" rx="15" ry="6" fill="#E3A857"/>
+              <rect x="9" y="30" width="30" height="6" fill="#C1502E" opacity=".9"/>
+              <ellipse cx="24" cy="36" rx="15" ry="6" fill="#9B3E22"/>
+            </svg>
+          </div>
+          <h3>Smash burgers</h3>
+          <p>Carne prensada y sellada al momento para lograr una costra caramelizada por fuera y jugosa por dentro, con pan tostado en casa.</p>
+        </article>
+
+        <article class="food-card reveal">
+          <div class="icon-wrap">
+            <svg width="30" height="30" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+              <path d="M9 8h30l-13 16v14h6v4H16v-4h6V24Z" fill="none" stroke="#E3A857" stroke-width="2.4" stroke-linejoin="round"/>
+              <path d="M12 12h24" stroke="#C1502E" stroke-width="2.4"/>
+              <circle cx="24" cy="17" r="2.6" fill="#C1502E"/>
+            </svg>
+          </div>
+          <h3>Cócteles de barra</h3>
+          <p>Clásicos bien ejecutados y combinaciones de la casa para acompañar la comida o alargar la noche del fin de semana.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DIFFERENTIATION ================= -->
+  <section class="section-pad on-light">
+    <div class="container">
+      <div class="head-block reveal">
+        <div class="eyebrow">Por qué El Taller Arganda</div>
+        <h2>Oficio de más de 30 años, aplicado a cada pizza</h2>
+        <p class="lead">Martín Martínez fundó El Taller Arganda en 2022 tras más de tres décadas dedicado a la restauración. Ese recorrido se nota en cada detalle: producto seleccionado, cocción precisa y un servicio que conoce el oficio.</p>
+      </div>
+
+      <div class="diff-grid">
+        <div class="diff-item reveal">
+          <div class="icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 4c-3 6-8 8-8 15a8 8 0 0 0 16 0c0-3-1.5-5-3-7 .3 3-1 4.5-2.5 4.5C28 16.5 28 12 24 4Z" fill="#FBF3E7"/></svg>
+          </div>
+          <h3>Horno de leña real</h3>
+          <p>Cocción a fuego vivo que aporta el aroma y la corteza que un horno eléctrico no consigue igualar.</p>
+        </div>
+        <div class="diff-item reveal">
+          <div class="icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 48 48" fill="none" aria-hidden="true"><circle cx="24" cy="24" r="9" fill="none" stroke="#FBF3E7" stroke-width="2.6"/><circle cx="24" cy="24" r="3" fill="#FBF3E7"/></svg>
+          </div>
+          <h3>Ingredientes gourmet</h3>
+          <p>Selección cuidada de producto para que cada pizza y cada burger tengan un sabor a la altura del oficio.</p>
+        </div>
+        <div class="diff-item reveal">
+          <div class="icon-wrap">
+            <svg width="26" height="26" viewBox="0 0 48 48" fill="none" aria-hidden="true"><rect x="9" y="12" width="30" height="26" rx="3" fill="none" stroke="#FBF3E7" stroke-width="2.6"/><path d="M9 20h30" stroke="#FBF3E7" stroke-width="2.6"/></svg>
+          </div>
+          <h3>El plan del fin de semana</h3>
+          <p>Abierto solo viernes noche, sábado y domingo: un espacio pensado para disfrutarse sin prisa, no de paso entre semana.</p>
+        </div>
+      </div>
+
+      <div class="founder-strip reveal">
+        <div class="badge-num">30+<span>Años de oficio</span></div>
+        <p>Detrás de El Taller Arganda está <strong>Martín Martínez</strong>, fundador del negocio en 2022 y con más de treinta años de experiencia previa en el sector de la restauración — la base de un producto artesano hecho con criterio.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GALLERY ================= -->
+  <section class="section-pad on-dark">
+    <div class="container">
+      <div class="head-block reveal">
+        <div class="eyebrow">Un vistazo a la casa</div>
+        <h2>Nuestros platos, en imágenes</h2>
+      </div>
+      <p class="gallery-note reveal">Nuestros platos — ilustración de referencia, no fotografía real.</p>
+
+      <div class="gallery-grid">
+        <div class="gallery-tile g1 reveal">
+          <svg class="texture" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice"><circle cx="160" cy="20" r="60" fill="none" stroke="#FBF3E7" stroke-opacity=".25" stroke-width="1.4"/><circle cx="30" cy="120" r="40" fill="none" stroke="#FBF3E7" stroke-opacity=".2" stroke-width="1.4"/></svg>
+          <span class="g-label">Pizza recién horneada</span>
+        </div>
+        <div class="gallery-tile g2 reveal">
+          <svg class="texture" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice"><path d="M0 40 Q50 10 100 40 T200 40" stroke="#FBF3E7" stroke-opacity=".3" stroke-width="1.4" fill="none"/><path d="M0 80 Q50 50 100 80 T200 80" stroke="#FBF3E7" stroke-opacity=".2" stroke-width="1.4" fill="none"/></svg>
+          <span class="g-label">Horno de leña encendido</span>
+        </div>
+        <div class="gallery-tile g3 reveal">
+          <svg class="texture" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice"><circle cx="60" cy="60" r="3" fill="#FBF3E7" opacity=".5"/><circle cx="100" cy="30" r="3" fill="#FBF3E7" opacity=".5"/><circle cx="150" cy="90" r="3" fill="#FBF3E7" opacity=".5"/><circle cx="40" cy="110" r="3" fill="#FBF3E7" opacity=".5"/><circle cx="170" cy="40" r="3" fill="#FBF3E7" opacity=".5"/></svg>
+          <span class="g-label">Ingredientes gourmet</span>
+        </div>
+        <div class="gallery-tile g4 reveal">
+          <svg class="texture" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice"><path d="M0 20 Q100 -10 200 20" stroke="#FBF3E7" stroke-opacity=".25" stroke-width="1.4" fill="none"/><path d="M0 130 Q100 100 200 130" stroke="#FBF3E7" stroke-opacity=".25" stroke-width="1.4" fill="none"/></svg>
+          <span class="g-label">Smash burger dorada</span>
+        </div>
+        <div class="gallery-tile g5 reveal">
+          <svg class="texture" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice"><circle cx="100" cy="75" r="55" fill="none" stroke="#FBF3E7" stroke-opacity=".25" stroke-width="1.4"/><circle cx="100" cy="75" r="30" fill="none" stroke="#FBF3E7" stroke-opacity=".2" stroke-width="1.4"/></svg>
+          <span class="g-label">Cóctel de la casa</span>
+        </div>
+        <div class="gallery-tile g6 reveal">
+          <svg class="texture" viewBox="0 0 200 150" preserveAspectRatio="xMidYMid slice"><path d="M-10 100 Q60 60 130 100 T210 60" stroke="#FBF3E7" stroke-opacity=".25" stroke-width="1.4" fill="none"/></svg>
+          <span class="g-label">Ambiente de fin de semana</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SCHEDULE + LOCATION ================= -->
+  <section class="section-pad on-light" id="horario">
+    <div class="container">
+      <div class="head-block reveal">
+        <div class="eyebrow">Cuándo y dónde</div>
+        <h2>Solo abrimos el fin de semana — y merece la pena esperarlo</h2>
+      </div>
+
+      <div class="sched-grid" style="margin-top:44px;">
+        <div class="hours-card reveal">
+          <h3 style="color:var(--cream); font-size:1.15rem; margin-bottom:20px;">Horario</h3>
+          <div class="hours-row closed"><span class="day">Lunes</span><span class="time">Cerrado</span></div>
+          <div class="hours-row closed"><span class="day">Martes</span><span class="time">Cerrado</span></div>
+          <div class="hours-row closed"><span class="day">Miércoles</span><span class="time">Cerrado</span></div>
+          <div class="hours-row closed"><span class="day">Jueves</span><span class="time">Cerrado</span></div>
+          <div class="hours-row"><span class="day">Viernes</span><span class="time">Solo cena</span></div>
+          <div class="hours-row"><span class="day">Sábado</span><span class="time">Comida y cena</span></div>
+          <div class="hours-row"><span class="day">Domingo</span><span class="time">Comida y cena</span></div>
+          <div class="hours-flag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3.2 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            Abierto solo viernes, sábado y domingo
+          </div>
+        </div>
+
+        <div class="location-card reveal" id="ubicacion">
+          <div class="loc-row">
+            <div class="icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-6-7-11.5A7 7 0 0 1 12 3a7 7 0 0 1 7 6.5C19 15 12 21 12 21Z" stroke="#C1502E" stroke-width="1.8"/><circle cx="12" cy="9.5" r="2.4" stroke="#C1502E" stroke-width="1.8"/></svg>
+            </div>
+            <div>
+              <h4>Dirección</h4>
+              <p>Camino de San Martín de la Vega, 11<br>28500, Arganda del Rey, Madrid</p>
+            </div>
+          </div>
+          <div class="loc-row">
+            <div class="icon-wrap">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.6 10.8a15.7 15.7 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 8.9 8.9 0 0 0 2.8.45 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A16 16 0 0 1 3 5a1 1 0 0 1 1-1h3.3a1 1 0 0 1 1 1 8.9 8.9 0 0 0 .45 2.8 1 1 0 0 1-.25 1L6.6 10.8Z" fill="#C1502E"/></svg>
+            </div>
+            <div>
+              <h4>Teléfono</h4>
+              <p><a href="tel:+34918700448" style="color:var(--terracotta); text-decoration:underline;">918 70 04 48</a></p>
+            </div>
+          </div>
+          <div class="map-decor" aria-hidden="true">
+            <svg width="100%" height="120" viewBox="0 0 400 120" preserveAspectRatio="none">
+              <rect width="400" height="120" fill="#F3E6D3"/>
+              <path d="M0 90 C 80 60, 140 100, 220 70 S 340 40, 400 60" stroke="#C1502E" stroke-width="3" fill="none" opacity=".55"/>
+              <path d="M0 40 C 90 20, 160 55, 260 30 S 360 10, 400 25" stroke="#E3A857" stroke-width="2" fill="none" opacity=".5"/>
+              <circle cx="250" cy="60" r="6" fill="#C1502E"/>
+              <circle cx="250" cy="60" r="10" fill="none" stroke="#C1502E" stroke-width="1.4" opacity=".5"/>
+            </svg>
+          </div>
+          <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&query=Camino%20de%20San%20Mart%C3%ADn%20de%20la%20Vega%2C%2011%2C%2028500%2C%20Arganda%20del%20Rey%2C%20Madrid" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-6-7-11.5A7 7 0 0 1 12 3a7 7 0 0 1 7 6.5C19 15 12 21 12 21Z" fill="currentColor"/></svg>
+            Cómo llegar
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FINAL CTA ================= -->
+  <section class="section-pad final-cta">
+    <div class="container reveal">
+      <h2>Reserva tu mesa para el finde</h2>
+      <p>Viernes noche, sábado o domingo: llama y te guardamos sitio junto al horno.</p>
+      <div class="hero-actions" style="justify-content:center; margin-top:1.8em;">
+        <a href="tel:+34918700448" class="btn btn-primary">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.6 10.8a15.7 15.7 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 8.9 8.9 0 0 0 2.8.45 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A16 16 0 0 1 3 5a1 1 0 0 1 1-1h3.3a1 1 0 0 1 1 1 8.9 8.9 0 0 0 .45 2.8 1 1 0 0 1-.25 1L6.6 10.8Z" fill="currentColor"/></svg>
+          918 70 04 48
+        </a>
+        <a href="#ubicacion" class="btn btn-outline">Ver ubicación</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <svg width="24" height="24" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M24 4c-3 6-8 8-8 15a8 8 0 0 0 16 0c0-3-1.5-5-3-7 .3 3-1 4.5-2.5 4.5C28 16.5 28 12 24 4Z" fill="#E3A857"/></svg>
+          El Taller Arganda
+        </div>
+        <p>Pizza artesana al horno de leña, smash burgers y cócteles en Arganda del Rey.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <a href="tel:+34918700448">918 70 04 48</a>
+        <p>Camino de San Martín de la Vega, 11<br>28500, Arganda del Rey, Madrid</p>
+      </div>
+      <div class="footer-col">
+        <h4>Horario</h4>
+        <p>Viernes: solo cena<br>Sábado y domingo: comida y cena<br>Lunes a jueves: cerrado</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 El Taller Arganda</span>
+      <span class="footer-disclaimer">Propuesta de diseño de demostración — no es la web oficial de El Taller Arganda.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // Mobile menu toggle
+  var burger = document.getElementById('burgerBtn');
+  var drawer = document.getElementById('mobileDrawer');
+  if(burger && drawer){
+    burger.addEventListener('click', function(){
+      var open = drawer.classList.toggle('open');
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      burger.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    });
+    drawer.querySelectorAll('a').forEach(function(a){
+      a.addEventListener('click', function(){
+        drawer.classList.remove('open');
+        burger.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  // Build star rating (4.4 / 5) as inline SVG
+  var starsRow = document.getElementById('starsRow');
+  if(starsRow){
+    var rating = 4.4;
+    for(var i = 1; i <= 5; i++){
+      var fill = Math.max(0, Math.min(1, rating - (i - 1)));
+      var pctId = 'starclip' + i;
+      var svgNS = 'http://www.w3.org/2000/svg';
+      var svg = document.createElementNS(svgNS, 'svg');
+      svg.setAttribute('width', '22');
+      svg.setAttribute('height', '22');
+      svg.setAttribute('viewBox', '0 0 24 24');
+
+      var defs = document.createElementNS(svgNS, 'defs');
+      var clip = document.createElementNS(svgNS, 'clipPath');
+      clip.setAttribute('id', pctId);
+      var clipRect = document.createElementNS(svgNS, 'rect');
+      clipRect.setAttribute('x', '0');
+      clipRect.setAttribute('y', '0');
+      clipRect.setAttribute('width', (24 * fill).toFixed(2));
+      clipRect.setAttribute('height', '24');
+      clip.appendChild(clipRect);
+      defs.appendChild(clip);
+      svg.appendChild(defs);
+
+      var starPath = 'M12 2.5l2.9 6 6.6.9-4.8 4.6 1.1 6.5-5.8-3.1-5.8 3.1 1.1-6.5-4.8-4.6 6.6-.9Z';
+
+      var bg = document.createElementNS(svgNS, 'path');
+      bg.setAttribute('d', starPath);
+      bg.setAttribute('fill', 'none');
+      bg.setAttribute('stroke', '#C1502E');
+      bg.setAttribute('stroke-width', '1.4');
+      bg.setAttribute('opacity', '0.35');
+      svg.appendChild(bg);
+
+      var fg = document.createElementNS(svgNS, 'path');
+      fg.setAttribute('d', starPath);
+      fg.setAttribute('fill', '#C1502E');
+      fg.setAttribute('clip-path', 'url(#' + pctId + ')');
+      svg.appendChild(fg);
+
+      starsRow.appendChild(svg);
+    }
+  }
+
+  // Scroll reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('in-view'); });
+  }
+})();
+</script>
+
+</body>
+</html>

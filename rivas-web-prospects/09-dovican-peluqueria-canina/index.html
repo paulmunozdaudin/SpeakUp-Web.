@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Peluquería canina en Rivas-Vaciamadrid | DoviCan</title>
+<meta name="description" content="DoviCan Peluquería Canina en Rivas-Vaciamadrid: corte, baño y tratamientos adaptados a cada mascota. Horario muy amplio de 8:00 a 24:00 entre semana. Valoración 4.8★ en Google (81 reseñas). Reserva su baño llamando al 910 23 30 14.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --crema:#FBF6EE;
+    --crema-suave:#F3E9D6;
+    --mostaza:#E8A33D;
+    --mostaza-oscuro:#C9821F;
+    --marino:#22303F;
+    --marino-suave:#3C4E62;
+    --blanco:#FFFFFF;
+    --sombra:0 10px 30px rgba(34,48,63,0.12);
+    --radio:24px;
+    --radio-sm:14px;
+    --ff-titular:'Baloo 2', 'Fredoka', system-ui, sans-serif;
+    --ff-cuerpo:'Nunito Sans', system-ui, -apple-system, sans-serif;
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--crema);
+    color:var(--marino);
+    font-family:var(--ff-cuerpo);
+    line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{max-width:100%;display:block;}
+  a{color:inherit;}
+  h1,h2,h3,h4{
+    font-family:var(--ff-titular);
+    font-weight:700;
+    line-height:1.15;
+    margin:0 0 .5em;
+    color:var(--marino);
+  }
+  p{margin:0 0 1em;}
+  .container{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 clamp(18px,4vw,40px);
+  }
+  section{position:relative;}
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--ff-titular);
+    font-weight:600;
+    font-size:.8rem;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--mostaza-oscuro);
+    background:rgba(232,163,61,0.14);
+    padding:6px 16px;
+    border-radius:999px;
+    margin-bottom:16px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    font-family:var(--ff-titular);
+    font-weight:600;
+    font-size:1rem;
+    text-decoration:none;
+    padding:15px 30px;
+    border-radius:999px;
+    border:2px solid transparent;
+    cursor:pointer;
+    transition:transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s ease, background .25s ease;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:var(--mostaza);
+    color:var(--marino);
+    box-shadow:0 8px 20px rgba(232,163,61,0.45);
+  }
+  .btn-primary:hover{
+    transform:translateY(-3px) scale(1.03);
+    box-shadow:0 14px 26px rgba(232,163,61,0.55);
+  }
+  .btn-outline{
+    background:transparent;
+    border-color:var(--marino);
+    color:var(--marino);
+  }
+  .btn-outline:hover{
+    transform:translateY(-3px) scale(1.03);
+    background:var(--marino);
+    color:var(--crema);
+  }
+  .btn svg{width:20px;height:20px;flex-shrink:0;}
+
+  /* ---------- Reveal on scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .7s ease, transform .7s ease;
+  }
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+
+  /* ---------- Header ---------- */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:1000;
+    background:rgba(251,246,238,0.9);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(34,48,63,0.08);
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px clamp(18px,4vw,40px);
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--ff-titular);
+    font-weight:700;
+    font-size:1.3rem;
+    color:var(--marino);
+    text-decoration:none;
+  }
+  .brand .brand-icon{
+    width:40px;height:40px;
+    background:var(--mostaza);
+    border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .brand .brand-icon svg{width:24px;height:24px;}
+  .nav-links{
+    display:flex;
+    align-items:center;
+    gap:clamp(14px,2vw,30px);
+    list-style:none;
+    margin:0;padding:0;
+  }
+  .nav-links a{
+    text-decoration:none;
+    font-weight:600;
+    font-size:.95rem;
+    color:var(--marino-suave);
+    transition:color .2s ease;
+  }
+  .nav-links a:hover{color:var(--mostaza-oscuro);}
+  .nav-cta{display:flex;align-items:center;gap:18px;}
+  .nav-cta .btn{padding:11px 22px;font-size:.9rem;}
+  .burger{
+    display:none;
+    width:44px;height:44px;
+    border-radius:12px;
+    border:none;
+    background:var(--marino);
+    align-items:center;justify-content:center;
+    cursor:pointer;
+  }
+  .burger svg{width:22px;height:22px;}
+  .burger svg path{stroke:var(--crema);}
+
+  .mobile-menu{
+    display:none;
+    position:fixed;
+    top:0;right:0;
+    width:min(320px,86vw);
+    height:100vh;
+    background:var(--marino);
+    z-index:1200;
+    padding:26px 24px;
+    transform:translateX(100%);
+    transition:transform .35s ease;
+    flex-direction:column;
+    gap:8px;
+  }
+  .mobile-menu.open{transform:translateX(0);}
+  .mobile-menu a{
+    color:var(--crema);
+    text-decoration:none;
+    font-family:var(--ff-titular);
+    font-weight:600;
+    font-size:1.15rem;
+    padding:14px 6px;
+    border-bottom:1px solid rgba(251,246,238,0.12);
+  }
+  .mobile-menu .btn{margin-top:18px;}
+  .mm-close{
+    align-self:flex-end;
+    width:40px;height:40px;
+    border-radius:10px;
+    border:none;
+    background:rgba(251,246,238,0.12);
+    cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .mm-close svg{width:20px;height:20px;}
+  .mm-close svg path{stroke:var(--crema);}
+  .scrim{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(34,48,63,0.5);
+    z-index:1100;
+  }
+  .scrim.open{display:block;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:calc(96px + 4vw) 0 60px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero .blob{
+    position:absolute;
+    border-radius:58% 42% 62% 38% / 45% 55% 45% 55%;
+    z-index:0;
+  }
+  .hero .blob-1{
+    width:520px;height:520px;
+    background:var(--crema-suave);
+    top:-160px;right:-160px;
+  }
+  .hero .blob-2{
+    width:280px;height:280px;
+    background:rgba(232,163,61,0.18);
+    bottom:-100px;left:-100px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr .95fr;
+    gap:clamp(30px,5vw,60px);
+    align-items:center;
+    position:relative;
+    z-index:1;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem,4.6vw,3.4rem);
+  }
+  .hero h1 .accent{color:var(--mostaza-oscuro);position:relative;white-space:nowrap;}
+  .hero-lead{
+    font-size:clamp(1.02rem,1.6vw,1.18rem);
+    color:var(--marino-suave);
+    max-width:52ch;
+  }
+  .hero-ctas{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-top:28px;
+  }
+  .hero-meta{
+    margin-top:30px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:22px;
+  }
+  .hero-meta .item{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:600;
+    font-size:.95rem;
+    color:var(--marino-suave);
+  }
+  .hero-meta .item svg{width:22px;height:22px;flex-shrink:0;}
+
+  .hero-visual{
+    position:relative;
+    aspect-ratio:1/1;
+    max-width:480px;
+    margin:0 auto;
+  }
+  .hero-visual .plate{
+    position:absolute;
+    inset:0;
+    border-radius:50% 50% 46% 54% / 54% 46% 54% 46%;
+    background:linear-gradient(150deg,var(--mostaza) 0%, #f0b85c 55%, var(--crema-suave) 100%);
+    box-shadow:var(--sombra);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .hero-visual .plate svg{width:56%;height:56%;}
+  .hero-visual .float-card{
+    position:absolute;
+    background:var(--blanco);
+    border-radius:18px;
+    box-shadow:var(--sombra);
+    padding:14px 18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:var(--ff-titular);
+    font-weight:600;
+    font-size:.92rem;
+  }
+  .hero-visual .fc-1{top:6%;left:-8%;}
+  .hero-visual .fc-2{bottom:8%;right:-10%;}
+  .hero-visual .float-card svg{width:26px;height:26px;flex-shrink:0;}
+
+  /* ---------- Prueba social ---------- */
+  .social-proof{padding:40px 0;}
+  .sp-card{
+    background:var(--blanco);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    padding:clamp(28px,4vw,44px);
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:clamp(20px,4vw,50px);
+    text-align:center;
+  }
+  .sp-score{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+  }
+  .sp-score .num{
+    font-family:var(--ff-titular);
+    font-size:clamp(2.6rem,5vw,3.4rem);
+    font-weight:800;
+    color:var(--marino);
+    line-height:1;
+  }
+  .stars{display:flex;gap:4px;}
+  .stars svg{width:24px;height:24px;}
+  .sp-score .label{
+    font-size:.88rem;
+    color:var(--marino-suave);
+    font-weight:600;
+  }
+  .sp-divider{
+    width:1px;height:56px;
+    background:rgba(34,48,63,0.12);
+  }
+  .sp-text{max-width:360px;text-align:left;}
+  .sp-text strong{display:block;font-family:var(--ff-titular);font-size:1.05rem;color:var(--marino);}
+  .sp-text span{font-size:.92rem;color:var(--marino-suave);}
+
+  /* ---------- Secciones genéricas ---------- */
+  .section{padding:clamp(60px,8vw,100px) 0;}
+  .section-head{
+    max-width:640px;
+    margin:0 auto 48px;
+    text-align:center;
+  }
+  .section-head h2{font-size:clamp(1.7rem,3.4vw,2.5rem);}
+  .section-head p{color:var(--marino-suave);font-size:1.02rem;}
+
+  /* ---------- Servicios ---------- */
+  .services-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:26px;
+  }
+  .service-card{
+    background:var(--blanco);
+    border-radius:var(--radio);
+    padding:34px 28px;
+    box-shadow:var(--sombra);
+    transition:transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s ease;
+  }
+  .service-card:hover{
+    transform:translateY(-8px) scale(1.02);
+    box-shadow:0 20px 40px rgba(34,48,63,0.16);
+  }
+  .service-icon{
+    width:64px;height:64px;
+    border-radius:18px;
+    background:var(--crema-suave);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:20px;
+  }
+  .service-icon svg{width:34px;height:34px;}
+  .service-card h3{font-size:1.2rem;margin-bottom:8px;}
+  .service-card p{color:var(--marino-suave);font-size:.95rem;margin-bottom:0;}
+
+  /* ---------- Diferenciación ---------- */
+  .why{
+    background:var(--marino);
+    color:var(--crema);
+    border-radius:var(--radio);
+    padding:clamp(40px,6vw,64px);
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(30px,5vw,60px);
+    align-items:center;
+  }
+  .why h2{color:var(--crema);}
+  .why > .why-copy p{color:rgba(251,246,238,0.78);}
+  .why-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:22px;}
+  .why-list li{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+  }
+  .why-list .wi{
+    width:44px;height:44px;
+    border-radius:12px;
+    background:var(--mostaza);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .why-list .wi svg{width:24px;height:24px;}
+  .why-list h4{color:var(--crema);margin-bottom:4px;font-size:1.05rem;}
+  .why-list p{color:rgba(251,246,238,0.72);font-size:.92rem;margin-bottom:0;}
+
+  /* ---------- Galería ---------- */
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+  }
+  .gallery-item{
+    aspect-ratio:1/1;
+    border-radius:20px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:var(--sombra);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:transform .3s ease;
+  }
+  .gallery-item:hover{transform:scale(1.03);}
+  .gallery-item svg{width:44%;height:44%;position:relative;z-index:1;}
+  .g1{background:linear-gradient(135deg,#F3C77E,#E8A33D);}
+  .g2{background:linear-gradient(135deg,#F6E2BC,#EFC585);}
+  .g3{background:linear-gradient(135deg,#EAB35F,#C9821F);}
+  .g4{background:linear-gradient(135deg,#F8ECD4,#E8A33D);}
+  .g5{background:linear-gradient(135deg,#22303F,#3C4E62);}
+  .g5 svg path, .g5 svg circle{stroke:var(--crema-suave);}
+  .g6{background:linear-gradient(135deg,#EFC585,#F3C77E);}
+  .gallery-note{
+    text-align:center;
+    margin-top:22px;
+    font-size:.85rem;
+    color:var(--marino-suave);
+    font-style:italic;
+  }
+
+  /* ---------- Horario + Ubicación ---------- */
+  .info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:26px;
+  }
+  .info-card{
+    background:var(--blanco);
+    border-radius:var(--radio);
+    padding:clamp(30px,4vw,42px);
+    box-shadow:var(--sombra);
+  }
+  .info-card .service-icon{margin-bottom:22px;}
+  .schedule-table{width:100%;border-collapse:collapse;}
+  .schedule-table tr{border-bottom:1px solid rgba(34,48,63,0.08);}
+  .schedule-table tr:last-child{border-bottom:none;}
+  .schedule-table td{padding:12px 0;font-size:.98rem;}
+  .schedule-table td:first-child{font-weight:700;color:var(--marino);font-family:var(--ff-titular);}
+  .schedule-table td:last-child{text-align:right;color:var(--marino-suave);}
+  .schedule-table tr.highlight td{color:var(--mostaza-oscuro);}
+  .addr-block{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    margin-bottom:26px;
+  }
+  .addr-block svg{width:26px;height:26px;flex-shrink:0;margin-top:2px;}
+  .addr-block strong{display:block;font-family:var(--ff-titular);font-size:1.05rem;margin-bottom:4px;}
+  .addr-block span{color:var(--marino-suave);font-size:.95rem;}
+  .map-frame{
+    border-radius:16px;
+    background:var(--crema-suave);
+    aspect-ratio:16/9;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:24px;
+    position:relative;
+    overflow:hidden;
+  }
+  .map-frame svg{width:80px;height:80px;opacity:.55;}
+  .map-frame::after{
+    content:'';
+    position:absolute;inset:0;
+    background:
+      repeating-linear-gradient(0deg, rgba(34,48,63,0.05) 0 1px, transparent 1px 40px),
+      repeating-linear-gradient(90deg, rgba(34,48,63,0.05) 0 1px, transparent 1px 40px);
+  }
+
+  /* ---------- CTA final ---------- */
+  .final-cta{
+    text-align:center;
+    background:linear-gradient(150deg,var(--mostaza) 0%, #f0b85c 100%);
+    border-radius:var(--radio);
+    padding:clamp(50px,7vw,80px) clamp(24px,5vw,50px);
+    position:relative;
+    overflow:hidden;
+  }
+  .final-cta .blob{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(251,246,238,0.25);
+  }
+  .final-cta .fb-1{width:220px;height:220px;top:-90px;left:-60px;}
+  .final-cta .fb-2{width:160px;height:160px;bottom:-70px;right:-40px;}
+  .final-cta h2{
+    color:var(--marino);
+    font-size:clamp(1.8rem,4vw,2.7rem);
+    position:relative;z-index:1;
+  }
+  .final-cta p{
+    color:var(--marino-suave);
+    max-width:520px;
+    margin:0 auto 30px;
+    position:relative;z-index:1;
+    font-size:1.05rem;
+  }
+  .final-cta .btn{position:relative;z-index:1;}
+  .final-cta .btn-primary{
+    background:var(--marino);
+    color:var(--crema);
+    box-shadow:0 10px 24px rgba(34,48,63,0.35);
+  }
+  .final-cta .btn-primary:hover{background:#1a2530;}
+
+  /* ---------- Footer ---------- */
+  footer{
+    background:var(--marino);
+    color:rgba(251,246,238,0.85);
+    padding:56px 0 26px;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1.3fr 1fr 1fr;
+    gap:36px;
+    padding-bottom:36px;
+    border-bottom:1px solid rgba(251,246,238,0.12);
+  }
+  .footer-brand{
+    display:flex;align-items:center;gap:10px;
+    font-family:var(--ff-titular);font-weight:700;font-size:1.2rem;
+    color:var(--crema);margin-bottom:14px;
+  }
+  .footer-brand .brand-icon{
+    width:36px;height:36px;background:var(--mostaza);border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .footer-brand .brand-icon svg{width:20px;height:20px;}
+  .footer-col h4{
+    color:var(--crema);
+    font-family:var(--ff-titular);
+    font-size:1rem;
+    margin-bottom:14px;
+  }
+  .footer-col p, .footer-col a{
+    display:block;
+    color:rgba(251,246,238,0.72);
+    text-decoration:none;
+    font-size:.92rem;
+    margin-bottom:10px;
+  }
+  .footer-col a:hover{color:var(--mostaza);}
+  .footer-contact-item{display:flex;align-items:center;gap:10px;}
+  .footer-contact-item svg{width:18px;height:18px;flex-shrink:0;}
+  .footer-bottom{
+    padding-top:24px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-items:center;
+    justify-content:space-between;
+    font-size:.82rem;
+    color:rgba(251,246,238,0.55);
+  }
+  .disclaimer{
+    background:rgba(251,246,238,0.06);
+    border:1px solid rgba(251,246,238,0.14);
+    border-radius:12px;
+    padding:14px 18px;
+    font-size:.82rem;
+    color:rgba(251,246,238,0.62);
+    margin-top:20px;
+    line-height:1.5;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:1024px){
+    .services-grid{grid-template-columns:repeat(2,1fr);}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+    .info-grid{grid-template-columns:1fr;}
+    .why{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:860px){
+    .nav-links{display:none;}
+    .nav-cta .btn span.long{display:none;}
+    .burger{display:flex;}
+    .mobile-menu{display:flex;}
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-visual{order:-1;max-width:320px;margin-bottom:10px;}
+    .hero-visual .float-card{display:none;}
+  }
+  @media (max-width:640px){
+    .services-grid{grid-template-columns:1fr;}
+    .gallery-grid{grid-template-columns:repeat(2,1fr);}
+    .footer-grid{grid-template-columns:1fr;gap:26px;}
+    .sp-card{flex-direction:column;}
+    .sp-divider{display:none;}
+    .sp-text{text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HEADER ============ -->
+<header>
+  <nav class="nav">
+    <a href="#top" class="brand">
+      <span class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.5 8.2c1-.2 1.8-1.2 1.8-2.4C10.3 4.4 9.2 3.3 7.9 3.3S5.5 4.4 5.5 5.8c0 1.2.8 2.2 1.8 2.4M15.5 8.2c-1-.2-1.8-1.2-1.8-2.4 0-1.4 1.1-2.5 2.4-2.5S18.5 4.4 18.5 5.8c0 1.2-.8 2.2-1.8 2.4M5.2 13c-.5-1.1-.2-2.5.9-3.1 1.1-.6 2.4-.1 2.9 1 .5 1.1.2 2.5-.9 3.1-1.1.6-2.4.1-2.9-1zM18.8 13c.5-1.1.2-2.5-.9-3.1-1.1-.6-2.4-.1-2.9 1-.5 1.1-.2 2.5.9 3.1 1.1.6 2.4.1 2.9-1zM12 12.3c-2.4 0-4.6 1.9-5.1 4.3-.3 1.5.8 2.9 2.3 2.9.9 0 1.4-.3 2.8-.3s1.9.3 2.8.3c1.5 0 2.6-1.4 2.3-2.9-.5-2.4-2.7-4.3-5.1-4.3z" stroke="#22303F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      DoviCan
+    </a>
+    <ul class="nav-links">
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#horario">Horario</a></li>
+      <li><a href="#opiniones">Opiniones</a></li>
+      <li><a href="#ubicacion">Ubicación</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="tel:+34910233014" class="btn btn-primary">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1v3.4c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z" stroke="#22303F" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        <span class="long">Reserva su baño</span>
+      </a>
+      <button class="burger" id="burgerBtn" aria-label="Abrir menú">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="#FBF6EE" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="scrim" id="scrim"></div>
+<nav class="mobile-menu" id="mobileMenu">
+  <button class="mm-close" id="mmClose" aria-label="Cerrar menú">
+    <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="#FBF6EE" stroke-width="2" stroke-linecap="round"/></svg>
+  </button>
+  <a href="#servicios">Servicios</a>
+  <a href="#horario">Horario</a>
+  <a href="#opiniones">Opiniones</a>
+  <a href="#ubicacion">Ubicación</a>
+  <a href="tel:+34910233014" class="btn btn-primary">Reserva su baño</a>
+</nav>
+
+<main id="top">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">
+            <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M12 21s-7-4.5-9.5-9C.7 8 2.5 4 6.5 4c2 0 3.5 1.2 4.2 2.4C11.3 5.2 12.8 4 14.8 4 18.8 4 20.6 8 18.5 12 16 16.5 12 21 12 21z" fill="#C9821F"/></svg>
+            Peluquería canina en Rivas-Vaciamadrid
+          </span>
+          <h1>Cuidamos la imagen y el <span class="accent">bienestar</span> de tu mejor amigo</h1>
+          <p class="hero-lead">En DoviCan mimamos a cada perro como si fuera el nuestro: corte, baño y tratamientos pensados para su comodidad, en un trato cercano y sin prisas, aquí en Rivas-Vaciamadrid.</p>
+          <div class="hero-ctas">
+            <a href="tel:+34910233014" class="btn btn-primary">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1v3.4c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z" stroke="#22303F" stroke-width="1.5" stroke-linejoin="round"/></svg>
+              Reserva su baño
+            </a>
+            <a href="#servicios" class="btn btn-outline">Ver servicios</a>
+          </div>
+          <div class="hero-meta">
+            <span class="item">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.6 6.6L21 9.2l-5.2 4.4L17.4 21 12 17.3 6.6 21l1.6-7.4L3 9.2l6.4-.6L12 2z" fill="#E8A33D"/></svg>
+              4.8/5 en Google (81 reseñas)
+            </span>
+            <span class="item">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5l3 3" stroke="#22303F" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="#22303F" stroke-width="1.6"/></svg>
+              L-S 8:00–24:00 · D 8:00–12:00
+            </span>
+          </div>
+        </div>
+
+        <div class="hero-visual">
+          <div class="plate">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M8.5 8.2c1-.2 1.8-1.2 1.8-2.4C10.3 4.4 9.2 3.3 7.9 3.3S5.5 4.4 5.5 5.8c0 1.2.8 2.2 1.8 2.4M15.5 8.2c-1-.2-1.8-1.2-1.8-2.4 0-1.4 1.1-2.5 2.4-2.5S18.5 4.4 18.5 5.8c0 1.2-.8 2.2-1.8 2.4M5.2 13c-.5-1.1-.2-2.5.9-3.1 1.1-.6 2.4-.1 2.9 1 .5 1.1.2 2.5-.9 3.1-1.1.6-2.4.1-2.9-1zM18.8 13c.5-1.1.2-2.5-.9-3.1-1.1-.6-2.4-.1-2.9 1-.5 1.1-.2 2.5.9 3.1 1.1.6 2.4.1 2.9-1zM12 12.3c-2.4 0-4.6 1.9-5.1 4.3-.3 1.5.8 2.9 2.3 2.9.9 0 1.4-.3 2.8-.3s1.9.3 2.8.3c1.5 0 2.6-1.4 2.3-2.9-.5-2.4-2.7-4.3-5.1-4.3z" fill="#FBF6EE" stroke="#22303F" stroke-width="0.4"/>
+            </svg>
+          </div>
+          <div class="float-card fc-1">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M6 3l4.5 4.5M11.2 12.8L20 21M6 21l4.5-4.5M11.2 11.2L20 3" stroke="#22303F" stroke-width="1.6" stroke-linecap="round"/><circle cx="5" cy="19" r="2" stroke="#E8A33D" stroke-width="1.6"/><circle cx="5" cy="5" r="2" stroke="#E8A33D" stroke-width="1.6"/></svg>
+            Corte a tijera
+          </div>
+          <div class="float-card fc-2">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3s5 5.5 5 9.5a5 5 0 01-10 0C7 8.5 12 3 12 3z" stroke="#22303F" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            Baño relajante
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PRUEBA SOCIAL ============ -->
+  <section class="social-proof">
+    <div class="container">
+      <div class="sp-card reveal" id="opiniones">
+        <div class="sp-score">
+          <span class="num">4.8</span>
+          <div class="stars" aria-label="4.8 sobre 5 estrellas">
+            <svg viewBox="0 0 24 24" fill="#E8A33D"><path d="M12 2l2.6 6.6L21 9.2l-5.2 4.4L17.4 21 12 17.3 6.6 21l1.6-7.4L3 9.2l6.4-.6L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="#E8A33D"><path d="M12 2l2.6 6.6L21 9.2l-5.2 4.4L17.4 21 12 17.3 6.6 21l1.6-7.4L3 9.2l6.4-.6L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="#E8A33D"><path d="M12 2l2.6 6.6L21 9.2l-5.2 4.4L17.4 21 12 17.3 6.6 21l1.6-7.4L3 9.2l6.4-.6L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="#E8A33D"><path d="M12 2l2.6 6.6L21 9.2l-5.2 4.4L17.4 21 12 17.3 6.6 21l1.6-7.4L3 9.2l6.4-.6L12 2z"/></svg>
+            <svg viewBox="0 0 24 24" fill="#E8A33D"><path d="M12 2l2.6 6.6L21 9.2l-5.2 4.4L17.4 21 12 17.3 6.6 21l1.6-7.4L3 9.2l6.4-.6L12 2z" fill-opacity="0.55"/></svg>
+          </div>
+          <span class="label">Valoración en Google</span>
+        </div>
+        <div class="sp-divider"></div>
+        <div class="sp-text">
+          <strong>81 reseñas de clientes en Google</strong>
+          <span>Una comunidad de familias de Rivas-Vaciamadrid confía en el cuidado que damos a sus perros.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICIOS ============ -->
+  <section class="section" id="servicios">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Nuestros servicios</span>
+        <h2>Todo lo que tu perro necesita para estar guapo y a gusto</h2>
+        <p>Adaptamos cada servicio al tamaño, el pelaje y el carácter de tu mascota.</p>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M6 3l4.5 4.5M11.2 12.8L20 21M6 21l4.5-4.5M11.2 11.2L20 3" stroke="#C9821F" stroke-width="1.7" stroke-linecap="round"/><circle cx="5" cy="19" r="2.2" stroke="#22303F" stroke-width="1.6"/><circle cx="5" cy="5" r="2.2" stroke="#22303F" stroke-width="1.6"/></svg>
+          </div>
+          <h3>Corte de pelo</h3>
+          <p>Cortes cuidados y a medida, respetando el ritmo y la tranquilidad de cada perro durante todo el proceso.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 3s5 5.5 5 9.5a5 5 0 01-10 0C7 8.5 12 3 12 3z" stroke="#C9821F" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Baño</h3>
+          <p>Baños relajantes con productos adecuados para cada tipo de piel y pelaje, dejando a tu perro limpio y fresco.</p>
+        </div>
+        <div class="service-card reveal">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-9C.7 8 2.5 4 6.5 4c2 0 3.5 1.2 4.2 2.4C11.3 5.2 12.8 4 14.8 4 18.8 4 20.6 8 18.5 12 16 16.5 12 21 12 21z" stroke="#C9821F" stroke-width="1.7" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Tratamientos adaptados</h3>
+          <p>Cuidados especiales según las necesidades concretas de cada mascota, con atención personalizada en cada visita.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DIFERENCIACIÓN ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="why reveal">
+        <div class="why-copy">
+          <span class="eyebrow" style="background:rgba(232,163,61,0.18);color:#E8A33D;">Por qué elegir DoviCan</span>
+          <h2>El cuidado que tu perro merece, cuando mejor te viene</h2>
+          <p>Sabemos que la vida no siempre encaja con horarios rígidos. Por eso hacemos las cosas un poco distintas.</p>
+        </div>
+        <ul class="why-list">
+          <li>
+            <span class="wi"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5l3 3" stroke="#22303F" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="#22303F" stroke-width="1.7"/></svg></span>
+            <div>
+              <h4>Horario muy amplio</h4>
+              <p>Abierto de lunes a sábado de 8:00 a 24:00 y domingos de 8:00 a 12:00, para adaptarnos a tu día a día.</p>
+            </div>
+          </li>
+          <li>
+            <span class="wi"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-9C.7 8 2.5 4 6.5 4c2 0 3.5 1.2 4.2 2.4C11.3 5.2 12.8 4 14.8 4 18.8 4 20.6 8 18.5 12 16 16.5 12 21 12 21z" stroke="#22303F" stroke-width="1.7" stroke-linejoin="round"/></svg></span>
+            <div>
+              <h4>Trato adaptado a cada mascota</h4>
+              <p>Cada perro es distinto: ajustamos el servicio a su tamaño, su pelaje y su carácter.</p>
+            </div>
+          </li>
+          <li>
+            <span class="wi"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.6 6.6L21 9.2l-5.2 4.4L17.4 21 12 17.3 6.6 21l1.6-7.4L3 9.2l6.4-.6L12 2z" stroke="#22303F" stroke-width="1.5" stroke-linejoin="round"/></svg></span>
+            <div>
+              <h4>Valoración de 4.8★ en Google</h4>
+              <p>81 reseñas respaldan el trato y el cuidado que ofrecemos en cada cita.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GALERÍA ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Nuestro trabajo</span>
+        <h2>Un vistazo al cuidado que ofrecemos</h2>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item g1 reveal">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8.5 8.2c1-.2 1.8-1.2 1.8-2.4C10.3 4.4 9.2 3.3 7.9 3.3S5.5 4.4 5.5 5.8c0 1.2.8 2.2 1.8 2.4M15.5 8.2c-1-.2-1.8-1.2-1.8-2.4 0-1.4 1.1-2.5 2.4-2.5S18.5 4.4 18.5 5.8c0 1.2-.8 2.2-1.8 2.4M5.2 13c-.5-1.1-.2-2.5.9-3.1 1.1-.6 2.4-.1 2.9 1 .5 1.1.2 2.5-.9 3.1-1.1.6-2.4.1-2.9-1zM18.8 13c.5-1.1.2-2.5-.9-3.1-1.1-.6-2.4-.1-2.9 1-.5 1.1-.2 2.5.9 3.1 1.1.6 2.4.1 2.9-1zM12 12.3c-2.4 0-4.6 1.9-5.1 4.3-.3 1.5.8 2.9 2.3 2.9.9 0 1.4-.3 2.8-.3s1.9.3 2.8.3c1.5 0 2.6-1.4 2.3-2.9-.5-2.4-2.7-4.3-5.1-4.3z" fill="#FBF6EE"/></svg>
+        </div>
+        <div class="gallery-item g2 reveal">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-9C.7 8 2.5 4 6.5 4c2 0 3.5 1.2 4.2 2.4C11.3 5.2 12.8 4 14.8 4 18.8 4 20.6 8 18.5 12 16 16.5 12 21 12 21z" stroke="#22303F" stroke-width="1.3"/></svg>
+        </div>
+        <div class="gallery-item g3 reveal">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 3l4.5 4.5M11.2 12.8L20 21M6 21l4.5-4.5M11.2 11.2L20 3" stroke="#FBF6EE" stroke-width="1.5" stroke-linecap="round"/><circle cx="5" cy="19" r="1.8" stroke="#FBF6EE" stroke-width="1.4"/><circle cx="5" cy="5" r="1.8" stroke="#FBF6EE" stroke-width="1.4"/></svg>
+        </div>
+        <div class="gallery-item g4 reveal">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 3s5 5.5 5 9.5a5 5 0 01-10 0C7 8.5 12 3 12 3z" stroke="#22303F" stroke-width="1.3"/></svg>
+        </div>
+        <div class="gallery-item g5 reveal">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M8.5 8.2c1-.2 1.8-1.2 1.8-2.4C10.3 4.4 9.2 3.3 7.9 3.3S5.5 4.4 5.5 5.8c0 1.2.8 2.2 1.8 2.4M15.5 8.2c-1-.2-1.8-1.2-1.8-2.4 0-1.4 1.1-2.5 2.4-2.5S18.5 4.4 18.5 5.8c0 1.2-.8 2.2-1.8 2.4M5.2 13c-.5-1.1-.2-2.5.9-3.1 1.1-.6 2.4-.1 2.9 1 .5 1.1.2 2.5-.9 3.1-1.1.6-2.4.1-2.9-1zM18.8 13c.5-1.1.2-2.5-.9-3.1-1.1-.6-2.4-.1-2.9 1-.5 1.1-.2 2.5.9 3.1 1.1.6 2.4.1 2.9-1zM12 12.3c-2.4 0-4.6 1.9-5.1 4.3-.3 1.5.8 2.9 2.3 2.9.9 0 1.4-.3 2.8-.3s1.9.3 2.8.3c1.5 0 2.6-1.4 2.3-2.9-.5-2.4-2.7-4.3-5.1-4.3z" stroke="#F3E9D6" stroke-width="1.2"/></svg>
+        </div>
+        <div class="gallery-item g6 reveal">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-9C.7 8 2.5 4 6.5 4c2 0 3.5 1.2 4.2 2.4C11.3 5.2 12.8 4 14.8 4 18.8 4 20.6 8 18.5 12 16 16.5 12 21 12 21z" fill="#22303F" fill-opacity="0.12" stroke="#22303F" stroke-width="1.3"/></svg>
+        </div>
+      </div>
+      <p class="gallery-note reveal">Nuestro trabajo — ilustración de referencia, no fotografía real.</p>
+    </div>
+  </section>
+
+  <!-- ============ HORARIO + UBICACIÓN ============ -->
+  <section class="section" id="horario">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Horario y ubicación</span>
+        <h2>Ven a vernos cuando mejor te venga</h2>
+      </div>
+      <div class="info-grid">
+        <div class="info-card reveal">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5l3 3" stroke="#C9821F" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="12" r="9" stroke="#C9821F" stroke-width="1.7"/></svg>
+          </div>
+          <h3>Horario de apertura</h3>
+          <table class="schedule-table">
+            <tr class="highlight"><td>Lunes – Sábado</td><td>8:00 – 24:00</td></tr>
+            <tr><td>Domingo</td><td>8:00 – 12:00</td></tr>
+          </table>
+        </div>
+        <div class="info-card reveal" id="ubicacion">
+          <div class="service-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-6-5.7-6-10.5A6 6 0 0112 4a6 6 0 016 6.5C18 15.3 12 21 12 21z" stroke="#C9821F" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="10.2" r="2.2" stroke="#C9821F" stroke-width="1.6"/></svg>
+          </div>
+          <h3>Dónde estamos</h3>
+          <div class="map-frame">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-6-5.7-6-10.5A6 6 0 0112 4a6 6 0 016 6.5C18 15.3 12 21 12 21z" stroke="#22303F" stroke-width="1.3" stroke-linejoin="round"/><circle cx="12" cy="10.2" r="2.2" stroke="#22303F" stroke-width="1.2"/></svg>
+          </div>
+          <div class="addr-block">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-6-5.7-6-10.5A6 6 0 0112 4a6 6 0 016 6.5C18 15.3 12 21 12 21z" stroke="#22303F" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="10.2" r="2" stroke="#22303F" stroke-width="1.4"/></svg>
+            <div>
+              <strong>C. de la Vid, 1</strong>
+              <span>28522 Rivas-Vaciamadrid, Madrid</span>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps/search/?api=1&query=C.%20de%20la%20Vid%2C%201%2C%2028522%20Rivas-Vaciamadrid%2C%20Madrid" target="_blank" rel="noopener" class="btn btn-outline" style="width:100%;">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M9 18l6-6-6-6" stroke="#22303F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Cómo llegar
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA FINAL ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="final-cta reveal">
+        <div class="blob fb-1"></div>
+        <div class="blob fb-2"></div>
+        <h2>Dale a tu mascota el cuidado que merece</h2>
+        <p>Llámanos y reserva su próximo baño o corte. Un equipo cercano, en Rivas-Vaciamadrid, esperando conocer a tu perro.</p>
+        <a href="tel:+34910233014" class="btn btn-primary">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1v3.4c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z" stroke="#FBF6EE" stroke-width="1.5" stroke-linejoin="round"/></svg>
+          Llamar al 910 23 30 14
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <span class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M8.5 8.2c1-.2 1.8-1.2 1.8-2.4C10.3 4.4 9.2 3.3 7.9 3.3S5.5 4.4 5.5 5.8c0 1.2.8 2.2 1.8 2.4M15.5 8.2c-1-.2-1.8-1.2-1.8-2.4 0-1.4 1.1-2.5 2.4-2.5S18.5 4.4 18.5 5.8c0 1.2-.8 2.2-1.8 2.4M5.2 13c-.5-1.1-.2-2.5.9-3.1 1.1-.6 2.4-.1 2.9 1 .5 1.1.2 2.5-.9 3.1-1.1.6-2.4.1-2.9-1zM18.8 13c.5-1.1.2-2.5-.9-3.1-1.1-.6-2.4-.1-2.9 1-.5 1.1-.2 2.5.9 3.1 1.1.6 2.4.1 2.9-1zM12 12.3c-2.4 0-4.6 1.9-5.1 4.3-.3 1.5.8 2.9 2.3 2.9.9 0 1.4-.3 2.8-.3s1.9.3 2.8.3c1.5 0 2.6-1.4 2.3-2.9-.5-2.4-2.7-4.3-5.1-4.3z" stroke="#22303F" stroke-width="1.3"/></svg>
+          </span>
+          DoviCan
+        </div>
+        <p>Peluquería canina de barrio en Rivas-Vaciamadrid. Corte, baño y tratamientos adaptados a cada mascota.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1 .4 1 1v3.4c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.2.2 2.4.6 3.5.1.4 0 .8-.2 1L6.6 10.8z" stroke="#E8A33D" stroke-width="1.4"/></svg>
+          <a href="tel:+34910233014">910 23 30 14</a>
+        </div>
+        <div class="footer-contact-item">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s-6-5.7-6-10.5A6 6 0 0112 4a6 6 0 016 6.5C18 15.3 12 21 12 21z" stroke="#E8A33D" stroke-width="1.4"/></svg>
+          <span>C. de la Vid, 1, 28522 Rivas-Vaciamadrid</span>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Horario</h4>
+        <p>Lunes – Sábado: 8:00 – 24:00</p>
+        <p>Domingo: 8:00 – 12:00</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 DoviCan Peluquería Canina · Rivas-Vaciamadrid</span>
+      <span>Diseño y desarrollo web</span>
+    </div>
+    <div class="disclaimer">
+      Propuesta de diseño de demostración — no es la web oficial de DoviCan Peluquería Canina. Página creada a modo de ejemplo comercial a partir de datos públicos verificados, sin vinculación con el negocio.
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  // ---- Menú móvil ----
+  var burger = document.getElementById('burgerBtn');
+  var closeBtn = document.getElementById('mmClose');
+  var menu = document.getElementById('mobileMenu');
+  var scrim = document.getElementById('scrim');
+
+  function openMenu(){
+    menu.classList.add('open');
+    scrim.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu(){
+    menu.classList.remove('open');
+    scrim.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  if(burger) burger.addEventListener('click', openMenu);
+  if(closeBtn) closeBtn.addEventListener('click', closeMenu);
+  if(scrim) scrim.addEventListener('click', closeMenu);
+
+  var menuLinks = menu ? menu.querySelectorAll('a') : [];
+  for(var i=0;i<menuLinks.length;i++){
+    menuLinks[i].addEventListener('click', closeMenu);
+  }
+
+  // ---- Reveal al hacer scroll ----
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window){
+    var observer = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    revealEls.forEach(function(el){ observer.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+})();
+</script>
+
+</body>
+</html>

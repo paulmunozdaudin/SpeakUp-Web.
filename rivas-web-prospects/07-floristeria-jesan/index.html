@@ -1,0 +1,1022 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Floristería en Rivas-Vaciamadrid | Floristería Jesan Rivas</title>
+<meta name="description" content="Floristería Jesan Rivas: ramos frescos y flores para cada ocasión en Rivas-Vaciamadrid. Valoración de 4.0★ en Google con 121 reseñas. Encarga tu ramo hoy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Playfair+Display:ital@1&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --crema:#FBF8F3;
+    --rosa:#F3E4E1;
+    --salvia:#7C9473;
+    --salvia-oscuro:#5f7357;
+    --ciruela:#3A2E33;
+    --ciruela-suave:#5b4a52;
+    --blanco:#ffffff;
+    --borde:rgba(58,46,51,0.12);
+    --sombra:0 10px 30px rgba(58,46,51,0.08);
+  }
+
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--crema);
+    color:var(--ciruela);
+    font-family:'Jost',sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  ul{list-style:none;margin:0;padding:0;}
+  h1,h2,h3,h4{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;
+    margin:0;
+    color:var(--ciruela);
+    letter-spacing:0.01em;
+  }
+  .accent-italic{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-weight:400;
+    color:var(--salvia-oscuro);
+  }
+  .container{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 clamp(1.25rem,4vw,3rem);
+  }
+  section{position:relative;}
+  .eyebrow{
+    display:inline-block;
+    font-family:'Jost',sans-serif;
+    font-size:0.78rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--salvia-oscuro);
+    font-weight:500;
+    margin-bottom:0.9rem;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:0.55rem;
+    padding:0.9rem 1.9rem;
+    border-radius:999px;
+    font-family:'Jost',sans-serif;
+    font-size:0.95rem;
+    font-weight:500;
+    letter-spacing:0.02em;
+    cursor:pointer;
+    border:1.5px solid transparent;
+    transition:transform 0.25s ease, background-color 0.25s ease, color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+  .btn-primary{
+    background:var(--salvia);
+    color:var(--crema);
+    box-shadow:0 8px 20px rgba(124,148,115,0.35);
+  }
+  .btn-primary:hover{
+    background:var(--salvia-oscuro);
+    transform:translateY(-2px) scale(1.02);
+    box-shadow:0 12px 26px rgba(124,148,115,0.42);
+  }
+  .btn-outline{
+    background:transparent;
+    color:var(--ciruela);
+    border-color:var(--ciruela);
+  }
+  .btn-outline:hover{
+    background:var(--ciruela);
+    color:var(--crema);
+    transform:translateY(-2px) scale(1.02);
+  }
+  .btn-light{
+    background:var(--crema);
+    color:var(--ciruela);
+  }
+  .btn-light:hover{
+    background:var(--blanco);
+    transform:translateY(-2px) scale(1.02);
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:1000;
+    background:rgba(251,248,243,0.88);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--borde);
+    transition:box-shadow 0.3s ease;
+  }
+  header.scrolled{box-shadow:0 4px 18px rgba(58,46,51,0.06);}
+  .nav-inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0.9rem clamp(1.25rem,4vw,3rem);
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:0.55rem;
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.45rem;
+    font-weight:600;
+    color:var(--ciruela);
+  }
+  .brand svg{width:30px;height:30px;flex-shrink:0;}
+  .brand-sub{
+    display:block;
+    font-family:'Jost',sans-serif;
+    font-size:0.62rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    font-weight:400;
+    color:var(--salvia-oscuro);
+    margin-top:0.1rem;
+  }
+  nav.main-nav{
+    display:flex;
+    align-items:center;
+    gap:2.1rem;
+  }
+  nav.main-nav a.nav-link{
+    font-size:0.92rem;
+    font-weight:400;
+    color:var(--ciruela-suave);
+    position:relative;
+    padding-bottom:4px;
+  }
+  nav.main-nav a.nav-link::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:0;
+    width:0%;
+    height:1.5px;
+    background:var(--salvia);
+    transition:width 0.3s ease;
+  }
+  nav.main-nav a.nav-link:hover{color:var(--ciruela);}
+  nav.main-nav a.nav-link:hover::after{width:100%;}
+  .header-actions{display:flex;align-items:center;gap:1.4rem;}
+  .btn-header{padding:0.7rem 1.5rem;font-size:0.85rem;}
+
+  .burger{
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    gap:5px;
+    width:38px;height:38px;
+    border:none;background:transparent;
+    cursor:pointer;
+    padding:0;
+  }
+  .burger span{
+    display:block;
+    height:2px;
+    width:100%;
+    background:var(--ciruela);
+    border-radius:2px;
+    transition:transform 0.3s ease, opacity 0.3s ease;
+  }
+  .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .burger.open span:nth-child(2){opacity:0;}
+  .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+  .mobile-menu{
+    display:none;
+    position:fixed;
+    top:64px;left:0;right:0;
+    background:var(--crema);
+    border-bottom:1px solid var(--borde);
+    padding:1.2rem clamp(1.25rem,4vw,3rem) 1.6rem;
+    flex-direction:column;
+    gap:1.1rem;
+    box-shadow:0 12px 24px rgba(58,46,51,0.08);
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{font-size:1.05rem;font-family:'Cormorant Garamond',serif;font-weight:500;}
+  .mobile-menu .btn{align-self:flex-start;margin-top:0.4rem;}
+
+  @media(max-width:860px){
+    nav.main-nav, .header-actions .btn-header{display:none;}
+    .burger{display:flex;}
+  }
+
+  /* ---------- decorative svg blobs ---------- */
+  .leaf-decor{position:absolute;pointer-events:none;opacity:0.55;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:clamp(7.5rem,14vw,10.5rem) 0 clamp(4rem,8vw,6rem);
+    background:
+      radial-gradient(circle at 85% 12%, rgba(124,148,115,0.14), transparent 55%),
+      radial-gradient(circle at 8% 85%, rgba(243,228,225,0.9), transparent 55%),
+      var(--crema);
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:clamp(2rem,5vw,4rem);
+    align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(2.5rem,5.4vw,4.1rem);
+    line-height:1.08;
+    margin-bottom:1.3rem;
+  }
+  .hero p.lead{
+    font-size:clamp(1.02rem,1.5vw,1.2rem);
+    color:var(--ciruela-suave);
+    max-width:46ch;
+    margin-bottom:2.1rem;
+  }
+  .hero-cta-row{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;margin-bottom:1.6rem;}
+  .hero-meta{
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+    font-size:0.88rem;
+    color:var(--ciruela-suave);
+  }
+  .hero-meta svg{width:16px;height:16px;color:var(--salvia-oscuro);}
+
+  .hero-visual{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .hero-visual-card{
+    position:relative;
+    width:100%;
+    aspect-ratio:1/1;
+    border-radius:32px;
+    background:linear-gradient(150deg,#F3E4E1 0%, #EAD9D6 38%, #DCE6D6 100%);
+    box-shadow:var(--sombra);
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .hero-visual-card svg{width:78%;height:78%;}
+  .hero-badge{
+    position:absolute;
+    bottom:-1.1rem;
+    left:-1.1rem;
+    background:var(--blanco);
+    border-radius:20px;
+    padding:1rem 1.3rem;
+    box-shadow:var(--sombra);
+    display:flex;
+    align-items:center;
+    gap:0.7rem;
+    max-width:230px;
+  }
+  .hero-badge svg{width:34px;height:34px;flex-shrink:0;}
+  .hero-badge strong{font-family:'Cormorant Garamond',serif;font-size:1.15rem;display:block;}
+  .hero-badge span{font-size:0.76rem;color:var(--ciruela-suave);}
+
+  @media(max-width:900px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-visual{order:-1;max-width:340px;margin:0 auto 1rem;}
+    .hero-badge{left:0.5rem;bottom:-0.9rem;}
+  }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+  .reveal-1{transition-delay:0.05s;}
+  .reveal-2{transition-delay:0.15s;}
+  .reveal-3{transition-delay:0.25s;}
+  .reveal-4{transition-delay:0.35s;}
+
+  /* ---------- SOCIAL PROOF ---------- */
+  .social-proof{
+    padding:clamp(3.5rem,7vw,5rem) 0;
+    background:var(--rosa);
+  }
+  .proof-inner{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:clamp(1.6rem,4vw,3.5rem);
+    text-align:center;
+  }
+  .proof-score{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0.5rem;
+  }
+  .proof-score .big-number{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(3rem,7vw,4.2rem);
+    font-weight:600;
+    line-height:1;
+  }
+  .stars{display:flex;gap:4px;}
+  .stars svg{width:22px;height:22px;}
+  .proof-score p{margin:0;font-size:0.92rem;color:var(--ciruela-suave);}
+  .proof-divider{width:1px;height:64px;background:var(--borde);}
+  @media(max-width:640px){.proof-divider{display:none;}}
+  .proof-text{max-width:420px;font-size:1rem;color:var(--ciruela-suave);}
+  .proof-text .accent-italic{font-size:1.15rem;display:block;margin-bottom:0.4rem;}
+
+  /* ---------- SECTION HEADS ---------- */
+  .section-head{
+    max-width:640px;
+    margin:0 auto 3rem;
+    text-align:center;
+  }
+  .section-head h2{
+    font-size:clamp(2rem,4vw,2.9rem);
+    line-height:1.15;
+  }
+  .section-head p{
+    color:var(--ciruela-suave);
+    margin-top:1rem;
+    font-size:1.02rem;
+  }
+
+  /* ---------- OCASIONES ---------- */
+  .ocasiones{padding:clamp(4.5rem,9vw,7rem) 0;}
+  .occ-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1.6rem;
+  }
+  @media(max-width:900px){.occ-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:600px){.occ-grid{grid-template-columns:1fr;}}
+  .occ-card{
+    background:var(--blanco);
+    border:1px solid var(--borde);
+    border-radius:22px;
+    padding:2.1rem 1.8rem;
+    transition:transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+  .occ-card:hover{
+    transform:translateY(-6px);
+    box-shadow:var(--sombra);
+    border-color:rgba(124,148,115,0.4);
+  }
+  .occ-icon{
+    width:56px;height:56px;
+    border-radius:16px;
+    background:var(--rosa);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:1.3rem;
+  }
+  .occ-icon svg{width:30px;height:30px;color:var(--salvia-oscuro);}
+  .occ-card h3{font-size:1.4rem;margin-bottom:0.6rem;font-weight:500;}
+  .occ-card p{color:var(--ciruela-suave);font-size:0.94rem;margin:0;}
+
+  /* ---------- DIFERENCIACION ---------- */
+  .why{
+    padding:clamp(4.5rem,9vw,7rem) 0;
+    background:var(--rosa);
+    overflow:hidden;
+  }
+  .why-grid{
+    display:grid;
+    grid-template-columns:0.85fr 1.15fr;
+    gap:clamp(2.5rem,5vw,4rem);
+    align-items:center;
+  }
+  @media(max-width:900px){.why-grid{grid-template-columns:1fr;}}
+  .why-visual{
+    position:relative;
+    aspect-ratio:4/5;
+    border-radius:28px;
+    background:linear-gradient(160deg,#EAD9D6, #F3E4E1 45%, #E4ECDD 100%);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:var(--sombra);
+  }
+  .why-visual svg{width:64%;}
+  .why-list{display:flex;flex-direction:column;gap:1.6rem;}
+  .why-item{display:flex;gap:1.1rem;align-items:flex-start;}
+  .why-item .num-icon{
+    flex-shrink:0;
+    width:48px;height:48px;
+    border-radius:50%;
+    background:var(--blanco);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 12px rgba(58,46,51,0.07);
+  }
+  .why-item .num-icon svg{width:24px;height:24px;color:var(--salvia-oscuro);}
+  .why-item h3{font-size:1.3rem;font-weight:500;margin-bottom:0.35rem;}
+  .why-item p{margin:0;color:var(--ciruela-suave);font-size:0.94rem;}
+
+  /* ---------- GALERIA ---------- */
+  .galeria{padding:clamp(4.5rem,9vw,7rem) 0;}
+  .gal-note{
+    text-align:center;
+    font-size:0.8rem;
+    color:var(--ciruela-suave);
+    margin-top:2.2rem;
+    letter-spacing:0.02em;
+  }
+  .gal-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1.4rem;
+  }
+  @media(max-width:900px){.gal-grid{grid-template-columns:repeat(2,1fr);}}
+  @media(max-width:560px){.gal-grid{grid-template-columns:1fr;}}
+  .gal-item{
+    position:relative;
+    aspect-ratio:1/1.05;
+    border-radius:20px;
+    overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform 0.4s ease;
+  }
+  .gal-item:hover{transform:translateY(-5px) scale(1.015);}
+  .gal-item svg{width:62%;height:62%;position:relative;z-index:2;}
+  .gal-item::after{
+    content:"";
+    position:absolute;inset:0;
+    background:radial-gradient(circle at 30% 20%, rgba(255,255,255,0.35), transparent 60%);
+  }
+  .gal-1{background:linear-gradient(150deg,#F3E4E1,#EAD3CE);}
+  .gal-2{background:linear-gradient(150deg,#E4ECDD,#CFDFC5);}
+  .gal-3{background:linear-gradient(150deg,#F0E2E8,#E3D3E0);}
+  .gal-4{background:linear-gradient(150deg,#DCE6D6,#B9CCAE);}
+  .gal-5{background:linear-gradient(150deg,#F3E4E1,#DCC9CE);}
+  .gal-6{background:linear-gradient(150deg,#E9EEE0,#C6D6BC);}
+
+  /* ---------- CONTACTO ---------- */
+  .contacto{
+    padding:clamp(4.5rem,9vw,7rem) 0;
+    background:var(--rosa);
+  }
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:clamp(2rem,5vw,3.5rem);
+    align-items:stretch;
+  }
+  @media(max-width:900px){.contact-grid{grid-template-columns:1fr;}}
+  .contact-card{
+    background:var(--blanco);
+    border-radius:26px;
+    padding:clamp(2rem,4vw,2.8rem);
+    box-shadow:var(--sombra);
+  }
+  .contact-card h3{font-size:1.6rem;margin-bottom:1.4rem;font-weight:500;}
+  .info-row{display:flex;gap:0.9rem;align-items:flex-start;margin-bottom:1.3rem;}
+  .info-row svg{width:22px;height:22px;flex-shrink:0;color:var(--salvia-oscuro);margin-top:2px;}
+  .info-row p{margin:0;font-size:0.96rem;color:var(--ciruela-suave);}
+  .info-row strong{display:block;color:var(--ciruela);font-weight:500;margin-bottom:0.15rem;font-family:'Jost',sans-serif;}
+  .contact-actions{display:flex;flex-wrap:wrap;gap:0.9rem;margin-top:1.6rem;}
+  .map-visual{
+    border-radius:26px;
+    background:linear-gradient(155deg,#E4ECDD,#F3E4E1);
+    position:relative;
+    overflow:hidden;
+    min-height:260px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .map-visual svg{width:70%;max-width:280px;}
+
+  /* ---------- CTA FINAL ---------- */
+  .cta-final{
+    padding:clamp(4.5rem,9vw,6.5rem) 0;
+    background:linear-gradient(150deg, var(--salvia-oscuro), var(--salvia));
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .cta-final h2{
+    color:var(--crema);
+    font-size:clamp(2rem,4.5vw,3.2rem);
+    margin-bottom:1.2rem;
+  }
+  .cta-final p{
+    color:rgba(251,248,243,0.9);
+    max-width:480px;
+    margin:0 auto 2rem;
+    font-size:1.02rem;
+  }
+  .cta-final .leaf-decor{opacity:0.18;}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--ciruela);
+    color:rgba(251,248,243,0.82);
+    padding:3rem 0 1.6rem;
+  }
+  .footer-top{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    gap:2rem;
+    padding-bottom:2.2rem;
+    border-bottom:1px solid rgba(251,248,243,0.14);
+  }
+  .footer-brand{display:flex;align-items:center;gap:0.6rem;font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--crema);}
+  .footer-brand svg{width:26px;height:26px;}
+  .footer-cols{display:flex;gap:3.5rem;flex-wrap:wrap;}
+  .footer-col h4{
+    font-family:'Jost',sans-serif;
+    font-size:0.78rem;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:rgba(251,248,243,0.55);
+    margin-bottom:0.9rem;
+    font-weight:500;
+  }
+  .footer-col a, .footer-col p{
+    display:block;
+    font-size:0.92rem;
+    color:rgba(251,248,243,0.82);
+    margin-bottom:0.55rem;
+  }
+  .footer-col a:hover{color:var(--crema);}
+  .footer-bottom{
+    padding-top:1.6rem;
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.8rem;
+    justify-content:space-between;
+    font-size:0.82rem;
+    color:rgba(251,248,243,0.5);
+  }
+  .footer-disclaimer{
+    background:rgba(251,248,243,0.08);
+    border:1px solid rgba(251,248,243,0.16);
+    border-radius:12px;
+    padding:0.9rem 1.2rem;
+    font-size:0.82rem;
+    color:rgba(251,248,243,0.75);
+    margin-top:1.6rem;
+    line-height:1.5;
+  }
+
+  .visually-hidden{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <div class="nav-inner">
+    <a href="#top" class="brand" aria-label="Floristería Jesan Rivas - inicio">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M24 6C24 6 30 12 30 19C30 23.4183 27.3137 27 24 27C20.6863 27 18 23.4183 18 19C18 12 24 6 24 6Z" fill="#7C9473"/>
+        <path d="M24 27C24 27 14 25 10 30C10 30 16 34 24 30" stroke="#7C9473" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+        <path d="M24 27C24 27 34 25 38 30C38 30 32 34 24 30" stroke="#7C9473" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+        <line x1="24" y1="27" x2="24" y2="42" stroke="#5f7357" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <span>Floristería Jesan<span class="brand-sub">Rivas-Vaciamadrid</span></span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a class="nav-link" href="#ramos">Ramos</a>
+      <a class="nav-link" href="#ocasiones">Ocasiones</a>
+      <a class="nav-link" href="#opiniones">Opiniones</a>
+      <a class="nav-link" href="#contacto">Ubicación</a>
+    </nav>
+
+    <div class="header-actions">
+      <a href="#contacto" class="btn btn-primary btn-header">Encarga tu ramo</a>
+      <button class="burger" id="burgerBtn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#ramos">Ramos</a>
+    <a href="#ocasiones">Ocasiones</a>
+    <a href="#opiniones">Opiniones</a>
+    <a href="#contacto">Ubicación</a>
+    <a href="#contacto" class="btn btn-primary">Encarga tu ramo</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy reveal is-visible">
+        <span class="eyebrow">Floristería en Rivas-Vaciamadrid</span>
+        <h1>Flores frescas y ramos con carácter, <span class="accent-italic">cultivados con calma</span></h1>
+        <p class="lead">En Floristería Jesan Rivas preparamos cada ramo a mano, con flor de temporada y mimo por el detalle, para regalar un momento tan cuidado como el mensaje que quieres dar.</p>
+        <div class="hero-cta-row">
+          <a href="#contacto" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21C12 21 4 14.5 4 9.5C4 6.5 6.5 4 9.5 4C11 4 12 5 12 5C12 5 13 4 14.5 4C17.5 4 20 6.5 20 9.5C20 14.5 12 21 12 21Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            Encarga tu ramo
+          </a>
+          <a href="#ramos" class="btn btn-outline">Ver ocasiones</a>
+        </div>
+        <div class="hero-meta">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21C12 21 4 14.5 4 9.5C4 6.5 6.5 4 9.5 4C11 4 12 5 12 5C12 5 13 4 14.5 4C17.5 4 20 6.5 20 9.5C20 14.5 12 21 12 21Z" fill="currentColor"/></svg>
+          Polígono Industrial Santa Ana, Rivas-Vaciamadrid
+        </div>
+      </div>
+
+      <div class="hero-visual reveal is-visible reveal-1">
+        <div class="hero-visual-card">
+          <svg viewBox="0 0 200 200" fill="none" aria-hidden="true">
+            <ellipse cx="100" cy="175" rx="34" ry="8" fill="#3A2E33" opacity="0.08"/>
+            <path d="M100 170 L100 95" stroke="#5f7357" stroke-width="3" stroke-linecap="round"/>
+            <path d="M100 130 C 85 122, 78 108, 88 98" stroke="#5f7357" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            <path d="M100 145 C 115 138, 122 124, 112 114" stroke="#5f7357" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+            <g transform="translate(70,55)">
+              <circle cx="0" cy="0" r="16" fill="#EAD3CE"/>
+              <circle cx="0" cy="0" r="6" fill="#F3E4E1"/>
+            </g>
+            <g transform="translate(105,40)">
+              <circle cx="0" cy="0" r="20" fill="#DCE6D6"/>
+              <circle cx="0" cy="0" r="7" fill="#7C9473"/>
+            </g>
+            <g transform="translate(128,68)">
+              <circle cx="0" cy="0" r="14" fill="#F0E2E8"/>
+              <circle cx="0" cy="0" r="5" fill="#E3D3E0"/>
+            </g>
+            <g transform="translate(95,75)">
+              <circle cx="0" cy="0" r="17" fill="#F3E4E1"/>
+              <circle cx="0" cy="0" r="6" fill="#EAD3CE"/>
+            </g>
+          </svg>
+        </div>
+        <div class="hero-badge">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M12 2L14.6 8.8L22 9.3L16.4 13.9L18.2 21L12 17L5.8 21L7.6 13.9L2 9.3L9.4 8.8L12 2Z" fill="#7C9473"/>
+          </svg>
+          <span><strong>4.0 ★</strong><span>121 reseñas en Google</span></span>
+        </div>
+      </div>
+    </div>
+
+    <svg class="leaf-decor" style="top:8%; left:-40px; width:120px; height:120px;" viewBox="0 0 100 100" aria-hidden="true">
+      <path d="M50 10 C 70 25, 75 55, 50 90 C 25 55, 30 25, 50 10 Z" fill="#7C9473" opacity="0.14"/>
+    </svg>
+  </section>
+
+  <!-- SOCIAL PROOF -->
+  <section class="social-proof reveal" id="opiniones">
+    <div class="container proof-inner">
+      <div class="proof-score">
+        <div class="stars" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="#7C9473"><path d="M12 2L14.6 8.8L22 9.3L16.4 13.9L18.2 21L12 17L5.8 21L7.6 13.9L2 9.3L9.4 8.8L12 2Z"/></svg>
+          <svg viewBox="0 0 24 24" fill="#7C9473"><path d="M12 2L14.6 8.8L22 9.3L16.4 13.9L18.2 21L12 17L5.8 21L7.6 13.9L2 9.3L9.4 8.8L12 2Z"/></svg>
+          <svg viewBox="0 0 24 24" fill="#7C9473"><path d="M12 2L14.6 8.8L22 9.3L16.4 13.9L18.2 21L12 17L5.8 21L7.6 13.9L2 9.3L9.4 8.8L12 2Z"/></svg>
+          <svg viewBox="0 0 24 24" fill="#7C9473"><path d="M12 2L14.6 8.8L22 9.3L16.4 13.9L18.2 21L12 17L5.8 21L7.6 13.9L2 9.3L9.4 8.8L12 2Z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <defs>
+              <linearGradient id="halfStar" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="50%" stop-color="#7C9473"/>
+                <stop offset="50%" stop-color="#E4DCD8"/>
+              </linearGradient>
+            </defs>
+            <path d="M12 2L14.6 8.8L22 9.3L16.4 13.9L18.2 21L12 17L5.8 21L7.6 13.9L2 9.3L9.4 8.8L12 2Z" fill="url(#halfStar)"/>
+          </svg>
+        </div>
+        <span class="big-number">4.0</span>
+        <p>Valoración en Google · 121 reseñas</p>
+      </div>
+      <div class="proof-divider"></div>
+      <p class="proof-text">
+        <span class="accent-italic">Una valoración construida con el tiempo.</span>
+        Más de un centenar de clientes en Rivas-Vaciamadrid han dejado su opinión sobre nuestros ramos y nuestra atención en tienda.
+      </p>
+    </div>
+  </section>
+
+  <!-- OCASIONES -->
+  <section class="ocasiones" id="ramos">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow" id="ocasiones">Nuestro catálogo</span>
+        <h2>Flores para cada momento</h2>
+        <p>Desde un detalle sencillo hasta un encargo para una fecha señalada, en tienda te ayudamos a encontrar la composición adecuada.</p>
+      </div>
+
+      <div class="occ-grid">
+        <div class="occ-card reveal reveal-1">
+          <div class="occ-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21C12 21 4 14.5 4 9.5C4 6.5 6.5 4 9.5 4C11 4 12 5 12 5C12 5 13 4 14.5 4C17.5 4 20 6.5 20 9.5C20 14.5 12 21 12 21Z" stroke="#5f7357" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Ramos de regalo</h3>
+          <p>Composiciones frescas para sorprender, pensadas para cualquier día del año y cualquier persona a quien quieras alegrar.</p>
+        </div>
+
+        <div class="occ-card reveal reveal-2">
+          <div class="occ-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20 L20 20 M6 20 V11 M18 20 V11 M4 11 L12 4 L20 11" stroke="#5f7357" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <h3>Ocasiones especiales</h3>
+          <p>Bodas, aniversarios y también momentos de condolencia: te acompañamos para elegir flores acordes a cada ocasión.</p>
+        </div>
+
+        <div class="occ-card reveal reveal-3">
+          <div class="occ-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3C12 3 7 6 7 11C7 14.3 9.2 17 12 17C14.8 17 17 14.3 17 11C17 6 12 3 12 3Z" stroke="#5f7357" stroke-width="1.6" stroke-linejoin="round"/><line x1="12" y1="17" x2="12" y2="21" stroke="#5f7357" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <h3>Plantas</h3>
+          <p>Una selección de plantas para dar vida a un rincón de casa o de la oficina, con un cuidado sencillo en el día a día.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIFERENCIACION -->
+  <section class="why">
+    <div class="container why-grid">
+      <div class="why-visual reveal">
+        <svg viewBox="0 0 220 260" fill="none" aria-hidden="true">
+          <ellipse cx="110" cy="248" rx="55" ry="10" fill="#3A2E33" opacity="0.07"/>
+          <path d="M60 240 L60 150 C 60 100 90 70 110 40" stroke="#5f7357" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path d="M85 240 L88 130 C 90 90 110 65 130 30" stroke="#5f7357" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path d="M112 240 L112 160 C 112 115 140 90 150 55" stroke="#5f7357" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <path d="M137 240 L134 140" stroke="#5f7357" stroke-width="3" stroke-linecap="round" fill="none"/>
+          <g transform="translate(110,38)"><circle r="17" fill="#F3E4E1"/><circle r="6" fill="#EAD3CE"/></g>
+          <g transform="translate(130,28)"><circle r="14" fill="#DCE6D6"/><circle r="5" fill="#7C9473"/></g>
+          <g transform="translate(150,53)"><circle r="16" fill="#F0E2E8"/><circle r="6" fill="#E3D3E0"/></g>
+          <g transform="translate(134,138)"><circle r="13" fill="#F3E4E1"/><circle r="5" fill="#DCC9CE"/></g>
+        </svg>
+      </div>
+
+      <div class="why-copy">
+        <span class="eyebrow">Por qué elegirnos</span>
+        <h2 style="font-size:clamp(2rem,4vw,2.8rem); margin-bottom:2.2rem;">El detalle que se nota</h2>
+
+        <div class="why-list">
+          <div class="why-item reveal reveal-1">
+            <div class="num-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2L14.6 8.8L22 9.3L16.4 13.9L18.2 21L12 17L5.8 21L7.6 13.9L2 9.3L9.4 8.8L12 2Z" fill="#7C9473"/></svg>
+            </div>
+            <div>
+              <h3>Más de 100 reseñas en Google</h3>
+              <p>Una valoración de 4.0 sobre 5 respaldada por 121 clientes que han confiado en nosotros con el tiempo.</p>
+            </div>
+          </div>
+
+          <div class="why-item reveal reveal-2">
+            <div class="num-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21C12 21 4 14.5 4 9.5C4 6.5 6.5 4 9.5 4C11 4 12 5 12 5C12 5 13 4 14.5 4C17.5 4 20 6.5 20 9.5C20 14.5 12 21 12 21Z" stroke="#5f7357" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            </div>
+            <div>
+              <h3>Cercanía en el barrio</h3>
+              <p>Tienda física en el Polígono Industrial Santa Ana, en Rivas-Vaciamadrid, para quien prefiere ver y elegir en persona.</p>
+            </div>
+          </div>
+
+          <div class="why-item reveal reveal-3">
+            <div class="num-icon">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="8" r="3.4" stroke="#5f7357" stroke-width="1.6"/><path d="M5 20C5 16.5 8 14 12 14C16 14 19 16.5 19 20" stroke="#5f7357" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+            <div>
+              <h3>Atención personalizada</h3>
+              <p>Te ayudamos a resolver el encargo con calma, escuchando la ocasión antes de sugerir la composición adecuada.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERIA -->
+  <section class="galeria">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Inspiración</span>
+        <h2>Nuestros ramos</h2>
+        <p>Un adelanto del tipo de composiciones que puedes encargar en tienda, con flor fresca de temporada.</p>
+      </div>
+
+      <div class="gal-grid">
+        <div class="gal-item gal-1 reveal reveal-1">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <g transform="translate(50,58)">
+              <circle r="15" fill="#fff" opacity="0.55"/><circle r="6" fill="#7C9473"/>
+              <circle cx="-18" cy="-10" r="11" fill="#fff" opacity="0.4"/>
+              <circle cx="18" cy="-8" r="12" fill="#fff" opacity="0.45"/>
+              <circle cx="0" cy="-22" r="10" fill="#fff" opacity="0.5"/>
+            </g>
+          </svg>
+        </div>
+        <div class="gal-item gal-2 reveal reveal-2">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M50 85 L50 40" stroke="#5f7357" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M50 60 C 38 55, 32 44, 40 36" stroke="#5f7357" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M50 70 C 62 65, 68 54, 60 46" stroke="#5f7357" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="50" cy="30" r="14" fill="#fff" opacity="0.55"/>
+          </svg>
+        </div>
+        <div class="gal-item gal-3 reveal reveal-3">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <circle cx="35" cy="45" r="13" fill="#fff" opacity="0.5"/>
+            <circle cx="60" cy="35" r="16" fill="#fff" opacity="0.45"/>
+            <circle cx="55" cy="60" r="11" fill="#fff" opacity="0.55"/>
+          </svg>
+        </div>
+        <div class="gal-item gal-4 reveal reveal-1">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <path d="M30 80 C 30 55 45 45 50 25" stroke="#3A2E33" stroke-width="2" fill="none" opacity="0.4" stroke-linecap="round"/>
+            <path d="M50 80 C 50 55 55 45 55 25" stroke="#3A2E33" stroke-width="2" fill="none" opacity="0.4" stroke-linecap="round"/>
+            <path d="M70 80 C 70 55 60 45 60 25" stroke="#3A2E33" stroke-width="2" fill="none" opacity="0.4" stroke-linecap="round"/>
+            <circle cx="50" cy="22" r="9" fill="#fff" opacity="0.6"/>
+            <circle cx="58" cy="20" r="7" fill="#fff" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="gal-item gal-5 reveal reveal-2">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <g transform="translate(50,55)">
+              <circle r="14" fill="#fff" opacity="0.5"/><circle r="5" fill="#EAD3CE"/>
+              <circle cx="20" cy="10" r="10" fill="#fff" opacity="0.4"/>
+              <circle cx="-20" cy="8" r="10" fill="#fff" opacity="0.4"/>
+            </g>
+          </svg>
+        </div>
+        <div class="gal-item gal-6 reveal reveal-3">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <rect x="30" y="55" width="40" height="28" rx="4" fill="#fff" opacity="0.5"/>
+            <path d="M30 55 L50 42 L70 55" stroke="#5f7357" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="50" cy="42" r="4" fill="#7C9473"/>
+          </svg>
+        </div>
+      </div>
+
+      <p class="gal-note">Nuestros ramos — ilustración de referencia, no fotografía real.</p>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section class="contacto" id="contacto">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Visítanos</span>
+        <h2>Encarga tu ramo</h2>
+        <p>Pásate por la tienda para ver la flor del día y resolver tu encargo en persona, o consulta la dirección para planificar tu visita.</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-card reveal reveal-1">
+          <h3>Dirección y visita</h3>
+
+          <div class="info-row">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21C12 21 4 14.5 4 9.5C4 6.5 6.5 4 9.5 4C11 4 12 5 12 5C12 5 13 4 14.5 4C17.5 4 20 6.5 20 9.5C20 14.5 12 21 12 21Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <p><strong>Floristería Jesan Rivas</strong>
+            Avda. de la Técnica s/n, Polígono Industrial Santa Ana, local 3<br>28522 Rivas-Vaciamadrid, Madrid</p>
+          </div>
+
+          <div class="info-row">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7 V12 L15.5 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            <p><strong>Cómo contactar</strong>
+            De momento no disponemos de un teléfono verificado para publicar aquí: la mejor forma de resolver tu encargo es visitando la tienda en persona.</p>
+          </div>
+
+          <div class="contact-actions">
+            <a class="btn btn-primary" href="https://www.google.com/maps/search/?api=1&query=Avda.%20de%20la%20T%C3%A9cnica%20s%2Fn%2C%20Pol%C3%ADgono%20Industrial%20Santa%20Ana%2C%20local%203%2C%2028522%20Rivas-Vaciamadrid%2C%20Madrid" target="_blank" rel="noopener noreferrer">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21C12 21 4 14.5 4 9.5C4 6.5 6.5 4 9.5 4C11 4 12 5 12 5C12 5 13 4 14.5 4C17.5 4 20 6.5 20 9.5C20 14.5 12 21 12 21Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+              Cómo llegar
+            </a>
+          </div>
+        </div>
+
+        <div class="map-visual reveal reveal-2">
+          <svg viewBox="0 0 220 220" aria-hidden="true">
+            <path d="M110 20 C 140 45, 148 90, 110 160 C 72 90, 80 45, 110 20 Z" fill="#7C9473" opacity="0.5"/>
+            <path d="M110 60 L110 195" stroke="#5f7357" stroke-width="2.4" stroke-linecap="round"/>
+            <circle cx="110" cy="55" r="12" fill="#F3E4E1"/>
+            <circle cx="110" cy="55" r="5" fill="#7C9473"/>
+            <path d="M60 200 Q110 210 160 200" stroke="#3A2E33" stroke-width="1.4" opacity="0.15" fill="none"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section class="cta-final">
+    <svg class="leaf-decor" style="top:-30px; right:-20px; width:180px; height:180px;" viewBox="0 0 100 100" aria-hidden="true">
+      <path d="M50 10 C 70 25, 75 55, 50 90 C 25 55, 30 25, 50 10 Z" fill="#FBF8F3"/>
+    </svg>
+    <svg class="leaf-decor" style="bottom:-40px; left:-30px; width:160px; height:160px;" viewBox="0 0 100 100" aria-hidden="true">
+      <path d="M50 10 C 70 25, 75 55, 50 90 C 25 55, 30 25, 50 10 Z" fill="#FBF8F3"/>
+    </svg>
+    <div class="container reveal">
+      <h2>Encarga flores frescas hoy mismo</h2>
+      <p>Visítanos en Rivas-Vaciamadrid y llévate un ramo preparado con cuidado, o consulta la dirección para tu próxima ocasión especial.</p>
+      <a href="#contacto" class="btn btn-light">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21C12 21 4 14.5 4 9.5C4 6.5 6.5 4 9.5 4C11 4 12 5 12 5C12 5 13 4 14.5 4C17.5 4 20 6.5 20 9.5C20 14.5 12 21 12 21Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        Encarga tu ramo
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <path d="M24 6C24 6 30 12 30 19C30 23.4183 27.3137 27 24 27C20.6863 27 18 23.4183 18 19C18 12 24 6 24 6Z" fill="#7C9473"/>
+        </svg>
+        Floristería Jesan Rivas
+      </div>
+
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Navegación</h4>
+          <a href="#ramos">Ramos</a>
+          <a href="#ocasiones">Ocasiones</a>
+          <a href="#opiniones">Opiniones</a>
+          <a href="#contacto">Ubicación</a>
+        </div>
+        <div class="footer-col">
+          <h4>Ubicación</h4>
+          <p>Avda. de la Técnica s/n<br>Pol. Ind. Santa Ana, local 3<br>28522 Rivas-Vaciamadrid</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-disclaimer">
+      Propuesta de diseño de demostración — no es la web oficial de Floristería Jesan Rivas.
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Floristería Jesan Rivas</span>
+      <span>Diseño de demostración comercial</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  // Header shadow on scroll
+  var header = document.getElementById('siteHeader');
+  function onScroll(){
+    if(window.scrollY > 12){ header.classList.add('scrolled'); }
+    else{ header.classList.remove('scrolled'); }
+  }
+  window.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  // Mobile menu toggle
+  var burger = document.getElementById('burgerBtn');
+  var menu = document.getElementById('mobileMenu');
+  function closeMenu(){
+    menu.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded','false');
+  }
+  burger.addEventListener('click', function(){
+    var isOpen = menu.classList.toggle('open');
+    burger.classList.toggle('open', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+  });
+  menu.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', closeMenu);
+  });
+
+  // Reveal on scroll
+  var revealEls = document.querySelectorAll('.reveal:not(.is-visible)');
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold:0.15, rootMargin:'0px 0px -40px 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+})();
+</script>
+
+</body>
+</html>
