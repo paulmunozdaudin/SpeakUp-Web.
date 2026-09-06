@@ -16,6 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://eloq-oral.com"),
   title: {
     default: "Eloq AI — Practice presentations with AI",
     template: "%s · Eloq AI",
@@ -31,7 +32,7 @@ export const metadata: Metadata = {
     type: "website",
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "Eloq AI — Practice presentations with AI",
     description:
       "Get instant AI feedback on your clarity, confidence, pacing and delivery.",
