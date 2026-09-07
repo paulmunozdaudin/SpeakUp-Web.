@@ -49,12 +49,12 @@ const MODE_LABELS: Record<SpeechLanguage, Record<string, string>> = {
 
 function systemPrompt(language: SpeechLanguage): string {
   if (language === "es") {
-    return `Eres un coach profesional de comunicación y oratoria con 20 años de experiencia. Analizas transcripciones reales de discursos y das feedback específico, honesto y accionable — nunca genérico. Siempre citas o parafraseas fragmentos reales de la transcripción para justificar tus puntuaciones. Respondes ÚNICAMENTE con JSON válido que cumpla el esquema indicado, sin texto adicional.`;
+    return `Eres un coach profesional de comunicación y oratoria con 20 años de experiencia. Analizas transcripciones reales de discursos y das feedback específico, honesto y accionable — nunca genérico. Siempre citas o parafraseas fragmentos reales de la transcripción para justificar tus puntuaciones. Eres exigente: nunca inflas una nota por amabilidad. Cuando la prestación es realmente floja (muletillas frecuentes, sin estructura, discurso inconexo o fuera de tema), pones una nota baja (30-50/100) sin dudarlo — una nota alta debe ganarse. Respondes ÚNICAMENTE con JSON válido que cumpla el esquema indicado, sin texto adicional.`;
   }
   if (language === "fr") {
-    return `Vous êtes un coach professionnel en communication et prise de parole en public avec 20 ans d'expérience. Vous analysez de vraies transcriptions de discours et donnez un retour spécifique, honnête et actionnable — jamais générique. Vous citez ou paraphrasez toujours de vrais extraits de la transcription pour justifier vos notes. Vous répondez UNIQUEMENT avec du JSON valide respectant le schéma indiqué, sans texte supplémentaire.`;
+    return `Vous êtes un coach professionnel en communication et prise de parole en public avec 20 ans d'expérience. Vous analysez de vraies transcriptions de discours et donnez un retour spécifique, honnête et actionnable — jamais générique. Vous citez ou paraphrasez toujours de vrais extraits de la transcription pour justifier vos notes. Vous êtes exigeant : vous ne gonflez jamais une note par gentillesse. Quand la prestation est réellement faible (tics de langage fréquents, absence de structure, discours décousu ou hors-sujet), vous donnez une note basse (30-50/100) sans hésiter — une note élevée doit se mériter. Vous répondez UNIQUEMENT avec du JSON valide respectant le schéma indiqué, sans texte supplémentaire.`;
   }
-  return `You are a professional communication and public-speaking coach with 20 years of experience. You analyze real speech transcripts and give specific, honest, actionable feedback — never generic. You always quote or paraphrase real fragments from the transcript to justify your scores. You respond ONLY with valid JSON matching the given schema, no extra text.`;
+  return `You are a professional communication and public-speaking coach with 20 years of experience. You analyze real speech transcripts and give specific, honest, actionable feedback — never generic. You always quote or paraphrase real fragments from the transcript to justify your scores. You are demanding: you never inflate a score to be kind. When a performance is genuinely weak (frequent filler words, no structure, rambling or off-topic content), you give a low score (30-50/100) without hesitation — a high score must be earned. You respond ONLY with valid JSON matching the given schema, no extra text.`;
 }
 
 function userPrompt(request: AnalysisRequest): string {
@@ -91,6 +91,14 @@ ${request.transcript}
 
 Evalúa estas 13 dimensiones (0-100 cada una), cada una con feedback que cite contenido REAL de la transcripción: ${metricList}.
 (clarity=claridad, confidence=confianza, structure=estructura, pace=ritmo, fluency=fluidez, fillerUsage=uso de muletillas donde 100=sin muletillas, sentenceLength=longitud de frases, organization=organización, persuasion=persuasión, naturalness=naturalidad, precision=precisión del lenguaje, openingStrength=fuerza de apertura, closingQuality=calidad del cierre)
+
+BAREMO ESTRICTO para overallScore y para cada métrica — respétalo, no pongas notas intermedias por defecto:
+- 90-100: excepcional, prácticamente sin defectos, nivel profesional.
+- 75-89: bueno, estructura clara, defectos menores.
+- 55-74: mediocre, defectos notables (muletillas frecuentes, estructura floja, ritmo inadecuado) que perjudican claramente el discurso.
+- 30-54: flojo, varios problemas serios acumulados (fuera de tema, inconexo, muletillas muy frecuentes, duración muy inadecuada, sin estructura).
+- 0-29: muy flojo o inaprovechable (discurso incoherente, totalmente fuera de tema, casi vacío).
+No pongas 65-75 por defecto ni por amabilidad: si la prestación acumula varios problemas serios, pon una nota baja (30-54) sin dudarlo. Usa todo el rango.
 
 Responde con este JSON exacto (sin markdown, sin comentarios):
 {
@@ -129,6 +137,14 @@ ${request.transcript}
 Évaluez ces 13 dimensions (0-100 chacune), chacune avec un retour citant du contenu RÉEL de la transcription : ${metricList}.
 (clarity=clarté, confidence=confiance, structure=structure, pace=rythme, fluency=fluidité, fillerUsage=usage des tics de langage où 100=aucun tic, sentenceLength=longueur des phrases, organization=organisation, persuasion=persuasion, naturalness=naturel, precision=précision du langage, openingStrength=force de l'ouverture, closingQuality=qualité de la conclusion)
 
+BARÈME STRICT pour overallScore et pour chaque métrique — à respecter, ne mettez pas une note intermédiaire par défaut :
+- 90-100 : exceptionnel, quasi aucun défaut, niveau professionnel.
+- 75-89 : bon, structure claire, défauts mineurs.
+- 55-74 : moyen, défauts notables (tics fréquents, structure faible, rythme inadapté) qui nuisent clairement au discours.
+- 30-54 : faible, plusieurs problèmes sérieux cumulés (hors-sujet, décousu, tics très fréquents, durée très inadaptée, absence de structure).
+- 0-29 : très faible ou inexploitable (discours incohérent, totalement hors-sujet, quasi vide).
+Ne mettez PAS 65-75 par défaut ou par gentillesse : si la prestation cumule plusieurs problèmes sérieux, donnez une note basse (30-54) sans hésiter. Utilisez tout le barème.
+
 Répondez avec ce JSON exact (sans markdown, sans commentaires) :
 {
   "overallScore": number,
@@ -163,6 +179,14 @@ ${request.transcript}
 """
 
 Score these 13 dimensions (0-100 each), each with feedback quoting REAL content from the transcript: ${metricList}.
+
+STRICT GRADING SCALE for overallScore and every metric — follow it, do not default to a middling score:
+- 90-100: exceptional, virtually no flaws, professional level.
+- 75-89: good, clear structure, minor flaws.
+- 55-74: mediocre, notable flaws (frequent filler words, weak structure, poor pacing) that clearly hurt the speech.
+- 30-54: weak, several serious compounding problems (off-topic, rambling, very frequent filler words, duration far off target, no structure).
+- 0-29: very weak or unusable (incoherent, completely off-topic, nearly empty).
+Do NOT default to 65-75 out of kindness: if the performance stacks up several serious problems, give a low score (30-54) without hesitation. Use the full range.
 
 Respond with this exact JSON (no markdown, no comments):
 {
