@@ -15,10 +15,16 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [confirmationSent, setConfirmationSent] = useState(false);
+  const [agreed, setAgreed] = useState(false);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+
+    if (!agreed) {
+      setError(d.auth.mustAgreeToTerms);
+      return;
+    }
     setLoading(true);
 
     const form = new FormData(event.currentTarget);
@@ -91,6 +97,24 @@ export default function SignupPage() {
           minLength={8}
           required
         />
+        <label className="flex items-start gap-2.5 text-sm text-muted">
+          <input
+            type="checkbox"
+            checked={agreed}
+            onChange={(event) => setAgreed(event.target.checked)}
+            className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-border accent-accent"
+          />
+          <span>
+            {d.auth.agreeToTermsPrefix}{" "}
+            <Link href="/terms" className="font-medium text-accent hover:underline">
+              {d.auth.agreeToTermsLinkTerms}
+            </Link>{" "}
+            {d.auth.agreeToTermsMiddle}{" "}
+            <Link href="/privacy" className="font-medium text-accent hover:underline">
+              {d.auth.agreeToTermsLinkPrivacy}
+            </Link>
+          </span>
+        </label>
         {error && (
           <p className="rounded-xl bg-danger/10 px-3.5 py-2.5 text-sm text-danger">
             {error}
