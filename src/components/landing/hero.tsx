@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Mic, Play, Sparkles } from "lucide-react";
+import { GraduationCap, Mic, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useDict } from "@/lib/i18n";
 
@@ -64,11 +64,10 @@ export function Hero() {
               {d.common.startPracticing}
             </Button>
           </Link>
-          {/* TODO(demo): link to a real product demo video. */}
-          <Link href="#how-it-works">
+          <Link href="/exam">
             <Button variant="secondary" size="lg">
-              <Play className="h-4.5 w-4.5" />
-              {d.common.seeDemo}
+              <GraduationCap className="h-4.5 w-4.5" />
+              {d.common.prepareExam}
             </Button>
           </Link>
         </motion.div>

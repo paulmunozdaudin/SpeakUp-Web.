@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Mic, Sparkles } from "lucide-react";
+import { ArrowRight, GraduationCap, Mic, Sparkles } from "lucide-react";
 import { useUser } from "@/hooks/use-user";
 import { useSessions } from "@/hooks/use-sessions";
 import { Button } from "@/components/ui/button";
@@ -37,21 +37,24 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            {firstName ? `${d.dashboard.welcome}, ${firstName}` : d.dashboard.welcome}
-          </h1>
-          <p className="mt-1 text-sm text-muted">
-            {stats.totalSessions === 0
-              ? d.dashboard.readyFirst
-              : d.dashboard.evolving}
-          </p>
-        </div>
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+          {firstName ? `${d.dashboard.welcome}, ${firstName}` : d.dashboard.welcome}
+        </h1>
+        <p className="mt-1 text-sm text-muted">{d.dashboard.todayQuestion}</p>
+      </div>
+
+      <div className="grid gap-3 sm:grid-cols-2">
         <Link href="/practice">
-          <Button size="lg">
+          <Button size="lg" className="w-full">
             <Mic className="h-4.5 w-4.5" />
             {d.dashboard.startNewPractice}
+          </Button>
+        </Link>
+        <Link href="/exam">
+          <Button size="lg" variant="secondary" className="w-full">
+            <GraduationCap className="h-4.5 w-4.5" />
+            {d.dashboard.startExamPrep}
           </Button>
         </Link>
       </div>
@@ -68,7 +71,12 @@ export default function DashboardPage() {
         </div>
       )}
 
-      <StatsCards stats={stats} loading={loading} />
+      <div>
+        <h2 className="mb-3 text-sm font-medium text-muted">
+          {d.dashboard.progress}
+        </h2>
+        <StatsCards stats={stats} loading={loading} />
+      </div>
 
       <div className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
         <ProgressChart trend={stats.scoreTrend} />

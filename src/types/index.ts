@@ -43,10 +43,22 @@ export const FRENCH_EXAM_MODES: PracticeMode[] = [
 export const DEDICATED_FLOW_MODES: PracticeMode[] = [...FRENCH_EXAM_MODES, "interview"];
 
 /** PRACTICE_MODES minus the dedicated-flow modes — what the generic
- *  /practice flow actually offers. */
+ *  /practice flow accepts (deep links, API validation). Kept broad on
+ *  purpose so old links/sessions using "oral-exam" still work. */
 export const GENERIC_PRACTICE_MODES: PracticeMode[] = PRACTICE_MODES.filter(
   (mode) => !DEDICATED_FLOW_MODES.includes(mode),
 );
+
+/** The 3 modes actually shown in the /practice mode picker — deliberately
+ *  narrower than GENERIC_PRACTICE_MODES. "project-defense" is relabeled
+ *  "Personnalisé/Custom" in copy since it's already a free-form generic
+ *  mode under the hood; "oral-exam" stays a valid deep-link target (old
+ *  sessions, GENERIC_PRACTICE_MODES) but is no longer offered as a card. */
+export const PRACTICE_PICKER_MODES: PracticeMode[] = [
+  "presentation",
+  "startup-pitch",
+  "project-defense",
+];
 
 /** Language the user speaks (and the report is written) in. */
 export type SpeechLanguage = "es" | "en" | "fr";
