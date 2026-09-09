@@ -49,9 +49,14 @@ export function Sidebar() {
 
   return (
     <>
+      {/* Mobile top bar — just the logo, so there's always a way back home. */}
+      <header className="fixed inset-x-0 top-0 z-40 flex h-14 items-center border-b border-border bg-surface/90 px-4 backdrop-blur-xl md:hidden">
+        <Logo href="/" />
+      </header>
+
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-border bg-surface px-4 py-6 md:flex">
-        <Logo href="/dashboard" className="px-2" />
+        <Logo href="/" className="px-2" />
         <nav className="mt-10 flex flex-1 flex-col gap-2">
           {items.map((item) => (
             <Link
