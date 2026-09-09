@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
 
 export const alt = "Eloq AI — Practice presentations with AI";
@@ -10,6 +12,10 @@ export const contentType = "image/png";
  * wires the og:image meta tag automatically — no image file to upload.
  */
 export default async function Image() {
+  const poppins = await readFile(
+    path.join(process.cwd(), "public/fonts/poppins-800.ttf"),
+  );
+
   return new ImageResponse(
     (
       <div
@@ -36,14 +42,18 @@ export default async function Image() {
             marginBottom: 44,
           }}
         >
-          <svg width="88" height="88" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M2.5,13 C4.2,6.5 7.3,6.5 9,13 C10.7,19.5 13.8,19.5 15.5,13 C17.2,6.5 20.3,6.5 21.5,13"
-              stroke="#8b7cf6"
-              strokeWidth="2.3"
-              strokeLinecap="round"
-            />
-          </svg>
+          <div
+            style={{
+              display: "flex",
+              fontFamily: "Poppins",
+              fontWeight: 800,
+              fontSize: 84,
+              lineHeight: 1,
+              color: "#8b7cf6",
+            }}
+          >
+            e.
+          </div>
         </div>
         <div
           style={{
@@ -68,6 +78,9 @@ export default async function Image() {
         </div>
       </div>
     ),
-    { ...size },
+    {
+      ...size,
+      fonts: [{ name: "Poppins", data: poppins, weight: 800, style: "normal" }],
+    },
   );
 }
