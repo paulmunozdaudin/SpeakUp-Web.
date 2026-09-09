@@ -100,6 +100,15 @@ BAREMO ESTRICTO para overallScore y para cada métrica — respétalo, no pongas
 - 0-29: muy flojo o inaprovechable (discurso incoherente, totalmente fuera de tema, casi vacío).
 No pongas 65-75 por defecto ni por amabilidad: si la prestación acumula varios problemas serios, pon una nota baja (30-54) sin dudarlo. Usa todo el rango.
 
+REQUISITOS ESTRICTOS para "improvedVersion" — el resultado debe ser perfecto y tener sentido de principio a fin:
+- Reescritura COMPLETA y autónoma, lista para leerse en voz alta tal cual — nunca un resumen, ni puntos sueltos, ni un texto cortado a mitad de frase.
+- Conserva exactamente los mismos argumentos, datos y ejemplos del original — no inventes contenido nuevo ni añadas información que el hablante no dijo.
+- Estructura clara y explícita: una apertura que enganche, un desarrollo organizado en 2-4 ideas distintas bien enlazadas entre sí, y un cierre que resuma y remate.
+- Frases cortas y directas (máximo ~20-25 palabras de media); ninguna frase debe superar las 35 palabras — divide cualquier frase larga o inconexa del original.
+- Elimina todas las muletillas, titubeos y repeticiones de palabras; varía el vocabulario donde el original repite un término.
+- Mantén la voz y el tema del hablante — nunca un tono robótico o de manual genérico.
+- Longitud similar al original (±20%). Revisa el resultado antes de responder: si no tiene sentido de principio a fin o queda incompleto, corrígelo.
+
 Responde con este JSON exacto (sin markdown, sin comentarios):
 {
   "overallScore": number,
@@ -145,6 +154,15 @@ BARÈME STRICT pour overallScore et pour chaque métrique — à respecter, ne m
 - 0-29 : très faible ou inexploitable (discours incohérent, totalement hors-sujet, quasi vide).
 Ne mettez PAS 65-75 par défaut ou par gentillesse : si la prestation cumule plusieurs problèmes sérieux, donnez une note basse (30-54) sans hésiter. Utilisez tout le barème.
 
+EXIGENCES STRICTES pour "improvedVersion" — le résultat doit être parfait et avoir du sens de bout en bout :
+- Réécriture COMPLÈTE et autonome, prête à être lue à voix haute telle quelle — jamais un résumé, des points isolés, ou un texte coupé en plein milieu d'une phrase.
+- Conserve exactement les mêmes arguments, faits et exemples que l'original — n'invente RIEN de nouveau, n'ajoute aucune information que la personne n'a pas dite.
+- Structure claire et explicite : une accroche qui capte l'attention, un développement organisé en 2-4 idées distinctes bien enchaînées, une conclusion qui résume et clôt le propos.
+- Phrases courtes et directes (20-25 mots en moyenne maximum) ; aucune phrase ne doit dépasser 35 mots — divisez toute phrase longue ou décousue de l'original.
+- Éliminez tous les tics de langage, hésitations et répétitions de mots ; variez le vocabulaire là où l'original répète un même terme.
+- Gardez la voix et le sujet du locuteur — jamais un ton robotique ou de manuel générique.
+- Longueur similaire à l'original (±20 %). Relisez le résultat avant de répondre : s'il n'a pas de sens de bout en bout ou semble incomplet, corrigez-le.
+
 Répondez avec ce JSON exact (sans markdown, sans commentaires) :
 {
   "overallScore": number,
@@ -187,6 +205,15 @@ STRICT GRADING SCALE for overallScore and every metric — follow it, do not def
 - 30-54: weak, several serious compounding problems (off-topic, rambling, very frequent filler words, duration far off target, no structure).
 - 0-29: very weak or unusable (incoherent, completely off-topic, nearly empty).
 Do NOT default to 65-75 out of kindness: if the performance stacks up several serious problems, give a low score (30-54) without hesitation. Use the full range.
+
+STRICT REQUIREMENTS for "improvedVersion" — the result must be perfect and make sense from start to finish:
+- A COMPLETE, self-contained rewrite, ready to be read aloud as-is — never a summary, bullet points, or text cut off mid-sentence.
+- Keep exactly the same arguments, facts and examples as the original — invent NOTHING new, add no information the speaker didn't say.
+- Clear, explicit structure: an opening that hooks the listener, a body organized into 2-4 distinct, well-connected ideas, and a closing that summarizes and lands.
+- Short, direct sentences (20-25 words on average, max); no sentence should exceed 35 words — split up any long or rambling sentence from the original.
+- Remove every filler word, hesitation and repeated word; vary the vocabulary wherever the original repeats a term.
+- Keep the speaker's voice and topic — never a robotic or generic textbook tone.
+- Similar length to the original (±20%). Reread the result before answering: if it doesn't make sense start to finish or looks incomplete, fix it.
 
 Respond with this exact JSON (no markdown, no comments):
 {
@@ -255,12 +282,13 @@ export class OpenAIAnalysisProvider implements AnalysisProvider {
           model: MODEL,
           response_format: { type: "json_object" },
           temperature: 0.4,
+          max_tokens: 6000,
           messages: [
             { role: "system", content: systemPrompt(request.language) },
             { role: "user", content: userPrompt(request) },
           ],
         }),
-        signal: AbortSignal.timeout(45_000),
+        signal: AbortSignal.timeout(60_000),
       });
 
       if (!response.ok) {
