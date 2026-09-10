@@ -25,7 +25,10 @@ export function Pricing() {
     setCheckoutPending(true);
     const result = await startProCheckout();
     if (!result.ok) {
-      setCheckoutError(result.error ?? d.billing.checkoutError);
+      // The API only ever returns English debug strings (not configured,
+      // Lemon Squeezy error messages) — never show those raw to a user
+      // browsing in ES/FR, always the translated generic message instead.
+      setCheckoutError(d.billing.checkoutError);
       setCheckoutPending(false);
     }
     // On success the browser is already navigating away to Lemon Squeezy.

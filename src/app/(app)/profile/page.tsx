@@ -50,7 +50,9 @@ export default function ProfilePage() {
     setBillingPending(true);
     const result = isPro ? await openBillingPortal() : await startProCheckout();
     if (!result.ok) {
-      setBillingError(result.error ?? d.billing.checkoutError);
+      // Same as pricing.tsx: the billing API only ever returns English
+      // debug strings, never show those raw — always the translated one.
+      setBillingError(d.billing.checkoutError);
       setBillingPending(false);
     }
   }
