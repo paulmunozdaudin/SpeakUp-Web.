@@ -8,7 +8,7 @@ import { joinProWaitlist } from "@/services/waitlist.service";
 import { useDict } from "@/lib/i18n";
 
 /** Shown instead of the checkout button while PRO_CHECKOUT_ENABLED is
- *  false — captures interest so it can be converted once Stripe goes live,
+ *  false — captures interest so it can be converted once billing goes live,
  *  instead of losing everyone who was ready to pay today. */
 export function ProWaitlistForm() {
   const d = useDict();

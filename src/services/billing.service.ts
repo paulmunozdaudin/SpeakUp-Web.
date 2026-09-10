@@ -1,9 +1,9 @@
 "use client";
 
 /**
- * Billing service: thin wrapper around our Stripe API routes.
- * Components never call /api/stripe/* directly, so the request/response
- * shape stays a one-file change.
+ * Billing service: thin wrapper around our Lemon Squeezy API routes.
+ * Components never call /api/lemonsqueezy/* directly, so the
+ * request/response shape stays a one-file change.
  */
 
 export interface BillingResult {
@@ -12,8 +12,8 @@ export interface BillingResult {
 }
 
 /**
- * Stripe is live: the account is owned and operated by the founder's
- * mother (an autónoma), since Stripe requires an adult account holder.
+ * The billing account is owned and operated by the founder's mother (an
+ * autónoma), since payment processors require an adult account holder.
  * Upgrade CTAs start a real checkout instead of the Pro waitlist.
  */
 export const PRO_CHECKOUT_ENABLED = true;
@@ -34,12 +34,12 @@ async function startFlow(path: string): Promise<BillingResult> {
   return { ok: false, error: "Something went wrong." };
 }
 
-/** Redirects the browser to Stripe Checkout for the Pro plan. */
+/** Redirects the browser to Lemon Squeezy Checkout for the Pro plan. */
 export function startProCheckout(): Promise<BillingResult> {
-  return startFlow("/api/stripe/checkout");
+  return startFlow("/api/lemonsqueezy/checkout");
 }
 
-/** Redirects the browser to the Stripe Billing Portal. */
+/** Redirects the browser to the Lemon Squeezy Customer Portal. */
 export function openBillingPortal(): Promise<BillingResult> {
-  return startFlow("/api/stripe/portal");
+  return startFlow("/api/lemonsqueezy/portal");
 }

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Pro waitlist: captures interest while Stripe checkout is disabled
+ * Pro waitlist: captures interest while checkout is disabled
  * (PRO_CHECKOUT_ENABLED in billing.service.ts). Never requires an account —
  * joining is a single insert into `pro_waitlist`, readable only by the
  * founder via the Supabase dashboard, never back through the app.

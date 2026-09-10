@@ -10,8 +10,8 @@ let client: SupabaseClient | null = null;
 
 /**
  * Service-role Supabase client. Bypasses Row Level Security — server-only,
- * never import from a "use client" file. Used by the Stripe webhook to
- * update a user's subscription status without a browser session.
+ * never import from a "use client" file. Used by the Lemon Squeezy webhook
+ * to update a user's subscription status without a browser session.
  */
 export function getSupabaseAdminClient(): SupabaseClient | null {
   if (!isSupabaseAdminConfigured) return null;

@@ -28,7 +28,7 @@ export function Pricing() {
       setCheckoutError(result.error ?? d.billing.checkoutError);
       setCheckoutPending(false);
     }
-    // On success the browser is already navigating away to Stripe.
+    // On success the browser is already navigating away to Lemon Squeezy.
   }
 
   return (

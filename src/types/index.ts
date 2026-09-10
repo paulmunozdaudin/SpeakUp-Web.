@@ -195,7 +195,7 @@ export interface UserProfile {
   id: string;
   fullName: string;
   email: string;
-  /** TODO(stripe): replace with real subscription state from Stripe. */
+  /** TODO(billing): replace with real subscription state from Lemon Squeezy. */
   subscriptionStatus: "free" | "pro";
   createdAt: string;
 }
