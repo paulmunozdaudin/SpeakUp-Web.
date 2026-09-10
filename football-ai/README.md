@@ -85,12 +85,22 @@ data, `backend/tests/`, 71 tests passing):
   classification *thresholds* are explicitly marked as placeholders)
 - Combination Engine's correlation-aware search + explicit
   "no strong combination found" result
+- A real Football-Data.co.uk ingestion adapter + runnable script
+  (`backend/app/services/ingestion/football_data_co_uk_adapter.py`,
+  `backend/scripts/ingest_football_data_co_uk.py`) — CSV parsing is
+  unit-tested against real column layouts, but has not been run against
+  live data from this dev environment (see below)
 
 **Explicitly not real yet** (and the code says so, rather than faking it):
-- No live provider is connected — `.env.example` has no real keys, `admin/status`
-  reports every source as `not_connected`
-- No historical dataset has been ingested, so no backtest has actually run
-  against real data, and Market Edge Engine / Combination Engine thresholds
-  are unvalidated placeholders
+- No live provider has actually been ingested from yet. The adapter code is
+  real and tested, but this dev sandbox's network policy blocks outbound
+  access to external data providers entirely (confirmed directly — see
+  `docs/DEPLOYMENT.md` "Real data ingestion"). Running it for real requires
+  a normal-internet host: `render.yaml` + `docs/DEPLOYMENT.md` "Getting
+  real data live" give the exact steps (Supabase Postgres + Render backend
+  + Vercel frontend, all free tiers)
+- Until that's run, no backtest has actually run against real data, and
+  Market Edge Engine / Combination Engine thresholds are unvalidated
+  placeholders
 - No ML model has been trained (Phase 6) — only the baselines exist
 - The frontend renders honest empty states everywhere real data is missing
