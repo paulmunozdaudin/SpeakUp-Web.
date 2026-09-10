@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Node / Next.js
+node_modules/
+.next/
+next-env.d.ts
+
+# Env
+.env
+*.env.local
+
+# Backtest artifacts (schema fixed, content is run-specific -- not committed)
+backend/app/services/backtester_reports/
