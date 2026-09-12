@@ -35,7 +35,7 @@ export const en = {
     heroTitle: "Practice presentations with AI.",
     heroSubtitle:
       "Record yourself speaking and get a detailed report on exactly how to improve.",
-    previewTitle: "Startup pitch — take 3",
+    previewTitle: "Economics presentation — take 3",
     previewSubtitle: "Analyzed just now",
     previewMetrics: {
       clarity: "Clarity",
@@ -636,7 +636,7 @@ export const es: Dictionary = {
     heroTitle: "Practica presentaciones con IA.",
     heroSubtitle:
       "Grábate hablando y recibe un análisis detallado de exactamente cómo mejorar.",
-    previewTitle: "Pitch de startup — toma 3",
+    previewTitle: "Presentación de economía — toma 3",
     previewSubtitle: "Analizado ahora mismo",
     previewMetrics: {
       clarity: "Claridad",
@@ -1239,7 +1239,7 @@ export const fr: Dictionary = {
     heroTitle: "Entraîne-toi à l'oral avec l'IA.",
     heroSubtitle:
       "Présente-toi, enregistre ton oral et reçois un feedback détaillé pour savoir exactement comment t'améliorer.",
-    previewTitle: "Pitch de startup — essai 3",
+    previewTitle: "Présentation d'économie — essai 3",
     previewSubtitle: "Analysé à l'instant",
     previewMetrics: {
       clarity: "Clarté",
