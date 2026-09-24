@@ -125,6 +125,9 @@ export default function InterviewModePage() {
         language,
         durationSeconds: Math.max(totalDuration, 1),
         targetDurationMinutes: TOTAL_QUESTIONS * PER_TURN_TARGET_MINUTES,
+        // This legacy flow (kept for old deep links only — "Entretien" was
+        // removed from the main UI) never offers the voice/video picker.
+        analysisMode: "voice",
       });
       router.push(`/results/${session.id}`);
     } catch (e) {

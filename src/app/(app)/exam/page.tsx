@@ -14,17 +14,19 @@ import {
   Loader2,
 } from "lucide-react";
 import { track } from "@vercel/analytics";
-import type { TargetDuration } from "@/types";
+import type { AnalysisMode, TargetDuration } from "@/types";
 import { fr as d } from "@/lib/i18n/translations";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { DurationSelector } from "@/components/recording/duration-selector";
+import { AnalysisModeSelector } from "@/components/recording/analysis-mode-selector";
 import { RecorderPanel } from "@/components/recording/recorder-panel";
 import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
 import { analyzeAndSave } from "@/services/analysis.service";
 import { checkFreeQuota, getSession } from "@/services/sessions.service";
 import { AUDIENCE_QUESTIONS } from "@/services/ai/question-bank";
+import type { CapturedFrame } from "@/utils/video-frames";
 import { cn } from "@/utils/cn";
 
 const EXAM_MODES = ["brevet-oral", "bac-francais-oral", "grand-oral"] as const;
@@ -89,6 +91,15 @@ export default function ExamModePage() {
   const [topicError, setTopicError] = useState(false);
   const [presentationMinutes, setPresentationMinutes] = useState<TargetDuration>(
     DEFAULT_PRESENTATION_MINUTES["brevet-oral"],
+  );
+  // Voice vs. voice+camera. Only applied to the presentation/exposé
+  // recording below — the jury interview turns stay voice-only (see
+  // handleInterviewTurnFinish), since layering camera analysis onto every
+  // short back-and-forth answer adds a lot of complexity for little signal
+  // beyond what the main exposé already captures.
+  const [analysisMode, setAnalysisMode] = useState<AnalysisMode>("voice");
+  const [presentationFrames, setPresentationFrames] = useState<CapturedFrame[] | undefined>(
+    undefined,
   );
 
   // Bac de Français only: the text the student will be examined on.
@@ -165,6 +176,7 @@ export default function ExamModePage() {
     track("exam_started", { mode });
     setPresentationTranscript("");
     setPresentationDurationSeconds(0);
+    setPresentationFrames(undefined);
     setTurns([]);
     setRecorderKey((k) => k + 1);
     setStep("presentation");
@@ -233,7 +245,11 @@ export default function ExamModePage() {
     return fallbackQuestion(mode, topic.trim(), history.length);
   }
 
-  async function handlePresentationFinish(transcript: string, durationSeconds: number) {
+  async function handlePresentationFinish(
+    transcript: string,
+    durationSeconds: number,
+    frames?: CapturedFrame[],
+  ) {
     if (transcript.trim().split(/\s+/).filter(Boolean).length < 20) {
       setError(d.practice.tooShort);
       setRecorderKey((k) => k + 1);
@@ -242,6 +258,7 @@ export default function ExamModePage() {
     setError(null);
     setPresentationTranscript(transcript);
     setPresentationDurationSeconds(durationSeconds);
+    setPresentationFrames(frames);
     setLoadingNextQuestion(true);
     const question = await requestNextQuestion(transcript, []);
     setCurrentQuestion(question);
@@ -273,6 +290,8 @@ export default function ExamModePage() {
         durationSeconds: Math.max(totalDuration, 1),
         targetDurationMinutes: presentationMinutes + INTERVIEW_QUESTIONS * PER_TURN_TARGET_MINUTES,
         textContext: isBacFrancais ? textContext || undefined : undefined,
+        analysisMode,
+        frames: presentationFrames,
       });
       track("exam_completed", { mode });
       router.push(`/results/${session.id}`);
@@ -379,6 +398,13 @@ export default function ExamModePage() {
             <div className="space-y-2">
               <span className="block text-sm font-medium">{d.practice.durationLabel}</span>
               <DurationSelector value={presentationMinutes} onChange={setPresentationMinutes} />
+            </div>
+
+            <div className="space-y-2">
+              <span className="block text-sm font-medium">
+                {d.practice.analysisModeLabel}
+              </span>
+              <AnalysisModeSelector value={analysisMode} onChange={setAnalysisMode} dict={d} />
             </div>
 
             <Button size="lg" className="w-full" onClick={handleStart}>
@@ -552,6 +578,7 @@ export default function ExamModePage() {
                 key={recorderKey}
                 language={LANGUAGE}
                 targetDurationMinutes={presentationMinutes}
+                analysisMode={analysisMode}
                 onFinish={handlePresentationFinish}
                 disabled={analyzing}
               />

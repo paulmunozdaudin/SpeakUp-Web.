@@ -489,6 +489,12 @@ export class HeuristicAnalysisProvider implements AnalysisProvider {
       version: 2,
       provider: "heuristic",
       language,
+      analysisMode: request.analysisMode,
+      // Fact-checking and on-camera analysis both need real world
+      // knowledge/vision the heuristic engine doesn't have — rather than
+      // fabricate either, they're left empty/absent here. The OpenAI
+      // provider is the only one that ever fills them in.
+      factCheck: [],
       overallScore,
       metrics,
       wordCount: s.wordCount,

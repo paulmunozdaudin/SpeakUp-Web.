@@ -1,8 +1,15 @@
 import type {
+  AnalysisMode,
   AnalysisResult,
   PracticeMode,
   SpeechLanguage,
 } from "@/types";
+
+/** One sampled video frame, as captured client-side by utils/video-frames. */
+export interface AnalysisFrame {
+  timestampSeconds: number;
+  dataUrl: string;
+}
 
 /** Everything an analysis provider needs to evaluate a practice session. */
 export interface AnalysisRequest {
@@ -13,6 +20,10 @@ export interface AnalysisRequest {
   language: SpeechLanguage;
   durationSeconds: number;
   targetDurationMinutes: number;
+  analysisMode: AnalysisMode;
+  /** Present only when analysisMode is "video" and frame sampling
+   *  succeeded. A handful of small JPEG data URLs, never the raw video. */
+  frames?: AnalysisFrame[];
 }
 
 /**

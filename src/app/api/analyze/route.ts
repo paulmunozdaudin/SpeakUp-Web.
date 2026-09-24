@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
-import type { PracticeMode, SpeechLanguage } from "@/types";
+import type { AnalysisMode, PracticeMode, SpeechLanguage } from "@/types";
 import { PRACTICE_MODES } from "@/types";
 import { getAnalysisProvider } from "@/services/ai";
+import type { AnalysisFrame } from "@/services/ai/provider";
 import { evaluateBacFrancaisOral } from "@/services/ai/bac-francais-evaluator";
 
 export const runtime = "nodejs";
 export const maxDuration = 60; // the LLM call can take a while
+
+/** Frames are small (downscaled to 480px wide, JPEG) but this still bounds
+ *  the request body against an abusive/buggy client sending too many. */
+const MAX_FRAMES = 12;
 
 interface AnalyzeBody {
   transcript: string;
@@ -19,6 +24,18 @@ interface AnalyzeBody {
    *  triggers the dedicated literary-analysis evaluation on top of the
    *  generic one. Unused for every other mode. */
   textContext?: string;
+  analysisMode: AnalysisMode;
+  frames?: AnalysisFrame[];
+}
+
+function isValidFrame(value: unknown): value is AnalysisFrame {
+  if (!value || typeof value !== "object") return false;
+  const f = value as Record<string, unknown>;
+  return (
+    typeof f.timestampSeconds === "number" &&
+    typeof f.dataUrl === "string" &&
+    f.dataUrl.startsWith("data:image/")
+  );
 }
 
 function isValidBody(body: unknown): body is AnalyzeBody {
@@ -34,7 +51,12 @@ function isValidBody(body: unknown): body is AnalyzeBody {
     (b.language === "es" || b.language === "en" || b.language === "fr") &&
     typeof b.durationSeconds === "number" &&
     typeof b.targetDurationMinutes === "number" &&
-    (b.textContext === undefined || typeof b.textContext === "string")
+    (b.textContext === undefined || typeof b.textContext === "string") &&
+    (b.analysisMode === "voice" || b.analysisMode === "video") &&
+    (b.frames === undefined ||
+      (Array.isArray(b.frames) &&
+        b.frames.length <= MAX_FRAMES &&
+        b.frames.every(isValidFrame)))
   );
 }
 

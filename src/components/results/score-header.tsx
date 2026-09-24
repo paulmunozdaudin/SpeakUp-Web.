@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Gauge, Mic, Sparkles } from "lucide-react";
+import { Gauge, Mic, Sparkles, Video } from "lucide-react";
 import type { AnalysisResult, PracticeMode } from "@/types";
 import { FRENCH_EXAM_MODES } from "@/types";
 
@@ -64,6 +64,16 @@ export function ScoreHeader({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <Badge tone="accent">{d.modes[mode]}</Badge>
+            <Badge tone="neutral">
+              {analysis.analysisMode === "video" ? (
+                <Video className="h-3 w-3" />
+              ) : (
+                <Mic className="h-3 w-3" />
+              )}
+              {analysis.analysisMode === "video"
+                ? d.practice.analysisModeVideoTitle
+                : d.practice.analysisModeVoiceTitle}
+            </Badge>
             <Badge tone={PACE_TONE[analysis.paceVerdict]}>
               <Gauge className="h-3 w-3" />
               {analysis.wordsPerMinute} {d.results.wordsPerMin} · {paceLabel}

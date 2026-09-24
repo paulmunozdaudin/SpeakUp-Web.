@@ -1,21 +1,31 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { AlertTriangle, Ear, Mic, Pause, Play, Square } from "lucide-react";
+import { AlertTriangle, Ear, Mic, Pause, Play, Square, Video } from "lucide-react";
 import { useSpeechRecorder } from "@/hooks/use-speech-recorder";
 import type { RecorderErrorCode } from "@/hooks/use-speech-recorder";
+import { useVideoRecorder } from "@/hooks/use-video-recorder";
+import type { VideoRecorderErrorCode } from "@/hooks/use-video-recorder";
+import { extractSampledFrames, type CapturedFrame } from "@/utils/video-frames";
 import { Button } from "@/components/ui/button";
 import { useDict } from "@/lib/i18n";
 import type { Dictionary } from "@/lib/i18n/translations";
 import { formatDuration } from "@/utils/format";
 import { cn } from "@/utils/cn";
-import type { SpeechLanguage, TargetDuration } from "@/types";
+import type { AnalysisMode, SpeechLanguage, TargetDuration } from "@/types";
 
 interface RecorderPanelProps {
   language: SpeechLanguage;
   targetDurationMinutes: TargetDuration;
-  onFinish: (transcript: string, durationSeconds: number) => void;
+  /** "voice" (default) uses only the mic; "video" also captures the camera
+   *  and hands sampled frames back through onFinish. */
+  analysisMode?: AnalysisMode;
+  onFinish: (
+    transcript: string,
+    durationSeconds: number,
+    frames?: CapturedFrame[],
+  ) => void;
   disabled?: boolean;
 }
 
@@ -34,26 +44,50 @@ function errorMessages(d: Dictionary): Record<RecorderErrorCode, string> {
   };
 }
 
+function videoErrorMessages(d: Dictionary): Record<VideoRecorderErrorCode, string> {
+  return {
+    "camera-denied": d.practice.cameraDenied,
+    "camera-unavailable": d.practice.cameraUnavailable,
+    "not-supported": d.practice.cameraNotSupported,
+  };
+}
+
 /**
  * Live recording surface: big start/stop control, elapsed timer, elegant
  * recording animation, and an auto-scrolling live transcript — the user
  * never types or pastes anything, the text appears as they speak.
  * Pressing Stop finalizes the recording and automatically hands the
  * transcript off for analysis, with no extra confirmation step.
+ *
+ * In "video" mode this also drives useVideoRecorder in parallel: the
+ * camera stream feeds a live self-preview, and on Stop the recorded blob
+ * is sampled into a handful of JPEG frames (see utils/video-frames) and
+ * immediately discarded — nothing about the video itself is ever uploaded
+ * or persisted, only those small frames travel to the analyze API.
  */
 export function RecorderPanel({
   language,
   targetDurationMinutes,
+  analysisMode = "voice",
   onFinish,
   disabled,
 }: RecorderPanelProps) {
   const d = useDict();
   const recorder = useSpeechRecorder(language);
+  const videoRecorder = useVideoRecorder();
+  const isVideoMode = analysisMode === "video";
   const transcriptBoxRef = useRef<HTMLDivElement>(null);
+  const previewRef = useRef<HTMLVideoElement>(null);
   const latestTranscriptRef = useRef(recorder.transcript);
+  const framesRef = useRef<CapturedFrame[] | undefined>(undefined);
+  const [videoProcessing, setVideoProcessing] = useState(false);
   useEffect(() => {
     latestTranscriptRef.current = recorder.transcript;
   }, [recorder.transcript]);
+
+  useEffect(() => {
+    if (previewRef.current) previewRef.current.srcObject = videoRecorder.stream;
+  }, [videoRecorder.stream]);
 
   const isRecording = recorder.status === "recording";
   const isPaused = recorder.status === "paused";
@@ -70,20 +104,50 @@ export function RecorderPanel({
     }
   }, [fullTranscript]);
 
-  // Stop finalizes AND auto-analyzes — no separate "finish" click.
+  async function handleStop() {
+    recorder.stop();
+    if (!isVideoMode) return;
+    setVideoProcessing(true);
+    try {
+      const blob = await videoRecorder.stop();
+      framesRef.current = blob ? await extractSampledFrames(blob) : undefined;
+    } catch {
+      // Never fabricate video analysis — if sampling fails, the session
+      // just proceeds as voice-only feedback instead.
+      framesRef.current = undefined;
+    } finally {
+      setVideoProcessing(false);
+    }
+  }
+
+  async function handleStart() {
+    if (isVideoMode) {
+      await videoRecorder.start();
+      if (videoRecorder.error) return; // surfaced below; don't start the mic on a failed camera
+    }
+    recorder.start();
+  }
+
+  // Stop finalizes AND auto-analyzes — no separate "finish" click. Gated on
+  // videoProcessing too, so frame sampling has a chance to finish before we
+  // hand off (voice mode never sets it, so this is a no-op there).
   useEffect(() => {
     if (recorder.status !== "stopped") return;
+    if (isVideoMode && videoProcessing) return;
     const elapsed = recorder.elapsedSeconds;
     const timer = setTimeout(() => {
-      onFinish(latestTranscriptRef.current, elapsed);
+      onFinish(latestTranscriptRef.current, elapsed, framesRef.current);
     }, STOP_GRACE_MS);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [recorder.status]);
+  }, [recorder.status, isVideoMode, videoProcessing]);
 
   const errorMessage = recorder.error ? errorMessages(d)[recorder.error] : null;
+  const cameraErrorMessage = videoRecorder.error
+    ? videoErrorMessages(d)[videoRecorder.error]
+    : null;
 
-  if (!recorder.isSupported) {
+  if (!recorder.isSupported || (isVideoMode && !videoRecorder.isSupported)) {
     return (
       <div className="flex flex-col items-center rounded-3xl border border-warning/30 bg-warning/10 px-6 py-12 text-center">
         <AlertTriangle className="h-8 w-8 text-warning" />
@@ -91,7 +155,7 @@ export function RecorderPanel({
           {d.practice.notSupportedTitle}
         </h3>
         <p className="mt-1.5 max-w-sm text-sm text-muted">
-          {d.practice.notSupportedBody}
+          {recorder.isSupported ? d.practice.cameraNotSupported : d.practice.notSupportedBody}
         </p>
       </div>
     );
@@ -100,6 +164,32 @@ export function RecorderPanel({
   return (
     <div className="space-y-5">
       <div className="flex flex-col items-center rounded-3xl border border-border bg-surface px-6 py-10">
+        {/* Camera self-preview — only in "video" mode. Mirrored like a
+            mirror/selfie camera so it feels natural to look at while
+            speaking. */}
+        {isVideoMode && (
+          <div className="relative mb-6 w-full max-w-sm overflow-hidden rounded-2xl bg-black">
+            <video
+              ref={previewRef}
+              autoPlay
+              muted
+              playsInline
+              className="aspect-video w-full -scale-x-100 object-cover"
+            />
+            {!videoRecorder.stream && (
+              <div className="absolute inset-0 flex items-center justify-center bg-surface-muted">
+                <Video className="h-8 w-8 text-muted" />
+              </div>
+            )}
+            {isRecording && (
+              <span className="absolute left-3 top-3 flex items-center gap-1.5 rounded-full bg-black/60 px-2.5 py-1 text-xs font-medium text-white backdrop-blur">
+                <span className="h-2 w-2 rounded-full bg-danger" />
+                REC
+              </span>
+            )}
+          </div>
+        )}
+
         {/* Timer */}
         <div className="flex items-baseline gap-2">
           <p
@@ -190,12 +280,17 @@ export function RecorderPanel({
           </AnimatePresence>
           <button
             type="button"
-            disabled={disabled || recorder.status === "requesting" || recorder.status === "stopped"}
+            disabled={
+              disabled ||
+              recorder.status === "requesting" ||
+              recorder.status === "stopped" ||
+              (isVideoMode && videoRecorder.status === "requesting")
+            }
             onClick={() => {
               if (recorder.status === "idle" || recorder.status === "error") {
-                recorder.start();
+                handleStart();
               } else if (isActive) {
-                recorder.stop();
+                handleStop();
               }
             }}
             aria-label={isActive ? d.practice.stop : d.practice.start}
@@ -214,25 +309,35 @@ export function RecorderPanel({
           </button>
         </div>
 
-        {/* Pause/resume: a secondary affordance, independent from Stop. */}
-        <div className="mt-8 flex min-h-10 items-center gap-3">
-          {isRecording && (
-            <Button variant="secondary" size="sm" onClick={recorder.pause}>
-              <Pause className="h-4 w-4" />
-              {d.practice.pause}
-            </Button>
-          )}
-          {isPaused && (
-            <Button variant="secondary" size="sm" onClick={recorder.resume}>
-              <Play className="h-4 w-4" />
-              {d.practice.resume}
-            </Button>
-          )}
-        </div>
+        {/* Pause/resume: a secondary affordance, independent from Stop.
+            Not offered in video mode — pausing the mic but not the camera
+            (or vice versa) would leave the two out of sync. */}
+        {!isVideoMode && (
+          <div className="mt-8 flex min-h-10 items-center gap-3">
+            {isRecording && (
+              <Button variant="secondary" size="sm" onClick={recorder.pause}>
+                <Pause className="h-4 w-4" />
+                {d.practice.pause}
+              </Button>
+            )}
+            {isPaused && (
+              <Button variant="secondary" size="sm" onClick={recorder.resume}>
+                <Play className="h-4 w-4" />
+                {d.practice.resume}
+              </Button>
+            )}
+          </div>
+        )}
 
         {errorMessage && (
           <p className="mt-4 max-w-sm rounded-xl bg-danger/10 px-4 py-2.5 text-center text-sm text-danger">
             {errorMessage}
+          </p>
+        )}
+
+        {cameraErrorMessage && (
+          <p className="mt-4 max-w-sm rounded-xl bg-danger/10 px-4 py-2.5 text-center text-sm text-danger">
+            {cameraErrorMessage}
           </p>
         )}
 

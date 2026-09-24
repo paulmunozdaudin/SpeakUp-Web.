@@ -6,11 +6,13 @@
  */
 
 import type {
+  AnalysisMode,
   AnalysisResult,
   PracticeMode,
   PracticeSession,
   SpeechLanguage,
 } from "@/types";
+import type { CapturedFrame } from "@/utils/video-frames";
 import { checkFreeQuota, createSession } from "./sessions.service";
 
 export interface AnalyzeInput {
@@ -23,6 +25,9 @@ export interface AnalyzeInput {
   targetDurationMinutes: number;
   /** Bac de Français only: the text/reference being examined on. */
   textContext?: string;
+  analysisMode: AnalysisMode;
+  /** Sampled frames from RecorderPanel — only when analysisMode is "video". */
+  frames?: CapturedFrame[];
 }
 
 export async function analyzeAndSave(

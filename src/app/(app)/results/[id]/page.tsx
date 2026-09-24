@@ -16,6 +16,8 @@ import { MetricsGrid } from "@/components/results/metrics-grid";
 import { FillerWordsCard } from "@/components/results/filler-words-card";
 import { StructureCard } from "@/components/results/structure-card";
 import { Insights, QuestionsCard } from "@/components/results/insights";
+import { FactCheckCard } from "@/components/results/fact-check-card";
+import { VideoPresenceGrid } from "@/components/results/video-presence-grid";
 import { TranscriptCard } from "@/components/results/transcript-card";
 import { ImprovedVersionCard } from "@/components/results/improved-version-card";
 import { ResultsTabs } from "@/components/results/results-tabs";
@@ -134,6 +136,15 @@ export default function ResultsPage({
                 <StructureCard structure={analysis.structure} />
                 <FillerWordsCard fillerWords={analysis.fillerWords} />
               </div>
+              <FactCheckCard claims={analysis.factCheck} />
+              {analysis.video && (
+                <div className="space-y-3">
+                  <h2 className="text-sm font-medium text-muted">
+                    {d.results.presenceTitle}
+                  </h2>
+                  <VideoPresenceGrid video={analysis.video} />
+                </div>
+              )}
               <Insights analysis={analysis} />
             </div>
           )}

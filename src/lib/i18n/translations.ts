@@ -292,6 +292,12 @@ export const en = {
     setupTitle: "What do you want to practice?",
     setupSubtitle: "Set the stage before you press record.",
     modeLabel: "Choose a mode",
+    analysisModeLabel: "How do you want to practice?",
+    analysisModeVoiceTitle: "Voice only",
+    analysisModeVoiceDescription: "Analyzes your speech and get detailed feedback on how you talk and what you say.",
+    analysisModeVideoTitle: "Voice + camera",
+    analysisModeVideoDescription: "Analyzes your speech, plus your eye contact, posture and gestures.",
+    analysisModeVideoNote: "You'll see yourself live while you present.",
     titleLabel: "Title",
     titlePlaceholder: "e.g. Q3 results, thesis defense, seed pitch…",
     topicLabel: "Topic",
@@ -326,6 +332,12 @@ export const en = {
     stillListening:
       "Still listening… if you keep seeing this, check that the right microphone is selected and unmuted.",
     tooShort: "Speak for a bit longer so there's enough to analyze.",
+    cameraDenied:
+      "Camera access was denied. Allow it in your browser settings and try again, or switch to Voice only.",
+    cameraUnavailable:
+      "Could not start the camera. Check that one is connected and not in use by another app.",
+    cameraNotSupported:
+      "Voice + camera isn't available in this browser. Try Chrome or Edge, or use Voice only.",
     // Analyzing overlay
     analyzing: "Analyzing your delivery…",
     analyzingSteps: [
@@ -363,6 +375,16 @@ export const en = {
     present: "Present",
     missing: "Missing",
     summaryTitle: "Executive summary",
+    presenceTitle: "Your presence",
+    factCheckTitle: "Your content",
+    factCheckVerdict: {
+      correct: "Correct",
+      to_verify: "To verify",
+      incorrect: "Incorrect",
+    },
+    factCheckCorrection: "Correction:",
+    factCheckSource: "Source",
+    videoObservationsTitle: "Moments worth reviewing",
     highlightsTitle: "What's working",
     weaknessesTitle: "Where it loses strength",
     recommendationsTitle: "5 concrete actions",
@@ -472,6 +494,13 @@ export const en = {
     precision: "Language precision",
     openingStrength: "Opening strength",
     closingQuality: "Closing quality",
+  },
+  videoMetrics: {
+    eyeContact: "Eye contact",
+    posture: "Posture",
+    gestures: "Gestures",
+    expressiveness: "Expressiveness",
+    presence: "Presence",
   },
   scoreLabels: {
     excellent: "Excellent",
@@ -895,6 +924,12 @@ export const es: Dictionary = {
     setupTitle: "¿Qué quieres practicar?",
     setupSubtitle: "Prepara el escenario antes de pulsar grabar.",
     modeLabel: "Elige un modo",
+    analysisModeLabel: "¿Cómo quieres practicar?",
+    analysisModeVoiceTitle: "Solo voz",
+    analysisModeVoiceDescription: "Analiza tu discurso y recibe feedback detallado sobre cómo hablas y qué dices.",
+    analysisModeVideoTitle: "Voz + cámara",
+    analysisModeVideoDescription: "Analiza tu discurso, tu mirada, tu postura y tus gestos.",
+    analysisModeVideoNote: "Te verás en directo mientras haces tu presentación.",
     titleLabel: "Título",
     titlePlaceholder: "p. ej. Resultados Q3, defensa de tesis, pitch semilla…",
     topicLabel: "Tema",
@@ -929,6 +964,12 @@ export const es: Dictionary = {
     stillListening:
       "Sigo escuchando… si esto no cambia, comprueba que el micrófono correcto esté seleccionado y sin silenciar.",
     tooShort: "Habla un poco más para tener suficiente contenido que analizar.",
+    cameraDenied:
+      "Se ha denegado el acceso a la cámara. Actívalo en los ajustes del navegador e inténtalo de nuevo, o usa Solo voz.",
+    cameraUnavailable:
+      "No se ha podido iniciar la cámara. Comprueba que hay una conectada y que no la está usando otra app.",
+    cameraNotSupported:
+      "Voz + cámara no está disponible en este navegador. Prueba con Chrome o Edge, o usa Solo voz.",
     // Overlay de análisis
     analyzing: "Analizando tu discurso…",
     analyzingSteps: [
@@ -966,6 +1007,16 @@ export const es: Dictionary = {
     present: "Presente",
     missing: "Falta",
     summaryTitle: "Resumen ejecutivo",
+    presenceTitle: "Tu presencia",
+    factCheckTitle: "Tu contenido",
+    factCheckVerdict: {
+      correct: "Correcto",
+      to_verify: "A verificar",
+      incorrect: "Incorrecto",
+    },
+    factCheckCorrection: "Corrección:",
+    factCheckSource: "Fuente",
+    videoObservationsTitle: "Momentos a revisar",
     highlightsTitle: "Lo que funciona",
     weaknessesTitle: "Dónde pierde fuerza",
     recommendationsTitle: "5 acciones concretas",
@@ -1077,6 +1128,13 @@ export const es: Dictionary = {
     precision: "Precisión del lenguaje",
     openingStrength: "Fuerza de apertura",
     closingQuality: "Calidad del cierre",
+  },
+  videoMetrics: {
+    eyeContact: "Contacto visual",
+    posture: "Postura",
+    gestures: "Gestualidad",
+    expressiveness: "Expresividad",
+    presence: "Presencia",
   },
   scoreLabels: {
     excellent: "Excelente",
@@ -1496,6 +1554,12 @@ export const fr: Dictionary = {
     setupTitle: "Que veux-tu pratiquer ?",
     setupSubtitle: "Prépare le terrain avant d'appuyer sur enregistrer.",
     modeLabel: "Choisis un mode",
+    analysisModeLabel: "Comment veux-tu t'entraîner ?",
+    analysisModeVoiceTitle: "Voix seule",
+    analysisModeVoiceDescription: "Analyse ton discours et reçois un retour détaillé sur ta façon de parler et ce que tu dis.",
+    analysisModeVideoTitle: "Voix + caméra",
+    analysisModeVideoDescription: "Analyse ton discours, ton regard, ta posture et tes gestes.",
+    analysisModeVideoNote: "Tu te verras en direct pendant ta présentation.",
     titleLabel: "Titre",
     titlePlaceholder: "ex. résultats T3, soutenance de thèse, pitch d'amorçage…",
     topicLabel: "Sujet",
@@ -1529,6 +1593,12 @@ export const fr: Dictionary = {
     stillListening:
       "Toujours à l'écoute… si ce message persiste, vérifie que le bon microphone est sélectionné et non coupé.",
     tooShort: "Parle un peu plus longtemps pour qu'il y ait assez de matière à analyser.",
+    cameraDenied:
+      "L'accès à la caméra a été refusé. Autorise-le dans les paramètres du navigateur et réessaie, ou utilise Voix seule.",
+    cameraUnavailable:
+      "Impossible de démarrer la caméra. Vérifie qu'une caméra est connectée et non utilisée par une autre application.",
+    cameraNotSupported:
+      "Voix + caméra n'est pas disponible sur ce navigateur. Essaie Chrome ou Edge, ou utilise Voix seule.",
     analyzing: "Analyse de ta prestation…",
     analyzingSteps: [
       "Lecture de ta transcription…",
@@ -1565,6 +1635,16 @@ export const fr: Dictionary = {
     present: "Présent",
     missing: "Manquant",
     summaryTitle: "Résumé exécutif",
+    presenceTitle: "Ta présence",
+    factCheckTitle: "Ton contenu",
+    factCheckVerdict: {
+      correct: "Correct",
+      to_verify: "À vérifier",
+      incorrect: "Incorrect",
+    },
+    factCheckCorrection: "Correction :",
+    factCheckSource: "Source",
+    videoObservationsTitle: "Moments à revoir",
     highlightsTitle: "Ce qui fonctionne",
     weaknessesTitle: "Ce qui manque de force",
     recommendationsTitle: "5 actions concrètes",
@@ -1674,6 +1754,13 @@ export const fr: Dictionary = {
     precision: "Précision du langage",
     openingStrength: "Force de l'ouverture",
     closingQuality: "Qualité de la conclusion",
+  },
+  videoMetrics: {
+    eyeContact: "Contact visuel",
+    posture: "Posture",
+    gestures: "Gestuelle",
+    expressiveness: "Expressivité",
+    presence: "Présence",
   },
   scoreLabels: {
     excellent: "Excellent",

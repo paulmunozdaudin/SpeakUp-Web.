@@ -93,14 +93,71 @@ export interface MetricScore {
 export type PaceVerdict = "slow" | "ideal" | "fast";
 
 /** Full structured analysis of one practice session. */
+/** Whether a session was recorded with just the mic, or mic + camera. */
+export type AnalysisMode = "voice" | "video";
+
+export type FactCheckVerdict = "correct" | "to_verify" | "incorrect";
+
+/** One factual claim the speaker made, checked against the model's own
+ *  knowledge — never fabricated: `source` is omitted rather than invented
+ *  when the provider isn't confident of one, and anything not clearly
+ *  verifiable is "to_verify" rather than guessed at. */
+export interface FactCheckClaim {
+  claim: string;
+  verdict: FactCheckVerdict;
+  /** Only set when verdict is "incorrect". */
+  correction?: string;
+  explanation: string;
+  source?: string;
+}
+
+/** The 5 on-camera dimensions scored when analysisMode is "video". */
+export const VIDEO_METRIC_KEYS = [
+  "eyeContact",
+  "posture",
+  "gestures",
+  "expressiveness",
+  "presence",
+] as const;
+export type VideoMetricKey = (typeof VIDEO_METRIC_KEYS)[number];
+
+/** One observable moment tied to a timestamp in the recording — never a
+ *  psychological inference ("you seemed nervous"), only what's visible
+ *  ("your gestures are smaller in the first few seconds"). */
+export interface VideoObservation {
+  timestampSeconds: number;
+  category: VideoMetricKey;
+  observation: string;
+}
+
+export interface VideoAnalysis {
+  metrics: Record<VideoMetricKey, MetricScore>;
+  observations: VideoObservation[];
+}
+
 export interface AnalysisResult {
   /** Schema marker + which backend produced the coach layer. */
   version: 2;
   provider: "openai" | "heuristic";
   language: SpeechLanguage;
 
+  /** Which recording mode produced this session — the results page hides
+   *  the whole "presence" section for "voice" sessions instead of showing
+   *  empty/fake camera metrics. */
+  analysisMode: AnalysisMode;
+
   overallScore: number; // 0–100
   metrics: Record<MetricKey, MetricScore>;
+
+  /** Factual claims detected in the transcript and checked. Empty when
+   *  none were found, or when the heuristic (non-AI) provider is serving
+   *  the request — fact-checking needs real world knowledge, so it's never
+   *  faked when OpenAI isn't configured. */
+  factCheck: FactCheckClaim[];
+
+  /** Only present for analysisMode "video", and only when the vision call
+   *  actually succeeded — never a placeholder. */
+  video?: VideoAnalysis;
 
   wordCount: number;
   wordsPerMinute: number;

@@ -1,7 +1,14 @@
-import type { AnalysisResult, MetricKey, SpeechLanguage } from "@/types";
-import { METRIC_KEYS } from "@/types";
+import type {
+  AnalysisResult,
+  FactCheckClaim,
+  MetricKey,
+  SpeechLanguage,
+  VideoAnalysis,
+  VideoMetricKey,
+} from "@/types";
+import { METRIC_KEYS, VIDEO_METRIC_KEYS } from "@/types";
 import { analyzeTranscript } from "@/services/analysis/engine";
-import type { AnalysisProvider, AnalysisRequest } from "./provider";
+import type { AnalysisFrame, AnalysisProvider, AnalysisRequest } from "./provider";
 import { HeuristicAnalysisProvider } from "./heuristic-provider";
 
 /**
@@ -109,6 +116,13 @@ REQUISITOS ESTRICTOS para "improvedVersion" — el resultado debe ser perfecto y
 - Mantén la voz y el tema del hablante — nunca un tono robótico o de manual genérico.
 - Longitud similar al original (±20%). Revisa el resultado antes de responder: si no tiene sentido de principio a fin o queda incompleto, corrígelo.
 
+FACT-CHECKING — detecta afirmaciones factuales verificables en la transcripción (fechas, cifras, hechos históricos, científicos o geográficos concretos). Ignora opiniones, hipótesis o afirmaciones subjetivas.
+- Para cada afirmación factual detectada, clasifícala como "correct" (correcta), "to_verify" (no tienes evidencia suficiente para confirmar o desmentir con certeza) o "incorrect" (sabes con certeza que es errónea).
+- Si es "incorrect", incluye "correction" con el dato correcto y "explanation" breve.
+- NUNCA marques algo como "incorrect" si no estás realmente seguro — en la duda, usa "to_verify".
+- NUNCA inventes una fuente: solo rellena "source" si es un hecho de conocimiento general amplio y consolidado (ej. "consenso científico", "registro histórico"); si no, omite el campo por completo.
+- Si no hay ninguna afirmación factual verificable en la transcripción, devuelve un array vacío.
+
 Responde con este JSON exacto (sin markdown, sin comentarios):
 {
   "overallScore": number,
@@ -118,7 +132,8 @@ Responde con este JSON exacto (sin markdown, sin comentarios):
   "weaknesses": ["3 puntos débiles específicos citando la transcripción"],
   "recommendations": ["exactamente 5 acciones MUY concretas y específicas, no genéricas"],
   "improvedVersion": "reescritura completa del discurso, mismo idioma, misma idea, mucho mejor redactada y estructurada, longitud similar",
-  "audienceQuestions": ["entre 5 y 10 preguntas que haría un profesor/inversor/entrevistador/tribunal según el modo, específicas al contenido real"]
+  "audienceQuestions": ["entre 5 y 10 preguntas que haría un profesor/inversor/entrevistador/tribunal según el modo, específicas al contenido real"],
+  "factCheck": [{ "claim": "string: la afirmación tal cual se dijo", "verdict": "correct" | "to_verify" | "incorrect", "correction": "string (solo si incorrect)", "explanation": "string breve", "source": "string (opcional, solo si estás seguro)" }]
 }`;
   }
 
@@ -163,6 +178,13 @@ EXIGENCES STRICTES pour "improvedVersion" — le résultat doit être parfait et
 - Gardez la voix et le sujet du locuteur — jamais un ton robotique ou de manuel générique.
 - Longueur similaire à l'original (±20 %). Relisez le résultat avant de répondre : s'il n'a pas de sens de bout en bout ou semble incomplet, corrigez-le.
 
+FACT-CHECKING — détectez les affirmations factuelles vérifiables dans la transcription (dates, chiffres, faits historiques, scientifiques ou géographiques précis). Ignorez les opinions, hypothèses ou affirmations subjectives.
+- Pour chaque affirmation factuelle détectée, classez-la comme "correct" (correcte), "to_verify" (vous n'avez pas assez de certitude pour confirmer ou infirmer) ou "incorrect" (vous savez avec certitude qu'elle est fausse).
+- Si "incorrect", incluez "correction" avec la donnée correcte et "explanation" brève.
+- Ne marquez JAMAIS quelque chose comme "incorrect" sans en être vraiment sûr — en cas de doute, utilisez "to_verify".
+- N'inventez JAMAIS de source : ne remplissez "source" que s'il s'agit d'un fait de culture générale largement établi (ex. « consensus scientifique », « fait historique reconnu ») ; sinon, omettez complètement ce champ.
+- S'il n'y a aucune affirmation factuelle vérifiable dans la transcription, renvoyez un tableau vide.
+
 Répondez avec ce JSON exact (sans markdown, sans commentaires) :
 {
   "overallScore": number,
@@ -172,7 +194,8 @@ Répondez avec ce JSON exact (sans markdown, sans commentaires) :
   "weaknesses": ["3 points faibles spécifiques citant la transcription"],
   "recommendations": ["exactement 5 actions TRÈS concrètes et spécifiques, jamais génériques"],
   "improvedVersion": "réécriture complète du discours, même langue, même idée, bien mieux rédigée et structurée, longueur similaire",
-  "audienceQuestions": ["entre 5 et 10 questions qu'un professeur/investisseur/recruteur/jury poserait selon le mode, spécifiques au contenu réel"]
+  "audienceQuestions": ["entre 5 et 10 questions qu'un professeur/investisseur/recruteur/jury poserait selon le mode, spécifiques au contenu réel"],
+  "factCheck": [{ "claim": "string : l'affirmation telle qu'énoncée", "verdict": "correct" | "to_verify" | "incorrect", "correction": "string (seulement si incorrect)", "explanation": "string brève", "source": "string (optionnel, seulement si sûr)" }]
 }`;
   }
 
@@ -215,6 +238,13 @@ STRICT REQUIREMENTS for "improvedVersion" — the result must be perfect and mak
 - Keep the speaker's voice and topic — never a robotic or generic textbook tone.
 - Similar length to the original (±20%). Reread the result before answering: if it doesn't make sense start to finish or looks incomplete, fix it.
 
+FACT-CHECKING — detect verifiable factual claims in the transcript (dates, numbers, historical, scientific or geographic facts). Ignore opinions, hypotheticals or subjective statements.
+- For each factual claim found, classify it as "correct", "to_verify" (you don't have enough certainty to confirm or deny it), or "incorrect" (you're certain it's wrong).
+- If "incorrect", include "correction" with the right fact and a brief "explanation".
+- NEVER mark something "incorrect" unless you're genuinely confident — when in doubt, use "to_verify".
+- NEVER invent a source: only fill in "source" for widely-established general knowledge (e.g. "scientific consensus", "well-documented historical record"); otherwise omit the field entirely.
+- If the transcript contains no verifiable factual claims, return an empty array.
+
 Respond with this exact JSON (no markdown, no comments):
 {
   "overallScore": number,
@@ -224,7 +254,8 @@ Respond with this exact JSON (no markdown, no comments):
   "weaknesses": ["3 specific weaknesses quoting the transcript"],
   "recommendations": ["exactly 5 very concrete, specific actions, never generic"],
   "improvedVersion": "full rewrite of the speech, same language, same idea, much better written and structured, similar length",
-  "audienceQuestions": ["5 to 10 questions a professor/investor/interviewer/panel would ask given the mode, specific to the real content"]
+  "audienceQuestions": ["5 to 10 questions a professor/investor/interviewer/panel would ask given the mode, specific to the real content"],
+  "factCheck": [{ "claim": "string: the claim as stated", "verdict": "correct" | "to_verify" | "incorrect", "correction": "string (only if incorrect)", "explanation": "string, brief", "source": "string (optional, only if confident)" }]
 }`;
 }
 
@@ -237,6 +268,8 @@ interface OpenAIJsonShape {
   recommendations: string[];
   improvedVersion: string;
   audienceQuestions: string[];
+  /** Validated permissively via sanitizeFactCheck, not required here. */
+  factCheck?: unknown;
 }
 
 function isValidShape(value: unknown): value is OpenAIJsonShape {
@@ -262,6 +295,195 @@ function isValidShape(value: unknown): value is OpenAIJsonShape {
     typeof v.improvedVersion === "string" &&
     Array.isArray(v.audienceQuestions)
   );
+}
+
+/** Permissive on purpose: a malformed or missing factCheck array shouldn't
+ *  fail the whole analysis (which is otherwise fine) — it just degrades to
+ *  no fact-check claims, same as the heuristic provider. Never invents a
+ *  claim; only passes through entries the model actually returned. */
+function sanitizeFactCheck(value: unknown): FactCheckClaim[] {
+  if (!Array.isArray(value)) return [];
+  const out: FactCheckClaim[] = [];
+  for (const item of value) {
+    if (!item || typeof item !== "object") continue;
+    const c = item as Record<string, unknown>;
+    if (typeof c.claim !== "string" || !c.claim.trim()) continue;
+    if (c.verdict !== "correct" && c.verdict !== "to_verify" && c.verdict !== "incorrect") continue;
+    if (typeof c.explanation !== "string") continue;
+    const claim: FactCheckClaim = {
+      claim: c.claim,
+      verdict: c.verdict,
+      explanation: c.explanation,
+    };
+    if (c.verdict === "incorrect" && typeof c.correction === "string" && c.correction.trim()) {
+      claim.correction = c.correction;
+    }
+    if (typeof c.source === "string" && c.source.trim()) {
+      claim.source = c.source;
+    }
+    out.push(claim);
+  }
+  return out;
+}
+
+function videoSystemPrompt(language: SpeechLanguage): string {
+  if (language === "es") {
+    return `Eres un experto en comunicación no verbal y presencia escénica. Analizas fotogramas reales de una persona dando una presentación oral y describes ÚNICAMENTE comportamiento visualmente observable — nunca infieres estados emocionales o psicológicos (nunca digas "está nervioso/a" o "se siente inseguro/a"; en su lugar describe lo que se ve, p. ej. "los movimientos de las manos son reducidos durante los primeros segundos"). Respondes ÚNICAMENTE con JSON válido, sin texto adicional.`;
+  }
+  if (language === "fr") {
+    return `Vous êtes expert en communication non verbale et présence scénique. Vous analysez de vraies images extraites d'une personne en train de faire une présentation orale et décrivez UNIQUEMENT des comportements visuellement observables — vous n'inférez jamais d'état émotionnel ou psychologique (ne dites jamais « il/elle est nerveux/se » ; décrivez plutôt ce qui est visible, ex. « les mouvements des mains sont réduits durant les premières secondes »). Vous répondez UNIQUEMENT avec du JSON valide, sans texte supplémentaire.`;
+  }
+  return `You are an expert in non-verbal communication and stage presence. You analyze real frames of a person giving an oral presentation and describe ONLY visually observable behavior — never infer emotional or psychological states (never say "they seem nervous"; instead describe what's visible, e.g. "hand movements are smaller in the first few seconds"). You respond ONLY with valid JSON, no extra text.`;
+}
+
+function videoUserPrompt(language: SpeechLanguage, frames: AnalysisFrame[]): string {
+  const metricList = VIDEO_METRIC_KEYS.join(", ");
+  if (language === "es") {
+    return `Se te muestran ${frames.length} fotogramas reales, en orden cronológico, de una presentación oral. Cada imagen va precedida por su timestamp en segundos.
+
+Evalúa estas 5 dimensiones (0-100 cada una), cada una con feedback describiendo comportamiento observable real: ${metricList}.
+(eyeContact=contacto visual con la cámara, posture=postura y orientación del cuerpo, gestures=gestualidad de las manos, expressiveness=expresividad facial visible, presence=presencia general frente a cámara)
+
+Genera también entre 2 y 6 observaciones puntuales, cada una anclada al timestamp del fotograma más cercano al momento descrito y a una de las 5 categorías. NO hagas inferencias psicológicas, solo describe lo observable.
+
+Responde con este JSON exacto (sin markdown):
+{
+  "metrics": { "<cada clave de arriba>": { "score": number, "feedback": "string describiendo comportamiento observable" } },
+  "observations": [{ "timestampSeconds": number, "category": "eyeContact"|"posture"|"gestures"|"expressiveness"|"presence", "observation": "string, comportamiento observable, nunca psicológico" }]
+}`;
+  }
+  if (language === "fr") {
+    return `Voici ${frames.length} images réelles, dans l'ordre chronologique, d'une présentation orale. Chaque image est précédée de son timestamp en secondes.
+
+Évaluez ces 5 dimensions (0-100 chacune), chacune avec un retour décrivant un comportement réellement observable : ${metricList}.
+(eyeContact=contact visuel avec la caméra, posture=posture et orientation du corps, gestures=gestuelle des mains, expressiveness=expressivité faciale visible, presence=présence générale face caméra)
+
+Générez aussi entre 2 et 6 observations ponctuelles, chacune ancrée au timestamp de l'image la plus proche du moment décrit et à l'une des 5 catégories. Ne faites AUCUNE inférence psychologique, décrivez uniquement ce qui est observable.
+
+Répondez avec ce JSON exact (sans markdown) :
+{
+  "metrics": { "<chaque clé ci-dessus>": { "score": number, "feedback": "string décrivant un comportement observable" } },
+  "observations": [{ "timestampSeconds": number, "category": "eyeContact"|"posture"|"gestures"|"expressiveness"|"presence", "observation": "string, comportement observable, jamais psychologique" }]
+}`;
+  }
+  return `Here are ${frames.length} real frames, in chronological order, from an oral presentation. Each image is preceded by its timestamp in seconds.
+
+Score these 5 dimensions (0-100 each), each with feedback describing real observable behavior: ${metricList}.
+(eyeContact=eye contact with the camera, posture=body posture and orientation, gestures=hand gestures, expressiveness=visible facial expressiveness, presence=overall on-camera presence)
+
+Also generate 2 to 6 specific observations, each anchored to the timestamp of the frame closest to the described moment and to one of the 5 categories above. Make NO psychological inferences — describe only what's observable.
+
+Respond with this exact JSON (no markdown):
+{
+  "metrics": { "<each key above>": { "score": number, "feedback": "string describing observable behavior" } },
+  "observations": [{ "timestampSeconds": number, "category": "eyeContact"|"posture"|"gestures"|"expressiveness"|"presence", "observation": "string, observable behavior, never psychological" }]
+}`;
+}
+
+interface VideoJsonShape {
+  metrics: Record<string, { score: number; feedback: string }>;
+  observations: { timestampSeconds: number; category: string; observation: string }[];
+}
+
+function isValidVideoShape(value: unknown): value is VideoJsonShape {
+  if (!value || typeof value !== "object") return false;
+  const v = value as Record<string, unknown>;
+  if (!v.metrics || typeof v.metrics !== "object") return false;
+  for (const key of VIDEO_METRIC_KEYS) {
+    const m = (v.metrics as Record<string, unknown>)[key];
+    if (
+      !m ||
+      typeof (m as { score?: unknown }).score !== "number" ||
+      typeof (m as { feedback?: unknown }).feedback !== "string"
+    ) {
+      return false;
+    }
+  }
+  return Array.isArray(v.observations);
+}
+
+const VIDEO_MODEL = "gpt-4o-mini";
+const VIDEO_CATEGORY_SET = new Set<string>(VIDEO_METRIC_KEYS);
+
+/**
+ * Separate vision call — only made when analysisMode is "video" and frame
+ * sampling actually produced frames. Kept independent from the main text
+ * analysis so a vision failure (rate limit, model hiccup, etc.) never
+ * takes down the rest of the report; on any failure this returns undefined
+ * rather than inventing scores, and the results page simply omits the
+ * "presence" section.
+ */
+async function analyzeVideoFrames(
+  apiKey: string,
+  language: SpeechLanguage,
+  frames: AnalysisFrame[],
+): Promise<VideoAnalysis | undefined> {
+  try {
+    const imageContent = frames.flatMap((frame) => [
+      { type: "text" as const, text: `t=${frame.timestampSeconds}s:` },
+      { type: "image_url" as const, image_url: { url: frame.dataUrl } },
+    ]);
+
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: VIDEO_MODEL,
+        response_format: { type: "json_object" },
+        temperature: 0.3,
+        max_tokens: 2000,
+        messages: [
+          { role: "system", content: videoSystemPrompt(language) },
+          {
+            role: "user",
+            content: [
+              { type: "text", text: videoUserPrompt(language, frames) },
+              ...imageContent,
+            ],
+          },
+        ],
+      }),
+      signal: AbortSignal.timeout(60_000),
+    });
+
+    if (!response.ok) throw new Error(`OpenAI vision API responded ${response.status}`);
+
+    const payload = await response.json();
+    const raw = payload?.choices?.[0]?.message?.content;
+    if (typeof raw !== "string") throw new Error("Empty OpenAI vision response");
+
+    const parsed: unknown = JSON.parse(raw);
+    if (!isValidVideoShape(parsed)) {
+      throw new Error("OpenAI vision response did not match the expected schema");
+    }
+
+    const metrics = {} as Record<VideoMetricKey, { score: number; feedback: string }>;
+    for (const key of VIDEO_METRIC_KEYS) {
+      const m = parsed.metrics[key];
+      metrics[key] = {
+        score: Math.max(0, Math.min(100, Math.round(m.score))),
+        feedback: m.feedback,
+      };
+    }
+
+    const observations = parsed.observations
+      .filter(
+        (o): o is { timestampSeconds: number; category: VideoMetricKey; observation: string } =>
+          !!o &&
+          typeof o.timestampSeconds === "number" &&
+          typeof o.observation === "string" &&
+          VIDEO_CATEGORY_SET.has(o.category),
+      )
+      .slice(0, 8);
+
+    return { metrics, observations };
+  } catch (error) {
+    console.error("[openai-provider] video analysis skipped:", error);
+    return undefined;
+  }
 }
 
 export class OpenAIAnalysisProvider implements AnalysisProvider {
@@ -319,10 +541,20 @@ export class OpenAIAnalysisProvider implements AnalysisProvider {
         };
       }
 
+      // Independent, best-effort — a vision failure never blocks the rest
+      // of the report, and never fabricates a "presence" section.
+      const video =
+        request.analysisMode === "video" && request.frames?.length
+          ? await analyzeVideoFrames(this.apiKey, request.language, request.frames)
+          : undefined;
+
       return {
         version: 2,
         provider: "openai",
         language: request.language,
+        analysisMode: request.analysisMode,
+        factCheck: sanitizeFactCheck(parsed.factCheck),
+        video,
         overallScore: Math.max(0, Math.min(100, Math.round(parsed.overallScore))),
         metrics,
         wordCount: stats.wordCount,

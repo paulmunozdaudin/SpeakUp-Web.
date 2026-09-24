@@ -4,12 +4,18 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
-import type { PracticeMode, SpeechLanguage, TargetDuration } from "@/types";
+import type {
+  AnalysisMode,
+  PracticeMode,
+  SpeechLanguage,
+  TargetDuration,
+} from "@/types";
 import { GENERIC_PRACTICE_MODES } from "@/types";
 import { getLocale } from "@/lib/i18n";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ModeSelector } from "@/components/recording/mode-selector";
+import { AnalysisModeSelector } from "@/components/recording/analysis-mode-selector";
 import { DurationSelector } from "@/components/recording/duration-selector";
 import { LanguageSelector } from "@/components/recording/language-selector";
 import { RecorderPanel } from "@/components/recording/recorder-panel";
@@ -17,6 +23,7 @@ import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
 import { analyzeAndSave } from "@/services/analysis.service";
 import { checkFreeQuota } from "@/services/sessions.service";
 import { useDict } from "@/lib/i18n";
+import type { CapturedFrame } from "@/utils/video-frames";
 
 interface SessionConfig {
   mode: PracticeMode;
@@ -24,6 +31,7 @@ interface SessionConfig {
   topic: string;
   targetDurationMinutes: TargetDuration;
   language: SpeechLanguage;
+  analysisMode: AnalysisMode;
 }
 
 export default function PracticePage() {
@@ -39,6 +47,7 @@ export default function PracticePage() {
     // localStorage or the URL, so both are applied for real in the effect
     // below right after mount instead of here.
     language: "en",
+    analysisMode: "voice",
   }));
 
   // Deep links from marketing pages (e.g. ?mode=grand-oral&lang=fr) preselect
@@ -92,7 +101,11 @@ export default function PracticePage() {
     setStep("record");
   }
 
-  async function handleFinish(transcript: string, durationSeconds: number) {
+  async function handleFinish(
+    transcript: string,
+    durationSeconds: number,
+    frames?: CapturedFrame[],
+  ) {
     if (transcript.trim().split(/\s+/).filter(Boolean).length < 8) {
       setError(d.practice.tooShort);
       setRecorderKey((k) => k + 1); // remount RecorderPanel back to idle
@@ -109,6 +122,8 @@ export default function PracticePage() {
         language: config.language,
         durationSeconds: Math.max(durationSeconds, 1),
         targetDurationMinutes: config.targetDurationMinutes,
+        analysisMode: config.analysisMode,
+        frames,
       });
       router.push(`/results/${session.id}`);
     } catch (e) {
@@ -135,6 +150,16 @@ export default function PracticePage() {
                 {d.practice.setupTitle}
               </h1>
               <p className="mt-1 text-sm text-muted">{d.practice.setupSubtitle}</p>
+            </div>
+
+            <div className="space-y-2">
+              <span className="block text-sm font-medium">
+                {d.practice.analysisModeLabel}
+              </span>
+              <AnalysisModeSelector
+                value={config.analysisMode}
+                onChange={(analysisMode) => setConfig((c) => ({ ...c, analysisMode }))}
+              />
             </div>
 
             <div className="space-y-2">
@@ -240,6 +265,7 @@ export default function PracticePage() {
               key={recorderKey}
               language={config.language}
               targetDurationMinutes={config.targetDurationMinutes}
+              analysisMode={config.analysisMode}
               onFinish={handleFinish}
               disabled={analyzing}
             />
