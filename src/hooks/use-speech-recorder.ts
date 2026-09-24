@@ -15,7 +15,14 @@ export type RecorderErrorCode =
   | "mic-denied"
   | "mic-unavailable"
   | "not-supported"
-  | "network-error";
+  | "network-error"
+  /** Brave ships the SpeechRecognition constructor (so isSupported is
+   *  true) but blocks the Google speech service it depends on by default
+   *  — for privacy, since that service would otherwise send audio to
+   *  Google. It always fails with a "network" error immediately, even
+   *  with a perfectly good connection, so this gets its own error code
+   *  instead of the generic "check your internet" message. */
+  | "network-error-brave";
 
 interface UseSpeechRecorderResult {
   status: RecorderStatus;
@@ -85,6 +92,16 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
   const streamRef = useRef<MediaStream | null>(null);
   const consecutiveFailuresRef = useRef(0);
   const hasCapturedAnyWordsRef = useRef(false);
+  const isBraveRef = useRef(false);
+
+  useEffect(() => {
+    navigator.brave
+      ?.isBrave()
+      .then((isBrave) => {
+        isBraveRef.current = isBrave;
+      })
+      .catch(() => {});
+  }, []);
 
   const clearTimer = useCallback(() => {
     if (timerRef.current) {
@@ -129,7 +146,10 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
     setStatus("error");
-    setError(code);
+    // Brave always fails the speech service with "network", regardless of
+    // actual connectivity — swap in the Brave-specific message instead of
+    // telling someone with a fine connection to go check it.
+    setError(code === "network-error" && isBraveRef.current ? "network-error-brave" : code);
   }, [clearTimer, clearRestartTimer, clearSilenceTimer]);
 
   const buildRecognition = useCallback((): SpeechRecognition | null => {

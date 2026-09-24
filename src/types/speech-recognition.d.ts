@@ -46,3 +46,8 @@ interface Window {
   SpeechRecognition?: SpeechRecognitionConstructor;
   webkitSpeechRecognition?: SpeechRecognitionConstructor;
 }
+
+/** Brave's own feature-detection API — only present in Brave. */
+interface Navigator {
+  brave?: { isBrave: () => Promise<boolean> };
+}

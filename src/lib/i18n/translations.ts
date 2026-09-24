@@ -329,6 +329,8 @@ export const en = {
       "Could not start recording. Check that a microphone is connected.",
     networkError:
       "Lost connection to the speech recognition service. Check your internet connection and try again.",
+    networkErrorBrave:
+      "Brave blocks the speech recognition service by default (for privacy), so live transcription can't work here even with a perfectly good connection. Open this page in Google Chrome or Microsoft Edge instead.",
     stillListening:
       "Still listening… if you keep seeing this, check that the right microphone is selected and unmuted.",
     tooShort: "Speak for a bit longer so there's enough to analyze.",
@@ -961,6 +963,8 @@ export const es: Dictionary = {
       "No se pudo iniciar la grabación. Comprueba que hay un micrófono conectado.",
     networkError:
       "Se perdió la conexión con el servicio de reconocimiento de voz. Comprueba tu conexión a internet e inténtalo de nuevo.",
+    networkErrorBrave:
+      "Brave bloquea por defecto el servicio de reconocimiento de voz (por privacidad), así que la transcripción en vivo no puede funcionar aquí aunque tengas buena conexión. Abre esta página en Google Chrome o Microsoft Edge.",
     stillListening:
       "Sigo escuchando… si esto no cambia, comprueba que el micrófono correcto esté seleccionado y sin silenciar.",
     tooShort: "Habla un poco más para tener suficiente contenido que analizar.",
@@ -1590,6 +1594,8 @@ export const fr: Dictionary = {
       "Impossible de démarrer l'enregistrement. Vérifie qu'un microphone est bien connecté.",
     networkError:
       "Connexion au service de reconnaissance vocale perdue. Vérifie ta connexion internet et réessaie.",
+    networkErrorBrave:
+      "Brave bloque par défaut le service de reconnaissance vocale (pour la confidentialité), donc la transcription en direct ne peut pas fonctionner ici même avec une bonne connexion. Ouvre cette page dans Google Chrome ou Microsoft Edge.",
     stillListening:
       "Toujours à l'écoute… si ce message persiste, vérifie que le bon microphone est sélectionné et non coupé.",
     tooShort: "Parle un peu plus longtemps pour qu'il y ait assez de matière à analyser.",

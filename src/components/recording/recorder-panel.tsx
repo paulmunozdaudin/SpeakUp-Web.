@@ -41,6 +41,7 @@ function errorMessages(d: Dictionary): Record<RecorderErrorCode, string> {
     "mic-unavailable": d.practice.micUnavailable,
     "not-supported": d.practice.notSupportedBody,
     "network-error": d.practice.networkError,
+    "network-error-brave": d.practice.networkErrorBrave,
   };
 }
 
