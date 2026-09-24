@@ -16,6 +16,14 @@ const MAX_FRAMES = 8;
  *  handful of distinct moments. */
 const TARGET_SECONDS_PER_FRAME = 15;
 
+/** Bounds how long a single seek/metadata wait can take — without this, a
+ *  browser that never fires the expected event (corrupted blob, odd codec
+ *  edge case) would hang extractSampledFrames forever, leaving the
+ *  "Analyzing…" screen stuck. Callers already treat a rejection here as
+ *  "skip video analysis, keep the voice feedback" — never a fabricated
+ *  result — so timing out is safe. */
+const EVENT_TIMEOUT_MS = 8000;
+
 function waitForEvent(target: HTMLVideoElement, event: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const onEvent = () => {
@@ -26,7 +34,12 @@ function waitForEvent(target: HTMLVideoElement, event: string): Promise<void> {
       cleanup();
       reject(new Error(`video element error while waiting for "${event}"`));
     };
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new Error(`Timed out waiting for "${event}"`));
+    }, EVENT_TIMEOUT_MS);
     const cleanup = () => {
+      clearTimeout(timer);
       target.removeEventListener(event, onEvent);
       target.removeEventListener("error", onError);
     };

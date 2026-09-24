@@ -21,7 +21,12 @@ interface UseVideoRecorderResult {
   stream: MediaStream | null;
   error: VideoRecorderErrorCode | null;
   isSupported: boolean;
-  start: () => Promise<void>;
+  /** Resolves true iff the camera actually started. Callers must use this
+   *  return value, not `error`/`status` read right after awaiting — those
+   *  come from the render that created the closure and are stale until
+   *  the next render, so checking them here would always see the old
+   *  (pre-call) value. */
+  start: () => Promise<boolean>;
   /** Stops capture and resolves with the recorded video blob (or null if
    *  nothing was captured). Never uploads or persists it — callers are
    *  expected to extract frames and then let the blob go. */
@@ -55,7 +60,7 @@ export function useVideoRecorder(): UseVideoRecorderResult {
     setStream(null);
   }, []);
 
-  const start = useCallback(async () => {
+  const start = useCallback(async (): Promise<boolean> => {
     setError(null);
     chunksRef.current = [];
     setStatus("requesting");
@@ -63,7 +68,7 @@ export function useVideoRecorder(): UseVideoRecorderResult {
     if (!isSupported) {
       setStatus("error");
       setError("not-supported");
-      return;
+      return false;
     }
 
     try {
@@ -84,6 +89,7 @@ export function useVideoRecorder(): UseVideoRecorderResult {
       recorderRef.current = recorder;
       recorder.start();
       setStatus("recording");
+      return true;
     } catch (e) {
       setStatus("error");
       setError(
@@ -91,6 +97,7 @@ export function useVideoRecorder(): UseVideoRecorderResult {
           ? "camera-denied"
           : "camera-unavailable",
       );
+      return false;
     }
   }, [isSupported]);
 

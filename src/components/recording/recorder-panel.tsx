@@ -89,6 +89,17 @@ export function RecorderPanel({
     if (previewRef.current) previewRef.current.srcObject = videoRecorder.stream;
   }, [videoRecorder.stream]);
 
+  // Safety net: if the camera started fine but the mic then fails (e.g.
+  // denied separately), release the camera instead of leaving it running
+  // with no way to stop it — otherwise a retry would open a second stream
+  // on top of the still-live first one.
+  useEffect(() => {
+    if (recorder.status === "error" && videoRecorder.status === "recording") {
+      videoRecorder.stop();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [recorder.status, videoRecorder.status]);
+
   const isRecording = recorder.status === "recording";
   const isPaused = recorder.status === "paused";
   const isActive = isRecording || isPaused;
@@ -122,8 +133,11 @@ export function RecorderPanel({
 
   async function handleStart() {
     if (isVideoMode) {
-      await videoRecorder.start();
-      if (videoRecorder.error) return; // surfaced below; don't start the mic on a failed camera
+      // Use the resolved value, not videoRecorder.error read right after —
+      // that field comes from this render's closure and is stale until
+      // the next one, so it would never reflect what start() just did.
+      const cameraStarted = await videoRecorder.start();
+      if (!cameraStarted) return; // error is surfaced below via cameraErrorMessage
     }
     recorder.start();
   }
