@@ -222,6 +222,8 @@ export const en = {
   auth: {
     loginTitle: "Welcome back",
     loginSubtitle: "Log in to continue practicing.",
+    continueWithGoogle: "Continue with Google",
+    orDivider: "or",
     email: "Email",
     password: "Password",
     forgotPassword: "Forgot password?",
@@ -855,6 +857,8 @@ export const es: Dictionary = {
   auth: {
     loginTitle: "Hola de nuevo",
     loginSubtitle: "Inicia sesión para seguir practicando.",
+    continueWithGoogle: "Continuar con Google",
+    orDivider: "o",
     email: "Email",
     password: "Contraseña",
     forgotPassword: "¿Olvidaste la contraseña?",
@@ -1489,6 +1493,8 @@ export const fr: Dictionary = {
   auth: {
     loginTitle: "Content de te revoir",
     loginSubtitle: "Connecte-toi pour continuer à t'entraîner.",
+    continueWithGoogle: "Continuer avec Google",
+    orDivider: "ou",
     email: "Email",
     password: "Mot de passe",
     forgotPassword: "Mot de passe oublié ?",

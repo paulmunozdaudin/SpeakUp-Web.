@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { GoogleButton } from "@/components/auth/google-button";
 import { signIn } from "@/services/auth.service";
 import { useDict } from "@/lib/i18n";
 
@@ -41,7 +42,17 @@ function LoginForm() {
         {d.auth.loginTitle}
       </h1>
       <p className="mt-1.5 text-sm text-muted">{d.auth.loginSubtitle}</p>
-      <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+
+      <div className="mt-8">
+        <GoogleButton />
+      </div>
+      <div className="my-6 flex items-center gap-3 text-xs text-muted">
+        <span className="h-px flex-1 bg-border" />
+        {d.auth.orDivider}
+        <span className="h-px flex-1 bg-border" />
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
         <Input
           label={d.auth.email}
           name="email"

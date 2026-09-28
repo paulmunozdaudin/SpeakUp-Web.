@@ -44,6 +44,22 @@ export async function signUp(
   };
 }
 
+/** Redirects the browser to Google's consent screen; on success the user
+ *  lands back on /auth/callback, which exchanges the code for a session.
+ *  Only resolves here if something goes wrong before the redirect even
+ *  starts (e.g. the Google provider isn't enabled in Supabase yet). */
+export async function signInWithGoogle(): Promise<AuthResult> {
+  const supabase = getSupabaseBrowserClient();
+  if (!supabase) return { ok: false, error: NOT_CONFIGURED_ERROR };
+
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: `${window.location.origin}/auth/callback` },
+  });
+  if (error) return { ok: false, error: error.message };
+  return { ok: true };
+}
+
 export async function signIn(
   email: string,
   password: string,

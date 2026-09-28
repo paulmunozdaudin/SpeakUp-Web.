@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { MailCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { GoogleButton } from "@/components/auth/google-button";
 import { signUp } from "@/services/auth.service";
 import { useDict } from "@/lib/i18n";
 
@@ -71,7 +72,28 @@ export default function SignupPage() {
         {d.auth.signupTitle}
       </h1>
       <p className="mt-1.5 text-sm text-muted">{d.auth.signupSubtitle}</p>
-      <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+
+      <div className="mt-8">
+        <GoogleButton />
+      </div>
+      <p className="mt-2.5 text-center text-xs leading-relaxed text-muted">
+        {d.auth.agreeToTermsPrefix}{" "}
+        <Link href="/terms" className="font-medium text-accent hover:underline">
+          {d.auth.agreeToTermsLinkTerms}
+        </Link>{" "}
+        {d.auth.agreeToTermsMiddle}{" "}
+        <Link href="/privacy" className="font-medium text-accent hover:underline">
+          {d.auth.agreeToTermsLinkPrivacy}
+        </Link>
+        .
+      </p>
+      <div className="my-6 flex items-center gap-3 text-xs text-muted">
+        <span className="h-px flex-1 bg-border" />
+        {d.auth.orDivider}
+        <span className="h-px flex-1 bg-border" />
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
         <Input
           label={d.auth.fullName}
           name="fullName"
