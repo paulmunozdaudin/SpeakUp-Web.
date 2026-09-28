@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Poppins } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider, themeInitScript } from "@/components/theme/theme-provider";
 import { LocaleHtmlLang } from "@/components/theme/locale-html-lang";
+import { RegisterServiceWorker } from "@/components/pwa/register-service-worker";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -45,6 +46,15 @@ export const metadata: Metadata = {
     description:
       "Get instant AI feedback on your clarity, confidence, pacing and delivery.",
   },
+  // manifest.webmanifest is auto-linked by Next.js from src/app/manifest.ts.
+  icons: {
+    apple: "/icons/apple-touch-icon.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Eloq AI",
+  },
 };
 
 export const viewport: Viewport = {
@@ -72,6 +82,7 @@ export default function RootLayout({
         <LocaleHtmlLang />
         <ThemeProvider>{children}</ThemeProvider>
         <Analytics />
+        <RegisterServiceWorker />
       </body>
     </html>
   );
