@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { GraduationCap, Mic, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { WaveformBackground } from "@/components/landing/waveform-background";
 import { useDict } from "@/lib/i18n";
 
 export function Hero() {
@@ -23,6 +24,7 @@ export function Hero() {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-[520px] bg-[radial-gradient(ellipse_at_top,var(--accent-soft),transparent_65%)]"
       />
+      <WaveformBackground />
       <div className="relative mx-auto flex max-w-4xl flex-col items-center px-4 pb-24 pt-24 text-center sm:pt-32">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
