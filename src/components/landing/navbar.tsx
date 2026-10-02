@@ -1,14 +1,25 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Logo } from "@/components/ui/logo";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { LanguageToggle } from "@/components/theme/language-toggle";
+import { useUser } from "@/hooks/use-user";
+import { signOut } from "@/services/auth.service";
 import { useDict } from "@/lib/i18n";
 
 export function Navbar() {
   const d = useDict();
+  const router = useRouter();
+  const { user } = useUser();
+
+  async function handleLogout() {
+    await signOut();
+    router.push("/");
+    router.refresh();
+  }
 
   const links = [
     { href: "#features", label: d.nav.features },
@@ -35,16 +46,31 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <LanguageToggle />
           <ThemeToggle />
-          <Link href="/login" className="hidden sm:block">
-            <Button variant="ghost" size="sm">
-              {d.common.logIn}
-            </Button>
-          </Link>
-          <Link href="/signup" className="hidden sm:block">
-            <Button variant="secondary" size="sm">
-              {d.common.signUp}
-            </Button>
-          </Link>
+          {user ? (
+            <>
+              <Link href="/dashboard" className="hidden sm:block">
+                <Button variant="ghost" size="sm">
+                  {d.nav.dashboard}
+                </Button>
+              </Link>
+              <Button variant="secondary" size="sm" onClick={handleLogout}>
+                {d.common.logOut}
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="hidden sm:block">
+                <Button variant="ghost" size="sm">
+                  {d.common.logIn}
+                </Button>
+              </Link>
+              <Link href="/signup" className="hidden sm:block">
+                <Button variant="secondary" size="sm">
+                  {d.common.signUp}
+                </Button>
+              </Link>
+            </>
+          )}
           <Link href="/practice">
             <Button size="sm">
               <span className="sm:hidden">{d.common.start}</span>
