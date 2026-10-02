@@ -5,6 +5,7 @@ import { Features } from "@/components/landing/features";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { FrenchExams } from "@/components/landing/french-exams";
 import { Testimonials } from "@/components/landing/testimonials";
+import { UserTestimonials } from "@/components/landing/user-testimonials";
 import { Pricing } from "@/components/landing/pricing";
 import { Faq } from "@/components/landing/faq";
 import { CtaBanner } from "@/components/landing/cta-banner";
@@ -21,6 +22,7 @@ export default function LandingPage() {
         <Features />
         <HowItWorks />
         <Testimonials />
+        <UserTestimonials />
         <Pricing />
         <Faq />
         <CtaBanner />

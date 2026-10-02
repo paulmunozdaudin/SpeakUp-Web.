@@ -131,6 +131,25 @@ export const en = {
           "Try a full practice as a guest — create an account only if you want your history saved.",
       },
     ],
+    userTestimonialsEyebrow: "What students say",
+    userTestimonialsTitle: "Real results from real students",
+    userTestimonials: [
+      {
+        quote: "Eloq AI saved my oral exam — I got 18/20.",
+        name: "Pablo",
+        role: "Terminale student, France",
+      },
+      {
+        quote: "Eloq AI works really well, I wish I'd found it sooner.",
+        name: "Alejandro",
+        role: "Economics oral presentation, Spain",
+      },
+      {
+        quote: "It's going to help me a lot for the Grand Oral.",
+        name: "Marta",
+        role: "Terminale student, France",
+      },
+    ],
     pricingEyebrow: "Pricing",
     pricingTitle: "Simple pricing that scales with you",
     pricingDescription: "Start free. Upgrade when practice becomes a habit.",
@@ -763,6 +782,25 @@ export const es: Dictionary = {
         title: "Registro necesario para empezar",
         description:
           "Prueba una práctica completa como invitado — crea una cuenta solo si quieres guardar tu historial.",
+      },
+    ],
+    userTestimonialsEyebrow: "Lo que dicen los estudiantes",
+    userTestimonialsTitle: "Resultados reales de estudiantes reales",
+    userTestimonials: [
+      {
+        quote: "Eloq.ia ha salvado mi examen oral, he sacado 18/20.",
+        name: "Pablo",
+        role: "Alumno de Terminale, Francia",
+      },
+      {
+        quote: "Eloq.ia funciona muy bien, ojalá haberlo descubierto antes.",
+        name: "Alejandro",
+        role: "Presentación oral de economía, España",
+      },
+      {
+        quote: "Me va a ayudar mucho para el Grand Oral de Terminale.",
+        name: "Marta",
+        role: "Alumna de Terminale, Francia",
       },
     ],
     pricingEyebrow: "Precios",
@@ -1399,6 +1437,25 @@ export const fr: Dictionary = {
         title: "Inscription nécessaire pour commencer",
         description:
           "Essaie une session complète en tant qu'invité — crée un compte seulement si tu veux garder ton historique.",
+      },
+    ],
+    userTestimonialsEyebrow: "Ce que disent les élèves",
+    userTestimonialsTitle: "Des résultats réels, des élèves réels",
+    userTestimonials: [
+      {
+        quote: "Eloq.ia a sauvé mon oral, j'ai eu 18/20.",
+        name: "Pablo",
+        role: "Élève de Terminale",
+      },
+      {
+        quote: "Eloq.ia fonctionne très bien, j'aurais aimé le découvrir plus tôt.",
+        name: "Alejandro",
+        role: "Exposé oral d'économie, Espagne",
+      },
+      {
+        quote: "Ça va beaucoup m'aider pour le Grand Oral de Terminale.",
+        name: "Marta",
+        role: "Élève de Terminale",
       },
     ],
     pricingEyebrow: "Tarifs",
