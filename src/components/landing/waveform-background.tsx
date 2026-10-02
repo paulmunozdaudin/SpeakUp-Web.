@@ -2,11 +2,14 @@
 
 import { useEffect, useRef } from "react";
 
-const BAR_COUNT = 64;
-const BAR_GAP = 3;
-/** How far (in px) the pointer's influence reaches before a bar stops
- *  reacting — keeps the effect feeling local, like nudging a mixer fader. */
-const POINTER_RADIUS = 220;
+const TICK_COUNT = 48;
+const BASE_RADIUS = 70;
+const TICK_LENGTH_MIN = 6;
+const TICK_LENGTH_MAX = 34;
+/** Lower = the glow trails the cursor more, like it has a bit of inertia
+ *  instead of teleporting straight to the pointer every frame. */
+const FOLLOW_EASE = 0.12;
+const FADE_EASE = 0.08;
 
 function hexToRgb(hex: string): [number, number, number] {
   const clean = hex.replace("#", "").trim();
@@ -15,14 +18,16 @@ function hexToRgb(hex: string): [number, number, number] {
 }
 
 /**
- * Decorative audio-waveform strip behind the hero — bars near the cursor
- * swell, echoing the product's own recording visualizer. Purely cosmetic
- * (aria-hidden, pointer-events-none) and self-contained in a canvas so it
- * never affects hero layout or text contrast.
+ * Decorative glow that follows the cursor across the hero — a soft radial
+ * light with a ring of waveform ticks pulsing around it, like a circular
+ * audio visualizer. Purely cosmetic (aria-hidden, pointer-events-none);
+ * invisible until the pointer first moves over the hero, and fades out
+ * again when it leaves, since there's nothing to follow otherwise.
  *
- * Respects prefers-reduced-motion: the ambient idle animation is skipped,
- * though bars still redraw on pointer move since that's a direct response
- * to user input rather than unprompted motion.
+ * Desktop/tablet only (hidden below the `sm` breakpoint, and the effect
+ * itself doesn't run there — no cursor to track on touch devices anyway).
+ * Under prefers-reduced-motion the glow still follows the pointer (direct
+ * response to input) but skips the idle tick-pulsing animation.
  */
 export function WaveformBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -32,8 +37,6 @@ export function WaveformBackground() {
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
-    // Hidden below the `sm` breakpoint (see className below) — skip the
-    // whole effect there instead of animating an invisible canvas.
     if (!window.matchMedia("(min-width: 640px)").matches) return;
 
     const reduceMotion = window.matchMedia(
@@ -44,7 +47,9 @@ export function WaveformBackground() {
     let width = 0;
     let height = 0;
     let rgb: [number, number, number] = [99, 102, 241];
-    let pointer: { x: number; y: number } | null = null;
+    let target: { x: number; y: number } | null = null;
+    let current = { x: 0, y: 0 };
+    let visible = 0;
     let raf = 0;
     let t = 0;
 
@@ -57,30 +62,45 @@ export function WaveformBackground() {
 
     function drawFrame() {
       ctx!.clearRect(0, 0, width, height);
-      const barWidth = Math.max(1, width / BAR_COUNT - BAR_GAP);
-      const midY = height / 2;
+      if (visible <= 0.01) return;
+
       const [r, g, b] = rgb;
+      const { x, y } = current;
 
-      for (let i = 0; i < BAR_COUNT; i++) {
-        const x = i * (barWidth + BAR_GAP);
-        const idle = reduceMotion
+      const glow = ctx!.createRadialGradient(
+        x,
+        y,
+        0,
+        x,
+        y,
+        BASE_RADIUS * 2.4,
+      );
+      glow.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${0.16 * visible})`);
+      glow.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+      ctx!.fillStyle = glow;
+      ctx!.fillRect(
+        x - BASE_RADIUS * 2.4,
+        y - BASE_RADIUS * 2.4,
+        BASE_RADIUS * 4.8,
+        BASE_RADIUS * 4.8,
+      );
+
+      for (let i = 0; i < TICK_COUNT; i++) {
+        const angle = (i / TICK_COUNT) * Math.PI * 2;
+        const wobble = reduceMotion
           ? 0.5
-          : Math.sin(t * 0.0018 + i * 0.35) * 0.5 + 0.5;
+          : Math.sin(t * 0.0022 + i * 0.6) * 0.5 + 0.5;
+        const len = TICK_LENGTH_MIN + wobble * (TICK_LENGTH_MAX - TICK_LENGTH_MIN);
+        const innerR = BASE_RADIUS;
+        const outerR = BASE_RADIUS + len;
 
-        let boost = 0;
-        if (pointer) {
-          const barCenterX = x + barWidth / 2;
-          const dist = Math.abs(barCenterX - pointer.x);
-          const influence = Math.max(0, 1 - dist / POINTER_RADIUS);
-          boost = influence * influence;
-        }
-
-        const amplitude = (0.1 + idle * 0.16 + boost * 0.6) * height;
-        const barHeight = Math.max(3, amplitude);
-        const alpha = 0.08 + boost * 0.38;
-
-        ctx!.fillStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        ctx!.fillRect(x, midY - barHeight / 2, barWidth, barHeight);
+        ctx!.strokeStyle = `rgba(${r}, ${g}, ${b}, ${(0.12 + wobble * 0.3) * visible})`;
+        ctx!.lineWidth = 2.5;
+        ctx!.lineCap = "round";
+        ctx!.beginPath();
+        ctx!.moveTo(x + Math.cos(angle) * innerR, y + Math.sin(angle) * innerR);
+        ctx!.lineTo(x + Math.cos(angle) * outerR, y + Math.sin(angle) * outerR);
+        ctx!.stroke();
       }
     }
 
@@ -91,18 +111,26 @@ export function WaveformBackground() {
       canvas!.width = width * dpr;
       canvas!.height = height * dpr;
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (!target) current = { x: width / 2, y: height * 0.38 };
       drawFrame();
     }
 
     function handlePointerMove(e: PointerEvent) {
       const rect = canvas!.getBoundingClientRect();
-      pointer = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-      if (reduceMotion) drawFrame();
+      target = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      if (reduceMotion) {
+        current = target;
+        visible = 1;
+        drawFrame();
+      }
     }
 
     function handlePointerLeave() {
-      pointer = null;
-      if (reduceMotion) drawFrame();
+      target = null;
+      if (reduceMotion) {
+        visible = 0;
+        drawFrame();
+      }
     }
 
     readAccentColor();
@@ -112,8 +140,6 @@ export function WaveformBackground() {
     window.addEventListener("pointermove", handlePointerMove);
     window.addEventListener("pointerleave", handlePointerLeave);
 
-    // Dark/light toggling flips the `.dark` class on <html>, which changes
-    // --accent — re-read it so the waveform matches the active theme.
     const themeObserver = new MutationObserver(() => {
       readAccentColor();
       if (reduceMotion) drawFrame();
@@ -125,6 +151,13 @@ export function WaveformBackground() {
 
     function loop() {
       t += 16;
+      if (target) {
+        current.x += (target.x - current.x) * FOLLOW_EASE;
+        current.y += (target.y - current.y) * FOLLOW_EASE;
+        visible += (1 - visible) * FADE_EASE;
+      } else {
+        visible += (0 - visible) * FADE_EASE;
+      }
       drawFrame();
       raf = requestAnimationFrame(loop);
     }
