@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Briefcase, Loader2 } from "lucide-react";
+import { ArrowLeft, Briefcase, Building2, Loader2, Sparkles, User } from "lucide-react";
 import type { SpeechLanguage, TargetDuration } from "@/types";
 import { getLocale, useDict } from "@/lib/i18n";
 import { Input } from "@/components/ui/input";
@@ -160,7 +160,13 @@ export default function InterviewModePage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="relative mx-auto max-w-2xl">
+      {step === "setup" && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 -top-10 -z-10 h-[420px] bg-[radial-gradient(ellipse_at_top,var(--accent-soft),transparent_70%)]"
+        />
+      )}
       <AnimatePresence mode="wait">
         {step === "setup" ? (
           <motion.div
@@ -169,49 +175,54 @@ export default function InterviewModePage() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -16 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="space-y-6"
+            className="space-y-8"
           >
             <div>
-              <div className="flex items-center gap-2 text-accent">
-                <Briefcase className="h-5 w-5" />
-                <span className="text-sm font-semibold uppercase tracking-wide">
-                  {d.interviewMode.interviewerBadge}
-                </span>
-              </div>
-              <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs font-medium text-muted">
+                <Sparkles className="h-3.5 w-3.5 text-accent" />
+                {d.interviewMode.interviewerBadge}
+              </span>
+              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
                 {d.interviewMode.setupTitle}
               </h1>
-              <p className="mt-1.5 text-sm text-muted">{d.interviewMode.setupSubtitle}</p>
+              <p className="mt-2 text-[15px] text-muted">{d.interviewMode.setupSubtitle}</p>
             </div>
 
-            <Input
-              label={d.interviewMode.roleLabel}
-              name="role"
-              placeholder={d.interviewMode.rolePlaceholder}
-              value={role}
-              onChange={(event) => {
-                setRole(event.target.value);
-                if (event.target.value.trim()) setRoleError(false);
-              }}
-              error={roleError ? d.practice.titleRequired : undefined}
-              maxLength={120}
-            />
-
-            <Input
-              label={d.interviewMode.companyLabel}
-              name="company"
-              placeholder={d.interviewMode.companyPlaceholder}
-              value={company}
-              onChange={(event) => setCompany(event.target.value)}
-              maxLength={120}
-            />
-
-            <div className="space-y-2">
-              <span className="block text-sm font-medium">{d.practice.languageLabel}</span>
-              <LanguageSelector value={language} onChange={setLanguage} />
+            <div className="space-y-3 rounded-2xl border border-border bg-surface p-4">
+              <Input
+                name="role"
+                icon={<User className="h-4 w-4" />}
+                placeholder={d.interviewMode.rolePlaceholder}
+                value={role}
+                onChange={(event) => {
+                  setRole(event.target.value);
+                  if (event.target.value.trim()) setRoleError(false);
+                }}
+                error={roleError ? d.practice.titleRequired : undefined}
+                maxLength={120}
+              />
+              <Input
+                name="company"
+                icon={<Building2 className="h-4 w-4" />}
+                placeholder={d.interviewMode.companyPlaceholder}
+                value={company}
+                onChange={(event) => setCompany(event.target.value)}
+                maxLength={120}
+              />
             </div>
 
-            <Button size="lg" className="w-full" onClick={handleStart}>
+            <div className="space-y-3">
+              <span className="text-sm font-semibold uppercase tracking-wide text-muted">
+                {d.practice.languageLabel}
+              </span>
+              <LanguageSelector variant="premium" value={language} onChange={setLanguage} />
+            </div>
+
+            <Button
+              size="lg"
+              className="h-14 w-full rounded-2xl bg-[linear-gradient(135deg,var(--accent-hover),var(--accent))] text-base shadow-[0_20px_45px_-16px_var(--accent)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_24px_50px_-14px_var(--accent)]"
+              onClick={handleStart}
+            >
               {d.interviewMode.startInterview}
             </Button>
             {error && (

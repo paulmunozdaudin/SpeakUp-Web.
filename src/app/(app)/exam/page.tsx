@@ -9,9 +9,10 @@ import {
   Award,
   BookMarked,
   BookOpen,
-  GraduationCap,
+  FileText,
   LineChart,
   Loader2,
+  Sparkles,
 } from "lucide-react";
 import { track } from "@vercel/analytics";
 import type { AnalysisMode, TargetDuration } from "@/types";
@@ -327,7 +328,13 @@ export default function ExamModePage() {
   const Icon = EXAM_ICONS[mode];
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="relative mx-auto max-w-2xl">
+      {step === "setup" && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 -top-10 -z-10 h-[420px] bg-[radial-gradient(ellipse_at_top,var(--accent-soft),transparent_70%)]"
+        />
+      )}
       <AnimatePresence mode="wait">
         {step === "setup" && (
           <motion.div
@@ -336,20 +343,18 @@ export default function ExamModePage() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -16 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="space-y-6"
+            className="space-y-8"
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="flex items-center gap-2 text-accent">
-                  <GraduationCap className="h-5 w-5" />
-                  <span className="text-sm font-semibold uppercase tracking-wide">
-                    {d.examMode.examinerBadge}
-                  </span>
-                </div>
-                <h1 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+                <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs font-medium text-muted">
+                  <Sparkles className="h-3.5 w-3.5 text-accent" />
+                  {d.examMode.examinerBadge}
+                </span>
+                <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
                   {d.examMode.setupTitle}
                 </h1>
-                <p className="mt-1.5 text-sm text-muted">{d.examMode.setupSubtitle}</p>
+                <p className="mt-2 text-[15px] text-muted">{d.examMode.setupSubtitle}</p>
               </div>
               <Link
                 href="/exam/progress"
@@ -360,23 +365,40 @@ export default function ExamModePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-3">
               {EXAM_MODES.map((m) => {
                 const ModeIcon = EXAM_ICONS[m];
+                const active = mode === m;
                 return (
                   <button
                     key={m}
                     type="button"
                     onClick={() => handleModeChange(m)}
                     className={cn(
-                      "flex cursor-pointer flex-col items-center gap-2 rounded-2xl border p-4 text-center text-xs font-medium transition-colors",
-                      mode === m
-                        ? "border-accent bg-accent-soft text-accent"
-                        : "border-border bg-surface text-muted hover:text-foreground",
+                      "group relative flex cursor-pointer flex-col items-center gap-0 rounded-2xl border p-5 text-center text-xs font-semibold transition-all duration-200",
+                      active
+                        ? "border-accent bg-[linear-gradient(165deg,color-mix(in_srgb,var(--accent)_16%,transparent),transparent_60%)] shadow-[0_18px_45px_-18px_var(--accent)]"
+                        : "border-border bg-surface hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-sm",
                     )}
                   >
-                    <ModeIcon className="h-5 w-5" />
-                    {d.modes[m]}
+                    {active && (
+                      <span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-white">
+                        ✓
+                      </span>
+                    )}
+                    <span
+                      className={cn(
+                        "mb-3.5 flex h-11 w-11 items-center justify-center rounded-2xl transition-colors",
+                        active
+                          ? "bg-[linear-gradient(135deg,var(--accent-hover),var(--accent))] text-white shadow-[0_8px_20px_-6px_var(--accent)]"
+                          : "bg-surface-muted text-muted group-hover:text-foreground",
+                      )}
+                    >
+                      <ModeIcon className="h-5.5 w-5.5" />
+                    </span>
+                    <span className={cn("text-[13px]", active && "text-accent")}>
+                      {d.modes[m]}
+                    </span>
                   </button>
                 );
               })}
@@ -385,6 +407,7 @@ export default function ExamModePage() {
             <Input
               label={d.examMode.topicLabel[mode]}
               name="topic"
+              icon={<FileText className="h-4 w-4" />}
               placeholder={d.examMode.topicPlaceholder[mode]}
               value={topic}
               onChange={(event) => {
@@ -395,19 +418,34 @@ export default function ExamModePage() {
               maxLength={200}
             />
 
-            <div className="space-y-2">
-              <span className="block text-sm font-medium">{d.practice.durationLabel}</span>
-              <DurationSelector value={presentationMinutes} onChange={setPresentationMinutes} />
+            <div className="space-y-3">
+              <span className="text-sm font-semibold uppercase tracking-wide text-muted">
+                {d.practice.durationLabel}
+              </span>
+              <DurationSelector
+                variant="premium"
+                value={presentationMinutes}
+                onChange={setPresentationMinutes}
+              />
             </div>
 
-            <div className="space-y-2">
-              <span className="block text-sm font-medium">
+            <div className="space-y-3">
+              <span className="text-sm font-semibold uppercase tracking-wide text-muted">
                 {d.practice.analysisModeLabel}
               </span>
-              <AnalysisModeSelector value={analysisMode} onChange={setAnalysisMode} dict={d} />
+              <AnalysisModeSelector
+                variant="premium"
+                value={analysisMode}
+                onChange={setAnalysisMode}
+                dict={d}
+              />
             </div>
 
-            <Button size="lg" className="w-full" onClick={handleStart}>
+            <Button
+              size="lg"
+              className="h-14 w-full rounded-2xl bg-[linear-gradient(135deg,var(--accent-hover),var(--accent))] text-base shadow-[0_20px_45px_-16px_var(--accent)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_24px_50px_-14px_var(--accent)]"
+              onClick={handleStart}
+            >
               {d.examMode.startExam}
             </Button>
             {error && (
