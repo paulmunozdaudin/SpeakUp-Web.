@@ -45,6 +45,8 @@ interface SpeechRecognitionConstructor {
 interface Window {
   SpeechRecognition?: SpeechRecognitionConstructor;
   webkitSpeechRecognition?: SpeechRecognitionConstructor;
+  /** Safari's prefixed AudioContext — used for real-time pause detection. */
+  webkitAudioContext?: typeof AudioContext;
 }
 
 /** Brave's own feature-detection API — only present in Brave. */

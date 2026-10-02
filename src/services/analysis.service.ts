@@ -13,6 +13,7 @@ import type {
   SpeechLanguage,
 } from "@/types";
 import type { CapturedFrame } from "@/utils/video-frames";
+import type { PauseEvent } from "@/hooks/use-speech-recorder";
 import { checkFreeQuota, createSession } from "./sessions.service";
 
 export interface AnalyzeInput {
@@ -28,6 +29,9 @@ export interface AnalyzeInput {
   analysisMode: AnalysisMode;
   /** Sampled frames from RecorderPanel — only when analysisMode is "video". */
   frames?: CapturedFrame[];
+  /** Long mid-speech silences measured live from the mic — real audio
+   *  signal, never derived from the transcript. */
+  pauses?: PauseEvent[];
 }
 
 export async function analyzeAndSave(

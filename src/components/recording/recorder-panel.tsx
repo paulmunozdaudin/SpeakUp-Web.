@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, Ear, Mic, Pause, Play, Square, Video } from "lucide-react";
 import { useSpeechRecorder } from "@/hooks/use-speech-recorder";
-import type { RecorderErrorCode } from "@/hooks/use-speech-recorder";
+import type { PauseEvent, RecorderErrorCode } from "@/hooks/use-speech-recorder";
 import { useVideoRecorder } from "@/hooks/use-video-recorder";
 import type { VideoRecorderErrorCode } from "@/hooks/use-video-recorder";
 import { extractSampledFrames, type CapturedFrame } from "@/utils/video-frames";
@@ -25,6 +25,7 @@ interface RecorderPanelProps {
     transcript: string,
     durationSeconds: number,
     frames?: CapturedFrame[],
+    pauses?: PauseEvent[],
   ) => void;
   disabled?: boolean;
 }
@@ -151,7 +152,12 @@ export function RecorderPanel({
     if (isVideoMode && videoProcessing) return;
     const elapsed = recorder.elapsedSeconds;
     const timer = setTimeout(() => {
-      onFinish(latestTranscriptRef.current, elapsed, framesRef.current);
+      onFinish(
+        latestTranscriptRef.current,
+        elapsed,
+        framesRef.current,
+        recorder.pauses ?? undefined,
+      );
     }, STOP_GRACE_MS);
     return () => clearTimeout(timer);
     // eslint-disable-next-line react-hooks/exhaustive-deps

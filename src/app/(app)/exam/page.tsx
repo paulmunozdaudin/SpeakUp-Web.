@@ -28,6 +28,7 @@ import { analyzeAndSave } from "@/services/analysis.service";
 import { checkFreeQuota, getSession } from "@/services/sessions.service";
 import { AUDIENCE_QUESTIONS } from "@/services/ai/question-bank";
 import type { CapturedFrame } from "@/utils/video-frames";
+import type { PauseEvent } from "@/hooks/use-speech-recorder";
 import { cn } from "@/utils/cn";
 
 const EXAM_MODES = ["brevet-oral", "bac-francais-oral", "grand-oral"] as const;
@@ -100,6 +101,9 @@ export default function ExamModePage() {
   // beyond what the main exposé already captures.
   const [analysisMode, setAnalysisMode] = useState<AnalysisMode>("voice");
   const [presentationFrames, setPresentationFrames] = useState<CapturedFrame[] | undefined>(
+    undefined,
+  );
+  const [presentationPauses, setPresentationPauses] = useState<PauseEvent[] | undefined>(
     undefined,
   );
 
@@ -178,6 +182,7 @@ export default function ExamModePage() {
     setPresentationTranscript("");
     setPresentationDurationSeconds(0);
     setPresentationFrames(undefined);
+    setPresentationPauses(undefined);
     setTurns([]);
     setRecorderKey((k) => k + 1);
     setStep("presentation");
@@ -250,6 +255,7 @@ export default function ExamModePage() {
     transcript: string,
     durationSeconds: number,
     frames?: CapturedFrame[],
+    pauses?: PauseEvent[],
   ) {
     if (transcript.trim().split(/\s+/).filter(Boolean).length < 20) {
       setError(d.practice.tooShort);
@@ -260,6 +266,7 @@ export default function ExamModePage() {
     setPresentationTranscript(transcript);
     setPresentationDurationSeconds(durationSeconds);
     setPresentationFrames(frames);
+    setPresentationPauses(pauses);
     setLoadingNextQuestion(true);
     const question = await requestNextQuestion(transcript, []);
     setCurrentQuestion(question);
@@ -293,6 +300,7 @@ export default function ExamModePage() {
         textContext: isBacFrancais ? textContext || undefined : undefined,
         analysisMode,
         frames: presentationFrames,
+        pauses: presentationPauses,
       });
       track("exam_completed", { mode });
       router.push(`/results/${session.id}`);

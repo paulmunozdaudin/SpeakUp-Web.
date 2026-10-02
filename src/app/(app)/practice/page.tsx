@@ -24,6 +24,7 @@ import { analyzeAndSave } from "@/services/analysis.service";
 import { checkFreeQuota } from "@/services/sessions.service";
 import { useDict } from "@/lib/i18n";
 import type { CapturedFrame } from "@/utils/video-frames";
+import type { PauseEvent } from "@/hooks/use-speech-recorder";
 
 interface SessionConfig {
   mode: PracticeMode;
@@ -105,6 +106,7 @@ export default function PracticePage() {
     transcript: string,
     durationSeconds: number,
     frames?: CapturedFrame[],
+    pauses?: PauseEvent[],
   ) {
     if (transcript.trim().split(/\s+/).filter(Boolean).length < 8) {
       setError(d.practice.tooShort);
@@ -124,6 +126,7 @@ export default function PracticePage() {
         targetDurationMinutes: config.targetDurationMinutes,
         analysisMode: config.analysisMode,
         frames,
+        pauses,
       });
       router.push(`/results/${session.id}`);
     } catch (e) {

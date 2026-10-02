@@ -14,6 +14,7 @@ import { ExamGradeCard } from "@/components/results/exam-grade-card";
 import { BacFrancaisResultCard } from "@/components/results/bac-francais-result-card";
 import { MetricsGrid } from "@/components/results/metrics-grid";
 import { FillerWordsCard } from "@/components/results/filler-words-card";
+import { PauseCard } from "@/components/results/pause-card";
 import { StructureCard } from "@/components/results/structure-card";
 import { Insights, QuestionsCard } from "@/components/results/insights";
 import { FactCheckCard } from "@/components/results/fact-check-card";
@@ -135,6 +136,7 @@ export default function ResultsPage({
               <div className="grid gap-4 lg:grid-cols-2">
                 <StructureCard structure={analysis.structure} />
                 <FillerWordsCard fillerWords={analysis.fillerWords} />
+                {analysis.pauses && <PauseCard pauses={analysis.pauses} />}
               </div>
               <FactCheckCard claims={analysis.factCheck} />
               {analysis.video && (

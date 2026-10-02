@@ -12,6 +12,11 @@ export const maxDuration = 60; // the LLM call can take a while
  *  the request body against an abusive/buggy client sending too many. */
 const MAX_FRAMES = 12;
 
+interface PauseEventInput {
+  timestampSeconds: number;
+  durationSeconds: number;
+}
+
 interface AnalyzeBody {
   transcript: string;
   title: string;
@@ -26,7 +31,14 @@ interface AnalyzeBody {
   textContext?: string;
   analysisMode: AnalysisMode;
   frames?: AnalysisFrame[];
+  /** Long mid-speech silences, timestamped client-side from the real mic
+   *  signal (see use-speech-recorder's audio monitor) — not AI-derived. */
+  pauses?: PauseEventInput[];
 }
+
+/** Bounds the request body against an abusive/buggy client; a real
+ *  presentation only produces a handful of these. */
+const MAX_PAUSE_EVENTS = 60;
 
 function isValidFrame(value: unknown): value is AnalysisFrame {
   if (!value || typeof value !== "object") return false;
@@ -35,6 +47,17 @@ function isValidFrame(value: unknown): value is AnalysisFrame {
     typeof f.timestampSeconds === "number" &&
     typeof f.dataUrl === "string" &&
     f.dataUrl.startsWith("data:image/")
+  );
+}
+
+function isValidPauseEvent(value: unknown): value is PauseEventInput {
+  if (!value || typeof value !== "object") return false;
+  const p = value as Record<string, unknown>;
+  return (
+    typeof p.timestampSeconds === "number" &&
+    p.timestampSeconds >= 0 &&
+    typeof p.durationSeconds === "number" &&
+    p.durationSeconds > 0
   );
 }
 
@@ -56,7 +79,11 @@ function isValidBody(body: unknown): body is AnalyzeBody {
     (b.frames === undefined ||
       (Array.isArray(b.frames) &&
         b.frames.length <= MAX_FRAMES &&
-        b.frames.every(isValidFrame)))
+        b.frames.every(isValidFrame))) &&
+    (b.pauses === undefined ||
+      (Array.isArray(b.pauses) &&
+        b.pauses.length <= MAX_PAUSE_EVENTS &&
+        b.pauses.every(isValidPauseEvent)))
   );
 }
 
@@ -95,6 +122,23 @@ export async function POST(request: Request) {
 
     const provider = getAnalysisProvider();
     const analysis = await provider.analyze(body);
+
+    // Deterministic pass-through, not an AI judgment — the browser already
+    // measured these from the real mic signal (use-speech-recorder's audio
+    // monitor). Omitted entirely (not a zeroed-out object) when the client
+    // couldn't measure it, same "never fabricate" rule as `video`.
+    if (body.pauses !== undefined) {
+      analysis.pauses = {
+        count: body.pauses.length,
+        longestSeconds:
+          body.pauses.length > 0
+            ? Math.max(...body.pauses.map((p) => p.durationSeconds))
+            : 0,
+        totalSeconds:
+          Math.round(body.pauses.reduce((sum, p) => sum + p.durationSeconds, 0) * 10) / 10,
+        events: body.pauses,
+      };
+    }
 
     if (body.mode === "bac-francais-oral" && body.textContext?.trim()) {
       analysis.sourceText = body.textContext.trim();

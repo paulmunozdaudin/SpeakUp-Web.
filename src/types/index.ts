@@ -169,6 +169,18 @@ export interface AnalysisResult {
     top: { word: string; count: number }[];
   };
 
+  /** Long silences mid-speech ("going blank") — measured for real from the
+   *  mic's live audio level during recording (Web Audio API), never
+   *  guessed from the transcript. Omitted (not a zeroed-out object) when
+   *  the browser couldn't monitor audio, same "never fabricate" pattern as
+   *  `video` and `factCheck`. */
+  pauses?: {
+    count: number;
+    longestSeconds: number;
+    totalSeconds: number;
+    events: { timestampSeconds: number; durationSeconds: number }[];
+  };
+
   structure: {
     hasIntro: boolean;
     hasBody: boolean;

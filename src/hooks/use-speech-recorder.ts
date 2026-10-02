@@ -24,6 +24,12 @@ export type RecorderErrorCode =
    *  instead of the generic "check your internet" message. */
   | "network-error-brave";
 
+export interface PauseEvent {
+  /** Seconds into the recording when the silence started. */
+  timestampSeconds: number;
+  durationSeconds: number;
+}
+
 interface UseSpeechRecorderResult {
   status: RecorderStatus;
   elapsedSeconds: number;
@@ -35,6 +41,10 @@ interface UseSpeechRecorderResult {
   /** True once we've gone a while into "recording" with zero words captured
    *  — surfaced so the UI can proactively warn instead of staying silent. */
   isSilentTooLong: boolean;
+  /** Long mid-speech silences ("going blank"), measured from the real mic
+   *  signal. `null` until `stop()` finalizes the list, and stays `null`
+   *  (not `[]`) if the browser couldn't monitor audio for real. */
+  pauses: PauseEvent[] | null;
   start: () => Promise<void>;
   pause: () => void;
   resume: () => void;
@@ -57,6 +67,15 @@ const RESTART_DELAY_MS = 300;
 /** How long "recording" with literally nothing captured yet counts as
  *  suspiciously silent (mic muted, wrong input device, blocked network…). */
 const SILENCE_WARNING_MS = 7000;
+/** RMS level (0–1, from raw time-domain samples) below which the mic is
+ *  considered silent — a conservative heuristic noise floor, not a precise
+ *  VAD model. Real background noise varies, but a sustained drop below
+ *  this is a reliable enough signal that the speaker has gone quiet. */
+const SILENCE_RMS_THRESHOLD = 0.02;
+/** A silence has to last at least this long mid-speech to count as
+ *  "going blank" rather than a normal breath/punctuation pause. */
+const BLANK_PAUSE_MIN_MS = 2200;
+const AUDIO_MONITOR_INTERVAL_MS = 100;
 
 /**
  * Live microphone transcription via the browser's SpeechRecognition API
@@ -94,6 +113,22 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
   const hasCapturedAnyWordsRef = useRef(false);
   const isBraveRef = useRef(false);
 
+  // null = never measured this session (API unavailable/blocked); an array
+  // (possibly empty) = the mic was genuinely monitored for real silences.
+  // Collapsing these would mean claiming "no blanks" when we simply
+  // couldn't check — exactly the fabrication this app avoids elsewhere.
+  const [pauses, setPauses] = useState<PauseEvent[] | null>(null);
+  const audioContextRef = useRef<AudioContext | null>(null);
+  const audioMonitorTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const audioMonitorActiveRef = useRef(false);
+  const pauseEventsRef = useRef<PauseEvent[]>([]);
+  const pauseStartElapsedRef = useRef<number | null>(null);
+  /** performance.now()-based clock so pause timing has sub-second
+   *  precision — the `elapsedSeconds` state only ticks once a second,
+   *  far too coarse for telling a 2s blank from a normal breath. */
+  const monitorBaseElapsedRef = useRef(0);
+  const monitorStartPerfRef = useRef(0);
+
   useEffect(() => {
     navigator.brave
       ?.isBrave()
@@ -123,6 +158,90 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
       silenceTimerRef.current = null;
     }
   }, []);
+
+  const currentMonitorElapsed = useCallback(() => {
+    return (
+      monitorBaseElapsedRef.current +
+      (performance.now() - monitorStartPerfRef.current) / 1000
+    );
+  }, []);
+
+  /** Closes out whatever silence is in progress, recording it as a pause
+   *  event only if it was long enough — called both on every "sound
+   *  resumed" tick and when monitoring stops, so a blank that's still
+   *  going when the user hits Stop is still captured. */
+  const flushPendingPause = useCallback((nowElapsed: number) => {
+    const start = pauseStartElapsedRef.current;
+    if (start === null) return;
+    const duration = nowElapsed - start;
+    if (duration * 1000 >= BLANK_PAUSE_MIN_MS && hasCapturedAnyWordsRef.current) {
+      pauseEventsRef.current = [
+        ...pauseEventsRef.current,
+        { timestampSeconds: Math.round(start), durationSeconds: Math.round(duration * 10) / 10 },
+      ];
+    }
+    pauseStartElapsedRef.current = null;
+  }, []);
+
+  const stopAudioMonitor = useCallback(() => {
+    if (audioMonitorTimerRef.current) {
+      clearInterval(audioMonitorTimerRef.current);
+      audioMonitorTimerRef.current = null;
+    }
+    flushPendingPause(currentMonitorElapsed());
+    audioContextRef.current?.close().catch(() => {});
+    audioContextRef.current = null;
+  }, [flushPendingPause, currentMonitorElapsed]);
+
+  /** Measures real mic volume via the Web Audio API to detect long silences
+   *  — entirely separate from SpeechRecognition, which has no concept of
+   *  "how quiet was it", only "did it recognize words". Never fabricated:
+   *  if the API is unavailable/blocked, this just silently does nothing
+   *  and `pauses` stays empty, same as any other "couldn't measure it for
+   *  real" case elsewhere in the app. */
+  const startAudioMonitor = useCallback(
+    (stream: MediaStream, resumeFromElapsed: number) => {
+      try {
+        const AudioContextCtor = window.AudioContext ?? window.webkitAudioContext;
+        if (!AudioContextCtor) return;
+        const ctx = new AudioContextCtor();
+        const source = ctx.createMediaStreamSource(stream);
+        const analyser = ctx.createAnalyser();
+        analyser.fftSize = 2048;
+        source.connect(analyser);
+        audioContextRef.current = ctx;
+        audioMonitorActiveRef.current = true;
+
+        monitorBaseElapsedRef.current = resumeFromElapsed;
+        monitorStartPerfRef.current = performance.now();
+        pauseStartElapsedRef.current = null;
+
+        const data = new Uint8Array(analyser.fftSize);
+        audioMonitorTimerRef.current = setInterval(() => {
+          analyser.getByteTimeDomainData(data);
+          let sumSquares = 0;
+          for (let i = 0; i < data.length; i++) {
+            const v = (data[i] - 128) / 128;
+            sumSquares += v * v;
+          }
+          const rms = Math.sqrt(sumSquares / data.length);
+          const now = currentMonitorElapsed();
+
+          if (rms < SILENCE_RMS_THRESHOLD) {
+            if (pauseStartElapsedRef.current === null) {
+              pauseStartElapsedRef.current = now;
+            }
+          } else {
+            flushPendingPause(now);
+          }
+        }, AUDIO_MONITOR_INTERVAL_MS);
+      } catch {
+        // Web Audio API unavailable or blocked — pause detection just
+        // doesn't run; never invent pause data to fill the gap.
+      }
+    },
+    [currentMonitorElapsed, flushPendingPause],
+  );
 
   const armSilenceWarning = useCallback(() => {
     clearSilenceTimer();
@@ -244,6 +363,9 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     finalChunksRef.current = [];
     consecutiveFailuresRef.current = 0;
     hasCapturedAnyWordsRef.current = false;
+    pauseEventsRef.current = [];
+    audioMonitorActiveRef.current = false;
+    setPauses(null);
     setElapsedSeconds(0);
     setStatus("requesting");
 
@@ -273,6 +395,7 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
       setStatus("recording");
       startTimer();
       armSilenceWarning();
+      startAudioMonitor(stream, 0);
     } catch (e) {
       setStatus("error");
       setError(
@@ -281,7 +404,7 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
           : "mic-unavailable",
       );
     }
-  }, [buildRecognition, isSupported, startTimer, armSilenceWarning]);
+  }, [buildRecognition, isSupported, startTimer, armSilenceWarning, startAudioMonitor]);
 
   const pause = useCallback(() => {
     if (status !== "recording") return;
@@ -290,10 +413,11 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     clearSilenceTimer();
     recognitionRef.current?.stop();
     clearTimer();
+    stopAudioMonitor();
     setInterimTranscript("");
     setIsSilentTooLong(false);
     setStatus("paused");
-  }, [status, clearTimer, clearRestartTimer, clearSilenceTimer]);
+  }, [status, clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor]);
 
   const resume = useCallback(() => {
     if (status !== "paused") return;
@@ -309,11 +433,20 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
       recognition.start();
       startTimer();
       armSilenceWarning();
+      if (streamRef.current) startAudioMonitor(streamRef.current, elapsedSeconds);
       setStatus("recording");
     } catch {
       failPermanently("network-error");
     }
-  }, [status, buildRecognition, startTimer, armSilenceWarning, failPermanently]);
+  }, [
+    status,
+    buildRecognition,
+    startTimer,
+    armSilenceWarning,
+    failPermanently,
+    startAudioMonitor,
+    elapsedSeconds,
+  ]);
 
   const stop = useCallback(() => {
     shouldRunRef.current = false;
@@ -321,12 +454,14 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     clearSilenceTimer();
     recognitionRef.current?.stop();
     clearTimer();
+    stopAudioMonitor();
+    setPauses(audioMonitorActiveRef.current ? pauseEventsRef.current : null);
     setInterimTranscript("");
     setIsSilentTooLong(false);
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
     setStatus("stopped");
-  }, [clearTimer, clearRestartTimer, clearSilenceTimer]);
+  }, [clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor]);
 
   const reset = useCallback(() => {
     shouldRunRef.current = false;
@@ -335,18 +470,22 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     recognitionRef.current?.stop();
     recognitionRef.current = null;
     clearTimer();
+    stopAudioMonitor();
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
     finalChunksRef.current = [];
     consecutiveFailuresRef.current = 0;
     hasCapturedAnyWordsRef.current = false;
+    pauseEventsRef.current = [];
+    audioMonitorActiveRef.current = false;
+    setPauses(null);
     setTranscript("");
     setInterimTranscript("");
     setIsSilentTooLong(false);
     setElapsedSeconds(0);
     setError(null);
     setStatus("idle");
-  }, [clearTimer, clearRestartTimer, clearSilenceTimer]);
+  }, [clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor]);
 
   useEffect(() => {
     return () => {
@@ -355,9 +494,10 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
       clearSilenceTimer();
       recognitionRef.current?.stop();
       clearTimer();
+      stopAudioMonitor();
       streamRef.current?.getTracks().forEach((t) => t.stop());
     };
-  }, [clearTimer, clearRestartTimer, clearSilenceTimer]);
+  }, [clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor]);
 
   return {
     status,
@@ -367,6 +507,7 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     error,
     isSupported,
     isSilentTooLong,
+    pauses,
     start,
     pause,
     resume,
