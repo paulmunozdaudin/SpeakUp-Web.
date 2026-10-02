@@ -310,6 +310,7 @@ export const en = {
   },
   practice: {
     // Step 1: setup
+    setupEyebrow: "AI Training Mode",
     setupTitle: "What do you want to practice?",
     setupSubtitle: "Set the stage before you press record.",
     modeLabel: "Choose a mode",
@@ -319,6 +320,7 @@ export const en = {
     analysisModeVideoTitle: "Voice + camera",
     analysisModeVideoDescription: "Analyzes your speech, plus your eye contact, posture and gestures.",
     analysisModeVideoNote: "You'll see yourself live while you present.",
+    contentSectionLabel: "What will you talk about?",
     titleLabel: "Title",
     titlePlaceholder: "e.g. Q3 results, thesis defense, seed pitch…",
     topicLabel: "Topic",
@@ -327,6 +329,7 @@ export const en = {
     durationMinutes: "min",
     languageLabel: "Language",
     continueToRecording: "Continue",
+    startPracticeCta: "Start practice",
     titleRequired: "Give your practice a title to continue.",
     // Step 2: recording
     backToSetup: "Back",
@@ -965,6 +968,7 @@ export const es: Dictionary = {
   },
   practice: {
     // Paso 1: configuración
+    setupEyebrow: "Modo Entrenamiento IA",
     setupTitle: "¿Qué quieres practicar?",
     setupSubtitle: "Prepara el escenario antes de pulsar grabar.",
     modeLabel: "Elige un modo",
@@ -974,6 +978,7 @@ export const es: Dictionary = {
     analysisModeVideoTitle: "Voz + cámara",
     analysisModeVideoDescription: "Analiza tu discurso, tu mirada, tu postura y tus gestos.",
     analysisModeVideoNote: "Te verás en directo mientras haces tu presentación.",
+    contentSectionLabel: "¿Sobre qué vas a hablar?",
     titleLabel: "Título",
     titlePlaceholder: "p. ej. Resultados Q3, defensa de tesis, pitch semilla…",
     topicLabel: "Tema",
@@ -982,6 +987,7 @@ export const es: Dictionary = {
     durationMinutes: "min",
     languageLabel: "Idioma",
     continueToRecording: "Continuar",
+    startPracticeCta: "Empezar práctica",
     titleRequired: "Ponle un título a tu práctica para continuar.",
     // Paso 2: grabación
     backToSetup: "Atrás",
@@ -1618,6 +1624,7 @@ export const fr: Dictionary = {
       "Enregistre ta première présentation et reçois un retour instantané de l'IA.",
   },
   practice: {
+    setupEyebrow: "Mode Entraînement IA",
     setupTitle: "Que veux-tu pratiquer ?",
     setupSubtitle: "Prépare le terrain avant d'appuyer sur enregistrer.",
     modeLabel: "Choisis un mode",
@@ -1627,6 +1634,7 @@ export const fr: Dictionary = {
     analysisModeVideoTitle: "Voix + caméra",
     analysisModeVideoDescription: "Analyse ton discours, ton regard, ta posture et tes gestes.",
     analysisModeVideoNote: "Tu te verras en direct pendant ta présentation.",
+    contentSectionLabel: "De quoi vas-tu parler ?",
     titleLabel: "Titre",
     titlePlaceholder: "ex. résultats T3, soutenance de thèse, pitch d'amorçage…",
     topicLabel: "Sujet",
@@ -1635,6 +1643,7 @@ export const fr: Dictionary = {
     durationMinutes: "min",
     languageLabel: "Langue",
     continueToRecording: "Continuer",
+    startPracticeCta: "Commencer la pratique",
     titleRequired: "Donne un titre à ton entraînement pour continuer.",
     backToSetup: "Retour",
     pressStartToBegin: "Appuie sur démarrer quand tu es prêt",

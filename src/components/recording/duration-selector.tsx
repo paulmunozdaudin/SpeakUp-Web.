@@ -7,11 +7,15 @@ import { cn } from "@/utils/cn";
 export function DurationSelector({
   value,
   onChange,
+  variant = "default",
 }: {
   value: TargetDuration;
   onChange: (minutes: TargetDuration) => void;
+  /** "premium" is the gradient-pill treatment used on /practice. */
+  variant?: "default" | "premium";
 }) {
   const d = useDict();
+  const premium = variant === "premium";
 
   return (
     <div className="grid grid-cols-4 gap-2">
@@ -26,7 +30,9 @@ export function DurationSelector({
             className={cn(
               "flex h-14 flex-col items-center justify-center rounded-xl border text-sm font-medium transition-all duration-200",
               active
-                ? "border-accent bg-accent-soft text-accent shadow-sm shadow-accent/10"
+                ? premium
+                  ? "border-transparent bg-[linear-gradient(135deg,var(--accent-hover),var(--accent))] text-white shadow-[0_10px_24px_-10px_var(--accent)]"
+                  : "border-accent bg-accent-soft text-accent shadow-sm shadow-accent/10"
                 : "border-border bg-surface text-muted hover:border-accent/40 hover:text-foreground",
             )}
           >

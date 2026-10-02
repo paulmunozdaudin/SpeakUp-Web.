@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, FileText, MessageSquare, Sparkles } from "lucide-react";
 import type {
   AnalysisMode,
   PracticeMode,
@@ -134,7 +134,13 @@ export default function PracticePage() {
   }
 
   return (
-    <div className="mx-auto max-w-2xl">
+    <div className="relative mx-auto max-w-2xl">
+      {step === "setup" && (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 -top-10 -z-10 h-[420px] bg-[radial-gradient(ellipse_at_top,var(--accent-soft),transparent_70%)]"
+        />
+      )}
       <AnimatePresence mode="wait">
         {step === "setup" ? (
           <motion.div
@@ -143,76 +149,105 @@ export default function PracticePage() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -16 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="space-y-8"
+            className="space-y-10"
           >
             <div>
-              <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs font-medium text-muted">
+                <Sparkles className="h-3.5 w-3.5 text-accent" />
+                {d.practice.setupEyebrow}
+              </span>
+              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
                 {d.practice.setupTitle}
               </h1>
-              <p className="mt-1 text-sm text-muted">{d.practice.setupSubtitle}</p>
+              <p className="mt-2 text-[15px] text-muted">{d.practice.setupSubtitle}</p>
             </div>
 
-            <div className="space-y-2">
-              <span className="block text-sm font-medium">
+            <div className="space-y-3">
+              <span className="flex items-center gap-2.5 text-sm font-semibold uppercase tracking-wide text-muted">
+                <span className="flex h-5.5 w-5.5 items-center justify-center rounded-md border border-border bg-surface-muted text-[11px] font-bold text-muted">
+                  1
+                </span>
                 {d.practice.analysisModeLabel}
               </span>
               <AnalysisModeSelector
+                variant="premium"
                 value={config.analysisMode}
                 onChange={(analysisMode) => setConfig((c) => ({ ...c, analysisMode }))}
               />
             </div>
 
-            <div className="space-y-2">
-              <span className="block text-sm font-medium">
+            <div className="space-y-3">
+              <span className="flex items-center gap-2.5 text-sm font-semibold uppercase tracking-wide text-muted">
+                <span className="flex h-5.5 w-5.5 items-center justify-center rounded-md border border-border bg-surface-muted text-[11px] font-bold text-muted">
+                  2
+                </span>
                 {d.practice.modeLabel}
               </span>
               <ModeSelector
+                variant="premium"
                 value={config.mode}
                 onChange={(mode) => setConfig((c) => ({ ...c, mode }))}
               />
             </div>
 
-            <Input
-              label={d.practice.titleLabel}
-              name="title"
-              placeholder={d.practice.titlePlaceholder}
-              value={config.title}
-              onChange={(event) => {
-                setConfig((c) => ({ ...c, title: event.target.value }));
-                if (event.target.value.trim()) setTitleError(false);
-              }}
-              error={titleError ? d.practice.titleRequired : undefined}
-              maxLength={120}
-            />
+            <div className="space-y-3">
+              <span className="flex items-center gap-2.5 text-sm font-semibold uppercase tracking-wide text-muted">
+                <span className="flex h-5.5 w-5.5 items-center justify-center rounded-md border border-border bg-surface-muted text-[11px] font-bold text-muted">
+                  3
+                </span>
+                {d.practice.contentSectionLabel}
+              </span>
+              <div className="space-y-3 rounded-2xl border border-border bg-surface p-4">
+                <Input
+                  name="title"
+                  icon={<FileText className="h-4 w-4" />}
+                  placeholder={d.practice.titlePlaceholder}
+                  value={config.title}
+                  onChange={(event) => {
+                    setConfig((c) => ({ ...c, title: event.target.value }));
+                    if (event.target.value.trim()) setTitleError(false);
+                  }}
+                  error={titleError ? d.practice.titleRequired : undefined}
+                  maxLength={120}
+                />
+                <Input
+                  name="topic"
+                  icon={<MessageSquare className="h-4 w-4" />}
+                  placeholder={d.practice.topicPlaceholder}
+                  value={config.topic}
+                  onChange={(event) =>
+                    setConfig((c) => ({ ...c, topic: event.target.value }))
+                  }
+                  maxLength={160}
+                />
+              </div>
+            </div>
 
-            <Input
-              label={d.practice.topicLabel}
-              name="topic"
-              placeholder={d.practice.topicPlaceholder}
-              value={config.topic}
-              onChange={(event) =>
-                setConfig((c) => ({ ...c, topic: event.target.value }))
-              }
-              maxLength={160}
-            />
-
-            <div className="grid gap-6 sm:grid-cols-2">
-              <div className="space-y-2">
-                <span className="block text-sm font-medium">
+            <div className="grid gap-8 sm:grid-cols-2">
+              <div className="space-y-3">
+                <span className="flex items-center gap-2.5 text-sm font-semibold uppercase tracking-wide text-muted">
+                  <span className="flex h-5.5 w-5.5 items-center justify-center rounded-md border border-border bg-surface-muted text-[11px] font-bold text-muted">
+                    4
+                  </span>
                   {d.practice.durationLabel}
                 </span>
                 <DurationSelector
+                  variant="premium"
                   value={config.targetDurationMinutes}
                   onChange={(targetDurationMinutes) =>
                     setConfig((c) => ({ ...c, targetDurationMinutes }))
                   }
                 />
               </div>
-              <div className="space-y-2">
-                <span className="block text-sm font-medium">
+              <div className="space-y-3">
+                <span className="flex items-center gap-2.5 text-sm font-semibold uppercase tracking-wide text-muted">
+                  <span className="flex h-5.5 w-5.5 items-center justify-center rounded-md border border-border bg-surface-muted text-[11px] font-bold text-muted">
+                    5
+                  </span>
                   {d.practice.languageLabel}
                 </span>
                 <LanguageSelector
+                  variant="premium"
                   value={config.language}
                   onChange={(language) =>
                     setConfig((c) => ({ ...c, language }))
@@ -221,8 +256,12 @@ export default function PracticePage() {
               </div>
             </div>
 
-            <Button size="lg" className="w-full" onClick={handleContinue}>
-              {d.practice.continueToRecording}
+            <Button
+              size="lg"
+              className="h-14 w-full rounded-2xl bg-[linear-gradient(135deg,var(--accent-hover),var(--accent))] text-base shadow-[0_20px_45px_-16px_var(--accent)] transition-transform hover:-translate-y-0.5 hover:shadow-[0_24px_50px_-14px_var(--accent)]"
+              onClick={handleContinue}
+            >
+              {d.practice.startPracticeCta}
               <ArrowRight className="h-4.5 w-4.5" />
             </Button>
             {error && (

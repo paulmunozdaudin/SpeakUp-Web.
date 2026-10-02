@@ -17,6 +17,7 @@ export function AnalysisModeSelector({
   value,
   onChange,
   dict,
+  variant = "default",
 }: {
   value: AnalysisMode;
   onChange: (mode: AnalysisMode) => void;
@@ -25,9 +26,13 @@ export function AnalysisModeSelector({
    *  hardcoded `fr` dictionary here instead of letting this component read
    *  whatever locale the visitor's browser happens to be set to. */
   dict?: Dictionary;
+  /** "premium" is the bigger, glowier card treatment used on /practice;
+   *  everything else (/exam, /interview) keeps the original compact style. */
+  variant?: "default" | "premium";
 }) {
   const autoDict = useDict();
   const d = dict ?? autoDict;
+  const premium = variant === "premium";
 
   const options: {
     mode: AnalysisMode;
@@ -61,27 +66,39 @@ export function AnalysisModeSelector({
             type="button"
             onClick={() => onChange(mode)}
             className={cn(
-              "group flex cursor-pointer flex-col items-start gap-3 rounded-2xl border p-5 text-left transition-all duration-200",
+              "group relative flex cursor-pointer flex-col items-start gap-3 rounded-2xl border p-5 text-left transition-all duration-200",
+              premium && "p-6",
               active
-                ? "border-accent bg-accent-soft shadow-sm shadow-accent/10"
+                ? premium
+                  ? "border-accent bg-[linear-gradient(165deg,color-mix(in_srgb,var(--accent)_16%,transparent),transparent_60%)] shadow-[0_18px_45px_-18px_var(--accent)]"
+                  : "border-accent bg-accent-soft shadow-sm shadow-accent/10"
                 : "border-border bg-surface hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-sm",
             )}
             aria-pressed={active}
           >
+            {premium && active && (
+              <span className="absolute right-4 top-4 flex h-5.5 w-5.5 items-center justify-center rounded-full bg-accent text-[11px] font-bold text-white">
+                ✓
+              </span>
+            )}
             <span
               className={cn(
-                "flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors",
+                "flex shrink-0 items-center justify-center rounded-xl transition-colors",
+                premium ? "h-12 w-12 rounded-2xl" : "h-11 w-11",
                 active
-                  ? "bg-accent text-white"
+                  ? premium
+                    ? "bg-[linear-gradient(135deg,var(--accent-hover),var(--accent))] text-white shadow-[0_8px_20px_-6px_var(--accent)]"
+                    : "bg-accent text-white"
                   : "bg-surface-muted text-muted group-hover:text-foreground",
               )}
             >
-              <Icon className="h-5.5 w-5.5" />
+              <Icon className={premium ? "h-6 w-6" : "h-5.5 w-5.5"} />
             </span>
             <span className="min-w-0">
               <span
                 className={cn(
-                  "block text-sm font-semibold leading-tight",
+                  "block font-semibold leading-tight",
+                  premium ? "text-base" : "text-sm",
                   active && "text-accent",
                 )}
               >
