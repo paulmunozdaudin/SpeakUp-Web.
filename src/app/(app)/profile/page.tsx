@@ -26,6 +26,7 @@ import { useDict } from "@/lib/i18n";
 import { scoreLabelKey } from "@/utils/score";
 import { startProCheckout, openBillingPortal, PRO_CHECKOUT_ENABLED } from "@/services/billing.service";
 import { joinProWaitlist } from "@/services/waitlist.service";
+import { cn } from "@/utils/cn";
 
 /** Shown as plain, copyable text (not just a mailto: link) because
  *  mailto: silently does nothing on devices with no default mail app
@@ -36,7 +37,7 @@ export default function ProfilePage() {
   const d = useDict();
   const { user, loading: userLoading } = useUser();
   const { subscriptionStatus, loading: profileLoading } = useProfile();
-  const { stats, loading: sessionsLoading } = useSessions();
+  const { sessions, stats, loading: sessionsLoading } = useSessions();
   const [billingPending, setBillingPending] = useState(false);
   const [billingError, setBillingError] = useState<string | null>(null);
   const [waitlistJoined, setWaitlistJoined] = useState(false);
@@ -69,6 +70,15 @@ export default function ProfilePage() {
     }
     setWaitlistJoined(true);
   }
+
+  // Matches the fixed order of d.profile.achievementsList: first practice,
+  // 7-day streak, 90+ clarity on any session, 50 total practices.
+  const achievementsUnlocked = [
+    stats.totalSessions >= 1,
+    stats.currentStreakDays >= 7,
+    sessions.some((s) => s.analysis.metrics.clarity.score >= 90),
+    stats.totalSessions >= 50,
+  ];
 
   const statItems = [
     {
@@ -220,33 +230,48 @@ export default function ProfilePage() {
         )}
       </div>
 
-      {/* Achievements (coming soon) */}
-      {/* TODO(achievements): replace with real, unlockable achievements. */}
+      {/* Achievements — unlocked for real from the user's own session stats. */}
       <section>
         <div className="mb-3 flex items-center gap-2">
           <h2 className="text-sm font-medium text-muted">
             {d.profile.achievements}
           </h2>
-          <Badge>{d.common.comingSoon}</Badge>
         </div>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {d.profile.achievementsList.map((achievement) => (
-            <Card
-              key={achievement.name}
-              className="flex flex-col items-center p-5 text-center opacity-60"
-            >
-              <div className="mb-3 flex h-11 w-11 items-center justify-center rounded-full bg-surface-muted text-muted">
-                <Award className="h-5 w-5" />
-              </div>
-              <p className="flex items-center gap-1.5 text-sm font-medium">
-                <Lock className="h-3 w-3 text-muted" />
-                {achievement.name}
-              </p>
-              <p className="mt-1 text-xs text-muted">
-                {achievement.description}
-              </p>
-            </Card>
-          ))}
+          {d.profile.achievementsList.map((achievement, index) => {
+            const unlocked = achievementsUnlocked[index];
+            return (
+              <Card
+                key={achievement.name}
+                className={cn(
+                  "flex flex-col items-center p-5 text-center transition-opacity",
+                  !unlocked && "opacity-60",
+                )}
+              >
+                <div
+                  className={cn(
+                    "mb-3 flex h-11 w-11 items-center justify-center rounded-full",
+                    unlocked
+                      ? "bg-accent text-white shadow-sm shadow-accent/30"
+                      : "bg-surface-muted text-muted",
+                  )}
+                >
+                  <Award className="h-5 w-5" />
+                </div>
+                <p className="flex items-center gap-1.5 text-sm font-medium">
+                  {unlocked ? (
+                    <Check className="h-3 w-3 text-accent" />
+                  ) : (
+                    <Lock className="h-3 w-3 text-muted" />
+                  )}
+                  {achievement.name}
+                </p>
+                <p className="mt-1 text-xs text-muted">
+                  {achievement.description}
+                </p>
+              </Card>
+            );
+          })}
         </div>
       </section>
 
