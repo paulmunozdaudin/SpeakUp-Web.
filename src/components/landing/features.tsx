@@ -21,7 +21,6 @@ export function Features() {
       id="features"
       eyebrow={d.landing.featuresEyebrow}
       title={d.landing.featuresTitle}
-      description={d.landing.featuresDescription}
     >
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {d.landing.features.map((feature, index) => {

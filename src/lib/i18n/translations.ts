@@ -56,8 +56,6 @@ export const en = {
     },
     featuresEyebrow: "Features",
     featuresTitle: "Everything you need to become a better speaker",
-    featuresDescription:
-      "One focused workflow: practice, analyze, improve. Designed to make progress visible.",
     features: [
       {
         title: "Record anywhere",
@@ -201,7 +199,7 @@ export const en = {
       {
         question: "How does the AI feedback work?",
         answer:
-          "Your recording is transcribed and analyzed by speech AI models that evaluate clarity, pacing, structure, vocabulary, confidence and filler words. You get scores plus concrete, personalized suggestions.",
+          "Your recording is transcribed and analyzed by speech AI models, which give you scores plus concrete, personalized suggestions.",
       },
       {
         question: "Is my audio private?",
@@ -215,20 +213,17 @@ export const en = {
       },
       {
         question: "Do I need special equipment?",
-        answer:
-          "No. Any laptop or phone microphone works. You can also upload audio files recorded elsewhere.",
+        answer: "No. Any laptop or phone microphone works.",
       },
       {
-        question: "Will there be video analysis?",
+        question: "Does it analyze my body language too?",
         answer:
-          "It's on the roadmap. Eye contact and body language analysis are coming — your account will be ready for it the day it ships.",
+          "Yes — choose \"Voice + camera\" mode and Eloq also gives you feedback on your eye contact, posture and gestures.",
       },
     ],
     ctaTitle: "Your next presentation starts here.",
-    ctaSubtitle:
-      "Join thousands of speakers practicing smarter. Free to start — no credit card required.",
-    footerTagline:
-      "Your personal public speaking coach, available 24/7. Practice, analyze, improve.",
+    ctaSubtitle: "Free to start — no credit card required.",
+    footerTagline: "Your personal AI coach for oral presentations.",
     footerProduct: "Product",
     footerCompany: "Company",
     footerLegal: "Legal",
@@ -712,8 +707,6 @@ export const es: Dictionary = {
     },
     featuresEyebrow: "Funciones",
     featuresTitle: "Todo lo que necesitas para hablar mejor en público",
-    featuresDescription:
-      "Un único flujo de trabajo: practica, analiza, mejora. Diseñado para que el progreso se vea.",
     features: [
       {
         title: "Graba donde quieras",
@@ -858,7 +851,7 @@ export const es: Dictionary = {
       {
         question: "¿Cómo funciona el feedback de la IA?",
         answer:
-          "Tu grabación se transcribe y la analizan modelos de IA de voz que evalúan claridad, ritmo, estructura, vocabulario, confianza y muletillas. Recibes puntuaciones y sugerencias concretas y personalizadas.",
+          "Tu grabación se transcribe y la analizan modelos de IA de voz, que te dan puntuaciones y sugerencias concretas y personalizadas.",
       },
       {
         question: "¿Mi audio es privado?",
@@ -872,20 +865,17 @@ export const es: Dictionary = {
       },
       {
         question: "¿Necesito equipo especial?",
-        answer:
-          "No. Sirve el micrófono de cualquier portátil o móvil. También puedes subir archivos de audio grabados en otro sitio.",
+        answer: "No. Sirve el micrófono de cualquier portátil o móvil.",
       },
       {
-        question: "¿Habrá análisis de vídeo?",
+        question: "¿También analiza mi lenguaje corporal?",
         answer:
-          "Está en la hoja de ruta. El análisis de contacto visual y lenguaje corporal llegará pronto — tu cuenta estará lista desde el primer día.",
+          "Sí — elige el modo \"Voz + cámara\" y Eloq también te da feedback sobre tu contacto visual, postura y gestos.",
       },
     ],
     ctaTitle: "Tu próxima presentación empieza aquí.",
-    ctaSubtitle:
-      "Únete a miles de oradores que practican de forma más inteligente. Gratis para empezar — sin tarjeta.",
-    footerTagline:
-      "Tu coach personal de oratoria, disponible 24/7. Practica, analiza, mejora.",
+    ctaSubtitle: "Gratis para empezar — sin tarjeta.",
+    footerTagline: "Tu coach personal de IA para presentaciones orales.",
     footerProduct: "Producto",
     footerCompany: "Compañía",
     footerLegal: "Legal",
@@ -1370,8 +1360,6 @@ export const fr: Dictionary = {
     },
     featuresEyebrow: "Fonctionnalités",
     featuresTitle: "Tout ce qu'il te faut pour devenir un meilleur orateur",
-    featuresDescription:
-      "Un seul parcours, bien pensé : s'entraîner, analyser, progresser. Conçu pour rendre tes progrès visibles.",
     features: [
       {
         title: "Enregistre où que tu sois",
@@ -1516,7 +1504,7 @@ export const fr: Dictionary = {
       {
         question: "Comment fonctionne le retour de l'IA ?",
         answer:
-          "Ton enregistrement est transcrit et analysé par des modèles d'IA vocale qui évaluent la clarté, le rythme, la structure, le vocabulaire, la confiance et les tics de langage. Tu obtiens des notes et des suggestions concrètes et personnalisées.",
+          "Ton enregistrement est transcrit et analysé par des modèles d'IA vocale, qui te donnent des notes et des suggestions concrètes et personnalisées.",
       },
       {
         question: "Mon audio est-il privé ?",
@@ -1530,20 +1518,18 @@ export const fr: Dictionary = {
       },
       {
         question: "Ai-je besoin d'un équipement particulier ?",
-        answer:
-          "Non. N'importe quel micro d'ordinateur ou de téléphone fonctionne. Tu peux aussi importer des fichiers audio enregistrés ailleurs.",
+        answer: "Non. N'importe quel micro d'ordinateur ou de téléphone fonctionne.",
       },
       {
-        question: "Y aura-t-il une analyse vidéo ?",
+        question: "Est-ce que ça analyse aussi mon langage corporel ?",
         answer:
-          "C'est prévu. L'analyse du contact visuel et du langage corporel arrive bientôt — ton compte sera prêt le jour où ce sera disponible.",
+          "Oui — choisis le mode « Voix + caméra » et Eloq te donne aussi un retour sur ton contact visuel, ta posture et tes gestes.",
       },
     ],
     ctaTitle: "Ta prochaine présentation commence ici.",
     ctaSubtitle:
       "Rejoins des milliers d'orateurs qui s'entraînent intelligemment. Gratuit pour commencer — aucune carte bancaire requise.",
-    footerTagline:
-      "Ton coach de prise de parole personnel, disponible 24h/24. Entraîne-toi, analyse, progresse.",
+    footerTagline: "Ton coach IA personnel pour les présentations orales.",
     footerProduct: "Produit",
     footerCompany: "Entreprise",
     footerLegal: "Mentions légales",

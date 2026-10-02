@@ -69,8 +69,7 @@ export function FrenchExams() {
           <p className="text-pretty mt-5 text-lg leading-relaxed text-muted">
             Eloq AI ne fait pas l&apos;examen à ta place : il t&apos;entraîne pour que tu
             sois prêt(e) le jour J. Parle, réponds aux relances du jury, et sais
-            exactement quelle note tu obtiendrais — gratuit pour commencer, sans
-            inscription.
+            exactement quelle note tu obtiendrais.
           </p>
         </motion.div>
 
