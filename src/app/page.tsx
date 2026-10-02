@@ -1,6 +1,6 @@
 import { Navbar } from "@/components/landing/navbar";
 import { Hero } from "@/components/landing/hero";
-import { TwoPaths } from "@/components/landing/two-paths";
+import { HoloPresenter } from "@/components/landing/holo-presenter";
 import { Features } from "@/components/landing/features";
 import { HowItWorks } from "@/components/landing/how-it-works";
 import { FrenchExams } from "@/components/landing/french-exams";
@@ -17,7 +17,7 @@ export default function LandingPage() {
       <Navbar />
       <main className="flex-1">
         <Hero />
-        <TwoPaths />
+        <HoloPresenter />
         <FrenchExams />
         <Features />
         <HowItWorks />

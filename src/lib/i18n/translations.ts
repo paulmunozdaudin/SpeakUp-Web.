@@ -43,17 +43,8 @@ export const en = {
       pacing: "Pacing",
       structure: "Structure",
     },
-    twoPathsTitle: "What do you want to prepare?",
-    twoPathsPractice: {
-      title: "Practice",
-      description: "Presentations, talks, pitches and public speaking.",
-      cta: "Start",
-    },
-    twoPathsExam: {
-      title: "Prepare an exam",
-      description: "French Brevet, Bac de Français and Grand Oral.",
-      cta: "Prepare my exam",
-    },
+    holoEyebrow: "AI coaching, live",
+    holoTitle: "Eloq sees how you speak.",
     featuresEyebrow: "Features",
     featuresTitle: "Everything you need to become a better speaker",
     featuresDescription:
@@ -699,17 +690,8 @@ export const es: Dictionary = {
       pacing: "Ritmo",
       structure: "Estructura",
     },
-    twoPathsTitle: "¿Qué quieres preparar?",
-    twoPathsPractice: {
-      title: "Practicar",
-      description: "Presentaciones, exposiciones, pitches y oratoria.",
-      cta: "Empezar",
-    },
-    twoPathsExam: {
-      title: "Preparar un examen",
-      description: "Brevet, Bac de Francés y Grand Oral franceses.",
-      cta: "Preparar mi oral",
-    },
+    holoEyebrow: "Coaching con IA, en vivo",
+    holoTitle: "Eloq ve cómo hablas.",
     featuresEyebrow: "Funciones",
     featuresTitle: "Todo lo que necesitas para hablar mejor en público",
     featuresDescription:
@@ -1357,17 +1339,8 @@ export const fr: Dictionary = {
       pacing: "Rythme",
       structure: "Structure",
     },
-    twoPathsTitle: "Que veux-tu préparer ?",
-    twoPathsPractice: {
-      title: "Pratiquer",
-      description: "Présentations, exposés, pitchs et prises de parole.",
-      cta: "Commencer",
-    },
-    twoPathsExam: {
-      title: "Préparer un examen",
-      description: "Brevet, Bac de Français et Grand Oral.",
-      cta: "Préparer mon oral",
-    },
+    holoEyebrow: "Coaching IA, en direct",
+    holoTitle: "Eloq voit comment tu parles.",
     featuresEyebrow: "Fonctionnalités",
     featuresTitle: "Tout ce qu'il te faut pour devenir un meilleur orateur",
     featuresDescription:
