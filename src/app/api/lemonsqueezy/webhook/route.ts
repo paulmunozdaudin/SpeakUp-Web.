@@ -11,6 +11,24 @@ export const runtime = "nodejs";
 /** Subscription statuses that count as an active Pro plan. */
 const ACTIVE_STATUSES = new Set(["active", "on_trial"]);
 
+/**
+ * Real subscription lifecycle events — deliberately NOT a prefix match on
+ * "subscription_", because Lemon Squeezy also fires subscription_payment_*
+ * events (success/failed/recovered/refunded) whose `data` is a Subscription
+ * Invoice, not a Subscription: a different shape (no renews_at/ends_at,
+ * status is "paid"/"pending"/"void"/"refunded") that would otherwise get
+ * misread as an inactive subscription and wrongly downgrade the user.
+ */
+const SUBSCRIPTION_EVENT_NAMES = new Set([
+  "subscription_created",
+  "subscription_updated",
+  "subscription_cancelled",
+  "subscription_resumed",
+  "subscription_expired",
+  "subscription_paused",
+  "subscription_unpaused",
+]);
+
 interface SubscriptionEventPayload {
   meta: {
     event_name: string;
@@ -48,10 +66,20 @@ async function syncSubscription(
   if (!admin) return;
 
   const { attributes } = subscription;
+
+  // "cancelled" means the user already paid for the current period and is
+  // on a grace period until ends_at — they stay Pro until it actually
+  // lapses. Access only drops once Lemon Squeezy sends subscription_expired
+  // (or ends_at has already passed, e.g. after a missed event).
+  const onCancelledGracePeriod =
+    attributes.status === "cancelled" &&
+    !!attributes.ends_at &&
+    new Date(attributes.ends_at).getTime() > Date.now();
+
+  const isActive = ACTIVE_STATUSES.has(attributes.status) || onCancelledGracePeriod;
+
   const patch = {
-    subscription_status: ACTIVE_STATUSES.has(attributes.status)
-      ? "pro"
-      : "free",
+    subscription_status: isActive ? "pro" : "free",
     lemonsqueezy_subscription_id: subscription.id,
     lemonsqueezy_customer_id: String(attributes.customer_id),
     current_period_end: attributes.renews_at ?? attributes.ends_at,
@@ -93,7 +121,7 @@ export async function POST(request: Request) {
   const payload = JSON.parse(rawBody) as SubscriptionEventPayload;
   const { event_name, custom_data } = payload.meta;
 
-  if (event_name.startsWith("subscription_")) {
+  if (SUBSCRIPTION_EVENT_NAMES.has(event_name)) {
     await syncSubscription(payload.data, custom_data);
   }
 

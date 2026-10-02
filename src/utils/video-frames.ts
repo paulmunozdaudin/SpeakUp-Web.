@@ -24,6 +24,26 @@ const TARGET_SECONDS_PER_FRAME = 15;
  *  result — so timing out is safe. */
 const EVENT_TIMEOUT_MS = 8000;
 
+/**
+ * Chromium-based browsers (Chrome/Edge — exactly what this app targets)
+ * report `duration` as Infinity for a <video> loaded from a MediaRecorder
+ * blob, because the WebM muxer can't write the Cues/Duration element while
+ * still recording. The documented workaround is to seek past the end once:
+ * the browser then back-fills the real duration and fires "timeupdate".
+ * Without this, every voice+camera take would silently sample zero frames
+ * on Chrome/Edge.
+ */
+async function resolveDuration(video: HTMLVideoElement): Promise<number> {
+  if (Number.isFinite(video.duration) && video.duration > 0) return video.duration;
+
+  video.currentTime = Number.MAX_SAFE_INTEGER;
+  await waitForEvent(video, "timeupdate").catch(() => undefined);
+  video.currentTime = 0;
+  await waitForEvent(video, "seeked").catch(() => undefined);
+
+  return Number.isFinite(video.duration) && video.duration > 0 ? video.duration : 0;
+}
+
 function waitForEvent(target: HTMLVideoElement, event: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const onEvent = () => {
@@ -65,9 +85,7 @@ export async function extractSampledFrames(blob: Blob): Promise<CapturedFrame[]>
 
   try {
     await waitForEvent(video, "loadedmetadata");
-    const duration = Number.isFinite(video.duration) && video.duration > 0
-      ? video.duration
-      : 0;
+    const duration = await resolveDuration(video);
     if (duration <= 0) return [];
 
     const frameCount = Math.max(
