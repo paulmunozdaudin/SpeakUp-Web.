@@ -638,6 +638,59 @@ export const en = {
       openingStrength: "Write and memorize your opening line: a striking question or figure.",
       closingQuality: "Always end with one clear summary sentence — never just trail off.",
     },
+    modeInfo: {
+      infoButtonLabel: "Learn more",
+      modalCloseLabel: "Close",
+      howItWorksLabel: "How it works here",
+      whatWeCheckLabel: "What Eloq analyzes",
+      modes: {
+        "brevet-oral": {
+          tagline: "Present your project, the jury asks you about it.",
+          steps: [
+            "Enter your project's subject (internship, EPI, career project…).",
+            "Give your presentation out loud, as if the jury were in front of you.",
+            "The AI jury asks you 3 follow-up questions about what you said.",
+            "You get a full analysis and an estimated grade.",
+          ],
+          analyzes: [
+            "Structure (intro, body, conclusion)",
+            "Clarity and fluency",
+            "Pace and filler words",
+            "Relevance of your answers to the jury",
+          ],
+        },
+        "bac-francais-oral": {
+          tagline: "Paste your text, give your linear explication, the jury questions you.",
+          steps: [
+            "Paste the studied text (or give the author, work and passage).",
+            "Give your linear explication out loud, as in the real exam.",
+            "The AI jury asks you 3 questions about the text or the work.",
+            "You get an estimated grade out of 20, based on the Bac's 12 real criteria.",
+          ],
+          analyzes: [
+            "Quality of the linear explication",
+            "Literary analysis and mastery of the text/work",
+            "Oral expression, fluency, vocabulary",
+            "Relevance of your answers to the jury",
+          ],
+        },
+        "grand-oral": {
+          tagline: "Present and defend your question in front of the jury.",
+          steps: [
+            "Enter the question you prepared.",
+            "Present your argument as if the jury were in front of you.",
+            "The AI jury questions you about your topic and your arguments.",
+            "You get a full analysis and an estimated grade.",
+          ],
+          analyzes: [
+            "Structure of your argument and conviction",
+            "Clarity and fluency",
+            "Posture and expressiveness (if camera is on)",
+            "Relevance of your answers to the jury",
+          ],
+        },
+      },
+    },
   },
   interviewMode: {
     setupTitle: "AI Interviewer Mode",
@@ -1297,6 +1350,59 @@ export const es: Dictionary = {
       openingStrength: "Escribe y memoriza tu frase de apertura: una pregunta o un dato llamativo.",
       closingQuality: "Termina siempre con una frase de cierre clara, nunca dejes la respuesta a medias.",
     },
+    modeInfo: {
+      infoButtonLabel: "Saber más",
+      modalCloseLabel: "Cerrar",
+      howItWorksLabel: "Cómo funciona aquí",
+      whatWeCheckLabel: "Qué analiza Eloq",
+      modes: {
+        "brevet-oral": {
+          tagline: "Presenta tu proyecto, el tribunal te pregunta sobre él.",
+          steps: [
+            "Indica el tema de tu proyecto (prácticas, EPI, proyecto de orientación…).",
+            "Haz tu exposición en voz alta, como si el tribunal estuviera delante de ti.",
+            "El tribunal IA te hace 3 preguntas para profundizar en lo que has dicho.",
+            "Recibes un análisis completo y una nota estimada.",
+          ],
+          analyzes: [
+            "Estructura (introducción, desarrollo, conclusión)",
+            "Claridad y fluidez",
+            "Ritmo y muletillas",
+            "Pertinencia de tus respuestas al tribunal",
+          ],
+        },
+        "bac-francais-oral": {
+          tagline: "Pega tu texto, haz tu explicación lineal, el tribunal te pregunta.",
+          steps: [
+            "Pega el texto estudiado (o indica autor, obra y pasaje).",
+            "Haz tu explicación lineal en voz alta, como en el examen real.",
+            "El tribunal IA te hace 3 preguntas sobre el texto o la obra.",
+            "Recibes una nota estimada sobre 20, según los 12 criterios reales del Bac.",
+          ],
+          analyzes: [
+            "Calidad de la explicación lineal",
+            "Análisis literario y dominio del texto/la obra",
+            "Expresión oral, fluidez, vocabulario",
+            "Pertinencia de tus respuestas al tribunal",
+          ],
+        },
+        "grand-oral": {
+          tagline: "Presenta y defiende tu pregunta ante el tribunal.",
+          steps: [
+            "Indica la pregunta que has preparado.",
+            "Presenta tu argumentación como si el tribunal estuviera delante de ti.",
+            "El tribunal IA te pregunta sobre tu tema y tus argumentos.",
+            "Recibes un análisis completo y una nota estimada.",
+          ],
+          analyzes: [
+            "Estructura de la argumentación y capacidad de convicción",
+            "Claridad y fluidez",
+            "Postura y expresividad (si activas la cámara)",
+            "Pertinencia de tus respuestas al tribunal",
+          ],
+        },
+      },
+    },
   },
   interviewMode: {
     setupTitle: "Modo Entrevistador IA",
@@ -1948,6 +2054,59 @@ export const fr: Dictionary = {
       precision: "Prépare une liste de 10 mots techniques liés à ton sujet et utilise-les à l'oral.",
       openingStrength: "Écris et mémorise ta phrase d'accroche : une question ou un chiffre marquant.",
       closingQuality: "Termine toujours par une phrase de synthèse claire, jamais en laissant la réponse en suspens.",
+    },
+    modeInfo: {
+      infoButtonLabel: "En savoir plus",
+      modalCloseLabel: "Fermer",
+      howItWorksLabel: "Comment ça se passe ici",
+      whatWeCheckLabel: "Ce qu'Eloq analyse",
+      modes: {
+        "brevet-oral": {
+          tagline: "Présente ton projet, le jury t'interroge dessus.",
+          steps: [
+            "Indique le sujet de ton projet (stage, EPI, parcours avenir…).",
+            "Fais ton exposé à voix haute, comme si le jury était devant toi.",
+            "Le jury IA te pose 3 questions pour approfondir ce que tu as dit.",
+            "Tu reçois une analyse complète et une note estimée.",
+          ],
+          analyzes: [
+            "Structure (introduction, développement, conclusion)",
+            "Clarté et fluidité",
+            "Débit de parole et tics de langage",
+            "Pertinence de tes réponses au jury",
+          ],
+        },
+        "bac-francais-oral": {
+          tagline: "Colle ton texte, fais ton explication linéaire, le jury t'interroge.",
+          steps: [
+            "Colle le texte étudié (ou indique l'auteur, l'œuvre et le passage).",
+            "Fais ton explication linéaire à voix haute, comme à l'oral.",
+            "Le jury IA te pose 3 questions sur le texte ou l'œuvre.",
+            "Tu reçois une note estimée sur 20, selon les 12 critères réels du Bac.",
+          ],
+          analyzes: [
+            "Qualité de l'explication linéaire",
+            "Analyse littéraire et maîtrise du texte/de l'œuvre",
+            "Expression orale, fluidité, vocabulaire",
+            "Pertinence de tes réponses au jury",
+          ],
+        },
+        "grand-oral": {
+          tagline: "Présente et défends ta question devant le jury.",
+          steps: [
+            "Indique la question que tu as préparée.",
+            "Présente ton argumentation comme si le jury était devant toi.",
+            "Le jury IA t'interroge sur ta question et tes arguments.",
+            "Tu reçois une analyse complète et une note estimée.",
+          ],
+          analyzes: [
+            "Structure de l'argumentation et conviction",
+            "Clarté et fluidité",
+            "Posture et expressivité (si la caméra est activée)",
+            "Pertinence de tes réponses au jury",
+          ],
+        },
+      },
     },
   },
   interviewMode: {

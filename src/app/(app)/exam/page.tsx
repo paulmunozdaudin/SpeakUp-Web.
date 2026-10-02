@@ -10,6 +10,7 @@ import {
   BookMarked,
   BookOpen,
   FileText,
+  Info,
   LineChart,
   Loader2,
   Sparkles,
@@ -24,6 +25,7 @@ import { DurationSelector } from "@/components/recording/duration-selector";
 import { AnalysisModeSelector } from "@/components/recording/analysis-mode-selector";
 import { RecorderPanel } from "@/components/recording/recorder-panel";
 import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
+import { ExamModeInfoModal } from "@/components/exam/exam-mode-info-modal";
 import { analyzeAndSave } from "@/services/analysis.service";
 import { checkFreeQuota, getSession } from "@/services/sessions.service";
 import { AUDIENCE_QUESTIONS } from "@/services/ai/question-bank";
@@ -89,6 +91,10 @@ export default function ExamModePage() {
 
   const [step, setStep] = useState<"setup" | "text" | "presentation" | "interview">("setup");
   const [mode, setMode] = useState<ExamMode>("brevet-oral");
+  // Which mode's "how it works" explainer is open — separate from `mode`
+  // (the selected mode) so you can preview an exam type's format without
+  // switching the setup form to it.
+  const [infoMode, setInfoMode] = useState<ExamMode | null>(null);
   const [topic, setTopic] = useState("");
   const [topicError, setTopicError] = useState(false);
   const [presentationMinutes, setPresentationMinutes] = useState<TargetDuration>(
@@ -378,36 +384,48 @@ export default function ExamModePage() {
                 const ModeIcon = EXAM_ICONS[m];
                 const active = mode === m;
                 return (
-                  <button
-                    key={m}
-                    type="button"
-                    onClick={() => handleModeChange(m)}
-                    className={cn(
-                      "group relative flex cursor-pointer flex-col items-center gap-0 rounded-2xl border p-5 text-center text-xs font-semibold transition-all duration-200",
-                      active
-                        ? "border-accent bg-[linear-gradient(165deg,color-mix(in_srgb,var(--accent)_16%,transparent),transparent_60%)] shadow-[0_18px_45px_-18px_var(--accent)]"
-                        : "border-border bg-surface hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-sm",
-                    )}
-                  >
-                    {active && (
-                      <span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-white">
-                        ✓
-                      </span>
-                    )}
-                    <span
+                  <div key={m} className="relative">
+                    <button
+                      type="button"
+                      onClick={() => handleModeChange(m)}
                       className={cn(
-                        "mb-3.5 flex h-11 w-11 items-center justify-center rounded-2xl transition-colors",
+                        "group relative flex h-full w-full cursor-pointer flex-col items-center gap-0 rounded-2xl border p-5 text-center text-xs font-semibold transition-all duration-200",
                         active
-                          ? "bg-[linear-gradient(135deg,var(--accent-hover),var(--accent))] text-white shadow-[0_8px_20px_-6px_var(--accent)]"
-                          : "bg-surface-muted text-muted group-hover:text-foreground",
+                          ? "border-accent bg-[linear-gradient(165deg,color-mix(in_srgb,var(--accent)_16%,transparent),transparent_60%)] shadow-[0_18px_45px_-18px_var(--accent)]"
+                          : "border-border bg-surface hover:-translate-y-0.5 hover:border-accent/40 hover:shadow-sm",
                       )}
                     >
-                      <ModeIcon className="h-5.5 w-5.5" />
-                    </span>
-                    <span className={cn("text-[13px]", active && "text-accent")}>
-                      {d.modes[m]}
-                    </span>
-                  </button>
+                      {active && (
+                        <span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-accent text-[10px] font-bold text-white">
+                          ✓
+                        </span>
+                      )}
+                      <span
+                        className={cn(
+                          "mb-3.5 flex h-11 w-11 items-center justify-center rounded-2xl transition-colors",
+                          active
+                            ? "bg-[linear-gradient(135deg,var(--accent-hover),var(--accent))] text-white shadow-[0_8px_20px_-6px_var(--accent)]"
+                            : "bg-surface-muted text-muted group-hover:text-foreground",
+                        )}
+                      >
+                        <ModeIcon className="h-5.5 w-5.5" />
+                      </span>
+                      <span className={cn("text-[13px]", active && "text-accent")}>
+                        {d.modes[m]}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        setInfoMode(m);
+                      }}
+                      aria-label={d.examMode.modeInfo.infoButtonLabel}
+                      className="absolute left-3 top-3 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-surface-muted text-muted transition-colors hover:bg-accent-soft hover:text-accent"
+                    >
+                      <Info className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
                 );
               })}
             </div>
@@ -702,6 +720,15 @@ export default function ExamModePage() {
       </AnimatePresence>
 
       {analyzing && <AnalyzingOverlay />}
+
+      {infoMode && (
+        <ExamModeInfoModal
+          mode={infoMode}
+          icon={EXAM_ICONS[infoMode]}
+          dict={d}
+          onClose={() => setInfoMode(null)}
+        />
+      )}
     </div>
   );
 }
