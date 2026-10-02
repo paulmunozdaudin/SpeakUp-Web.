@@ -72,6 +72,33 @@ function isExamMode(value: string | null): value is ExamMode {
   return !!value && (EXAM_MODES as readonly string[]).includes(value);
 }
 
+/** Which exam modes' "how it works" explainer has already been shown to
+ *  this visitor — persisted so the modal only ever auto-opens once per
+ *  mode, on this device, even across visits. The info button stays
+ *  available on every card regardless, for reading it again anytime. */
+const MODE_INFO_SEEN_KEY = "eloq-exam-mode-info-seen";
+
+function hasSeenModeInfo(mode: ExamMode): boolean {
+  try {
+    const seen = JSON.parse(localStorage.getItem(MODE_INFO_SEEN_KEY) ?? "[]");
+    return Array.isArray(seen) && seen.includes(mode);
+  } catch {
+    return false;
+  }
+}
+
+function markModeInfoSeen(mode: ExamMode) {
+  try {
+    const seen = JSON.parse(localStorage.getItem(MODE_INFO_SEEN_KEY) ?? "[]");
+    const next = new Set(Array.isArray(seen) ? seen : []);
+    next.add(mode);
+    localStorage.setItem(MODE_INFO_SEEN_KEY, JSON.stringify([...next]));
+  } catch {
+    // localStorage unavailable — worst case the modal auto-opens again
+    // next time, never a crash.
+  }
+}
+
 function fallbackQuestion(mode: ExamMode, topic: string, historyLength: number) {
   const bank = AUDIENCE_QUESTIONS[LANGUAGE][mode];
   return bank[historyLength % bank.length].replace("{topic}", topic || "");
@@ -171,6 +198,10 @@ export default function ExamModePage() {
   function handleModeChange(next: ExamMode) {
     setMode(next);
     setPresentationMinutes(DEFAULT_PRESENTATION_MINUTES[next]);
+    if (!hasSeenModeInfo(next)) {
+      setInfoMode(next);
+      markModeInfoSeen(next);
+    }
   }
 
   async function beginPresentation() {
@@ -419,6 +450,7 @@ export default function ExamModePage() {
                       onClick={(event) => {
                         event.stopPropagation();
                         setInfoMode(m);
+                        markModeInfoSeen(m);
                       }}
                       aria-label={d.examMode.modeInfo.infoButtonLabel}
                       className="absolute left-3 top-3 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-surface-muted text-muted transition-colors hover:bg-accent-soft hover:text-accent"
