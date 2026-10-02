@@ -2,13 +2,15 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { GraduationCap, Mic, Sparkles } from "lucide-react";
+import { GraduationCap, Mic, Sparkles, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WaveformBackground } from "@/components/landing/waveform-background";
+import { useUser } from "@/hooks/use-user";
 import { useDict } from "@/lib/i18n";
 
 export function Hero() {
   const d = useDict();
+  const { user } = useUser();
 
   const previewMetrics = [
     { label: d.landing.previewMetrics.clarity, value: 88 },
@@ -72,6 +74,14 @@ export function Hero() {
               {d.common.prepareExam}
             </Button>
           </Link>
+          {user && (
+            <Link href="/profile">
+              <Button variant="secondary" size="lg">
+                <User className="h-4.5 w-4.5" />
+                {d.nav.profile}
+              </Button>
+            </Link>
+          )}
         </motion.div>
 
         {/* Stylised product preview */}

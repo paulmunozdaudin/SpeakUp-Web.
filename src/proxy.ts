@@ -54,8 +54,7 @@ export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isAuthPage = AUTH_PAGES.some((prefix) => pathname.startsWith(prefix));
 
-  // Logged-in users land on the app, not the marketing/sales homepage.
-  if ((isAuthPage || pathname === "/") && user) {
+  if (isAuthPage && user) {
     const url = request.nextUrl.clone();
     url.pathname = "/dashboard";
     url.search = "";
