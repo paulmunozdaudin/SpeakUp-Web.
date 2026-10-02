@@ -54,7 +54,14 @@ export async function signInWithGoogle(): Promise<AuthResult> {
 
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: `${window.location.origin}/auth/callback` },
+    options: {
+      redirectTo: `${window.location.origin}/auth/callback`,
+      // Without this, Google silently reuses whatever account is already
+      // signed in on the device instead of letting people pick — a problem
+      // for anyone with more than one Google account (e.g. personal +
+      // school).
+      queryParams: { prompt: "select_account" },
+    },
   });
   if (error) return { ok: false, error: error.message };
   return { ok: true };
