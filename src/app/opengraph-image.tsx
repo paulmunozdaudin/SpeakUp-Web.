@@ -31,7 +31,8 @@ export default async function Image() {
             height: 160,
             width: 160,
             borderRadius: "50%",
-            backgroundImage: "linear-gradient(135deg, #8b7cf6 0%, #4f46e5 100%)",
+            backgroundColor: "#0f0a1f",
+            border: "2px solid #2a2440",
             alignItems: "center",
             justifyContent: "center",
             marginBottom: 44,
@@ -41,29 +42,65 @@ export default async function Image() {
             style={{
               display: "flex",
               position: "absolute",
-              height: 96,
-              width: 96,
+              top: "50%",
+              left: "50%",
+              marginTop: -70,
+              marginLeft: -70,
+              height: 140,
+              width: 140,
               borderRadius: "50%",
-              border: "5px solid rgba(255,255,255,0.4)",
+              border: "6px solid rgba(255,255,255,0.85)",
             }}
           />
           <div
             style={{
               display: "flex",
               position: "absolute",
-              height: 58,
-              width: 58,
+              top: "50%",
+              left: "50%",
+              marginTop: -53,
+              marginLeft: -53,
+              height: 106,
+              width: 106,
               borderRadius: "50%",
-              border: "5px solid rgba(255,255,255,0.85)",
+              border: "6px solid rgba(255,255,255,0.85)",
             }}
           />
           <div
             style={{
               display: "flex",
-              height: 26,
-              width: 26,
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              marginTop: -35,
+              marginLeft: -35,
+              height: 70,
+              width: 70,
               borderRadius: "50%",
-              backgroundColor: "#ffffff",
+              border: "6px solid rgba(255,255,255,0.85)",
+            }}
+          />
+          <div
+            style={{
+              display: "flex",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              marginTop: -17,
+              marginLeft: -17,
+              height: 34,
+              width: 34,
+              borderRadius: "50%",
+              border: "7px solid #a996fb",
+            }}
+          />
+          <div
+            style={{
+              display: "flex",
+              height: 13,
+              width: 13,
+              borderRadius: "50%",
+              backgroundColor: "#a996fb",
             }}
           />
         </div>
