@@ -1,5 +1,3 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
 import { ImageResponse } from "next/og";
 
 export const alt = "Eloq AI — Practice presentations with AI";
@@ -12,10 +10,6 @@ export const contentType = "image/png";
  * wires the og:image meta tag automatically — no image file to upload.
  */
 export default async function Image() {
-  const poppins = await readFile(
-    path.join(process.cwd(), "public/fonts/poppins-800.ttf"),
-  );
-
   return new ImageResponse(
     (
       <div
@@ -33,10 +27,11 @@ export default async function Image() {
         <div
           style={{
             display: "flex",
+            position: "relative",
             height: 160,
             width: 160,
             borderRadius: "50%",
-            backgroundColor: "#1c1650",
+            backgroundImage: "linear-gradient(135deg, #8b7cf6 0%, #4f46e5 100%)",
             alignItems: "center",
             justifyContent: "center",
             marginBottom: 44,
@@ -45,15 +40,32 @@ export default async function Image() {
           <div
             style={{
               display: "flex",
-              fontFamily: "Poppins",
-              fontWeight: 800,
-              fontSize: 84,
-              lineHeight: 1,
-              color: "#8b7cf6",
+              position: "absolute",
+              height: 96,
+              width: 96,
+              borderRadius: "50%",
+              border: "5px solid rgba(255,255,255,0.4)",
             }}
-          >
-            e.
-          </div>
+          />
+          <div
+            style={{
+              display: "flex",
+              position: "absolute",
+              height: 58,
+              width: 58,
+              borderRadius: "50%",
+              border: "5px solid rgba(255,255,255,0.85)",
+            }}
+          />
+          <div
+            style={{
+              display: "flex",
+              height: 26,
+              width: 26,
+              borderRadius: "50%",
+              backgroundColor: "#ffffff",
+            }}
+          />
         </div>
         <div
           style={{
@@ -78,9 +90,6 @@ export default async function Image() {
         </div>
       </div>
     ),
-    {
-      ...size,
-      fonts: [{ name: "Poppins", data: poppins, weight: 800, style: "normal" }],
-    },
+    size,
   );
 }

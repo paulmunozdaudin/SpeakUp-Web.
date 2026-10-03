@@ -1,25 +1,15 @@
 /**
- * Eloq AI brand mark: the lowercase "e." wordmark glyph, set in Poppins
- * ExtraBold with the brand's indigo→violet gradient. Renders as real text
- * (not a hand-drawn path) so it stays crisp at any size and always matches
- * whatever "e." looks like in Poppins.
+ * Eloq AI brand mark: a pulse/signal icon — concentric rings around a dot,
+ * representing a voice being picked up and analyzed in real time. Pure
+ * vector (currentColor strokes/fill) so it stays crisp at any size and
+ * matches whatever text color wraps it.
  */
 export function EloqMark({ className }: { className?: string }) {
   return (
-    <span
-      aria-hidden
-      className={className}
-      style={{
-        fontFamily: "var(--font-logo)",
-        fontWeight: 800,
-        lineHeight: 1,
-        backgroundImage: "linear-gradient(135deg, #8b7cf6 0%, #4f46e5 100%)",
-        backgroundClip: "text",
-        WebkitBackgroundClip: "text",
-        color: "transparent",
-      }}
-    >
-      e.
-    </span>
+    <svg aria-hidden viewBox="0 0 24 24" fill="none" className={className}>
+      <circle cx="12" cy="12" r="7.3" stroke="currentColor" strokeOpacity="0.4" strokeWidth="1.3" />
+      <circle cx="12" cy="12" r="4.6" stroke="currentColor" strokeOpacity="0.85" strokeWidth="1.3" />
+      <circle cx="12" cy="12" r="2.3" fill="currentColor" />
+    </svg>
   );
 }

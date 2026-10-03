@@ -15,8 +15,8 @@ export function Logo({
       href={href}
       className={cn("inline-flex items-center gap-2 font-semibold", className)}
     >
-      <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[#161042]">
-        <EloqMark className="text-xl" />
+      <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-[linear-gradient(135deg,#8b7cf6_0%,#4f46e5_100%)] text-white shadow-[0_6px_16px_-4px_rgba(79,70,229,0.45)]">
+        <EloqMark className="h-4.5 w-4.5" />
       </span>
       <span className="text-lg tracking-tight">Eloq AI</span>
     </a>
