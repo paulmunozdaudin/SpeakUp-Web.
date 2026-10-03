@@ -42,7 +42,9 @@ export const en = {
       confidence: "Confidence",
       pacing: "Pacing",
       structure: "Structure",
+      fillerWords: "Filler words",
     },
+    previewFillerExample: "“um”, “like”",
     twoPathsTitle: "What do you want to prepare?",
     twoPathsPractice: {
       title: "Practice",
@@ -750,7 +752,9 @@ export const es: Dictionary = {
       confidence: "Confianza",
       pacing: "Ritmo",
       structure: "Estructura",
+      fillerWords: "Muletillas",
     },
+    previewFillerExample: "«eh», «o sea»",
     twoPathsTitle: "¿Qué quieres preparar?",
     twoPathsPractice: {
       title: "Practicar",
@@ -1460,7 +1464,9 @@ export const fr: Dictionary = {
       confidence: "Confiance",
       pacing: "Rythme",
       structure: "Structure",
+      fillerWords: "Tics de langage",
     },
+    previewFillerExample: "« euh », « du coup »",
     twoPathsTitle: "Que veux-tu préparer ?",
     twoPathsPractice: {
       title: "Pratiquer",

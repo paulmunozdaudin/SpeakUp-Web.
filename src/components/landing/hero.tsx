@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { GraduationCap, Mic, Sparkles, User } from "lucide-react";
+import { GraduationCap, MessageSquareWarning, Mic, Sparkles, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WaveformBackground } from "@/components/landing/waveform-background";
 import { useUser } from "@/hooks/use-user";
@@ -101,7 +101,7 @@ export function Hero() {
                 86
               </span>
             </div>
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
               {previewMetrics.map((metric) => (
                 <div
                   key={metric.label}
@@ -122,6 +122,18 @@ export function Hero() {
                   </div>
                 </div>
               ))}
+              <div className="col-span-2 rounded-2xl bg-warning/10 p-4 text-left sm:col-span-1">
+                <p className="flex items-center gap-1.5 text-xs text-warning">
+                  <MessageSquareWarning className="h-3.5 w-3.5" />
+                  {d.landing.previewMetrics.fillerWords}
+                </p>
+                <p className="mt-1 text-xl font-semibold tabular-nums text-warning">
+                  3
+                </p>
+                <p className="mt-2 text-xs text-muted">
+                  {d.landing.previewFillerExample}
+                </p>
+              </div>
             </div>
           </div>
         </motion.div>
