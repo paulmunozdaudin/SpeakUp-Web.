@@ -65,8 +65,16 @@ export function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-12 border-t border-border pt-6 text-xs text-muted">
-          © {new Date().getFullYear()} Eloq AI. {d.landing.footerRights}
+        <div className="mt-12 flex flex-col gap-3 border-t border-border pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-muted">
+            © {new Date().getFullYear()} Eloq AI. {d.landing.footerRights}
+          </p>
+          <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-border bg-surface-muted px-2.5 py-1 text-[11px] font-medium text-muted">
+            Eloq Closers
+            <span className="rounded-full bg-accent-soft px-1.5 py-0.5 text-[10px] font-semibold text-accent">
+              {d.common.comingSoon}
+            </span>
+          </span>
         </div>
       </div>
     </footer>
