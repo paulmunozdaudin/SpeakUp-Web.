@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { isAdminEmail } from "@/lib/admin";
 import { AdminProToggle } from "@/components/admin/admin-pro-toggle";
+import { ReferralsLookup } from "@/components/admin/referrals-lookup";
 
 export const metadata = {
   title: "Admin",
@@ -23,7 +24,10 @@ export default async function AdminPage() {
   return (
     <div className="mx-auto w-full max-w-5xl space-y-6 px-4 py-10 sm:px-6">
       <h1 className="text-2xl font-semibold tracking-tight">Admin</h1>
-      <AdminProToggle />
+      <div className="flex flex-wrap gap-6">
+        <AdminProToggle />
+        <ReferralsLookup />
+      </div>
     </div>
   );
 }

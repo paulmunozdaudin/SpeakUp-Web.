@@ -8,6 +8,7 @@
 
 import { track } from "@vercel/analytics";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
+import { getStoredReferralCode } from "@/lib/referral";
 
 export interface AuthResult {
   ok: boolean;
@@ -27,11 +28,16 @@ export async function signUp(
   const supabase = getSupabaseBrowserClient();
   if (!supabase) return { ok: false, error: NOT_CONFIGURED_ERROR };
 
+  const referredBy = getStoredReferralCode();
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      data: { full_name: fullName },
+      data: {
+        full_name: fullName,
+        ...(referredBy ? { referred_by: referredBy } : {}),
+      },
       emailRedirectTo: `${window.location.origin}/auth/callback`,
     },
   });

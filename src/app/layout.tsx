@@ -5,6 +5,7 @@ import { ThemeProvider, themeInitScript } from "@/components/theme/theme-provide
 import { LocaleHtmlLang } from "@/components/theme/locale-html-lang";
 import { RegisterServiceWorker } from "@/components/pwa/register-service-worker";
 import { CookieNotice } from "@/components/legal/cookie-notice";
+import { ReferralCapture } from "@/components/referral/referral-capture";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -77,6 +78,7 @@ export default function RootLayout({
         <Analytics />
         <RegisterServiceWorker />
         <CookieNotice />
+        <ReferralCapture />
       </body>
     </html>
   );
