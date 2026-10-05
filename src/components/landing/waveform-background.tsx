@@ -32,10 +32,6 @@ export function WaveformBackground() {
     const ctx = canvas?.getContext("2d");
     if (!canvas || !ctx) return;
 
-    // Hidden below the `sm` breakpoint (see className below) — skip the
-    // whole effect there instead of animating an invisible canvas.
-    if (!window.matchMedia("(min-width: 640px)").matches) return;
-
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
@@ -145,7 +141,7 @@ export function WaveformBackground() {
     <canvas
       ref={canvasRef}
       aria-hidden
-      className="pointer-events-none absolute inset-x-0 top-0 hidden h-[520px] w-full sm:block"
+      className="pointer-events-none absolute inset-x-0 top-0 block h-[520px] w-full"
     />
   );
 }
