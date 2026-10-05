@@ -8,8 +8,7 @@ const SUPPORT_EMAIL = "paulmunozdaudin@gmail.com";
 /**
  * Shown in place of the checkout error when Lemon Squeezy isn't configured
  * yet: tells the user to email us so we can activate Pro for them manually
- * via /admin. Same message in every locale for now — a Bizum option for
- * Spain can come back once there's a PayPal equivalent for everyone else.
+ * via /admin.
  */
 export function ManualPaymentNotice() {
   const d = useDict();
