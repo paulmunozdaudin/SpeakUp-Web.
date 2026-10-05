@@ -17,10 +17,10 @@ function hexToRgb(hex: string): [number, number, number] {
 /**
  * Decorative audio-waveform strip behind the hero.
  *
- * On devices with a real mouse (hover + fine pointer), bars near the
- * cursor swell and gently idle-pulse, echoing the product's own recording
- * visualizer. On touch devices a tap doesn't give the smooth hover a mouse
- * does — it looked glitchy — so there it's just a static pattern instead.
+ * The idle pulse runs everywhere. On devices with a real mouse (hover +
+ * fine pointer) bars near the cursor also swell, echoing the product's own
+ * recording visualizer — touch devices skip that part, since a tap doesn't
+ * give the smooth hover a mouse does and it looked glitchy.
  *
  * Purely cosmetic (aria-hidden, pointer-events-none) and self-contained in
  * a canvas so it never affects hero layout or text contrast.
@@ -39,7 +39,7 @@ export function WaveformBackground() {
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     ).matches;
-    const animated = canHover && !reduceMotion;
+    const animated = !reduceMotion;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
     let width = 0;
