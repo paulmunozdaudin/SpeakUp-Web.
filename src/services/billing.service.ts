@@ -9,6 +9,10 @@
 export interface BillingResult {
   ok: boolean;
   error?: string;
+  /** True when the API's own "Lemon Squeezy isn't configured yet" guard
+   *  fired (HTTP 503) — callers show manual-payment instructions instead
+   *  of a generic error for this specific case. */
+  notConfigured?: boolean;
 }
 
 /**
@@ -23,7 +27,11 @@ async function startFlow(path: string): Promise<BillingResult> {
   const body = await response.json().catch(() => null);
 
   if (!response.ok) {
-    return { ok: false, error: body?.error ?? "Something went wrong." };
+    return {
+      ok: false,
+      error: body?.error ?? "Something went wrong.",
+      notConfigured: response.status === 503,
+    };
   }
 
   if (typeof body?.url === "string") {

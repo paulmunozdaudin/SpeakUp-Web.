@@ -17,6 +17,7 @@ import {
 import { useUser } from "@/hooks/use-user";
 import { useProfile } from "@/hooks/use-profile";
 import { useSessions } from "@/hooks/use-sessions";
+import { ManualPaymentNotice } from "@/components/billing/manual-payment-notice";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
@@ -40,6 +41,7 @@ export default function ProfilePage() {
   const { sessions, stats, loading: sessionsLoading } = useSessions();
   const [billingPending, setBillingPending] = useState(false);
   const [billingError, setBillingError] = useState<string | null>(null);
+  const [billingNotConfigured, setBillingNotConfigured] = useState(false);
   const [waitlistJoined, setWaitlistJoined] = useState(false);
 
   const fullName =
@@ -48,12 +50,17 @@ export default function ProfilePage() {
 
   async function handleBillingClick() {
     setBillingError(null);
+    setBillingNotConfigured(false);
     setBillingPending(true);
     const result = isPro ? await openBillingPortal() : await startProCheckout();
     if (!result.ok) {
-      // Same as pricing.tsx: the billing API only ever returns English
-      // debug strings, never show those raw — always the translated one.
-      setBillingError(d.billing.checkoutError);
+      if (result.notConfigured) {
+        setBillingNotConfigured(true);
+      } else {
+        // Same as pricing.tsx: the billing API only ever returns English
+        // debug strings, never show those raw — always the translated one.
+        setBillingError(d.billing.checkoutError);
+      }
       setBillingPending(false);
     }
   }
@@ -205,6 +212,7 @@ export default function ProfilePage() {
                 {billingError}
               </p>
             )}
+            {billingNotConfigured && <ManualPaymentNotice />}
           </div>
         )}
       </Card>

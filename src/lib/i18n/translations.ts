@@ -481,7 +481,11 @@ export const en = {
       "You've used your 3 free practices this week. Upgrade to Pro for unlimited practices.",
     checkoutError: "Couldn't start checkout. Please try again in a moment.",
     portalError: "Couldn't open the billing portal. Please try again.",
-    notConfigured: "Payments aren't available yet. Please try again later.",
+    notConfigured:
+      "Online payments aren't live yet. Email us and we'll activate Pro for you by hand.",
+    manualPaymentBizumIntro: "Online payments aren't live yet. Send a Bizum to:",
+    manualPaymentEmailIntro:
+      "Online payments aren't live yet. Email us and we'll activate Pro for you by hand:",
     waitlistCta: "Notify me",
     waitlistPlaceholder: "you@example.com",
     waitlistSuccess: "You're on the list — we'll email you the moment Pro is live.",
@@ -1201,7 +1205,10 @@ export const es: Dictionary = {
       "Has usado tus 3 prácticas gratis de esta semana. Hazte Pro para prácticas ilimitadas.",
     checkoutError: "No se pudo iniciar el pago. Inténtalo de nuevo en un momento.",
     portalError: "No se pudo abrir el portal de facturación. Inténtalo de nuevo.",
-    notConfigured: "Los pagos aún no están disponibles. Inténtalo más tarde.",
+    notConfigured: "Los pagos online aún no están activos. Escríbenos y te activamos Pro a mano.",
+    manualPaymentBizumIntro: "Los pagos online aún no están activos. Hazme un Bizum a:",
+    manualPaymentEmailIntro:
+      "Los pagos online aún no están activos. Escríbenos y te activamos Pro a mano:",
     waitlistCta: "Avísame",
     waitlistPlaceholder: "tucorreo@ejemplo.com",
     waitlistSuccess: "Apuntado — te avisaremos por email en cuanto esté disponible.",
@@ -1914,7 +1921,11 @@ export const fr: Dictionary = {
       "Tu as utilisé tes 3 entraînements gratuits de cette semaine. Passe à Pro pour des entraînements illimités.",
     checkoutError: "Impossible de démarrer le paiement. Réessaie dans un instant.",
     portalError: "Impossible d'ouvrir le portail de facturation. Réessaie.",
-    notConfigured: "Les paiements ne sont pas encore disponibles. Réessaie plus tard.",
+    notConfigured:
+      "Les paiements en ligne ne sont pas encore actifs. Écris-nous et on active Pro à la main.",
+    manualPaymentBizumIntro: "Les paiements en ligne ne sont pas encore actifs. Envoie un Bizum à :",
+    manualPaymentEmailIntro:
+      "Les paiements en ligne ne sont pas encore actifs. Écris-nous et on active Pro à la main :",
     waitlistCta: "Préviens-moi",
     waitlistPlaceholder: "toi@exemple.com",
     waitlistSuccess: "C'est noté — on t'écrira dès que Pro sera disponible.",

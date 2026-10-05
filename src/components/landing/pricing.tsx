@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Section } from "./section";
 import { ProWaitlistForm } from "./pro-waitlist-form";
+import { ManualPaymentNotice } from "@/components/billing/manual-payment-notice";
 import { useDict } from "@/lib/i18n";
 import { useUser } from "@/hooks/use-user";
 import { startProCheckout, PRO_CHECKOUT_ENABLED } from "@/services/billing.service";
@@ -19,16 +20,22 @@ export function Pricing() {
   const { user } = useUser();
   const [checkoutPending, setCheckoutPending] = useState(false);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const [notConfigured, setNotConfigured] = useState(false);
 
   async function handleProClick() {
     setCheckoutError(null);
+    setNotConfigured(false);
     setCheckoutPending(true);
     const result = await startProCheckout();
     if (!result.ok) {
-      // The API only ever returns English debug strings (not configured,
-      // Lemon Squeezy error messages) — never show those raw to a user
-      // browsing in ES/FR, always the translated generic message instead.
-      setCheckoutError(d.billing.checkoutError);
+      if (result.notConfigured) {
+        setNotConfigured(true);
+      } else {
+        // The API only ever returns English debug strings (Lemon Squeezy
+        // error messages) — never show those raw to a user browsing in
+        // ES/FR, always the translated generic message instead.
+        setCheckoutError(d.billing.checkoutError);
+      }
       setCheckoutPending(false);
     }
     // On success the browser is already navigating away to Lemon Squeezy.
@@ -100,6 +107,7 @@ export function Pricing() {
                       {checkoutError}
                     </p>
                   )}
+                  {notConfigured && <ManualPaymentNotice />}
                 </div>
               ) : (
                 <Link href={isFreePlan ? "/practice" : "/signup"} className="mt-8">
