@@ -233,6 +233,7 @@ export const en = {
     footerBlog: "Blog",
     footerPrivacy: "Privacy",
     footerTerms: "Terms",
+    footerCookies: "Cookies",
     footerRights: "All rights reserved.",
   },
   auth: {
@@ -710,6 +711,11 @@ export const en = {
     interviewerThinking: "The interviewer is preparing the next question…",
     finishNow: "End the interview now",
   },
+  cookieNotice: {
+    text: "We only use one necessary cookie (to keep you logged in) and local storage for your preferences — no tracking or ad cookies.",
+    link: "Learn more",
+    dismiss: "Got it",
+  },
 };
 
 export type Dictionary = typeof en;
@@ -944,6 +950,7 @@ export const es: Dictionary = {
     footerBlog: "Blog",
     footerPrivacy: "Privacidad",
     footerTerms: "Términos",
+    footerCookies: "Cookies",
     footerRights: "Todos los derechos reservados.",
   },
   auth: {
@@ -1424,6 +1431,11 @@ export const es: Dictionary = {
     interviewerThinking: "El entrevistador está preparando la siguiente pregunta…",
     finishNow: "Terminar la entrevista ahora",
   },
+  cookieNotice: {
+    text: "Solo usamos una cookie necesaria (para mantenerte conectado) y almacenamiento local para tus preferencias — sin cookies de rastreo ni publicidad.",
+    link: "Saber más",
+    dismiss: "Entendido",
+  },
 };
 
 export const fr: Dictionary = {
@@ -1657,6 +1669,7 @@ export const fr: Dictionary = {
     footerBlog: "Blog",
     footerPrivacy: "Confidentialité",
     footerTerms: "Conditions",
+    footerCookies: "Cookies",
     footerRights: "Tous droits réservés.",
   },
   auth: {
@@ -2130,5 +2143,10 @@ export const fr: Dictionary = {
     questionProgress: "Question {current} / {total}",
     interviewerThinking: "Le recruteur prépare la question suivante…",
     finishNow: "Terminer l'entretien maintenant",
+  },
+  cookieNotice: {
+    text: "Nous utilisons seulement un cookie nécessaire (pour te garder connecté) et le stockage local pour tes préférences — aucun cookie de suivi ni publicitaire.",
+    link: "En savoir plus",
+    dismiss: "Compris",
   },
 };

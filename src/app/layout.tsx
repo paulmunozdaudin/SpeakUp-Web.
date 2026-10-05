@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider, themeInitScript } from "@/components/theme/theme-provider";
 import { LocaleHtmlLang } from "@/components/theme/locale-html-lang";
 import { RegisterServiceWorker } from "@/components/pwa/register-service-worker";
+import { CookieNotice } from "@/components/legal/cookie-notice";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -75,6 +76,7 @@ export default function RootLayout({
         <ThemeProvider>{children}</ThemeProvider>
         <Analytics />
         <RegisterServiceWorker />
+        <CookieNotice />
       </body>
     </html>
   );

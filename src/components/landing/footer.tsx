@@ -33,6 +33,7 @@ export function Footer() {
       links: [
         { label: d.landing.footerPrivacy, href: "/privacy" },
         { label: d.landing.footerTerms, href: "/terms" },
+        { label: d.landing.footerCookies, href: "/cookies" },
       ],
     },
   ];

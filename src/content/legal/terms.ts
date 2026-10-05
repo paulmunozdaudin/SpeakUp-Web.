@@ -54,37 +54,45 @@ export const termsContent: LegalContent = {
         ],
       },
       {
-        heading: "7. Propiedad intelectual",
+        heading: "7. Reembolsos y derecho de desistimiento",
+        paragraphs: [
+          "Como norma general, no ofrecemos reembolsos por la parte ya transcurrida de un periodo de suscripción ya pagado — puedes cancelar en cualquier momento, pero seguirás teniendo acceso Pro hasta el final de ese periodo.",
+          "Si resides en la Unión Europea, la ley te reconoce un derecho de desistimiento de 14 días en contrataciones a distancia. Para servicios digitales como este, ese derecho se pierde si accedes al contenido Pro inmediatamente tras contratarlo con tu consentimiento expreso — algo que ocurre automáticamente al suscribirte, ya que el acceso se activa al instante. Dicho esto, si nos escribes dentro de los 14 días siguientes a tu primera suscripción y apenas has usado el plan Pro, valoraremos el reembolso de buena fe caso por caso.",
+          "Para solicitar un reembolso o resolver cualquier duda sobre un cargo, escribe a paulmunozdaudin@gmail.com.",
+        ],
+      },
+      {
+        heading: "8. Propiedad intelectual",
         paragraphs: [
           "El diseño, la marca, el código y los contenidos propios de Eloq AI son propiedad de Paul Daudin Muñoz. Las bibliotecas de código abierto utilizadas mantienen sus propias licencias.",
         ],
       },
       {
-        heading: "8. Cancelación",
+        heading: "9. Cancelación",
         paragraphs: [
           "Puedes dejar de usar el servicio cuando quieras. Si tienes cuenta y quieres eliminarla, escríbenos a paulmunozdaudin@gmail.com. Podemos suspender o cerrar cuentas que incumplan estos términos, avisando cuando sea razonablemente posible.",
         ],
       },
       {
-        heading: "9. El servicio se ofrece 'tal cual'",
+        heading: "10. El servicio se ofrece 'tal cual'",
         paragraphs: [
           "Eloq AI se ofrece sin garantías de disponibilidad ininterrumpida, ausencia de errores, o idoneidad para un fin concreto. Hacemos lo posible por mantenerlo funcionando correctamente, pero no podemos garantizarlo al 100%.",
         ],
       },
       {
-        heading: "10. Limitación de responsabilidad",
+        heading: "11. Limitación de responsabilidad",
         paragraphs: [
           "En la máxima medida permitida por la ley, no seremos responsables de daños indirectos, incidentales o consecuentes derivados del uso del servicio, incluyendo decisiones tomadas basándote en el feedback generado por la IA.",
         ],
       },
       {
-        heading: "11. Ley aplicable",
+        heading: "12. Ley aplicable",
         paragraphs: [
           "Estos términos se rigen por la legislación española, y cualquier disputa se someterá a los juzgados y tribunales de España.",
         ],
       },
       {
-        heading: "12. Cambios en estos términos",
+        heading: "13. Cambios en estos términos",
         paragraphs: [
           "Podemos actualizar estos términos ocasionalmente. Si el cambio es relevante, actualizaremos la fecha indicada arriba y, cuando corresponda, te avisaremos por otros medios.",
         ],
@@ -140,37 +148,45 @@ export const termsContent: LegalContent = {
         ],
       },
       {
-        heading: "7. Propriété intellectuelle",
+        heading: "7. Remboursements et droit de rétractation",
+        paragraphs: [
+          "En règle générale, nous ne remboursons pas la partie déjà écoulée d'une période d'abonnement déjà payée — tu peux annuler à tout moment, mais tu conserveras l'accès Pro jusqu'à la fin de cette période.",
+          "Si tu résides dans l'Union européenne, la loi te reconnaît un droit de rétractation de 14 jours pour les contrats conclus à distance. Pour les services numériques comme celui-ci, ce droit est perdu dès lors que tu accèdes au contenu Pro immédiatement après la souscription avec ton consentement exprès — ce qui se produit automatiquement lors de l'abonnement, puisque l'accès est activé instantanément. Cela dit, si tu nous écris dans les 14 jours suivant ta première souscription et que tu as à peine utilisé le plan Pro, nous étudierons un remboursement de bonne foi, au cas par cas.",
+          "Pour demander un remboursement ou pour toute question sur un prélèvement, écris à paulmunozdaudin@gmail.com.",
+        ],
+      },
+      {
+        heading: "8. Propriété intellectuelle",
         paragraphs: [
           "Le design, la marque, le code et les contenus propres à Eloq AI appartiennent à Paul Daudin Muñoz. Les bibliothèques open source utilisées conservent leurs propres licences.",
         ],
       },
       {
-        heading: "8. Résiliation",
+        heading: "9. Résiliation",
         paragraphs: [
           "Tu peux arrêter d'utiliser le service à tout moment. Si tu as un compte et souhaites le supprimer, écris-nous à paulmunozdaudin@gmail.com. Nous pouvons suspendre ou fermer les comptes qui enfreignent ces conditions, en te prévenant lorsque cela est raisonnablement possible.",
         ],
       },
       {
-        heading: "9. Le service est fourni « tel quel »",
+        heading: "10. Le service est fourni « tel quel »",
         paragraphs: [
           "Eloq AI est fourni sans garantie de disponibilité ininterrompue, d'absence d'erreurs, ou d'adéquation à un usage particulier. Nous faisons de notre mieux pour le maintenir en bon fonctionnement, mais nous ne pouvons pas le garantir à 100 %.",
         ],
       },
       {
-        heading: "10. Limitation de responsabilité",
+        heading: "11. Limitation de responsabilité",
         paragraphs: [
           "Dans la mesure maximale permise par la loi, nous ne serons pas responsables des dommages indirects, accessoires ou consécutifs découlant de l'utilisation du service, y compris des décisions prises sur la base du retour généré par l'IA.",
         ],
       },
       {
-        heading: "11. Loi applicable",
+        heading: "12. Loi applicable",
         paragraphs: [
           "Ces conditions sont régies par le droit espagnol, et tout litige sera soumis aux tribunaux d'Espagne.",
         ],
       },
       {
-        heading: "12. Modifications de ces conditions",
+        heading: "13. Modifications de ces conditions",
         paragraphs: [
           "Nous pouvons mettre à jour ces conditions occasionnellement. Si le changement est significatif, nous mettrons à jour la date indiquée ci-dessus et, le cas échéant, nous te préviendrons par d'autres moyens.",
         ],
@@ -226,37 +242,45 @@ export const termsContent: LegalContent = {
         ],
       },
       {
-        heading: "7. Intellectual property",
+        heading: "7. Refunds and right of withdrawal",
+        paragraphs: [
+          "As a general rule, we don't refund the elapsed portion of an already-paid subscription period — you can cancel anytime, but you'll keep Pro access until the end of that period.",
+          "If you're in the European Union, the law gives you a 14-day right of withdrawal for distance contracts. For digital services like this one, that right is lost once you access the Pro content immediately after subscribing with your express consent — which happens automatically when you subscribe, since access is activated instantly. That said, if you email us within 14 days of your first subscription and have barely used the Pro plan, we'll consider a good-faith refund on a case-by-case basis.",
+          "To request a refund or ask about a charge, write to paulmunozdaudin@gmail.com.",
+        ],
+      },
+      {
+        heading: "8. Intellectual property",
         paragraphs: [
           "The design, branding, code and original content of Eloq AI belong to Paul Daudin Muñoz. Open-source libraries used retain their own licenses.",
         ],
       },
       {
-        heading: "8. Cancellation",
+        heading: "9. Cancellation",
         paragraphs: [
           "You can stop using the service at any time. If you have an account and want it deleted, email us at paulmunozdaudin@gmail.com. We may suspend or close accounts that violate these terms, notifying you when reasonably possible.",
         ],
       },
       {
-        heading: "9. Service provided 'as is'",
+        heading: "10. Service provided 'as is'",
         paragraphs: [
           "Eloq AI is provided without guarantees of uninterrupted availability, error-free operation, or fitness for a particular purpose. We do our best to keep it running well, but we can't guarantee it 100%.",
         ],
       },
       {
-        heading: "10. Limitation of liability",
+        heading: "11. Limitation of liability",
         paragraphs: [
           "To the maximum extent permitted by law, we won't be liable for indirect, incidental or consequential damages arising from use of the service, including decisions made based on AI-generated feedback.",
         ],
       },
       {
-        heading: "11. Governing law",
+        heading: "12. Governing law",
         paragraphs: [
           "These terms are governed by the laws of Spain, and any dispute will be submitted to the courts of Spain.",
         ],
       },
       {
-        heading: "12. Changes to these terms",
+        heading: "13. Changes to these terms",
         paragraphs: [
           "We may update these terms occasionally. If a change is material, we'll update the date above and, where appropriate, notify you through other means.",
         ],
