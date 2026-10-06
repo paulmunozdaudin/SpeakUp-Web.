@@ -274,6 +274,26 @@ export function RecorderPanel({
 
         {/* Main control: Start when idle, Stop while active (recording or paused) */}
         <div className="relative mt-8">
+          {/* Ambient aura — a soft, slowly breathing glow behind the button,
+              always on (not just while recording), so the control feels
+              alive rather than a flat static icon. */}
+          <motion.div
+            aria-hidden
+            className={cn(
+              "absolute -z-10 rounded-full blur-2xl transition-colors duration-700",
+              isActive ? "bg-danger/50" : "bg-accent/40",
+            )}
+            style={{ inset: "-1.75rem" }}
+            animate={{
+              scale: isActive ? [1, 1.22, 1] : [1, 1.1, 1],
+              opacity: isActive ? [0.55, 0.9, 0.55] : [0.35, 0.6, 0.35],
+            }}
+            transition={{
+              duration: isActive ? 1.7 : 3.2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
           <AnimatePresence>
             {isRecording && (
               <>
@@ -282,7 +302,7 @@ export function RecorderPanel({
                   animate={{ opacity: [0.5, 0], scale: [1, 1.6] }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
-                  className="absolute inset-0 rounded-full bg-danger/25"
+                  className="absolute inset-0 rounded-full bg-danger/25 blur-[1px]"
                 />
                 <motion.span
                   initial={{ opacity: 0, scale: 1 }}
@@ -294,7 +314,7 @@ export function RecorderPanel({
                     ease: "easeOut",
                     delay: 0.5,
                   }}
-                  className="absolute inset-0 rounded-full bg-danger/15"
+                  className="absolute inset-0 rounded-full bg-danger/15 blur-[1px]"
                 />
               </>
             )}
@@ -316,10 +336,10 @@ export function RecorderPanel({
             }}
             aria-label={isActive ? d.practice.stop : d.practice.start}
             className={cn(
-              "relative flex h-24 w-24 cursor-pointer items-center justify-center rounded-full text-white shadow-lg transition-all duration-300 active:scale-95 disabled:opacity-50",
+              "relative flex h-24 w-24 cursor-pointer items-center justify-center rounded-full text-white transition-all duration-300 active:scale-95 disabled:opacity-50",
               isActive
-                ? "bg-danger shadow-danger/30"
-                : "bg-accent shadow-accent/30 hover:bg-accent-hover",
+                ? "bg-[linear-gradient(135deg,#f87171,var(--danger))] shadow-[0_20px_45px_-14px_var(--danger)]"
+                : "bg-[linear-gradient(135deg,var(--accent-hover),var(--accent))] shadow-[0_20px_45px_-14px_var(--accent)] hover:-translate-y-0.5",
             )}
           >
             {isActive ? (
