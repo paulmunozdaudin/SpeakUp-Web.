@@ -56,6 +56,10 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: light)", color: "#fafafa" },
     { media: "(prefers-color-scheme: dark)", color: "#09090b" },
   ],
+  // Lets content draw edge-to-edge under the notch/status bar and home
+  // indicator — required for env(safe-area-inset-*) below to do anything.
+  // Matters most as an installed PWA (statusBarStyle: black-translucent).
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

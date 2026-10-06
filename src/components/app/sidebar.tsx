@@ -49,8 +49,9 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile top bar — just the logo, so there's always a way back home. */}
-      <header className="fixed inset-x-0 top-0 z-40 flex h-14 items-center border-b border-border bg-surface/90 px-4 backdrop-blur-xl md:hidden">
+      {/* Mobile top bar — just the logo, so there's always a way back home.
+          Padded for the notch/status bar (matters as an installed PWA). */}
+      <header className="fixed inset-x-0 top-0 z-40 flex h-[calc(3.5rem+env(safe-area-inset-top))] items-end border-b border-border bg-surface/90 px-4 pb-2.5 backdrop-blur-xl md:hidden">
         <Logo href="/" />
       </header>
 
@@ -100,14 +101,15 @@ export function Sidebar() {
         </div>
       </aside>
 
-      {/* Mobile bottom nav */}
-      <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-surface/90 backdrop-blur-xl md:hidden">
+      {/* Mobile bottom nav — padded for the home indicator (matters as an
+          installed PWA). */}
+      <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-surface/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden">
         {items.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             className={cn(
-              "flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors",
+              "flex flex-1 flex-col items-center gap-1 py-2.5 text-[11px] font-medium transition-colors active:scale-95",
               item.active ? "text-accent" : "text-muted",
             )}
           >
