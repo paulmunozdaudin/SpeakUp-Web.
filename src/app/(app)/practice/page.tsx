@@ -27,6 +27,10 @@ import { useDict } from "@/lib/i18n";
 import type { CapturedFrame } from "@/utils/video-frames";
 import type { PauseEvent } from "@/hooks/use-speech-recorder";
 
+/** Below this, there just isn't enough speech for the AI to say anything
+ *  meaningful about clarity, pacing or structure. */
+const MIN_SPEECH_SECONDS = 30;
+
 interface SessionConfig {
   mode: PracticeMode;
   title: string;
@@ -115,7 +119,7 @@ export default function PracticePage() {
     frames?: CapturedFrame[],
     pauses?: PauseEvent[],
   ) {
-    if (transcript.trim().split(/\s+/).filter(Boolean).length < 8) {
+    if (durationSeconds < MIN_SPEECH_SECONDS) {
       setError(d.practice.tooShort);
       setRecorderKey((k) => k + 1); // remount RecorderPanel back to idle
       return;

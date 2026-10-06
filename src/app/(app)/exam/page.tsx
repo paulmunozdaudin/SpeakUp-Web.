@@ -66,6 +66,10 @@ const DEFAULT_PRESENTATION_MINUTES: Record<ExamMode, TargetDuration> = {
 const INTERVIEW_QUESTIONS = 3;
 const PER_TURN_TARGET_MINUTES: TargetDuration = 1;
 const MIN_TEXT_PASTE_CHARS = 40;
+/** Below this, there just isn't enough of the presentation for the AI to
+ *  say anything meaningful about clarity, pacing or structure. Only gates
+ *  the presentation itself, not the shorter jury-turn answers. */
+const MIN_PRESENTATION_SECONDS = 30;
 
 interface Turn {
   question: string;
@@ -305,7 +309,7 @@ export default function ExamModePage() {
     frames?: CapturedFrame[],
     pauses?: PauseEvent[],
   ) {
-    if (transcript.trim().split(/\s+/).filter(Boolean).length < 20) {
+    if (durationSeconds < MIN_PRESENTATION_SECONDS) {
       setError(d.practice.tooShort);
       setRecorderKey((k) => k + 1);
       return;

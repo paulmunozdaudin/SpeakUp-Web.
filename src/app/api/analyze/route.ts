@@ -110,11 +110,10 @@ export async function POST(request: Request) {
       );
     }
 
-    if (body.transcript.trim().split(/\s+/).length < 8) {
+    if (body.durationSeconds < 30) {
       return NextResponse.json(
         {
-          error:
-            "The recording was too short to analyze. Speak for at least a few sentences.",
+          error: "The recording was too short to analyze. Speak for at least 30 seconds.",
         },
         { status: 422 },
       );
