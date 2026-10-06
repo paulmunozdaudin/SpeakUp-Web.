@@ -483,8 +483,8 @@ export const en = {
     portalError: "Couldn't open the billing portal. Please try again.",
     notConfigured:
       "Online payments aren't live yet. Email us and we'll activate Pro for you by hand.",
-    manualPaymentEmailIntro:
-      "Online payments aren't live yet. Send us an email and we'll activate Pro for you by hand:",
+    manualPaymentIntro:
+      "Online payments aren't live yet. Send a PayPal payment to this number and we'll activate Pro for you by hand:",
     waitlistCta: "Notify me",
     waitlistPlaceholder: "you@example.com",
     waitlistSuccess: "You're on the list — we'll email you the moment Pro is live.",
@@ -1205,8 +1205,8 @@ export const es: Dictionary = {
     checkoutError: "No se pudo iniciar el pago. Inténtalo de nuevo en un momento.",
     portalError: "No se pudo abrir el portal de facturación. Inténtalo de nuevo.",
     notConfigured: "Los pagos online aún no están activos. Escríbenos y te activamos Pro a mano.",
-    manualPaymentEmailIntro:
-      "Los pagos online aún no están activos. Mándanos un email y te activamos Pro a mano:",
+    manualPaymentIntro:
+      "Los pagos online aún no están activos. Mándanos un PayPal a este número y te activamos Pro a mano:",
     waitlistCta: "Avísame",
     waitlistPlaceholder: "tucorreo@ejemplo.com",
     waitlistSuccess: "Apuntado — te avisaremos por email en cuanto esté disponible.",
@@ -1921,8 +1921,8 @@ export const fr: Dictionary = {
     portalError: "Impossible d'ouvrir le portail de facturation. Réessaie.",
     notConfigured:
       "Les paiements en ligne ne sont pas encore actifs. Écris-nous et on active Pro à la main.",
-    manualPaymentEmailIntro:
-      "Les paiements en ligne ne sont pas encore actifs. Envoie-nous un email et on active Pro à la main :",
+    manualPaymentIntro:
+      "Les paiements en ligne ne sont pas encore actifs. Envoie un PayPal à ce numéro et on active Pro à la main :",
     waitlistCta: "Préviens-moi",
     waitlistPlaceholder: "toi@exemple.com",
     waitlistSuccess: "C'est noté — on t'écrira dès que Pro sera disponible.",
