@@ -16,11 +16,24 @@ export function captureReferralCode(search: string): void {
 }
 
 /** Read back by auth.service's signUp() and attached to the new profile
- *  via the handle_new_user trigger (see migration 00006). */
+ *  via the handle_new_user trigger (see migration 00006), and separately
+ *  by ReferralCapture to self-report to /api/referral/attach once a
+ *  session exists — the path that covers Google and any future OAuth
+ *  provider, where there's no signUp() call to piggyback metadata onto. */
 export function getStoredReferralCode(): string | null {
   try {
     return localStorage.getItem(STORAGE_KEY);
   } catch {
     return null;
+  }
+}
+
+/** Called once the stored code has been attached (or the server confirmed
+ *  the profile already had one) — stops ReferralCapture from retrying. */
+export function clearStoredReferralCode(): void {
+  try {
+    localStorage.removeItem(STORAGE_KEY);
+  } catch {
+    // Storage unavailable — nothing to recover.
   }
 }

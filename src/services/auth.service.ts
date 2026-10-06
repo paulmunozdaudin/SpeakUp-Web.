@@ -58,18 +58,10 @@ export async function signInWithGoogle(): Promise<AuthResult> {
   const supabase = getSupabaseBrowserClient();
   if (!supabase) return { ok: false, error: NOT_CONFIGURED_ERROR };
 
-  // Google sign-ups don't go through signUp()'s options.data (Supabase
-  // populates raw_user_meta_data from the Google profile instead), so the
-  // referral code has to travel through the redirect URL and get attached
-  // server-side in /auth/callback.
-  const referredBy = getStoredReferralCode();
-  const redirectTo = new URL("/auth/callback", window.location.origin);
-  if (referredBy) redirectTo.searchParams.set("ref", referredBy);
-
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: redirectTo.toString(),
+      redirectTo: `${window.location.origin}/auth/callback`,
       // Without this, Google silently reuses whatever account is already
       // signed in on the device instead of letting people pick — a problem
       // for anyone with more than one Google account (e.g. personal +
