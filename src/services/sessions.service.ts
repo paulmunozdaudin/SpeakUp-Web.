@@ -28,6 +28,11 @@ import { getLocale, DICTIONARIES } from "@/lib/i18n";
 const LOCAL_KEY = "eloq-sessions";
 const GUEST_USER_ID = "guest";
 
+/** Thrown by checkFreeQuota() specifically, so callers can tell a
+ *  capped-out free user apart from any other failure and show an upgrade
+ *  prompt instead of a generic error. */
+export class QuotaExceededError extends Error {}
+
 /** Free-plan sessions per calendar week (Monday-Sunday) — matches the
  *  pricing page copy. Guests (no account) are never capped; the limit only
  *  applies once practices start syncing to a real account, to give Pro a
@@ -163,7 +168,7 @@ export async function checkFreeQuota(): Promise<void> {
     .gte("created_at", startOfWeek().toISOString());
 
   if ((count ?? 0) >= FREE_WEEKLY_SESSION_LIMIT) {
-    throw new Error(DICTIONARIES[getLocale()].billing.quotaExceeded);
+    throw new QuotaExceededError(DICTIONARIES[getLocale()].billing.quotaExceeded);
   }
 }
 

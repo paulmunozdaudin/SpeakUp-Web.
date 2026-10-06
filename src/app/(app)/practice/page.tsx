@@ -21,7 +21,8 @@ import { LanguageSelector } from "@/components/recording/language-selector";
 import { RecorderPanel } from "@/components/recording/recorder-panel";
 import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
 import { analyzeAndSave } from "@/services/analysis.service";
-import { checkFreeQuota } from "@/services/sessions.service";
+import { checkFreeQuota, QuotaExceededError } from "@/services/sessions.service";
+import { QuotaExceededNotice } from "@/components/billing/quota-exceeded-notice";
 import { useDict } from "@/lib/i18n";
 import type { CapturedFrame } from "@/utils/video-frames";
 import type { PauseEvent } from "@/hooks/use-speech-recorder";
@@ -82,6 +83,7 @@ export default function PracticePage() {
   const [titleError, setTitleError] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [quotaExceeded, setQuotaExceeded] = useState(false);
   const [recorderKey, setRecorderKey] = useState(0);
 
   async function handleContinue() {
@@ -90,13 +92,18 @@ export default function PracticePage() {
       return;
     }
     setError(null);
+    setQuotaExceeded(false);
     // Checked before the recorder even opens — otherwise a free user over
     // quota would record a full take and pay for an AI analysis that
     // createSession() rejects at the very last step.
     try {
       await checkFreeQuota();
     } catch (e) {
-      setError(e instanceof Error ? e.message : d.auth.genericError);
+      if (e instanceof QuotaExceededError) {
+        setQuotaExceeded(true);
+      } else {
+        setError(e instanceof Error ? e.message : d.auth.genericError);
+      }
       return;
     }
     setStep("record");
@@ -267,6 +274,7 @@ export default function PracticePage() {
               {d.practice.startPracticeCta}
               <ArrowRight className="h-4.5 w-4.5" />
             </Button>
+            {quotaExceeded && <QuotaExceededNotice />}
             {error && (
               <p className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">
                 {error}

@@ -27,7 +27,12 @@ import { RecorderPanel } from "@/components/recording/recorder-panel";
 import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
 import { ExamModeInfoModal } from "@/components/exam/exam-mode-info-modal";
 import { analyzeAndSave } from "@/services/analysis.service";
-import { checkFreeQuota, getSession } from "@/services/sessions.service";
+import {
+  checkFreeQuota,
+  getSession,
+  QuotaExceededError,
+} from "@/services/sessions.service";
+import { QuotaExceededNotice } from "@/components/billing/quota-exceeded-notice";
 import { AUDIENCE_QUESTIONS } from "@/services/ai/question-bank";
 import type { CapturedFrame } from "@/utils/video-frames";
 import type { PauseEvent } from "@/hooks/use-speech-recorder";
@@ -192,6 +197,7 @@ export default function ExamModePage() {
   const [loadingNextQuestion, setLoadingNextQuestion] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [quotaExceeded, setQuotaExceeded] = useState(false);
 
   const isBacFrancais = mode === "bac-francais-oral";
 
@@ -206,13 +212,18 @@ export default function ExamModePage() {
 
   async function beginPresentation() {
     setError(null);
+    setQuotaExceeded(false);
     // Checked before recording even opens — a full exam run (presentation +
     // 3 jury turns, several OpenAI calls) would otherwise be wasted on a
     // free user already over quota, only to fail at the very last step.
     try {
       await checkFreeQuota();
     } catch (e) {
-      setError(e instanceof Error ? e.message : d.auth.genericError);
+      if (e instanceof QuotaExceededError) {
+        setQuotaExceeded(true);
+      } else {
+        setError(e instanceof Error ? e.message : d.auth.genericError);
+      }
       return;
     }
     track("exam_started", { mode });
@@ -506,6 +517,7 @@ export default function ExamModePage() {
             >
               {d.examMode.startExam}
             </Button>
+            {quotaExceeded && <QuotaExceededNotice dict={d} />}
             {error && (
               <p className="rounded-xl bg-danger/10 px-4 py-3 text-sm text-danger">{error}</p>
             )}
