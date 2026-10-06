@@ -58,10 +58,20 @@ export async function signInWithGoogle(): Promise<AuthResult> {
   const supabase = getSupabaseBrowserClient();
   if (!supabase) return { ok: false, error: NOT_CONFIGURED_ERROR };
 
+  // Belt-and-suspenders with ReferralCapture's localStorage-based attach:
+  // Google often forces the consent screen out of an in-app browser
+  // (Instagram/TikTok) into the system browser mid-flow, which can leave
+  // localStorage behind. Putting the code in the redirect URL itself
+  // survives that switch, since Supabase carries it straight through to
+  // the callback regardless of which browser handled the consent step.
+  const referredBy = getStoredReferralCode();
+  const redirectTo = new URL("/auth/callback", window.location.origin);
+  if (referredBy) redirectTo.searchParams.set("ref", referredBy);
+
   const { error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: redirectTo.toString(),
       // Without this, Google silently reuses whatever account is already
       // signed in on the device instead of letting people pick — a problem
       // for anyone with more than one Google account (e.g. personal +
