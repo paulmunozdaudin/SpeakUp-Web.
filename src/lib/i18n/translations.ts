@@ -344,7 +344,7 @@ export const en = {
     targetReached: "You've reached your target duration.",
     notSupportedTitle: "Speech recognition isn't available",
     notSupportedBody:
-      "This browser can't record live speech — common if you're inside the TikTok or Instagram app. Tap the ••• menu and choose \"Open in browser\", or open this page directly in Safari or Chrome.",
+      "This browser can't record live speech. If you're inside the TikTok or Instagram app, tap the ••• menu and choose \"Open in browser\". Otherwise, Chrome on Android or a computer gives the most reliable results — Firefox doesn't support this at all, and iPhone's support (any browser, since they all run on the same engine there) is limited.",
     micDenied:
       "Microphone access was denied. Allow it in your browser settings and try again.",
     micDeniedIOS:
@@ -1067,7 +1067,7 @@ export const es: Dictionary = {
     targetReached: "Has alcanzado tu duración objetivo.",
     notSupportedTitle: "El reconocimiento de voz no está disponible",
     notSupportedBody:
-      "Este navegador no permite grabar en directo — es habitual si estás dentro de la app de TikTok o Instagram. Toca el menú ••• y elige «Abrir en el navegador», o abre esta página directamente en Safari o Chrome.",
+      "Este navegador no permite grabar en directo. Si estás dentro de la app de TikTok o Instagram, toca el menú ••• y elige «Abrir en el navegador». Si no, Chrome en Android o en un ordenador da los mejores resultados — Firefox no es compatible, y en iPhone el soporte (en cualquier navegador, porque todos usan el mismo motor ahí) es limitado.",
     micDenied:
       "Se denegó el acceso al micrófono. Permítelo en los ajustes del navegador e inténtalo de nuevo.",
     micDeniedIOS:
@@ -1787,7 +1787,7 @@ export const fr: Dictionary = {
     targetReached: "Tu as atteint ta durée visée.",
     notSupportedTitle: "Reconnaissance vocale indisponible",
     notSupportedBody:
-      "Ce navigateur ne permet pas d'enregistrer en direct — fréquent si tu es dans l'appli TikTok ou Instagram. Appuie sur le menu ••• et choisis « Ouvrir dans le navigateur », ou ouvre cette page directement dans Safari ou Chrome.",
+      "Ce navigateur ne permet pas d'enregistrer en direct. Si tu es dans l'appli TikTok ou Instagram, appuie sur le menu ••• et choisis « Ouvrir dans le navigateur ». Sinon, Chrome sur Android ou sur ordinateur donne les meilleurs résultats — Firefox n'est pas compatible, et sur iPhone le support (quel que soit le navigateur, car ils utilisent tous le même moteur) est limité.",
     micDenied:
       "L'accès au microphone a été refusé. Autorise-le dans les paramètres de ton navigateur et réessaie.",
     micDeniedIOS:
