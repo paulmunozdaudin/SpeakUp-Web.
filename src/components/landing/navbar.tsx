@@ -30,9 +30,9 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
+      <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 sm:px-10">
         <Logo />
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-10 md:flex">
           {links.map((link) => (
             <a
               key={link.href}
@@ -43,7 +43,7 @@ export function Navbar() {
             </a>
           ))}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <LanguageToggle />
           <ThemeToggle />
           {user ? (
