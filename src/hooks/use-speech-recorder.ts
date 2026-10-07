@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { SpeechLanguage } from "@/types";
 
 export type RecorderStatus =
   | "idle"
@@ -11,18 +10,7 @@ export type RecorderStatus =
   | "stopped"
   | "error";
 
-export type RecorderErrorCode =
-  | "mic-denied"
-  | "mic-unavailable"
-  | "not-supported"
-  | "network-error"
-  /** Brave ships the SpeechRecognition constructor (so isSupported is
-   *  true) but blocks the Google speech service it depends on by default
-   *  — for privacy, since that service would otherwise send audio to
-   *  Google. It always fails with a "network" error immediately, even
-   *  with a perfectly good connection, so this gets its own error code
-   *  instead of the generic "check your internet" message. */
-  | "network-error-brave";
+export type RecorderErrorCode = "mic-denied" | "mic-unavailable" | "not-supported";
 
 export interface PauseEvent {
   /** Seconds into the recording when the silence started. */
@@ -30,42 +18,34 @@ export interface PauseEvent {
   durationSeconds: number;
 }
 
+interface StopResult {
+  /** The recorded audio, or null if nothing was captured — callers send
+   *  this off for server-side transcription (see transcription.service). */
+  blob: Blob | null;
+  /** Long mid-speech silences, timestamped from the real mic signal.
+   *  `null` if the browser couldn't monitor audio for real — never
+   *  fabricated to fill the gap. */
+  pauses: PauseEvent[] | null;
+}
+
 interface UseSpeechRecorderResult {
   status: RecorderStatus;
   elapsedSeconds: number;
-  /** Finalized text (stable across renders) plus the current in-flight guess. */
-  transcript: string;
-  interimTranscript: string;
   error: RecorderErrorCode | null;
   isSupported: boolean;
-  /** True once we've gone a while into "recording" with zero words captured
-   *  — surfaced so the UI can proactively warn instead of staying silent. */
+  /** True once we've gone a while into "recording" with zero real sound
+   *  detected — surfaced so the UI can proactively warn instead of
+   *  staying silent. */
   isSilentTooLong: boolean;
-  /** Long mid-speech silences ("going blank"), measured from the real mic
-   *  signal. `null` until `stop()` finalizes the list, and stays `null`
-   *  (not `[]`) if the browser couldn't monitor audio for real. */
-  pauses: PauseEvent[] | null;
   start: () => Promise<void>;
   pause: () => void;
   resume: () => void;
-  stop: () => void;
+  stop: () => Promise<StopResult>;
   reset: () => void;
 }
 
-const BCP47: Record<SpeechLanguage, string> = {
-  es: "es-ES",
-  en: "en-US",
-  fr: "fr-FR",
-};
-
-/** After this many consecutive failed (re)starts, stop retrying and surface
- *  a real error instead of looping silently forever. */
-const MAX_CONSECUTIVE_FAILURES = 4;
-/** Delay before restarting after the engine's own natural stop — starting
- *  synchronously inside `onend` throws InvalidStateError in Chrome. */
-const RESTART_DELAY_MS = 300;
-/** How long "recording" with literally nothing captured yet counts as
- *  suspiciously silent (mic muted, wrong input device, blocked network…). */
+/** How long "recording" with literally no real sound detected yet counts
+ *  as suspiciously silent (mic muted, wrong input device…). */
 const SILENCE_WARNING_MS = 7000;
 /** RMS level (0–1, from raw time-domain samples) below which the mic is
  *  considered silent — a conservative heuristic noise floor, not a precise
@@ -78,46 +58,39 @@ const BLANK_PAUSE_MIN_MS = 2200;
 const AUDIO_MONITOR_INTERVAL_MS = 100;
 
 /**
- * Live microphone transcription via the browser's SpeechRecognition API
- * (Web Speech API — Chrome/Edge, on-device or via the browser's speech
- * service). Runs entirely client-side: audio never has to be uploaded to
- * transcribe it, and the user never types or pastes anything — the
- * transcript accumulates automatically as they talk.
+ * Records plain audio via MediaRecorder — no in-browser live
+ * transcription. The resulting blob is sent to /api/transcribe afterwards
+ * and transcribed server-side with an AI model, which is what makes this
+ * work the same on every browser and device: the previous approach
+ * depended on each browser's own SpeechRecognition engine, which doesn't
+ * exist at all in Firefox and is unreliable on iOS even with every
+ * permission granted. MediaRecorder + getUserMedia, by contrast, are
+ * universally supported.
  *
- * Recognition auto-restarts on the engine's natural pauses. Network hiccups,
- * permission issues and dead microphones are all surfaced as a real error
- * after a bounded number of retries — this never fails silently.
+ * Pause/silence detection still runs client-side in real time, straight
+ * off the raw mic signal via the Web Audio API — entirely independent of
+ * transcription, so it works identically regardless of how (or whether)
+ * the recording ends up transcribed.
  */
-export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderResult {
+export function useSpeechRecorder(): UseSpeechRecorderResult {
   const [status, setStatus] = useState<RecorderStatus>("idle");
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [transcript, setTranscript] = useState("");
-  const [interimTranscript, setInterimTranscript] = useState("");
   const [error, setError] = useState<RecorderErrorCode | null>(null);
   const [isSilentTooLong, setIsSilentTooLong] = useState(false);
   // Feature detection is a stable browser fact, not reactive state — a lazy
   // initializer avoids the post-mount setState this used to require.
   const [isSupported] = useState(() => {
     if (typeof window === "undefined") return true; // resolved again on the client
-    return Boolean(window.SpeechRecognition ?? window.webkitSpeechRecognition);
+    return Boolean(window.MediaRecorder && navigator.mediaDevices?.getUserMedia);
   });
 
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
-  const finalChunksRef = useRef<string[]>([]);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const restartTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const shouldRunRef = useRef(false);
+  const recorderRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
   const streamRef = useRef<MediaStream | null>(null);
-  const consecutiveFailuresRef = useRef(0);
-  const hasCapturedAnyWordsRef = useRef(false);
-  const isBraveRef = useRef(false);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const silenceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hasHeardSoundRef = useRef(false);
 
-  // null = never measured this session (API unavailable/blocked); an array
-  // (possibly empty) = the mic was genuinely monitored for real silences.
-  // Collapsing these would mean claiming "no blanks" when we simply
-  // couldn't check — exactly the fabrication this app avoids elsewhere.
-  const [pauses, setPauses] = useState<PauseEvent[] | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const audioMonitorTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const audioMonitorActiveRef = useRef(false);
@@ -129,26 +102,10 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
   const monitorBaseElapsedRef = useRef(0);
   const monitorStartPerfRef = useRef(0);
 
-  useEffect(() => {
-    navigator.brave
-      ?.isBrave()
-      .then((isBrave) => {
-        isBraveRef.current = isBrave;
-      })
-      .catch(() => {});
-  }, []);
-
   const clearTimer = useCallback(() => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
-    }
-  }, []);
-
-  const clearRestartTimer = useCallback(() => {
-    if (restartTimerRef.current) {
-      clearTimeout(restartTimerRef.current);
-      restartTimerRef.current = null;
     }
   }, []);
 
@@ -174,7 +131,7 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     const start = pauseStartElapsedRef.current;
     if (start === null) return;
     const duration = nowElapsed - start;
-    if (duration * 1000 >= BLANK_PAUSE_MIN_MS && hasCapturedAnyWordsRef.current) {
+    if (duration * 1000 >= BLANK_PAUSE_MIN_MS && hasHeardSoundRef.current) {
       pauseEventsRef.current = [
         ...pauseEventsRef.current,
         { timestampSeconds: Math.round(start), durationSeconds: Math.round(duration * 10) / 10 },
@@ -193,12 +150,11 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     audioContextRef.current = null;
   }, [flushPendingPause, currentMonitorElapsed]);
 
-  /** Measures real mic volume via the Web Audio API to detect long silences
-   *  — entirely separate from SpeechRecognition, which has no concept of
-   *  "how quiet was it", only "did it recognize words". Never fabricated:
-   *  if the API is unavailable/blocked, this just silently does nothing
-   *  and `pauses` stays empty, same as any other "couldn't measure it for
-   *  real" case elsewhere in the app. */
+  /** Measures real mic volume via the Web Audio API to detect long
+   *  silences and to know whether the speaker has made any real sound at
+   *  all. Never fabricated: if the API is unavailable/blocked, this just
+   *  silently does nothing and pauses stays empty, same as any other
+   *  "couldn't measure it for real" case elsewhere in the app. */
   const startAudioMonitor = useCallback(
     (stream: MediaStream, resumeFromElapsed: number) => {
       try {
@@ -233,6 +189,11 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
             }
           } else {
             flushPendingPause(now);
+            if (!hasHeardSoundRef.current) {
+              hasHeardSoundRef.current = true;
+              setIsSilentTooLong(false);
+              clearSilenceTimer();
+            }
           }
         }, AUDIO_MONITOR_INTERVAL_MS);
       } catch {
@@ -240,14 +201,14 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
         // doesn't run; never invent pause data to fill the gap.
       }
     },
-    [currentMonitorElapsed, flushPendingPause],
+    [currentMonitorElapsed, flushPendingPause, clearSilenceTimer],
   );
 
   const armSilenceWarning = useCallback(() => {
     clearSilenceTimer();
     setIsSilentTooLong(false);
     silenceTimerRef.current = setTimeout(() => {
-      if (!hasCapturedAnyWordsRef.current) setIsSilentTooLong(true);
+      if (!hasHeardSoundRef.current) setIsSilentTooLong(true);
     }, SILENCE_WARNING_MS);
   }, [clearSilenceTimer]);
 
@@ -256,116 +217,18 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     timerRef.current = setInterval(() => setElapsedSeconds((s) => s + 1), 1000);
   }, [clearTimer]);
 
-  /** Gives up permanently: stops retrying and surfaces a real error. */
-  const failPermanently = useCallback((code: RecorderErrorCode) => {
-    shouldRunRef.current = false;
-    clearTimer();
-    clearRestartTimer();
-    clearSilenceTimer();
+  const releaseStream = useCallback(() => {
     streamRef.current?.getTracks().forEach((t) => t.stop());
     streamRef.current = null;
-    setStatus("error");
-    // Brave always fails the speech service with "network", regardless of
-    // actual connectivity — swap in the Brave-specific message instead of
-    // telling someone with a fine connection to go check it.
-    setError(code === "network-error" && isBraveRef.current ? "network-error-brave" : code);
-  }, [clearTimer, clearRestartTimer, clearSilenceTimer]);
-
-  const buildRecognition = useCallback((): SpeechRecognition | null => {
-    const SpeechRecognitionCtor =
-      window.SpeechRecognition ?? window.webkitSpeechRecognition;
-    if (!SpeechRecognitionCtor) return null;
-
-    const recognition = new SpeechRecognitionCtor();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = BCP47[language];
-
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      let interim = "";
-      let gotFinal = false;
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        const result = event.results[i];
-        const text = result[0]?.transcript ?? "";
-        if (result.isFinal) {
-          if (text.trim()) {
-            finalChunksRef.current.push(text.trim());
-            setTranscript(finalChunksRef.current.join(" "));
-            gotFinal = true;
-          }
-        } else if (text.trim()) {
-          interim += text;
-        }
-      }
-      setInterimTranscript(interim);
-      if (interim || gotFinal) {
-        // Real audio is being recognized — the connection works, reset
-        // both the failure circuit breaker and the silence watchdog.
-        consecutiveFailuresRef.current = 0;
-        hasCapturedAnyWordsRef.current = true;
-        setIsSilentTooLong(false);
-        clearSilenceTimer();
-      }
-    };
-
-    recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
-      if (event.error === "not-allowed" || event.error === "service-not-allowed") {
-        failPermanently("mic-denied");
-        return;
-      }
-      if (event.error === "audio-capture") {
-        failPermanently("mic-unavailable");
-        return;
-      }
-      if (event.error === "no-speech" || event.error === "aborted") {
-        // Benign: the engine just didn't hear anything in this pass, or we
-        // stopped it ourselves. onend's restart handles it; the silence
-        // watchdog (not this handler) is what tells the user if it's stuck.
-        return;
-      }
-      // "network" and anything else: count toward the circuit breaker —
-      // this is the Web Speech API's single most common real-world failure
-      // (it depends on a live connection to the browser's speech service).
-      consecutiveFailuresRef.current += 1;
-      if (consecutiveFailuresRef.current >= MAX_CONSECUTIVE_FAILURES) {
-        failPermanently("network-error");
-      }
-      // Otherwise let onend's restart retry — transient network blips
-      // shouldn't kill a whole practice session over one hiccup.
-    };
-
-    recognition.onend = () => {
-      if (!shouldRunRef.current) return;
-      // Starting synchronously inside `onend` throws InvalidStateError in
-      // Chrome; a short delay avoids that race.
-      clearRestartTimer();
-      restartTimerRef.current = setTimeout(() => {
-        if (!shouldRunRef.current) return;
-        try {
-          recognition.start();
-        } catch {
-          consecutiveFailuresRef.current += 1;
-          if (consecutiveFailuresRef.current >= MAX_CONSECUTIVE_FAILURES) {
-            failPermanently("network-error");
-          }
-        }
-      }, RESTART_DELAY_MS);
-    };
-
-    return recognition;
-  }, [language, failPermanently, clearRestartTimer, clearSilenceTimer]);
+  }, []);
 
   const start = useCallback(async () => {
     setError(null);
-    setTranscript("");
-    setInterimTranscript("");
     setIsSilentTooLong(false);
-    finalChunksRef.current = [];
-    consecutiveFailuresRef.current = 0;
-    hasCapturedAnyWordsRef.current = false;
+    chunksRef.current = [];
+    hasHeardSoundRef.current = false;
     pauseEventsRef.current = [];
     audioMonitorActiveRef.current = false;
-    setPauses(null);
     setElapsedSeconds(0);
     setStatus("requesting");
 
@@ -376,21 +239,25 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     }
 
     try {
-      // Explicit permission prompt up front, and keep the stream so we can
-      // show a real "mic is live" state and release it cleanly on stop.
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       streamRef.current = stream;
 
-      const recognition = buildRecognition();
-      if (!recognition) {
-        setStatus("error");
-        setError("not-supported");
-        stream.getTracks().forEach((t) => t.stop());
-        return;
-      }
-      recognitionRef.current = recognition;
-      shouldRunRef.current = true;
-      recognition.start();
+      // iOS Safari only records mp4/aac; Chromium-based browsers only
+      // record webm/opus — neither supports the other, so pick whichever
+      // the browser actually offers instead of hardcoding one.
+      const mimeType = MediaRecorder.isTypeSupported("audio/webm;codecs=opus")
+        ? "audio/webm;codecs=opus"
+        : MediaRecorder.isTypeSupported("audio/mp4")
+          ? "audio/mp4"
+          : "";
+      const recorder = mimeType
+        ? new MediaRecorder(stream, { mimeType })
+        : new MediaRecorder(stream);
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) chunksRef.current.push(event.data);
+      };
+      recorderRef.current = recorder;
+      recorder.start();
 
       setStatus("recording");
       startTimer();
@@ -404,110 +271,88 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
           : "mic-unavailable",
       );
     }
-  }, [buildRecognition, isSupported, startTimer, armSilenceWarning, startAudioMonitor]);
+  }, [isSupported, startTimer, armSilenceWarning, startAudioMonitor]);
 
   const pause = useCallback(() => {
     if (status !== "recording") return;
-    shouldRunRef.current = false;
-    clearRestartTimer();
-    clearSilenceTimer();
-    recognitionRef.current?.stop();
+    recorderRef.current?.pause();
     clearTimer();
+    clearSilenceTimer();
     stopAudioMonitor();
-    setInterimTranscript("");
     setIsSilentTooLong(false);
     setStatus("paused");
-  }, [status, clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor]);
+  }, [status, clearTimer, clearSilenceTimer, stopAudioMonitor]);
 
   const resume = useCallback(() => {
     if (status !== "paused") return;
-    const recognition = buildRecognition();
-    if (!recognition) {
-      failPermanently("not-supported");
-      return;
-    }
-    try {
-      recognitionRef.current = recognition;
-      shouldRunRef.current = true;
-      consecutiveFailuresRef.current = 0;
-      recognition.start();
-      startTimer();
-      armSilenceWarning();
-      if (streamRef.current) startAudioMonitor(streamRef.current, elapsedSeconds);
-      setStatus("recording");
-    } catch {
-      failPermanently("network-error");
-    }
-  }, [
-    status,
-    buildRecognition,
-    startTimer,
-    armSilenceWarning,
-    failPermanently,
-    startAudioMonitor,
-    elapsedSeconds,
-  ]);
+    recorderRef.current?.resume();
+    startTimer();
+    armSilenceWarning();
+    if (streamRef.current) startAudioMonitor(streamRef.current, elapsedSeconds);
+    setStatus("recording");
+  }, [status, startTimer, armSilenceWarning, startAudioMonitor, elapsedSeconds]);
 
-  const stop = useCallback(() => {
-    shouldRunRef.current = false;
-    clearRestartTimer();
-    clearSilenceTimer();
-    recognitionRef.current?.stop();
+  const stop = useCallback((): Promise<StopResult> => {
     clearTimer();
-    stopAudioMonitor();
-    setPauses(audioMonitorActiveRef.current ? pauseEventsRef.current : null);
-    setInterimTranscript("");
-    setIsSilentTooLong(false);
-    streamRef.current?.getTracks().forEach((t) => t.stop());
-    streamRef.current = null;
-    setStatus("stopped");
-  }, [clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor]);
+    clearSilenceTimer();
+    return new Promise((resolve) => {
+      const recorder = recorderRef.current;
+      stopAudioMonitor();
+      const pauses = audioMonitorActiveRef.current ? pauseEventsRef.current : null;
+      setIsSilentTooLong(false);
+
+      if (!recorder || recorder.state === "inactive") {
+        releaseStream();
+        setStatus("stopped");
+        resolve({ blob: null, pauses });
+        return;
+      }
+      recorder.onstop = () => {
+        const blob = chunksRef.current.length
+          ? new Blob(chunksRef.current, { type: recorder.mimeType })
+          : null;
+        chunksRef.current = [];
+        releaseStream();
+        setStatus("stopped");
+        resolve({ blob, pauses });
+      };
+      recorder.stop();
+    });
+  }, [clearTimer, clearSilenceTimer, stopAudioMonitor, releaseStream]);
 
   const reset = useCallback(() => {
-    shouldRunRef.current = false;
-    clearRestartTimer();
-    clearSilenceTimer();
-    recognitionRef.current?.stop();
-    recognitionRef.current = null;
+    recorderRef.current = null;
+    chunksRef.current = [];
     clearTimer();
+    clearSilenceTimer();
     stopAudioMonitor();
-    streamRef.current?.getTracks().forEach((t) => t.stop());
-    streamRef.current = null;
-    finalChunksRef.current = [];
-    consecutiveFailuresRef.current = 0;
-    hasCapturedAnyWordsRef.current = false;
+    releaseStream();
+    hasHeardSoundRef.current = false;
     pauseEventsRef.current = [];
     audioMonitorActiveRef.current = false;
-    setPauses(null);
-    setTranscript("");
-    setInterimTranscript("");
     setIsSilentTooLong(false);
     setElapsedSeconds(0);
     setError(null);
     setStatus("idle");
-  }, [clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor]);
+  }, [clearTimer, clearSilenceTimer, stopAudioMonitor, releaseStream]);
 
+  // Safety net: release the mic if the component unmounts mid-recording
+  // (e.g. the user navigates away) instead of leaving it live.
   useEffect(() => {
     return () => {
-      shouldRunRef.current = false;
-      clearRestartTimer();
-      clearSilenceTimer();
-      recognitionRef.current?.stop();
       clearTimer();
+      clearSilenceTimer();
       stopAudioMonitor();
-      streamRef.current?.getTracks().forEach((t) => t.stop());
+      releaseStream();
     };
-  }, [clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor]);
+  }, [clearTimer, clearSilenceTimer, stopAudioMonitor, releaseStream]);
 
   return {
     status,
     elapsedSeconds,
-    transcript,
-    interimTranscript,
     error,
     isSupported,
     isSilentTooLong,
-    pauses,
     start,
     pause,
     resume,
