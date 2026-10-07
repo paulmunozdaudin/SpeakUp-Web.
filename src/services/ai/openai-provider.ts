@@ -402,7 +402,11 @@ function isValidVideoShape(value: unknown): value is VideoJsonShape {
   return Array.isArray(v.observations);
 }
 
-const VIDEO_MODEL = "gpt-4o-mini";
+// Full gpt-4o, not the mini tier — markedly better at reading posture,
+// gestures and eye contact across a sequence of frames. Costs more per
+// analysis; worth it since presence feedback is the whole point of video
+// mode, not an afterthought.
+const VIDEO_MODEL = "gpt-4o";
 const VIDEO_CATEGORY_SET = new Set<string>(VIDEO_METRIC_KEYS);
 
 /**
@@ -421,7 +425,13 @@ async function analyzeVideoFrames(
   try {
     const imageContent = frames.flatMap((frame) => [
       { type: "text" as const, text: `t=${frame.timestampSeconds}s:` },
-      { type: "image_url" as const, image_url: { url: frame.dataUrl } },
+      // "high" detail (vs. the "auto" default, which drops to a blurry
+      // low-res pass for images this size) — the model actually needs to
+      // make out posture and hand position, not just a vague silhouette.
+      {
+        type: "image_url" as const,
+        image_url: { url: frame.dataUrl, detail: "high" as const },
+      },
     ]);
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -494,6 +504,16 @@ export class OpenAIAnalysisProvider implements AnalysisProvider {
 
   async analyze(request: AnalysisRequest): Promise<AnalysisResult> {
     try {
+      // Independent, best-effort — a vision failure never blocks the rest
+      // of the report, and never fabricates a "presence" section. Kicked
+      // off alongside the text call (not after it) so the two run
+      // concurrently rather than back-to-back — matters more now that
+      // video analysis uses the full gpt-4o model at high detail.
+      const videoPromise: Promise<VideoAnalysis | undefined> =
+        request.analysisMode === "video" && request.frames?.length
+          ? analyzeVideoFrames(this.apiKey, request.language, request.frames)
+          : Promise.resolve(undefined);
+
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -541,12 +561,7 @@ export class OpenAIAnalysisProvider implements AnalysisProvider {
         };
       }
 
-      // Independent, best-effort — a vision failure never blocks the rest
-      // of the report, and never fabricates a "presence" section.
-      const video =
-        request.analysisMode === "video" && request.frames?.length
-          ? await analyzeVideoFrames(this.apiKey, request.language, request.frames)
-          : undefined;
+      const video = await videoPromise;
 
       return {
         version: 2,

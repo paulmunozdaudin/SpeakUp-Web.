@@ -7,14 +7,16 @@ export interface CapturedFrame {
   dataUrl: string;
 }
 
-const FRAME_WIDTH = 480;
-const JPEG_QUALITY = 0.6;
+// Sized for gpt-4o at "high" detail (see openai-provider.ts) — sharp
+// enough to actually make out posture/gestures, not just a silhouette.
+const FRAME_WIDTH = 768;
+const JPEG_QUALITY = 0.8;
 const MIN_FRAMES = 3;
-const MAX_FRAMES = 8;
-/** Roughly one sample every 15s of footage, clamped to [MIN_FRAMES, MAX_FRAMES]
- *  so a 3-minute take doesn't send a dozen images and a 20s one still gets a
- *  handful of distinct moments. */
-const TARGET_SECONDS_PER_FRAME = 15;
+const MAX_FRAMES = 14;
+/** Roughly one sample every 12s of footage, clamped to [MIN_FRAMES, MAX_FRAMES]
+ *  so a 3-minute take gets dense-enough coverage to track how presence
+ *  changes over the talk, and a 30s one still gets a few distinct moments. */
+const TARGET_SECONDS_PER_FRAME = 12;
 
 /** Bounds how long a single seek/metadata wait can take — without this, a
  *  browser that never fires the expected event (corrupted blob, odd codec

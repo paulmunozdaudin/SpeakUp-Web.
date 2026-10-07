@@ -8,9 +8,10 @@ import { evaluateBacFrancaisOral } from "@/services/ai/bac-francais-evaluator";
 export const runtime = "nodejs";
 export const maxDuration = 60; // the LLM call can take a while
 
-/** Frames are small (downscaled to 480px wide, JPEG) but this still bounds
- *  the request body against an abusive/buggy client sending too many. */
-const MAX_FRAMES = 12;
+/** Must stay >= the client's own MAX_FRAMES (src/utils/video-frames.ts) —
+ *  this bounds the request body against an abusive/buggy client sending
+ *  more than that, not against a legitimate capture. */
+const MAX_FRAMES = 14;
 
 interface PauseEventInput {
   timestampSeconds: number;
