@@ -36,10 +36,10 @@ interface UseVideoRecorderResult {
 
 /**
  * Camera-only capture for the "voice + camera" analysis mode. Deliberately
- * separate from useSpeechRecorder (which handles its own mic access for
- * the audio that gets transcribed) — this hook only ever touches the
- * camera, so a denied/unavailable camera never breaks the recording, and
- * vice versa.
+ * separate from useSpeechRecorder (which keeps handling the live
+ * transcript via the Web Speech API through its own mic access) — this
+ * hook only ever touches the camera, so a denied/unavailable camera never
+ * breaks transcription, and vice versa.
  */
 export function useVideoRecorder(): UseVideoRecorderResult {
   const [status, setStatus] = useState<VideoRecorderStatus>("idle");

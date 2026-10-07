@@ -339,16 +339,22 @@ export const en = {
     pause: "Pause",
     resume: "Resume",
     stop: "Stop",
-    transcribing: "Transcribing your voice…",
-    transcribeError: "Couldn't transcribe the recording. Please try again.",
+    liveTranscript: "Live transcript",
+    liveTranscriptEmpty: "Your words will appear here as you speak.",
     targetReached: "You've reached your target duration.",
-    notSupportedTitle: "Recording isn't available",
+    notSupportedTitle: "Speech recognition isn't available",
     notSupportedBody:
-      "This browser can't record audio. If you're inside the TikTok or Instagram app, tap the ••• menu and choose \"Open in browser\" — in-app browsers often block this. Otherwise, try updating your browser or switching to Chrome.",
+      "This browser can't record live speech. If you're inside the TikTok or Instagram app, tap the ••• menu and choose \"Open in browser\". Otherwise, Chrome on Android or a computer gives the most reliable results — Firefox doesn't support this at all, and iPhone's support (any browser, since they all run on the same engine there) is limited.",
     micDenied:
       "Microphone access was denied. Allow it in your browser settings and try again.",
+    micDeniedIOS:
+      "iOS asks for a separate Speech Recognition permission, not just the microphone. Go to Settings → Safari → Speech Recognition (or Settings → Privacy & Security → Speech Recognition) and turn it on. If it still doesn't work, try an Android device or a computer instead.",
     micUnavailable:
       "Could not start recording. Check that a microphone is connected.",
+    networkError:
+      "Lost connection to the speech recognition service. Check your internet connection and try again.",
+    networkErrorBrave:
+      "Brave blocks the speech recognition service by default (for privacy), so live transcription can't work here even with a perfectly good connection. Open this page in Google Chrome or Microsoft Edge instead.",
     stillListening:
       "Still listening… if you keep seeing this, check that the right microphone is selected and unmuted.",
     tooShort: "Speak for a bit longer so there's enough to analyze.",
@@ -1056,16 +1062,22 @@ export const es: Dictionary = {
     pause: "Pausar",
     resume: "Reanudar",
     stop: "Detener",
-    transcribing: "Transcribiendo tu voz…",
-    transcribeError: "No se pudo transcribir la grabación. Inténtalo de nuevo.",
+    liveTranscript: "Transcripción en vivo",
+    liveTranscriptEmpty: "Tus palabras aparecerán aquí mientras hablas.",
     targetReached: "Has alcanzado tu duración objetivo.",
-    notSupportedTitle: "La grabación no está disponible",
+    notSupportedTitle: "El reconocimiento de voz no está disponible",
     notSupportedBody:
-      "Este navegador no permite grabar audio. Si estás dentro de la app de TikTok o Instagram, toca el menú ••• y elige «Abrir en el navegador» — los navegadores integrados suelen bloquear esto. Si no, prueba a actualizar tu navegador o usar Chrome.",
+      "Este navegador no permite grabar en directo. Si estás dentro de la app de TikTok o Instagram, toca el menú ••• y elige «Abrir en el navegador». Si no, Chrome en Android o en un ordenador da los mejores resultados — Firefox no es compatible, y en iPhone el soporte (en cualquier navegador, porque todos usan el mismo motor ahí) es limitado.",
     micDenied:
       "Se denegó el acceso al micrófono. Permítelo en los ajustes del navegador e inténtalo de nuevo.",
+    micDeniedIOS:
+      "iOS pide un permiso de Reconocimiento de voz aparte del de micrófono. Ve a Ajustes → Safari → Reconocimiento de voz (o Ajustes → Privacidad y seguridad → Reconocimiento de voz) y actívalo. Si sigue sin funcionar, prueba desde un Android o un ordenador.",
     micUnavailable:
       "No se pudo iniciar la grabación. Comprueba que hay un micrófono conectado.",
+    networkError:
+      "Se perdió la conexión con el servicio de reconocimiento de voz. Comprueba tu conexión a internet e inténtalo de nuevo.",
+    networkErrorBrave:
+      "Brave bloquea por defecto el servicio de reconocimiento de voz (por privacidad), así que la transcripción en vivo no puede funcionar aquí aunque tengas buena conexión. Abre esta página en Google Chrome o Microsoft Edge.",
     stillListening:
       "Sigo escuchando… si esto no cambia, comprueba que el micrófono correcto esté seleccionado y sin silenciar.",
     tooShort: "Habla un poco más para tener suficiente contenido que analizar.",
@@ -1770,16 +1782,22 @@ export const fr: Dictionary = {
     pause: "Pause",
     resume: "Reprendre",
     stop: "Arrêter",
-    transcribing: "Transcription de ta voix…",
-    transcribeError: "Impossible de transcrire l'enregistrement. Réessaie.",
+    liveTranscript: "Transcription en direct",
+    liveTranscriptEmpty: "Tes mots apparaîtront ici au fur et à mesure que tu parles.",
     targetReached: "Tu as atteint ta durée visée.",
-    notSupportedTitle: "Enregistrement indisponible",
+    notSupportedTitle: "Reconnaissance vocale indisponible",
     notSupportedBody:
-      "Ce navigateur ne permet pas d'enregistrer de l'audio. Si tu es dans l'appli TikTok ou Instagram, appuie sur le menu ••• et choisis « Ouvrir dans le navigateur » — les navigateurs intégrés bloquent souvent cette fonction. Sinon, essaie de mettre à jour ton navigateur ou d'utiliser Chrome.",
+      "Ce navigateur ne permet pas d'enregistrer en direct. Si tu es dans l'appli TikTok ou Instagram, appuie sur le menu ••• et choisis « Ouvrir dans le navigateur ». Sinon, Chrome sur Android ou sur ordinateur donne les meilleurs résultats — Firefox n'est pas compatible, et sur iPhone le support (quel que soit le navigateur, car ils utilisent tous le même moteur) est limité.",
     micDenied:
       "L'accès au microphone a été refusé. Autorise-le dans les paramètres de ton navigateur et réessaie.",
+    micDeniedIOS:
+      "iOS demande une autorisation de Reconnaissance vocale distincte de celle du microphone. Va dans Réglages → Safari → Reconnaissance vocale (ou Réglages → Confidentialité et sécurité → Reconnaissance vocale) et active-la. Si ça ne marche toujours pas, essaie depuis un Android ou un ordinateur.",
     micUnavailable:
       "Impossible de démarrer l'enregistrement. Vérifie qu'un microphone est bien connecté.",
+    networkError:
+      "Connexion au service de reconnaissance vocale perdue. Vérifie ta connexion internet et réessaie.",
+    networkErrorBrave:
+      "Brave bloque par défaut le service de reconnaissance vocale (pour la confidentialité), donc la transcription en direct ne peut pas fonctionner ici même avec une bonne connexion. Ouvre cette page dans Google Chrome ou Microsoft Edge.",
     stillListening:
       "Toujours à l'écoute… si ce message persiste, vérifie que le bon microphone est sélectionné et non coupé.",
     tooShort: "Parle un peu plus longtemps pour qu'il y ait assez de matière à analyser.",
