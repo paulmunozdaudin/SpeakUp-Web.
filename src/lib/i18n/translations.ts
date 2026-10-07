@@ -347,6 +347,8 @@ export const en = {
       "This browser can't record live speech — common if you're inside the TikTok or Instagram app. Tap the ••• menu and choose \"Open in browser\", or open this page directly in Safari or Chrome.",
     micDenied:
       "Microphone access was denied. Allow it in your browser settings and try again.",
+    micDeniedIOS:
+      "iOS asks for a separate Speech Recognition permission, not just the microphone. Go to Settings → Safari → Speech Recognition (or Settings → Privacy & Security → Speech Recognition) and turn it on. If it still doesn't work, try an Android device or a computer instead.",
     micUnavailable:
       "Could not start recording. Check that a microphone is connected.",
     networkError:
@@ -1068,6 +1070,8 @@ export const es: Dictionary = {
       "Este navegador no permite grabar en directo — es habitual si estás dentro de la app de TikTok o Instagram. Toca el menú ••• y elige «Abrir en el navegador», o abre esta página directamente en Safari o Chrome.",
     micDenied:
       "Se denegó el acceso al micrófono. Permítelo en los ajustes del navegador e inténtalo de nuevo.",
+    micDeniedIOS:
+      "iOS pide un permiso de Reconocimiento de voz aparte del de micrófono. Ve a Ajustes → Safari → Reconocimiento de voz (o Ajustes → Privacidad y seguridad → Reconocimiento de voz) y actívalo. Si sigue sin funcionar, prueba desde un Android o un ordenador.",
     micUnavailable:
       "No se pudo iniciar la grabación. Comprueba que hay un micrófono conectado.",
     networkError:
@@ -1786,6 +1790,8 @@ export const fr: Dictionary = {
       "Ce navigateur ne permet pas d'enregistrer en direct — fréquent si tu es dans l'appli TikTok ou Instagram. Appuie sur le menu ••• et choisis « Ouvrir dans le navigateur », ou ouvre cette page directement dans Safari ou Chrome.",
     micDenied:
       "L'accès au microphone a été refusé. Autorise-le dans les paramètres de ton navigateur et réessaie.",
+    micDeniedIOS:
+      "iOS demande une autorisation de Reconnaissance vocale distincte de celle du microphone. Va dans Réglages → Safari → Reconnaissance vocale (ou Réglages → Confidentialité et sécurité → Reconnaissance vocale) et active-la. Si ça ne marche toujours pas, essaie depuis un Android ou un ordinateur.",
     micUnavailable:
       "Impossible de démarrer l'enregistrement. Vérifie qu'un microphone est bien connecté.",
     networkError:

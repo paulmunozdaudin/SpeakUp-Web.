@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useDict } from "@/lib/i18n";
 import type { Dictionary } from "@/lib/i18n/translations";
 import { formatDuration } from "@/utils/format";
+import { isIOS } from "@/utils/platform";
 import { cn } from "@/utils/cn";
 import type { AnalysisMode, SpeechLanguage, TargetDuration } from "@/types";
 
@@ -163,7 +164,15 @@ export function RecorderPanel({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recorder.status, isVideoMode, videoProcessing]);
 
-  const errorMessage = recorder.error ? errorMessages(d)[recorder.error] : null;
+  // iOS requires a separate "Speech Recognition" permission on top of the
+  // microphone one, which fails the exact same way (not-allowed) and would
+  // otherwise show the generic "allow the microphone" message — misleading
+  // for someone who already has — so it gets its own, more useful copy.
+  const errorMessage = recorder.error
+    ? recorder.error === "mic-denied" && isIOS()
+      ? d.practice.micDeniedIOS
+      : errorMessages(d)[recorder.error]
+    : null;
   const cameraErrorMessage = videoRecorder.error
     ? videoErrorMessages(d)[videoRecorder.error]
     : null;
