@@ -52,7 +52,11 @@ export async function POST(request: Request) {
     const extension = audio.type.includes("mp4") ? "mp4" : "webm";
     const upstreamForm = new FormData();
     upstreamForm.append("file", audio, `recording.${extension}`);
-    upstreamForm.append("model", "gpt-4o-transcribe");
+    // whisper-1, not gpt-4o-transcribe: the older model, but available to
+    // every OpenAI account/project without needing separate access —
+    // gpt-4o-transcribe is newer (2025) and isn't reliably enabled
+    // everywhere yet. Same price either way.
+    upstreamForm.append("model", "whisper-1");
     upstreamForm.append("language", language);
 
     const response = await fetch("https://api.openai.com/v1/audio/transcriptions", {
@@ -63,6 +67,12 @@ export async function POST(request: Request) {
     });
 
     if (!response.ok) {
+      // Logged (not returned to the client) so the real cause shows up in
+      // Vercel's function logs instead of just a generic status code.
+      const errorBody = await response.text().catch(() => "");
+      console.error(
+        `OpenAI transcription API responded ${response.status}: ${errorBody}`,
+      );
       throw new Error(`OpenAI transcription API responded ${response.status}`);
     }
 
@@ -75,6 +85,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ transcript: text });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Transcription failed.";
+    console.error("Transcription failed:", err);
     return NextResponse.json({ error: message }, { status: 502 });
   }
 }
