@@ -1,17 +1,17 @@
 "use client";
 
 import {
-  BarChart3,
   Brain,
   GaugeCircle,
-  Mic,
+  Presentation,
   Target,
-  TrendingUp,
+  Trophy,
+  Zap,
 } from "lucide-react";
 import { Section } from "./section";
 import { useDict } from "@/lib/i18n";
 
-const ICONS = [Mic, Brain, GaugeCircle, Target, TrendingUp, BarChart3];
+const ICONS = [Zap, Brain, GaugeCircle, Target, Trophy, Presentation];
 
 export function Features() {
   const d = useDict();

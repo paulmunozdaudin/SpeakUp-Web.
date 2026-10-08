@@ -21,24 +21,24 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://eloq-oral.com"),
   title: {
-    default: "Eloq AI — Practice presentations with AI",
+    default: "Eloq AI — Learn to communicate for real",
     template: "%s · Eloq AI",
   },
   description:
-    "Get instant AI feedback on your clarity, confidence, pacing and delivery. Your personal public speaking coach, available 24/7.",
+    "1-minute daily speaking challenges and instant AI feedback on your clarity, confidence and filler words. Level up your communication — and rehearse presentations, pitches and interviews.",
   applicationName: "Eloq AI",
   openGraph: {
-    title: "Eloq AI — Practice presentations with AI",
+    title: "Eloq AI — Learn to communicate for real",
     description:
-      "Get instant AI feedback on your clarity, confidence, pacing and delivery.",
+      "1-minute daily speaking challenges and instant AI feedback on how you speak. Level up your communication.",
     siteName: "Eloq AI",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Eloq AI — Practice presentations with AI",
+    title: "Eloq AI — Learn to communicate for real",
     description:
-      "Get instant AI feedback on your clarity, confidence, pacing and delivery.",
+      "1-minute daily speaking challenges and instant AI feedback on how you speak. Level up your communication.",
   },
   // manifest.webmanifest is auto-linked by Next.js from src/app/manifest.ts.
   icons: {

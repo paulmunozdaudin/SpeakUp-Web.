@@ -32,12 +32,16 @@ export const en = {
     profile: "Profile",
   },
   landing: {
-    heroBadge: "Your personal speaking coach, available 24/7",
-    heroTitle: "Practice presentations with AI.",
-    heroSubtitle:
-      "Record yourself speaking and get a detailed report on exactly how to improve.",
-    previewTitle: "Economics presentation — take 3",
-    previewSubtitle: "Analyzed just now",
+    heroBadge: "Daily challenges · AI feedback",
+    heroTitle: "Learn to communicate for real.",
+    heroSubtitle: "1-minute challenges a day and an AI that analyzes how you speak: clarity, confidence, filler words. Train your speaking like you train at the gym.",
+    heroCtaChallenge: "Take your first challenge (1 min)",
+    heroCtaPresentation: "Practice a presentation",
+    previewTitle: "Improvise: the best advice you've ever received",
+    previewSubtitle: "1-minute challenge · analyzed just now",
+    previewXp: "+78 XP",
+    previewLevel: "Level 3 · Communicator",
+    previewNextLevel: "412 XP to Speaker",
     previewMetrics: {
       clarity: "Clarity",
       confidence: "Confidence",
@@ -46,68 +50,65 @@ export const en = {
       fillerWords: "Filler words",
     },
     previewFillerExample: "“um”, “like”",
-    twoPathsTitle: "What do you want to prepare?",
+    twoPathsTitle: "Two ways to become a better speaker",
+    twoPathsSubtitle: "Short daily reps to build the skill, and full rehearsals for when it really counts.",
+    twoPathsChallenges: {
+      title: "Communication challenges",
+      description: "1-minute exercises: improvise on a surprise topic, read a surprise text, explain something complex simply. Get a score, earn XP and level up to Master of Oratory.",
+      cta: "Take a challenge",
+    },
     twoPathsPractice: {
-      title: "Practice",
-      description: "Presentations, talks, pitches and public speaking.",
-      cta: "Start",
+      title: "Practice a presentation",
+      description: "Rehearse your talk, pitch, class presentation or job interview and get a detailed report: 13 dimensions, filler words, pace, an improved version and the questions you'd get.",
+      cta: "Practice a presentation",
     },
     twoPathsExam: {
-      title: "Prepare an exam",
-      description: "French Brevet, Bac de Français and Grand Oral.",
+      title: "French oral exams",
+      description: "Brevet, Bac de Français and Grand Oral with an AI examiner.",
       cta: "Prepare my exam",
     },
     featuresEyebrow: "Features",
-    featuresTitle: "Everything you need to become a better speaker",
+    featuresTitle: "Everything you need to speak with confidence",
     features: [
       {
-        title: "Record anywhere",
-        description:
-          "Practice straight from your browser or upload an existing recording. No setup, no downloads.",
+        title: "1-minute daily challenges",
+        description: "Improvise, read a surprise text, explain something complex or talk with zero filler words. A new challenge every day.",
       },
       {
         title: "AI-powered analysis",
-        description:
-          "Advanced speech AI evaluates clarity, confidence, structure, vocabulary and persuasiveness.",
+        description: "Advanced speech AI evaluates clarity, confidence, structure, vocabulary and persuasiveness.",
       },
       {
         title: "Pacing & filler words",
-        description:
-          "Know exactly when you rush, drag, or lean on “um” and “like” — down to the word.",
+        description: "Know exactly when you rush, drag, or lean on “um” and “like” — down to the word.",
       },
       {
         title: "Actionable feedback",
-        description:
-          "Not just scores: concrete strengths, weaknesses and personalized tips after every session.",
+        description: "Not just scores: concrete strengths, weaknesses and personalized tips after every session.",
       },
       {
-        title: "Track your progress",
-        description:
-          "Every practice is saved. Watch your scores climb week after week, like a fitness app for speaking.",
+        title: "Level up",
+        description: "Every challenge earns XP. Climb from Beginner to Master of Oratory and watch your scores rise, like a fitness app for speaking.",
       },
       {
-        title: "Practice modes",
-        description:
-          "Interviews, startup pitches, school presentations, TED-style talks and more — each with tailored criteria.",
+        title: "Presentations & interviews",
+        description: "Rehearse talks, pitches, class presentations and job interviews — each with tailored criteria and the questions you'd likely get.",
       },
     ],
     howEyebrow: "How it works",
-    howTitle: "Three steps to a stronger delivery",
+    howTitle: "Three steps to speaking better",
     howSteps: [
       {
-        title: "Practice",
-        description:
-          "Pick a mode, hit record and deliver your presentation as if the room were full.",
+        title: "Choose",
+        description: "A 1-minute challenge to train every day, or the presentation you have coming up.",
       },
       {
-        title: "Analyze",
-        description:
-          "Our AI listens like a coach: pacing, clarity, structure, filler words, confidence.",
+        title: "Speak",
+        description: "Hit record and talk. The AI listens like a coach: clarity, structure, pace, filler words, confidence.",
       },
       {
         title: "Improve",
-        description:
-          "Get a detailed report with personalized tips and exercises. Repeat and watch your score rise.",
+        description: "Get your score and personalized tips, earn XP and level up. Tomorrow, a new challenge.",
       },
     ],
     testimonialsEyebrow: "Why Eloq AI",
@@ -162,6 +163,7 @@ export const en = {
         period: "forever",
         description: "Perfect for trying Eloq AI.",
         features: [
+          "Unlimited daily challenges",
           "3 practice sessions per week",
           "Core AI feedback",
           "Session history",
@@ -201,18 +203,15 @@ export const en = {
     faqs: [
       {
         question: "How does the AI feedback work?",
-        answer:
-          "Your recording is transcribed and analyzed by speech AI models, which give you scores plus concrete, personalized suggestions.",
+        answer: "Your recording is transcribed and analyzed by speech AI models, which give you scores plus concrete, personalized suggestions.",
       },
       {
         question: "Is my audio private?",
-        answer:
-          "Yes. Your recordings belong to you, are stored securely, and are never used to train models or shared with anyone. You can delete any session at any time.",
+        answer: "Yes. Your recordings belong to you, are stored securely, and are never used to train models or shared with anyone. You can delete any session at any time.",
       },
       {
         question: "What can I practice?",
-        answer:
-          "Anything spoken: class presentations, thesis defenses, startup pitches, job interviews, sales calls, conference talks, wedding speeches — pick a mode and start.",
+        answer: "Daily 1-minute challenges (improvisation, surprise reading, explaining simply, zero filler words, storytelling) and anything you need to rehearse: class presentations, pitches, job interviews, sales calls, talks or speeches.",
       },
       {
         question: "Do I need special equipment?",
@@ -220,13 +219,12 @@ export const en = {
       },
       {
         question: "Does it analyze my body language too?",
-        answer:
-          "Yes — choose \"Voice + camera\" mode and Eloq also gives you feedback on your eye contact, posture and gestures.",
+        answer: "Yes — choose \"Voice + camera\" mode and Eloq also gives you feedback on your eye contact, posture and gestures.",
       },
     ],
-    ctaTitle: "Your next presentation starts here.",
-    ctaSubtitle: "Free to start — no credit card required.",
-    footerTagline: "Your personal AI coach for oral presentations.",
+    ctaTitle: "Start speaking better today.",
+    ctaSubtitle: "Your first challenge takes 1 minute — free, no credit card.",
+    footerTagline: "Your AI coach to communicate better.",
     footerProduct: "Product",
     footerCompany: "Company",
     footerLegal: "Legal",
@@ -828,12 +826,16 @@ export const es: Dictionary = {
     profile: "Perfil",
   },
   landing: {
-    heroBadge: "Tu coach personal de oratoria, disponible 24/7",
-    heroTitle: "Practica presentaciones con IA.",
-    heroSubtitle:
-      "Grábate hablando y recibe un análisis detallado de exactamente cómo mejorar.",
-    previewTitle: "Presentación de economía — toma 3",
-    previewSubtitle: "Analizado ahora mismo",
+    heroBadge: "Retos diarios · Feedback con IA",
+    heroTitle: "Aprende a comunicar de verdad.",
+    heroSubtitle: "Retos de 1 minuto al día y una IA que analiza cómo hablas: claridad, seguridad, muletillas. Entrena tu oratoria como entrenas en el gimnasio.",
+    heroCtaChallenge: "Haz tu primer reto (1 min)",
+    heroCtaPresentation: "Practica una presentación",
+    previewTitle: "Improvisa: el mejor consejo que te han dado",
+    previewSubtitle: "Reto de 1 minuto · analizado ahora mismo",
+    previewXp: "+78 XP",
+    previewLevel: "Nivel 3 · Comunicador",
+    previewNextLevel: "412 XP para Orador",
     previewMetrics: {
       clarity: "Claridad",
       confidence: "Confianza",
@@ -842,68 +844,65 @@ export const es: Dictionary = {
       fillerWords: "Muletillas",
     },
     previewFillerExample: "«eh», «o sea»",
-    twoPathsTitle: "¿Qué quieres preparar?",
+    twoPathsTitle: "Dos formas de convertirte en mejor orador",
+    twoPathsSubtitle: "Retos cortos cada día para coger soltura, y ensayos completos para cuando de verdad importa.",
+    twoPathsChallenges: {
+      title: "Retos de comunicación",
+      description: "Ejercicios de 1 minuto: improvisa sobre un tema sorpresa, lee un texto sorpresa, explica algo complejo de forma sencilla. Recibe una nota, gana XP y sube de nivel hasta Maestro de la oratoria.",
+      cta: "Hacer un reto",
+    },
     twoPathsPractice: {
-      title: "Practicar",
-      description: "Presentaciones, exposiciones, pitches y oratoria.",
-      cta: "Empezar",
+      title: "Practica una presentación",
+      description: "Ensaya tu exposición, pitch, presentación de clase o entrevista de trabajo y recibe un informe detallado: 13 dimensiones, muletillas, ritmo, una versión mejorada y las preguntas que te harían.",
+      cta: "Practicar una presentación",
     },
     twoPathsExam: {
-      title: "Preparar un examen",
-      description: "Brevet, Bac de Francés y Grand Oral franceses.",
+      title: "Exámenes orales franceses",
+      description: "Brevet, Bac de Français y Grand Oral con un examinador IA.",
       cta: "Preparar mi oral",
     },
     featuresEyebrow: "Funciones",
-    featuresTitle: "Todo lo que necesitas para hablar mejor en público",
+    featuresTitle: "Todo lo que necesitas para hablar con seguridad",
     features: [
       {
-        title: "Graba donde quieras",
-        description:
-          "Practica directamente desde el navegador o sube una grabación existente. Sin instalar nada.",
+        title: "Retos diarios de 1 minuto",
+        description: "Improvisa, lee un texto sorpresa, explica algo complejo o habla sin muletillas. Un reto nuevo cada día.",
       },
       {
         title: "Análisis con IA",
-        description:
-          "Una IA de voz avanzada evalúa claridad, confianza, estructura, vocabulario y persuasión.",
+        description: "Una IA de voz avanzada evalúa claridad, confianza, estructura, vocabulario y persuasión.",
       },
       {
         title: "Ritmo y muletillas",
-        description:
-          "Sabrás exactamente cuándo te aceleras, te frenas o abusas de “eh” y “o sea” — palabra por palabra.",
+        description: "Sabrás exactamente cuándo te aceleras, te frenas o abusas de “eh” y “o sea” — palabra por palabra.",
       },
       {
         title: "Feedback accionable",
-        description:
-          "No solo puntuaciones: fortalezas concretas, puntos débiles y consejos personalizados tras cada sesión.",
+        description: "No solo puntuaciones: fortalezas concretas, puntos débiles y consejos personalizados tras cada sesión.",
       },
       {
-        title: "Sigue tu progreso",
-        description:
-          "Cada práctica queda guardada. Mira cómo suben tus puntuaciones semana a semana, como una app de fitness para hablar.",
+        title: "Sube de nivel",
+        description: "Cada reto te da XP. Sube de Principiante a Maestro de la oratoria y mira cómo mejoran tus notas, como una app de fitness para hablar.",
       },
       {
-        title: "Modos de práctica",
-        description:
-          "Entrevistas, pitches de startup, presentaciones escolares, charlas estilo TED y más — cada uno con sus criterios.",
+        title: "Presentaciones y entrevistas",
+        description: "Ensaya exposiciones, pitches, presentaciones de clase y entrevistas de trabajo — cada una con sus criterios y las preguntas que te harían.",
       },
     ],
     howEyebrow: "Cómo funciona",
-    howTitle: "Tres pasos hacia una entrega más sólida",
+    howTitle: "Tres pasos para hablar mejor",
     howSteps: [
       {
-        title: "Practica",
-        description:
-          "Elige un modo, pulsa grabar y presenta como si la sala estuviera llena.",
+        title: "Elige",
+        description: "Un reto de 1 minuto para entrenar cada día, o la presentación que tienes pronto.",
       },
       {
-        title: "Analiza",
-        description:
-          "Nuestra IA escucha como un coach: ritmo, claridad, estructura, muletillas, confianza.",
+        title: "Habla",
+        description: "Pulsa grabar y habla. La IA te escucha como un coach: claridad, estructura, ritmo, muletillas, seguridad.",
       },
       {
         title: "Mejora",
-        description:
-          "Recibe un informe detallado con consejos y ejercicios personalizados. Repite y mira subir tu puntuación.",
+        description: "Recibe tu nota y consejos personalizados, gana XP y sube de nivel. Mañana, otro reto.",
       },
     ],
     testimonialsEyebrow: "Por qué Eloq AI",
@@ -959,6 +958,7 @@ export const es: Dictionary = {
         period: "para siempre",
         description: "Perfecto para probar Eloq AI.",
         features: [
+          "Retos diarios ilimitados",
           "3 sesiones de práctica a la semana",
           "Feedback esencial de IA",
           "Historial de sesiones",
@@ -998,18 +998,15 @@ export const es: Dictionary = {
     faqs: [
       {
         question: "¿Cómo funciona el feedback de la IA?",
-        answer:
-          "Tu grabación se transcribe y la analizan modelos de IA de voz, que te dan puntuaciones y sugerencias concretas y personalizadas.",
+        answer: "Tu grabación se transcribe y la analizan modelos de IA de voz, que te dan puntuaciones y sugerencias concretas y personalizadas.",
       },
       {
         question: "¿Mi audio es privado?",
-        answer:
-          "Sí. Tus grabaciones son tuyas, se guardan de forma segura y nunca se usan para entrenar modelos ni se comparten con nadie. Puedes borrar cualquier sesión cuando quieras.",
+        answer: "Sí. Tus grabaciones son tuyas, se guardan de forma segura y nunca se usan para entrenar modelos ni se comparten con nadie. Puedes borrar cualquier sesión cuando quieras.",
       },
       {
         question: "¿Qué puedo practicar?",
-        answer:
-          "Cualquier cosa hablada: presentaciones de clase, defensas de tesis, pitches de startup, entrevistas de trabajo, llamadas de ventas, charlas, discursos de boda — elige un modo y empieza.",
+        answer: "Retos diarios de 1 minuto (improvisación, lectura sorpresa, explicar fácil, cero muletillas, contar historias) y todo lo que necesites ensayar: exposiciones de clase, pitches, entrevistas de trabajo, llamadas de venta, charlas o discursos.",
       },
       {
         question: "¿Necesito equipo especial?",
@@ -1017,13 +1014,12 @@ export const es: Dictionary = {
       },
       {
         question: "¿También analiza mi lenguaje corporal?",
-        answer:
-          "Sí — elige el modo \"Voz + cámara\" y Eloq también te da feedback sobre tu contacto visual, postura y gestos.",
+        answer: "Sí — elige el modo \"Voz + cámara\" y Eloq también te da feedback sobre tu contacto visual, postura y gestos.",
       },
     ],
-    ctaTitle: "Tu próxima presentación empieza aquí.",
-    ctaSubtitle: "Gratis para empezar — sin tarjeta.",
-    footerTagline: "Tu coach personal de IA para presentaciones orales.",
+    ctaTitle: "Empieza a hablar mejor hoy.",
+    ctaSubtitle: "Tu primer reto dura 1 minuto — gratis, sin tarjeta.",
+    footerTagline: "Tu coach con IA para comunicar mejor.",
     footerProduct: "Producto",
     footerCompany: "Compañía",
     footerLegal: "Legal",
@@ -1625,12 +1621,16 @@ export const fr: Dictionary = {
     profile: "Profil",
   },
   landing: {
-    heroBadge: "Ton coach de prise de parole personnel, disponible 24h/24",
-    heroTitle: "Entraîne-toi à l'oral avec l'IA.",
-    heroSubtitle:
-      "Présente-toi, enregistre ton oral et reçois un feedback détaillé pour savoir exactement comment t'améliorer.",
-    previewTitle: "Présentation d'économie — essai 3",
-    previewSubtitle: "Analysé à l'instant",
+    heroBadge: "Défis quotidiens · Feedback IA",
+    heroTitle: "Apprends à communiquer pour de vrai.",
+    heroSubtitle: "Des défis d'1 minute par jour et une IA qui analyse ta façon de parler : clarté, assurance, tics de langage. Entraîne ton éloquence comme tu t'entraînes à la salle.",
+    heroCtaChallenge: "Fais ton premier défi (1 min)",
+    heroCtaPresentation: "Pratique une présentation",
+    previewTitle: "Improvise : le meilleur conseil qu'on t'ait donné",
+    previewSubtitle: "Défi d'1 minute · analysé à l'instant",
+    previewXp: "+78 XP",
+    previewLevel: "Niveau 3 · Communicant",
+    previewNextLevel: "412 XP avant Orateur",
     previewMetrics: {
       clarity: "Clarté",
       confidence: "Confiance",
@@ -1639,68 +1639,65 @@ export const fr: Dictionary = {
       fillerWords: "Tics de langage",
     },
     previewFillerExample: "« euh », « du coup »",
-    twoPathsTitle: "Que veux-tu préparer ?",
+    twoPathsTitle: "Deux façons de devenir un meilleur orateur",
+    twoPathsSubtitle: "Des défis courts chaque jour pour gagner en aisance, et des répétitions complètes pour les moments qui comptent.",
+    twoPathsChallenges: {
+      title: "Défis de communication",
+      description: "Des exercices d'1 minute : improvise sur un sujet surprise, lis un texte surprise, explique simplement quelque chose de complexe. Reçois une note, gagne de l'XP et monte de niveau jusqu'à Maître de l'éloquence.",
+      cta: "Relever un défi",
+    },
     twoPathsPractice: {
-      title: "Pratiquer",
-      description: "Présentations, exposés, pitchs et prises de parole.",
-      cta: "Commencer",
+      title: "Pratique une présentation",
+      description: "Répète ton exposé, ton pitch, ta présentation en classe ou ton entretien d'embauche et reçois un rapport détaillé : 13 dimensions, tics de langage, rythme, une version améliorée et les questions qu'on te poserait.",
+      cta: "Pratiquer une présentation",
     },
     twoPathsExam: {
-      title: "Préparer un examen",
-      description: "Brevet, Bac de Français et Grand Oral.",
+      title: "Examens oraux",
+      description: "Brevet, Bac de Français et Grand Oral avec un examinateur IA.",
       cta: "Préparer mon oral",
     },
     featuresEyebrow: "Fonctionnalités",
-    featuresTitle: "Tout ce qu'il te faut pour devenir un meilleur orateur",
+    featuresTitle: "Tout ce qu'il te faut pour parler avec assurance",
     features: [
       {
-        title: "Enregistre où que tu sois",
-        description:
-          "Entraîne-toi directement depuis ton navigateur ou importe un enregistrement existant. Aucune installation, aucun téléchargement.",
+        title: "Défis quotidiens d'1 minute",
+        description: "Improvise, lis un texte surprise, explique quelque chose de complexe ou parle sans tics de langage. Un nouveau défi chaque jour.",
       },
       {
         title: "Analyse propulsée par l'IA",
-        description:
-          "Une IA vocale avancée évalue ta clarté, ta confiance, ta structure, ton vocabulaire et ta force de persuasion.",
+        description: "Une IA vocale avancée évalue ta clarté, ta confiance, ta structure, ton vocabulaire et ta force de persuasion.",
       },
       {
         title: "Rythme et tics de langage",
-        description:
-          "Sache exactement quand tu parles trop vite, trop lentement, ou quand tu t'appuies sur des « euh » et des « genre » — mot par mot.",
+        description: "Sache exactement quand tu parles trop vite, trop lentement, ou quand tu t'appuies sur des « euh » et des « genre » — mot par mot.",
       },
       {
         title: "Retour concret",
-        description:
-          "Pas seulement des notes : des points forts, des points faibles et des conseils personnalisés après chaque session.",
+        description: "Pas seulement des notes : des points forts, des points faibles et des conseils personnalisés après chaque session.",
       },
       {
-        title: "Suis ta progression",
-        description:
-          "Chaque entraînement est sauvegardé. Regarde tes scores progresser semaine après semaine, comme une appli de sport pour la prise de parole.",
+        title: "Monte de niveau",
+        description: "Chaque défi te rapporte de l'XP. Passe de Débutant à Maître de l'éloquence et regarde tes notes grimper, comme une appli de sport pour la parole.",
       },
       {
-        title: "Modes d'entraînement",
-        description:
-          "Entretiens, pitchs de startup, exposés scolaires, conférences façon TED, et plus encore — chacun avec ses propres critères.",
+        title: "Présentations et entretiens",
+        description: "Répète exposés, pitchs, présentations en classe et entretiens d'embauche — chacun avec ses critères et les questions qu'on te poserait.",
       },
     ],
     howEyebrow: "Comment ça marche",
-    howTitle: "Trois étapes pour une prise de parole plus forte",
+    howTitle: "Trois étapes pour mieux parler",
     howSteps: [
       {
-        title: "S'entraîner",
-        description:
-          "Choisis un mode, lance l'enregistrement et présente comme si la salle était pleine.",
+        title: "Choisis",
+        description: "Un défi d'1 minute pour t'entraîner chaque jour, ou la présentation que tu as bientôt.",
       },
       {
-        title: "Analyser",
-        description:
-          "Notre IA écoute comme un coach : rythme, clarté, structure, tics de langage, confiance.",
+        title: "Parle",
+        description: "Appuie sur enregistrer et parle. L'IA t'écoute comme un coach : clarté, structure, rythme, tics de langage, assurance.",
       },
       {
-        title: "Progresser",
-        description:
-          "Reçois un rapport détaillé avec des conseils et exercices personnalisés. Recommence et regarde ton score grimper.",
+        title: "Progresse",
+        description: "Reçois ta note et des conseils personnalisés, gagne de l'XP et monte de niveau. Demain, un nouveau défi.",
       },
     ],
     testimonialsEyebrow: "Pourquoi Eloq AI",
@@ -1756,6 +1753,7 @@ export const fr: Dictionary = {
         period: "pour toujours",
         description: "Parfait pour découvrir Eloq AI.",
         features: [
+          "Défis quotidiens illimités",
           "3 sessions d'entraînement par semaine",
           "Retour IA essentiel",
           "Historique des sessions",
@@ -1795,18 +1793,15 @@ export const fr: Dictionary = {
     faqs: [
       {
         question: "Comment fonctionne le retour de l'IA ?",
-        answer:
-          "Ton enregistrement est transcrit et analysé par des modèles d'IA vocale, qui te donnent des notes et des suggestions concrètes et personnalisées.",
+        answer: "Ton enregistrement est transcrit et analysé par des modèles d'IA vocale, qui te donnent des notes et des suggestions concrètes et personnalisées.",
       },
       {
         question: "Mon audio est-il privé ?",
-        answer:
-          "Oui. Tes enregistrements t'appartiennent, sont stockés de façon sécurisée, et ne sont jamais utilisés pour entraîner des modèles ni partagés avec qui que ce soit. Tu peux supprimer n'importe quelle session à tout moment.",
+        answer: "Oui. Tes enregistrements t'appartiennent, sont stockés de façon sécurisée, et ne sont jamais utilisés pour entraîner des modèles ni partagés avec qui que ce soit. Tu peux supprimer n'importe quelle session à tout moment.",
       },
       {
         question: "Que puis-je m'entraîner à dire ?",
-        answer:
-          "Tout ce qui se parle : exposés scolaires, soutenances de thèse, pitchs de startup, entretiens d'embauche, appels commerciaux, conférences, discours de mariage — choisis un mode et commence.",
+        answer: "Des défis quotidiens d'1 minute (improvisation, lecture surprise, expliquer simplement, zéro tic de langage, raconter une histoire) et tout ce que tu dois répéter : exposés, pitchs, entretiens d'embauche, appels commerciaux, conférences ou discours.",
       },
       {
         question: "Ai-je besoin d'un équipement particulier ?",
@@ -1814,14 +1809,12 @@ export const fr: Dictionary = {
       },
       {
         question: "Est-ce que ça analyse aussi mon langage corporel ?",
-        answer:
-          "Oui — choisis le mode « Voix + caméra » et Eloq te donne aussi un retour sur ton contact visuel, ta posture et tes gestes.",
+        answer: "Oui — choisis le mode « Voix + caméra » et Eloq te donne aussi un retour sur ton contact visuel, ta posture et tes gestes.",
       },
     ],
-    ctaTitle: "Ta prochaine présentation commence ici.",
-    ctaSubtitle:
-      "Rejoins des milliers d'orateurs qui s'entraînent intelligemment. Gratuit pour commencer — aucune carte bancaire requise.",
-    footerTagline: "Ton coach IA personnel pour les présentations orales.",
+    ctaTitle: "Commence à mieux parler dès aujourd'hui.",
+    ctaSubtitle: "Ton premier défi prend 1 minute — gratuit, sans carte bancaire.",
+    footerTagline: "Ton coach IA pour mieux communiquer.",
     footerProduct: "Produit",
     footerCompany: "Entreprise",
     footerLegal: "Mentions légales",

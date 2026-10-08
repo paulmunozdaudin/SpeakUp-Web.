@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { GraduationCap, MessageSquareWarning, Mic, Sparkles, User } from "lucide-react";
+import { MessageSquareWarning, Presentation, Sparkles, Trophy, User, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { WaveformBackground } from "@/components/landing/waveform-background";
 import { useUser } from "@/hooks/use-user";
@@ -13,10 +13,10 @@ export function Hero() {
   const { user } = useUser();
 
   const previewMetrics = [
-    { label: d.landing.previewMetrics.clarity, value: 88 },
-    { label: d.landing.previewMetrics.confidence, value: 82 },
-    { label: d.landing.previewMetrics.pacing, value: 79 },
-    { label: d.landing.previewMetrics.structure, value: 91 },
+    { label: d.landing.previewMetrics.clarity, value: 82 },
+    { label: d.landing.previewMetrics.confidence, value: 76 },
+    { label: d.landing.previewMetrics.pacing, value: 74 },
+    { label: d.landing.previewMetrics.structure, value: 80 },
   ];
 
   return (
@@ -62,16 +62,16 @@ export function Hero() {
           transition={{ duration: 0.5, delay: 0.24 }}
           className="mt-10 flex flex-col items-center gap-3 sm:flex-row"
         >
-          <Link href="/practice">
+          <Link href="/challenges/play?type=improvise">
             <Button size="lg">
-              <Mic className="h-4.5 w-4.5" />
-              {d.common.startPracticing}
+              <Zap className="h-4.5 w-4.5" />
+              {d.landing.heroCtaChallenge}
             </Button>
           </Link>
-          <Link href="/exam">
+          <Link href="/practice?section=presentation">
             <Button variant="secondary" size="lg">
-              <GraduationCap className="h-4.5 w-4.5" />
-              {d.common.prepareExam}
+              <Presentation className="h-4.5 w-4.5" />
+              {d.landing.heroCtaPresentation}
             </Button>
           </Link>
           {user && (
@@ -92,13 +92,18 @@ export function Hero() {
           className="mt-20 w-full"
         >
           <div className="mx-auto max-w-3xl rounded-3xl border border-border bg-surface p-6 shadow-xl shadow-black/5 sm:p-8">
-            <div className="flex items-center justify-between">
-              <div className="text-left">
-                <p className="text-sm font-medium">{d.landing.previewTitle}</p>
-                <p className="text-xs text-muted">{d.landing.previewSubtitle}</p>
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-3 text-left">
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(135deg,var(--accent-hover),var(--accent))] text-white">
+                  <Zap className="h-5 w-5" />
+                </span>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium">{d.landing.previewTitle}</p>
+                  <p className="text-xs text-muted">{d.landing.previewSubtitle}</p>
+                </div>
               </div>
-              <span className="rounded-full bg-success/10 px-3 py-1 text-sm font-semibold text-success">
-                86
+              <span className="shrink-0 rounded-full bg-success/10 px-3 py-1 text-sm font-semibold text-success">
+                78
               </span>
             </div>
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-5">
@@ -128,11 +133,36 @@ export function Hero() {
                   {d.landing.previewMetrics.fillerWords}
                 </p>
                 <p className="mt-1 text-xl font-semibold tabular-nums text-warning">
-                  3
+                  2
                 </p>
                 <p className="mt-2 text-xs text-muted">
                   {d.landing.previewFillerExample}
                 </p>
+              </div>
+            </div>
+
+            {/* Level-up strip — shows the XP/level system at a glance. */}
+            <div className="mt-4 flex items-center gap-4 rounded-2xl border border-accent/30 bg-accent-soft/60 p-4 text-left">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--accent-hover),var(--accent))] text-white shadow-[0_8px_20px_-8px_var(--accent)]">
+                <Trophy className="h-5.5 w-5.5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="truncate text-sm font-semibold">{d.landing.previewLevel}</p>
+                  <span className="shrink-0 rounded-full bg-accent px-2.5 py-0.5 text-xs font-semibold text-white">
+                    {d.landing.previewXp}
+                  </span>
+                </div>
+                <div className="mt-2 h-2 overflow-hidden rounded-full bg-border">
+                  <motion.div
+                    initial={{ width: "38%" }}
+                    whileInView={{ width: "48%" }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.6, ease: "easeOut" }}
+                    className="h-full rounded-full bg-[linear-gradient(90deg,var(--accent-hover),var(--accent))]"
+                  />
+                </div>
+                <p className="mt-1.5 text-xs text-muted">{d.landing.previewNextLevel}</p>
               </div>
             </div>
           </div>

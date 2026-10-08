@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Mic } from "lucide-react";
+import { Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useDict } from "@/lib/i18n";
 
@@ -29,13 +29,13 @@ export function CtaBanner() {
           <p className="relative mx-auto mt-4 max-w-md text-white/80">
             {d.landing.ctaSubtitle}
           </p>
-          <Link href="/practice" className="relative mt-8 inline-block">
+          <Link href="/challenges/play?type=improvise" className="relative mt-8 inline-block">
             <Button
               size="lg"
               className="bg-white text-accent hover:bg-white/90"
             >
-              <Mic className="h-4.5 w-4.5" />
-              {d.common.startPracticing}
+              <Zap className="h-4.5 w-4.5" />
+              {d.landing.heroCtaChallenge}
             </Button>
           </Link>
         </motion.div>

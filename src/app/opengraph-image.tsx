@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Eloq AI — Practice presentations with AI";
+export const alt = "Eloq AI — Learn to communicate for real";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -123,7 +123,7 @@ export default async function Image() {
             marginTop: 18,
           }}
         >
-          Practice presentations with AI
+          Learn to communicate for real
         </div>
       </div>
     ),

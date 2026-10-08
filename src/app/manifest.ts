@@ -10,7 +10,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Eloq AI",
     short_name: "Eloq AI",
     description:
-      "Practice presentations and French oral exams with an AI coach — instant feedback on clarity, confidence, pacing and delivery.",
+      "Learn to communicate for real: 1-minute daily speaking challenges, presentation practice and instant AI feedback on clarity, confidence and delivery.",
     start_url: "/",
     display: "standalone",
     background_color: "#09090b",

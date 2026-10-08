@@ -18,9 +18,9 @@ export default function LandingPage() {
       <main className="flex-1">
         <Hero />
         <TwoPaths />
-        <FrenchExams />
         <Features />
         <HowItWorks />
+        <FrenchExams />
         <Testimonials />
         <UserTestimonials />
         <Pricing />
