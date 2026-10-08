@@ -111,28 +111,6 @@ export const en = {
         description: "Get your score and personalized tips, earn XP and level up. Tomorrow, a new challenge.",
       },
     ],
-    testimonialsEyebrow: "Why Eloq AI",
-    testimonialsTitle: "Built for real practice, not just recording",
-    testimonials: [
-      {
-        stat: "13",
-        title: "Coaching dimensions",
-        description:
-          "Every session scores clarity, confidence, structure, pace and more — not just a vague overall grade.",
-      },
-      {
-        stat: "24/7",
-        title: "No appointment needed",
-        description:
-          "Practice at midnight before an interview, or five minutes before you're due in the room.",
-      },
-      {
-        stat: "0",
-        title: "Signup required to start",
-        description:
-          "Try a full practice as a guest — create an account only if you want your history saved.",
-      },
-    ],
     userTestimonialsEyebrow: "What students say",
     userTestimonialsTitle: "Real results from real students",
     userTestimonials: [
@@ -903,28 +881,6 @@ export const es: Dictionary = {
       {
         title: "Mejora",
         description: "Recibe tu nota y consejos personalizados, gana XP y sube de nivel. Mañana, otro reto.",
-      },
-    ],
-    testimonialsEyebrow: "Por qué Eloq AI",
-    testimonialsTitle: "Pensado para practicar de verdad, no solo grabarte",
-    testimonials: [
-      {
-        stat: "13",
-        title: "Dimensiones analizadas",
-        description:
-          "Cada sesión puntúa claridad, confianza, estructura, ritmo y más — no una nota vaga y ya está.",
-      },
-      {
-        stat: "24/7",
-        title: "Sin cita previa",
-        description:
-          "Practica a medianoche antes de una entrevista, o cinco minutos antes de entrar a la sala.",
-      },
-      {
-        stat: "0",
-        title: "Registro necesario para empezar",
-        description:
-          "Prueba una práctica completa como invitado — crea una cuenta solo si quieres guardar tu historial.",
       },
     ],
     userTestimonialsEyebrow: "Lo que dicen los estudiantes",
@@ -1698,28 +1654,6 @@ export const fr: Dictionary = {
       {
         title: "Progresse",
         description: "Reçois ta note et des conseils personnalisés, gagne de l'XP et monte de niveau. Demain, un nouveau défi.",
-      },
-    ],
-    testimonialsEyebrow: "Pourquoi Eloq AI",
-    testimonialsTitle: "Conçu pour vraiment s'entraîner, pas juste s'enregistrer",
-    testimonials: [
-      {
-        stat: "13",
-        title: "Dimensions analysées",
-        description:
-          "Chaque session note la clarté, la confiance, la structure, le rythme et plus — pas juste une note vague.",
-      },
-      {
-        stat: "24/7",
-        title: "Sans rendez-vous",
-        description:
-          "Entraîne-toi à minuit avant un entretien, ou cinq minutes avant d'entrer dans la salle.",
-      },
-      {
-        stat: "0",
-        title: "Inscription nécessaire pour commencer",
-        description:
-          "Essaie une session complète en tant qu'invité — crée un compte seulement si tu veux garder ton historique.",
       },
     ],
     userTestimonialsEyebrow: "Ce que disent les élèves",
