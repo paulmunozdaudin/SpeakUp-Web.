@@ -7,6 +7,8 @@ import { formatDate } from "@/utils/format";
 
 interface ProgressChartProps {
   trend: { date: string; score: number }[];
+  /** Defaults to the dashboard's "Progress" label. */
+  title?: string;
 }
 
 const WIDTH = 600;
@@ -18,13 +20,14 @@ const PADDING = 12;
  * TODO(charts): swap for a full charting library (e.g. recharts) when we add
  * per-metric trends and tooltips.
  */
-export function ProgressChart({ trend }: ProgressChartProps) {
+export function ProgressChart({ trend, title }: ProgressChartProps) {
   const d = useDict();
+  const heading = title ?? d.dashboard.progress;
 
   if (trend.length < 2) {
     return (
       <Card>
-        <CardTitle>{d.dashboard.progress}</CardTitle>
+        <CardTitle>{heading}</CardTitle>
         <div className="mt-6 flex h-40 flex-col items-center justify-center text-center">
           <TrendingUp className="mb-2 h-6 w-6 text-muted/50" />
           <p className="text-sm text-muted">{d.dashboard.progressEmpty}</p>
@@ -48,7 +51,7 @@ export function ProgressChart({ trend }: ProgressChartProps) {
   return (
     <Card>
       <div className="flex items-center justify-between">
-        <CardTitle>{d.dashboard.progress}</CardTitle>
+        <CardTitle>{heading}</CardTitle>
         <span
           className={
             delta >= 0
@@ -64,7 +67,7 @@ export function ProgressChart({ trend }: ProgressChartProps) {
         viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
         className="mt-4 w-full"
         role="img"
-        aria-label={d.dashboard.progress}
+        aria-label={heading}
       >
         <defs>
           <linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1">

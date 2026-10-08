@@ -10,6 +10,7 @@ import {
   LogOut,
   Mic,
   User,
+  Zap,
 } from "lucide-react";
 import { Logo } from "@/components/ui/logo";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
@@ -27,9 +28,12 @@ export function Sidebar() {
   const router = useRouter();
   const { user } = useUser();
 
+  // Exam prep stays in the desktop sidebar but is left out of the 5-slot
+  // mobile bar — it's still one tap away from the /practice section picker.
   const navItems = [
     { href: "/practice", label: d.nav.practice, icon: Mic },
-    { href: "/exam", label: d.nav.examMode, icon: GraduationCap },
+    { href: "/challenges", label: d.nav.challenges, icon: Zap },
+    { href: "/exam", label: d.nav.examMode, icon: GraduationCap, mobile: false },
     { href: "/dashboard", label: d.nav.dashboard, icon: LayoutDashboard },
     { href: "/history", label: d.nav.history, icon: History },
     { href: "/profile", label: d.nav.profile, icon: User },
@@ -104,7 +108,7 @@ export function Sidebar() {
       {/* Mobile bottom nav — padded for the home indicator (matters as an
           installed PWA). */}
       <nav className="fixed inset-x-0 bottom-0 z-40 flex border-t border-border bg-surface/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl md:hidden">
-        {items.map((item) => (
+        {items.filter((item) => item.mobile !== false).map((item) => (
           <Link
             key={item.href}
             href={item.href}

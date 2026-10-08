@@ -84,6 +84,13 @@ export const AUDIENCE_QUESTIONS: Record<
       "Si vous deviez approfondir un aspect, lequel choisiriez-vous ?",
       "Quel regard critique portez-vous sur votre propre travail ?",
     ],
+    challenge: [
+      "Si tu devais résumer ton idée en une seule phrase, que dirais-tu ?",
+      "Quel exemple concret pourrais-tu ajouter pour convaincre davantage ?",
+      "Qu'est-ce que tu changerais si tu refaisais ce défi maintenant ?",
+      "Quel est le moment où tu t'es senti(e) le moins à l'aise, et pourquoi ?",
+      "Comment adapterais-tu ce que tu as dit à un public qui n'y connaît rien ?",
+    ],
   },
   es: {
     presentation: [
@@ -160,6 +167,13 @@ export const AUDIENCE_QUESTIONS: Record<
       "Si tuvieras que profundizar en un aspecto, ¿cuál elegirías?",
       "¿Qué mirada crítica tienes sobre tu propio trabajo?",
     ],
+    challenge: [
+      "Si tuvieras que resumir tu idea en una sola frase, ¿qué dirías?",
+      "¿Qué ejemplo concreto podrías añadir para convencer más?",
+      "¿Qué cambiarías si repitieras este reto ahora mismo?",
+      "¿En qué momento te sentiste menos cómodo/a, y por qué?",
+      "¿Cómo adaptarías lo que has dicho a alguien que no sabe nada del tema?",
+    ],
   },
   en: {
     presentation: [
@@ -235,6 +249,13 @@ export const AUDIENCE_QUESTIONS: Record<
       "How does this question fit into your career orientation project?",
       "If you had to go deeper into one aspect, which would you pick?",
       "What critical view do you have of your own work?",
+    ],
+    challenge: [
+      "If you had to sum up your idea in a single sentence, what would you say?",
+      "What concrete example could you add to be more convincing?",
+      "What would you change if you redid this challenge right now?",
+      "At which moment did you feel least comfortable, and why?",
+      "How would you adapt what you said for someone who knows nothing about it?",
     ],
   },
 };

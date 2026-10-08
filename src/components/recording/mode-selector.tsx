@@ -9,6 +9,7 @@ import {
   Presentation,
   Rocket,
   ScrollText,
+  Zap,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { PracticeMode } from "@/types";
@@ -28,6 +29,7 @@ const MODE_ICONS: Record<PracticeMode, LucideIcon> = {
   "brevet-oral": BookOpen,
   "bac-francais-oral": BookMarked,
   "grand-oral": Award,
+  challenge: Zap,
 };
 
 export function ModeSelector({

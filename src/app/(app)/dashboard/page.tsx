@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, GraduationCap, Mic, Sparkles } from "lucide-react";
+import { ArrowRight, GraduationCap, Mic, Sparkles, Zap } from "lucide-react";
 import { useUser } from "@/hooks/use-user";
 import { useSessions } from "@/hooks/use-sessions";
 import { Button } from "@/components/ui/button";
@@ -44,11 +44,17 @@ export default function DashboardPage() {
         <p className="mt-1 text-sm text-muted">{d.dashboard.todayQuestion}</p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2">
-        <Link href="/practice">
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Link href="/practice?section=presentation">
           <Button size="lg" className="w-full">
             <Mic className="h-4.5 w-4.5" />
             {d.dashboard.startNewPractice}
+          </Button>
+        </Link>
+        <Link href="/challenges">
+          <Button size="lg" variant="secondary" className="w-full">
+            <Zap className="h-4.5 w-4.5" />
+            {d.dashboard.startChallenge}
           </Button>
         </Link>
         <Link href="/exam">

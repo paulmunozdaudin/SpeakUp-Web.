@@ -31,6 +31,8 @@ const MODE_LABELS: Record<SpeechLanguage, Record<string, string>> = {
     "brevet-oral": "oral du Brevet (soutenance de projet devant un jury de collège)",
     "bac-francais-oral": "oral du Bac de Français (explication linéaire et entretien)",
     "grand-oral": "Grand Oral du Bac (soutenance d'une question devant un jury)",
+    challenge:
+      "défi d'expression orale d'1 minute (exercice court et improvisé, pas une présentation préparée — évaluez-le comme tel, en tenant compte de l'objectif précis du défi indiqué dans le sujet)",
   },
   es: {
     presentation: "presentación libre",
@@ -41,6 +43,8 @@ const MODE_LABELS: Record<SpeechLanguage, Record<string, string>> = {
     "brevet-oral": "oral del Brevet francés (defensa de proyecto ante un jurado de secundaria)",
     "bac-francais-oral": "oral del Bac de Francés (explicación de texto y entrevista)",
     "grand-oral": "Grand Oral del Bachillerato francés (defensa de una pregunta ante un jurado)",
+    challenge:
+      "reto de oratoria de 1 minuto (ejercicio corto e improvisado, no una presentación preparada — valóralo como tal, teniendo en cuenta el objetivo concreto del reto indicado en el tema)",
   },
   en: {
     presentation: "open presentation",
@@ -51,6 +55,8 @@ const MODE_LABELS: Record<SpeechLanguage, Record<string, string>> = {
     "brevet-oral": "French Brevet oral exam (project defense before a middle-school panel)",
     "bac-francais-oral": "French Bac de Français oral exam (text explication and interview)",
     "grand-oral": "French Bac Grand Oral (defending a prepared question before a panel)",
+    challenge:
+      "1-minute speaking challenge (a short, improvised exercise, not a prepared presentation — judge it as such, against the specific goal of the challenge given in the topic)",
   },
 };
 

@@ -8,13 +8,18 @@
 import type {
   AnalysisMode,
   AnalysisResult,
+  ChallengeInfo,
   PracticeMode,
   PracticeSession,
   SpeechLanguage,
 } from "@/types";
 import type { CapturedFrame } from "@/utils/video-frames";
 import type { PauseEvent } from "@/hooks/use-speech-recorder";
-import { checkFreeQuota, createSession } from "./sessions.service";
+import {
+  checkFreeQuota,
+  createSession,
+  isQuotaExempt,
+} from "./sessions.service";
 
 export interface AnalyzeInput {
   transcript: string;
@@ -32,6 +37,8 @@ export interface AnalyzeInput {
   /** Long mid-speech silences measured live from the mic — real audio
    *  signal, never derived from the transcript. */
   pauses?: PauseEvent[];
+  /** Challenges only — saved with the analysis, never sent to the API. */
+  challenge?: ChallengeInfo;
 }
 
 export async function analyzeAndSave(
@@ -40,12 +47,13 @@ export async function analyzeAndSave(
   // Checked before spending an OpenAI call — a free-plan user over quota
   // would otherwise pay for (and immediately lose) a full AI analysis
   // before createSession() rejects the insert.
-  await checkFreeQuota();
+  if (!isQuotaExempt(input.mode)) await checkFreeQuota();
 
+  const { challenge, ...request } = input;
   const response = await fetch("/api/analyze", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(input),
+    body: JSON.stringify(request),
   });
 
   if (!response.ok) {
@@ -54,6 +62,7 @@ export async function analyzeAndSave(
   }
 
   const analysis = (await response.json()) as AnalysisResult;
+  if (challenge) analysis.challenge = challenge;
 
   return createSession({
     topic: input.title,

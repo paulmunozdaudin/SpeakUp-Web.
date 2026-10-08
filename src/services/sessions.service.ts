@@ -39,6 +39,12 @@ export class QuotaExceededError extends Error {}
  *  reason to exist. */
 const FREE_WEEKLY_SESSION_LIMIT = 3;
 
+/** 1-minute challenges are meant to be done daily, so they never count
+ *  toward (or are blocked by) the weekly free limit. */
+export function isQuotaExempt(mode: PracticeMode): boolean {
+  return mode === "challenge";
+}
+
 /** Midnight of the Monday that starts the current calendar week. */
 function startOfWeek(): Date {
   const date = new Date();
@@ -165,6 +171,7 @@ export async function checkFreeQuota(): Promise<void> {
     .from("practice_sessions")
     .select("id", { count: "exact", head: true })
     .eq("user_id", userId)
+    .neq("mode", "challenge")
     .gte("created_at", startOfWeek().toISOString());
 
   if ((count ?? 0) >= FREE_WEEKLY_SESSION_LIMIT) {
@@ -190,7 +197,7 @@ export async function createSession(
 
   // Re-checked here (not just before the OpenAI call in analyzeAndSave) as
   // defense-in-depth against a race between two concurrent submissions.
-  await checkFreeQuota();
+  if (!isQuotaExempt(input.mode)) await checkFreeQuota();
 
   const { data, error } = await supabase
     .from("practice_sessions")

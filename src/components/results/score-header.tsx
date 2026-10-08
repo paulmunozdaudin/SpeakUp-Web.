@@ -6,9 +6,15 @@ import { Gauge, Mic, Sparkles, Video } from "lucide-react";
 import type { AnalysisResult, PracticeMode } from "@/types";
 import { FRENCH_EXAM_MODES } from "@/types";
 
-function practiceAgainHref(mode: PracticeMode, language: AnalysisResult["language"]): string {
+function practiceAgainHref(mode: PracticeMode, analysis: AnalysisResult): string {
+  const { language } = analysis;
   if (FRENCH_EXAM_MODES.includes(mode)) return `/exam?mode=${mode}&lang=${language}`;
   if (mode === "interview") return "/interview";
+  if (mode === "challenge") {
+    return analysis.challenge
+      ? `/challenges/play?type=${analysis.challenge.type}`
+      : "/challenges";
+  }
   return "/practice";
 }
 import { Badge } from "@/components/ui/badge";
@@ -92,7 +98,7 @@ export function ScoreHeader({
             {analysis.summary}
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-3">
-            <Link href={practiceAgainHref(mode, analysis.language)}>
+            <Link href={practiceAgainHref(mode, analysis)}>
               <Button>
                 <Mic className="h-4 w-4" />
                 {d.results.practiceAgain}

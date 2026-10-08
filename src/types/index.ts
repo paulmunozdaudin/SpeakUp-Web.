@@ -12,7 +12,8 @@ export type PracticeMode =
   | "project-defense"
   | "brevet-oral"
   | "bac-francais-oral"
-  | "grand-oral";
+  | "grand-oral"
+  | "challenge";
 
 export const PRACTICE_MODES: PracticeMode[] = [
   "presentation",
@@ -23,6 +24,7 @@ export const PRACTICE_MODES: PracticeMode[] = [
   "brevet-oral",
   "bac-francais-oral",
   "grand-oral",
+  "challenge",
 ];
 
 /** The three French exam modes — only practiced through the dedicated
@@ -40,7 +42,11 @@ export const FRENCH_EXAM_MODES: PracticeMode[] = [
  *  (/exam) and the job interview (/interview) — both simulate a real
  *  back-and-forth with an AI asking follow-up questions grounded in what
  *  was actually said, which the generic flow doesn't do. */
-export const DEDICATED_FLOW_MODES: PracticeMode[] = [...FRENCH_EXAM_MODES, "interview"];
+export const DEDICATED_FLOW_MODES: PracticeMode[] = [
+  ...FRENCH_EXAM_MODES,
+  "interview",
+  "challenge",
+];
 
 /** PRACTICE_MODES minus the dedicated-flow modes — what the generic
  *  /practice flow accepts (deep links, API validation). Kept broad on
@@ -211,6 +217,29 @@ export interface AnalysisResult {
    *  a Bac de Français jury doesn't score "opening strength" or
    *  "persuasion", it scores literary analysis and mastery of the text. */
   bacFrancais?: BacFrancaisEvaluation;
+
+  /** Only for mode === "challenge": which exercise it was, attached
+   *  client-side before saving so /challenges can compute XP and levels. */
+  challenge?: ChallengeInfo;
+}
+
+/** The 1-minute communication exercises offered on /challenges. */
+export const CHALLENGE_TYPES = [
+  "improvise",
+  "reading",
+  "explain",
+  "noFillers",
+  "story",
+] as const;
+export type ChallengeType = (typeof CHALLENGE_TYPES)[number];
+
+export interface ChallengeInfo {
+  type: ChallengeType;
+  /** The surprise topic, or the reading text's title. */
+  prompt: string;
+  /** True when this counted as that day's daily challenge (earns the bonus
+   *  XP) — only the first completion of the day's challenge sets it. */
+  daily: boolean;
 }
 
 /** The 12 dimensions a real Bac de Français oral jury actually scores —

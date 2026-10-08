@@ -1,9 +1,19 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, ArrowRight, FileText, MessageSquare, Sparkles } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  FileText,
+  GraduationCap,
+  MessageSquare,
+  Presentation,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 import type {
   AnalysisMode,
   PracticeMode,
@@ -43,7 +53,9 @@ interface SessionConfig {
 export default function PracticePage() {
   const d = useDict();
   const router = useRouter();
-  const [step, setStep] = useState<"setup" | "record">("setup");
+  // "choose" = the section picker (presentation vs. challenges vs. exams)
+  // every "Start practicing" CTA lands on; deep links skip straight to setup.
+  const [step, setStep] = useState<"choose" | "setup" | "record">("choose");
   const [config, setConfig] = useState<SessionConfig>(() => ({
     mode: "presentation",
     title: "",
@@ -83,6 +95,7 @@ export default function PracticePage() {
       ...(mode ? { mode } : {}),
       language,
     }));
+    if (mode || params.get("section") === "presentation") setStep("setup");
   }, []);
   const [titleError, setTitleError] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
@@ -149,14 +162,90 @@ export default function PracticePage() {
 
   return (
     <div className="relative mx-auto max-w-2xl">
-      {step === "setup" && (
+      {step !== "record" && (
         <div
           aria-hidden
           className="pointer-events-none absolute inset-x-0 -top-10 -z-10 h-[420px] bg-[radial-gradient(ellipse_at_top,var(--accent-soft),transparent_70%)]"
         />
       )}
       <AnimatePresence mode="wait">
-        {step === "setup" ? (
+        {step === "choose" ? (
+          <motion.div
+            key="choose"
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, x: -16 }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="space-y-8"
+          >
+            <div>
+              <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs font-medium text-muted">
+                <Sparkles className="h-3.5 w-3.5 text-accent" />
+                {d.practice.setupEyebrow}
+              </span>
+              <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+                {d.practice.chooseTitle}
+              </h1>
+              <p className="mt-2 text-[15px] text-muted">{d.practice.chooseSubtitle}</p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <button
+                type="button"
+                onClick={() => setStep("setup")}
+                className="group flex cursor-pointer flex-col rounded-3xl border border-border bg-surface p-6 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-accent/50 hover:shadow-[0_18px_45px_-20px_var(--accent)]"
+              >
+                <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-accent-soft text-accent">
+                  <Presentation className="h-6 w-6" />
+                </span>
+                <span className="text-lg font-semibold tracking-tight">
+                  {d.practice.sectionPresentationTitle}
+                </span>
+                <span className="mt-2 flex-1 text-sm leading-relaxed text-muted">
+                  {d.practice.sectionPresentationDescription}
+                </span>
+                <ArrowRight className="mt-5 h-5 w-5 text-accent transition-transform group-hover:translate-x-1" />
+              </button>
+
+              <Link
+                href="/challenges"
+                className="group relative flex flex-col overflow-hidden rounded-3xl border border-accent/50 bg-[linear-gradient(165deg,color-mix(in_srgb,var(--accent)_14%,transparent),transparent_65%)] p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-accent hover:shadow-[0_18px_45px_-18px_var(--accent)]"
+              >
+                <span className="absolute right-5 top-5 rounded-full bg-accent px-2.5 py-1 text-[11px] font-semibold text-white">
+                  {d.practice.newBadge}
+                </span>
+                <span className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-[linear-gradient(135deg,var(--accent-hover),var(--accent))] text-white shadow-[0_8px_20px_-6px_var(--accent)]">
+                  <Zap className="h-6 w-6" />
+                </span>
+                <span className="text-lg font-semibold tracking-tight">
+                  {d.practice.sectionChallengesTitle}
+                </span>
+                <span className="mt-2 flex-1 text-sm leading-relaxed text-muted">
+                  {d.practice.sectionChallengesDescription}
+                </span>
+                <ArrowRight className="mt-5 h-5 w-5 text-accent transition-transform group-hover:translate-x-1" />
+              </Link>
+            </div>
+
+            <Link
+              href="/exam"
+              className="group flex items-center gap-4 rounded-2xl border border-border bg-surface px-5 py-4 transition-colors hover:border-accent/40"
+            >
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-muted text-muted group-hover:text-foreground">
+                <GraduationCap className="h-5 w-5" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold">
+                  {d.practice.sectionExamTitle}
+                </span>
+                <span className="block text-xs text-muted">
+                  {d.practice.sectionExamDescription}
+                </span>
+              </span>
+              <ArrowRight className="h-4 w-4 shrink-0 text-muted transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </motion.div>
+        ) : step === "setup" ? (
           <motion.div
             key="setup"
             initial={{ opacity: 0, x: -16 }}
@@ -166,7 +255,15 @@ export default function PracticePage() {
             className="space-y-10"
           >
             <div>
-              <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs font-medium text-muted">
+              <button
+                type="button"
+                onClick={() => setStep("choose")}
+                className="mb-5 inline-flex cursor-pointer items-center gap-1.5 text-sm text-muted transition-colors hover:text-foreground"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                {d.practice.backToSections}
+              </button>
+              <span className="mb-4 flex w-fit items-center gap-2 items-center gap-2 rounded-full border border-border bg-surface px-3.5 py-1.5 text-xs font-medium text-muted">
                 <Sparkles className="h-3.5 w-3.5 text-accent" />
                 {d.practice.setupEyebrow}
               </span>

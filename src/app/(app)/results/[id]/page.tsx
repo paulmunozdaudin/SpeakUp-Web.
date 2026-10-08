@@ -3,7 +3,7 @@
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { FileQuestion, RotateCcw } from "lucide-react";
+import { ArrowRight, FileQuestion, RotateCcw, Zap } from "lucide-react";
 import type { PracticeSession } from "@/types";
 import { getSession } from "@/services/sessions.service";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,7 @@ import { ImprovedVersionCard } from "@/components/results/improved-version-card"
 import { ResultsTabs } from "@/components/results/results-tabs";
 import { useDict } from "@/lib/i18n";
 import { fr } from "@/lib/i18n/translations";
+import { fill, sessionXp } from "@/lib/challenges";
 
 type TabKey = "overview" | "metrics" | "transcript" | "improved" | "questions";
 
@@ -96,6 +97,27 @@ export default function ResultsPage({
         durationSeconds={session.durationSeconds}
         analysis={analysis}
       />
+
+      {session.mode === "challenge" && (
+        <Link
+          href="/challenges"
+          className="group flex items-center gap-3 rounded-2xl border border-accent/40 bg-accent-soft px-5 py-4 transition-colors hover:border-accent"
+        >
+          <Zap className="h-5 w-5 shrink-0 text-accent" />
+          <span className="flex-1 text-sm">
+            <span className="font-semibold text-accent">
+              {fill(d.challenges.xpEarned, { xp: sessionXp(session) })}
+            </span>
+            {session.analysis.challenge?.daily && (
+              <span className="text-muted"> · {d.challenges.dailyTitle}</span>
+            )}
+          </span>
+          <span className="inline-flex items-center gap-1 text-sm font-medium text-accent">
+            {d.challenges.seeProgress}
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </span>
+        </Link>
+      )}
 
       {isExamMode && (
         <>
