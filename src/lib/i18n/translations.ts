@@ -69,22 +69,15 @@ export const en = {
     },
     featuresEyebrow: "Features",
     featuresTitle: "Everything you need to speak with confidence",
+    featuresSubtitle: "Short daily reps, honest feedback and a clear path to see how far you've come.",
     features: [
       {
         title: "1-minute daily challenges",
         description: "Improvise, read a surprise text, explain something complex or talk with zero filler words. A new challenge every day.",
       },
       {
-        title: "AI-powered analysis",
-        description: "Advanced speech AI evaluates clarity, confidence, structure, vocabulary and persuasiveness.",
-      },
-      {
-        title: "Pacing & filler words",
-        description: "Know exactly when you rush, drag, or lean on “um” and “like” — down to the word.",
-      },
-      {
-        title: "Actionable feedback",
-        description: "Not just scores: concrete strengths, weaknesses and personalized tips after every session.",
+        title: "AI feedback that's actually useful",
+        description: "Clarity, confidence, structure, pace and filler words — scored and explained with quotes from what you said, plus concrete tips after every session.",
       },
       {
         title: "Level up",
@@ -111,8 +104,7 @@ export const en = {
         description: "Get your score and personalized tips, earn XP and level up. Tomorrow, a new challenge.",
       },
     ],
-    userTestimonialsEyebrow: "What students say",
-    userTestimonialsTitle: "Real results from real students",
+    userTestimonialsEyebrow: "What people who use it say",
     userTestimonials: [
       {
         quote: "Eloq AI saved my oral exam — I got 18/20.",
@@ -841,22 +833,15 @@ export const es: Dictionary = {
     },
     featuresEyebrow: "Funciones",
     featuresTitle: "Todo lo que necesitas para hablar con seguridad",
+    featuresSubtitle: "Entrenamiento corto cada día, feedback honesto y un camino claro para ver cuánto has avanzado.",
     features: [
       {
         title: "Retos diarios de 1 minuto",
         description: "Improvisa, lee un texto sorpresa, explica algo complejo o habla sin muletillas. Un reto nuevo cada día.",
       },
       {
-        title: "Análisis con IA",
-        description: "Una IA de voz avanzada evalúa claridad, confianza, estructura, vocabulario y persuasión.",
-      },
-      {
-        title: "Ritmo y muletillas",
-        description: "Sabrás exactamente cuándo te aceleras, te frenas o abusas de “eh” y “o sea” — palabra por palabra.",
-      },
-      {
-        title: "Feedback accionable",
-        description: "No solo puntuaciones: fortalezas concretas, puntos débiles y consejos personalizados tras cada sesión.",
+        title: "Feedback con IA de verdad útil",
+        description: "Claridad, seguridad, estructura, ritmo y muletillas — puntuados y explicados con frases de lo que has dicho, y consejos concretos tras cada sesión.",
       },
       {
         title: "Sube de nivel",
@@ -883,8 +868,7 @@ export const es: Dictionary = {
         description: "Recibe tu nota y consejos personalizados, gana XP y sube de nivel. Mañana, otro reto.",
       },
     ],
-    userTestimonialsEyebrow: "Lo que dicen los estudiantes",
-    userTestimonialsTitle: "Resultados reales de estudiantes reales",
+    userTestimonialsEyebrow: "Lo que dicen quienes lo usan",
     userTestimonials: [
       {
         quote: "Eloq.ia ha salvado mi examen oral, he sacado 18/20.",
@@ -1614,22 +1598,15 @@ export const fr: Dictionary = {
     },
     featuresEyebrow: "Fonctionnalités",
     featuresTitle: "Tout ce qu'il te faut pour parler avec assurance",
+    featuresSubtitle: "Un entraînement court chaque jour, un feedback honnête et un chemin clair pour mesurer tes progrès.",
     features: [
       {
         title: "Défis quotidiens d'1 minute",
         description: "Improvise, lis un texte surprise, explique quelque chose de complexe ou parle sans tics de langage. Un nouveau défi chaque jour.",
       },
       {
-        title: "Analyse propulsée par l'IA",
-        description: "Une IA vocale avancée évalue ta clarté, ta confiance, ta structure, ton vocabulaire et ta force de persuasion.",
-      },
-      {
-        title: "Rythme et tics de langage",
-        description: "Sache exactement quand tu parles trop vite, trop lentement, ou quand tu t'appuies sur des « euh » et des « genre » — mot par mot.",
-      },
-      {
-        title: "Retour concret",
-        description: "Pas seulement des notes : des points forts, des points faibles et des conseils personnalisés après chaque session.",
+        title: "Un feedback IA vraiment utile",
+        description: "Clarté, assurance, structure, rythme et tics de langage — notés et expliqués avec des extraits de ce que tu as dit, et des conseils concrets après chaque session.",
       },
       {
         title: "Monte de niveau",
@@ -1656,8 +1633,7 @@ export const fr: Dictionary = {
         description: "Reçois ta note et des conseils personnalisés, gagne de l'XP et monte de niveau. Demain, un nouveau défi.",
       },
     ],
-    userTestimonialsEyebrow: "Ce que disent les élèves",
-    userTestimonialsTitle: "Des résultats réels, des élèves réels",
+    userTestimonialsEyebrow: "Ce qu'en disent ceux qui l'utilisent",
     userTestimonials: [
       {
         quote: "Eloq.ia a sauvé mon oral, j'ai eu 18/20.",
