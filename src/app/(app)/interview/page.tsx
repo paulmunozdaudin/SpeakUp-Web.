@@ -15,6 +15,7 @@ import { analyzeAndSave } from "@/services/analysis.service";
 import { checkFreeQuota, QuotaExceededError } from "@/services/sessions.service";
 import { AUDIENCE_QUESTIONS } from "@/services/ai/question-bank";
 import { QuotaExceededNotice } from "@/components/billing/quota-exceeded-notice";
+import { reportClientError } from "@/utils/report-error";
 
 /** How many questions make up one mock interview. */
 const TOTAL_QUESTIONS = 5;
@@ -80,6 +81,7 @@ export default function InterviewModePage() {
       if (e instanceof QuotaExceededError) {
         setQuotaExceeded(true);
       } else {
+        reportClientError("quota-check", e instanceof Error ? e.message : String(e));
         setError(e instanceof Error ? e.message : d.auth.genericError);
       }
       return;
@@ -139,6 +141,7 @@ export default function InterviewModePage() {
       router.push(`/results/${session.id}`);
     } catch (e) {
       setAnalyzing(false);
+      reportClientError("analysis", e instanceof Error ? e.message : String(e));
       setError(e instanceof Error ? e.message : d.auth.genericError);
     }
   }

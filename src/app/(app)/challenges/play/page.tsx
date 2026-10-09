@@ -28,6 +28,7 @@ import { RecorderPanel } from "@/components/recording/recorder-panel";
 import { AnalyzingOverlay } from "@/components/recording/analyzing-overlay";
 import { analyzeAndSave } from "@/services/analysis.service";
 import type { PauseEvent } from "@/hooks/use-speech-recorder";
+import { reportClientError } from "@/utils/report-error";
 
 /** Same floor as /practice and /api/analyze. */
 const MIN_SPEECH_SECONDS = 30;
@@ -122,6 +123,7 @@ export default function ChallengePlayPage() {
       router.push(`/results/${session.id}`);
     } catch (e) {
       setAnalyzing(false);
+      reportClientError("analysis", e instanceof Error ? e.message : String(e));
       setError(e instanceof Error ? e.message : d.auth.genericError);
       setRecorderKey((k) => k + 1);
     }

@@ -36,6 +36,7 @@ import { QuotaExceededNotice } from "@/components/billing/quota-exceeded-notice"
 import { useDict } from "@/lib/i18n";
 import type { CapturedFrame } from "@/utils/video-frames";
 import type { PauseEvent } from "@/hooks/use-speech-recorder";
+import { reportClientError } from "@/utils/report-error";
 
 /** Below this, there just isn't enough speech for the AI to say anything
  *  meaningful about clarity, pacing or structure. */
@@ -119,6 +120,7 @@ export default function PracticePage() {
       if (e instanceof QuotaExceededError) {
         setQuotaExceeded(true);
       } else {
+        reportClientError("quota-check", e instanceof Error ? e.message : String(e));
         setError(e instanceof Error ? e.message : d.auth.genericError);
       }
       return;
@@ -155,6 +157,7 @@ export default function PracticePage() {
       router.push(`/results/${session.id}`);
     } catch (e) {
       setAnalyzing(false);
+      reportClientError("analysis", e instanceof Error ? e.message : String(e));
       setError(e instanceof Error ? e.message : d.auth.genericError);
       setRecorderKey((k) => k + 1); // remount RecorderPanel back to idle
     }

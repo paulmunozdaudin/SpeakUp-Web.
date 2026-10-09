@@ -14,6 +14,7 @@ import type { Dictionary } from "@/lib/i18n/translations";
 import { formatDuration } from "@/utils/format";
 import { isIOS } from "@/utils/platform";
 import { cn } from "@/utils/cn";
+import { reportClientError } from "@/utils/report-error";
 import type { AnalysisMode, SpeechLanguage, TargetDuration } from "@/types";
 
 interface RecorderPanelProps {
@@ -91,6 +92,14 @@ export function RecorderPanel({
   useEffect(() => {
     if (previewRef.current) previewRef.current.srcObject = videoRecorder.stream;
   }, [videoRecorder.stream]);
+
+  useEffect(() => {
+    if (recorder.error) reportClientError("recorder", recorder.error);
+  }, [recorder.error]);
+
+  useEffect(() => {
+    if (videoRecorder.error) reportClientError("camera", videoRecorder.error);
+  }, [videoRecorder.error]);
 
   // Safety net: if the camera started fine but the mic then fails (e.g.
   // denied separately), release the camera instead of leaving it running

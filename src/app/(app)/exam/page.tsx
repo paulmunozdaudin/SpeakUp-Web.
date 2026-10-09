@@ -37,6 +37,7 @@ import { AUDIENCE_QUESTIONS } from "@/services/ai/question-bank";
 import type { CapturedFrame } from "@/utils/video-frames";
 import type { PauseEvent } from "@/hooks/use-speech-recorder";
 import { cn } from "@/utils/cn";
+import { reportClientError } from "@/utils/report-error";
 
 const EXAM_MODES = ["brevet-oral", "bac-francais-oral", "grand-oral"] as const;
 type ExamMode = (typeof EXAM_MODES)[number];
@@ -226,6 +227,7 @@ export default function ExamModePage() {
       if (e instanceof QuotaExceededError) {
         setQuotaExceeded(true);
       } else {
+        reportClientError("quota-check", e instanceof Error ? e.message : String(e));
         setError(e instanceof Error ? e.message : d.auth.genericError);
       }
       return;
@@ -358,6 +360,7 @@ export default function ExamModePage() {
       router.push(`/results/${session.id}`);
     } catch (e) {
       setAnalyzing(false);
+      reportClientError("analysis", e instanceof Error ? e.message : String(e));
       setError(e instanceof Error ? e.message : d.auth.genericError);
     }
   }
