@@ -33,7 +33,7 @@ export const en = {
   },
   landing: {
     heroBadge: "Daily challenges · AI feedback",
-    heroTitle: "Learn to communicate for real.",
+    heroTitle: "Speak so people listen.",
     heroSubtitle: "1-minute challenges a day and an AI that analyzes how you speak: clarity, confidence, filler words. Train your speaking like you train at the gym.",
     heroCtaChallenge: "Take your first challenge (1 min)",
     heroCtaPresentation: "Practice a presentation",
@@ -798,7 +798,7 @@ export const es: Dictionary = {
   },
   landing: {
     heroBadge: "Retos diarios · Feedback con IA",
-    heroTitle: "Aprende a comunicar de verdad.",
+    heroTitle: "Habla para que te escuchen.",
     heroSubtitle: "Retos de 1 minuto al día y una IA que analiza cómo hablas: claridad, seguridad, muletillas. Entrena tu oratoria como entrenas en el gimnasio.",
     heroCtaChallenge: "Haz tu primer reto (1 min)",
     heroCtaPresentation: "Practica una presentación",
@@ -1564,7 +1564,7 @@ export const fr: Dictionary = {
   },
   landing: {
     heroBadge: "Défis quotidiens · Feedback IA",
-    heroTitle: "Apprends à communiquer pour de vrai.",
+    heroTitle: "Parle pour qu'on t'écoute.",
     heroSubtitle: "Des défis d'1 minute par jour et une IA qui analyse ta façon de parler : clarté, assurance, tics de langage. Entraîne ton éloquence comme tu t'entraînes à la salle.",
     heroCtaChallenge: "Fais ton premier défi (1 min)",
     heroCtaPresentation: "Pratique une présentation",
