@@ -321,14 +321,15 @@ export const en = {
     stop: "Stop",
     liveTranscript: "Live transcript",
     liveTranscriptEmpty: "Your words will appear here as you speak.",
+    transcriptAfterRecording: "Your transcript will appear when you finish — just speak, it's being recorded.",
+    transcribingAudio: "Transcribing your recording…",
+    transcriptionEmpty: "We couldn't hear any speech in that take. Check that the right microphone is on and unmuted, then try again.",
     targetReached: "You've reached your target duration.",
     notSupportedTitle: "Speech recognition isn't available",
     notSupportedBody:
-      "This browser can't record live speech. If you're inside the TikTok or Instagram app, tap the ••• menu and choose \"Open in browser\". Otherwise, Chrome on Android or a computer gives the most reliable results — Firefox doesn't support this at all, and iPhone's support (any browser, since they all run on the same engine there) is limited.",
+      "This browser can't record audio. Use an up-to-date Chrome, Safari or Edge. If you're inside the TikTok or Instagram app, tap the ••• menu and choose \"Open in browser\".",
     micDenied:
       "Microphone access was denied. Allow it in your browser settings and try again.",
-    micDeniedIOS:
-      "iOS asks for a separate Speech Recognition permission, not just the microphone. Go to Settings → Safari → Speech Recognition (or Settings → Privacy & Security → Speech Recognition) and turn it on. If it still doesn't work, try an Android device or a computer instead.",
     micUnavailable:
       "Could not start recording. Check that a microphone is connected.",
     networkError:
@@ -1087,14 +1088,15 @@ export const es: Dictionary = {
     stop: "Detener",
     liveTranscript: "Transcripción en vivo",
     liveTranscriptEmpty: "Tus palabras aparecerán aquí mientras hablas.",
+    transcriptAfterRecording: "Tu transcripción aparecerá al terminar — tú habla, se está grabando.",
+    transcribingAudio: "Transcribiendo tu grabación…",
+    transcriptionEmpty: "No hemos captado tu voz en esta toma. Comprueba que el micrófono correcto está activado y sin silenciar, y vuelve a intentarlo.",
     targetReached: "Has alcanzado tu duración objetivo.",
     notSupportedTitle: "El reconocimiento de voz no está disponible",
     notSupportedBody:
-      "Este navegador no permite grabar en directo. Si estás dentro de la app de TikTok o Instagram, toca el menú ••• y elige «Abrir en el navegador». Si no, Chrome en Android o en un ordenador da los mejores resultados — Firefox no es compatible, y en iPhone el soporte (en cualquier navegador, porque todos usan el mismo motor ahí) es limitado.",
+      "Este navegador no puede grabar audio. Usa Chrome, Safari o Edge actualizados. Si estás dentro de la app de TikTok o Instagram, pulsa el menú ••• y elige \"Abrir en el navegador\".",
     micDenied:
       "Se denegó el acceso al micrófono. Permítelo en los ajustes del navegador e inténtalo de nuevo.",
-    micDeniedIOS:
-      "iOS pide un permiso de Reconocimiento de voz aparte del de micrófono. Ve a Ajustes → Safari → Reconocimiento de voz (o Ajustes → Privacidad y seguridad → Reconocimiento de voz) y actívalo. Si sigue sin funcionar, prueba desde un Android o un ordenador.",
     micUnavailable:
       "No se pudo iniciar la grabación. Comprueba que hay un micrófono conectado.",
     networkError:
@@ -1849,14 +1851,15 @@ export const fr: Dictionary = {
     stop: "Arrêter",
     liveTranscript: "Transcription en direct",
     liveTranscriptEmpty: "Tes mots apparaîtront ici au fur et à mesure que tu parles.",
+    transcriptAfterRecording: "Ta transcription apparaîtra à la fin — parle, tout est enregistré.",
+    transcribingAudio: "Transcription de ton enregistrement…",
+    transcriptionEmpty: "On n'a pas capté ta voix sur cette prise. Vérifie que le bon micro est activé et pas en sourdine, puis réessaie.",
     targetReached: "Tu as atteint ta durée visée.",
     notSupportedTitle: "Reconnaissance vocale indisponible",
     notSupportedBody:
-      "Ce navigateur ne permet pas d'enregistrer en direct. Si tu es dans l'appli TikTok ou Instagram, appuie sur le menu ••• et choisis « Ouvrir dans le navigateur ». Sinon, Chrome sur Android ou sur ordinateur donne les meilleurs résultats — Firefox n'est pas compatible, et sur iPhone le support (quel que soit le navigateur, car ils utilisent tous le même moteur) est limité.",
+      "Ce navigateur ne peut pas enregistrer l'audio. Utilise Chrome, Safari ou Edge à jour. Si tu es dans l'app TikTok ou Instagram, appuie sur le menu ••• et choisis « Ouvrir dans le navigateur ».",
     micDenied:
       "L'accès au microphone a été refusé. Autorise-le dans les paramètres de ton navigateur et réessaie.",
-    micDeniedIOS:
-      "iOS demande une autorisation de Reconnaissance vocale distincte de celle du microphone. Va dans Réglages → Safari → Reconnaissance vocale (ou Réglages → Confidentialité et sécurité → Reconnaissance vocale) et active-la. Si ça ne marche toujours pas, essaie depuis un Android ou un ordinateur.",
     micUnavailable:
       "Impossible de démarrer l'enregistrement. Vérifie qu'un microphone est bien connecté.",
     networkError:

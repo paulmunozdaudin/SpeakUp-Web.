@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { SpeechLanguage } from "@/types";
+import { isIOS } from "@/utils/platform";
 
 export type RecorderStatus =
   | "idle"
@@ -45,6 +46,13 @@ interface UseSpeechRecorderResult {
    *  signal. `null` until `stop()` finalizes the list, and stays `null`
    *  (not `[]`) if the browser couldn't monitor audio for real. */
   pauses: PauseEvent[] | null;
+  /** False when there's no live in-browser transcription for this take
+   *  (unsupported browser, iOS, or the speech service failed mid-way) —
+   *  the recorded audio is then transcribed server-side after Stop. */
+  liveActive: boolean;
+  /** The recorded audio, once `status` is "stopped" (null if the browser
+   *  couldn't record it). */
+  getAudioBlob: () => Blob | null;
   start: () => Promise<void>;
   pause: () => void;
   resume: () => void;
@@ -76,17 +84,27 @@ const SILENCE_RMS_THRESHOLD = 0.02;
  *  "going blank" rather than a normal breath/punctuation pause. */
 const BLANK_PAUSE_MIN_MS = 2200;
 const AUDIO_MONITOR_INTERVAL_MS = 100;
+/** Low bitrate on purpose: plenty for speech recognition, and keeps a
+ *  10-minute take (~2.4 MB) under Vercel's ~4.5 MB request body limit. */
+const AUDIO_BITS_PER_SECOND = 32_000;
+
+function pickAudioMimeType(): string | undefined {
+  const candidates = ["audio/webm;codecs=opus", "audio/mp4", "audio/ogg;codecs=opus", "audio/webm"];
+  return candidates.find((type) => MediaRecorder.isTypeSupported?.(type));
+}
 
 /**
- * Live microphone transcription via the browser's SpeechRecognition API
- * (Web Speech API — Chrome/Edge, on-device or via the browser's speech
- * service). Runs entirely client-side: audio never has to be uploaded to
- * transcribe it, and the user never types or pastes anything — the
- * transcript accumulates automatically as they talk.
+ * Records the microphone two ways at once:
+ *  - the raw audio, via MediaRecorder (works in every modern browser),
+ *    which is transcribed server-side after Stop — the reliable source;
+ *  - a live transcript via the browser's SpeechRecognition API (Chrome,
+ *    Edge, Android) for on-screen feedback while speaking, and as the
+ *    fallback if server transcription fails.
  *
- * Recognition auto-restarts on the engine's natural pauses. Network hiccups,
- * permission issues and dead microphones are all surfaced as a real error
- * after a bounded number of retries — this never fails silently.
+ * When live recognition isn't available (Firefox, in-app browsers), is
+ * unreliable (iOS), or its speech service fails mid-take (network, Brave,
+ * denied speech permission), recording simply continues audio-only instead
+ * of erroring out. Only a genuine microphone failure stops the take.
  */
 export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderResult {
   const [status, setStatus] = useState<RecorderStatus>("idle");
@@ -97,10 +115,21 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
   const [isSilentTooLong, setIsSilentTooLong] = useState(false);
   // Feature detection is a stable browser fact, not reactive state — a lazy
   // initializer avoids the post-mount setState this used to require.
-  const [isSupported] = useState(() => {
+  const [liveSupported] = useState(() => {
     if (typeof window === "undefined") return true; // resolved again on the client
     return Boolean(window.SpeechRecognition ?? window.webkitSpeechRecognition);
   });
+  const [canRecordAudio] = useState(() => {
+    if (typeof window === "undefined") return true;
+    return Boolean(window.MediaRecorder && navigator.mediaDevices?.getUserMedia);
+  });
+  const isSupported = liveSupported || canRecordAudio;
+  const [liveActive, setLiveActive] = useState(true);
+  const liveActiveRef = useRef(true);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const audioBlobRef = useRef<Blob | null>(null);
+  const stoppingRef = useRef(false);
 
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const finalChunksRef = useRef<string[]>([]);
@@ -232,6 +261,13 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
               pauseStartElapsedRef.current = now;
             }
           } else {
+            // Without a live transcript, real sound on the mic is the only
+            // signal that the speaker has started — it arms pause tracking
+            // and clears the "still listening" warning.
+            if (!liveActiveRef.current && !hasCapturedAnyWordsRef.current) {
+              hasCapturedAnyWordsRef.current = true;
+              setIsSilentTooLong(false);
+            }
             flushPendingPause(now);
           }
         }, AUDIO_MONITOR_INTERVAL_MS);
@@ -256,8 +292,37 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     timerRef.current = setInterval(() => setElapsedSeconds((s) => s + 1), 1000);
   }, [clearTimer]);
 
-  /** Gives up permanently: stops retrying and surfaces a real error. */
+  /** Live recognition is gone for this take, but the audio is still being
+   *  recorded — keep going audio-only and transcribe server-side later. */
+  const switchToAudioOnly = useCallback(() => {
+    shouldRunRef.current = false;
+    clearRestartTimer();
+    const recognition = recognitionRef.current;
+    recognitionRef.current = null;
+    if (recognition) {
+      recognition.onend = null;
+      recognition.onerror = null;
+      try {
+        recognition.stop();
+      } catch {
+        // Already stopped.
+      }
+    }
+    liveActiveRef.current = false;
+    setLiveActive(false);
+    setInterimTranscript("");
+  }, [clearRestartTimer]);
+
+  /** Gives up on live recognition. Falls back to audio-only recording
+   *  whenever the audio is still being recorded — the mic demonstrably works
+   *  then, whatever the speech engine claims; otherwise stops and surfaces
+   *  a real error. */
   const failPermanently = useCallback((code: RecorderErrorCode) => {
+    const recorder = mediaRecorderRef.current;
+    if (recorder && recorder.state !== "inactive") {
+      switchToAudioOnly();
+      return;
+    }
     shouldRunRef.current = false;
     clearTimer();
     clearRestartTimer();
@@ -269,7 +334,7 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     // actual connectivity — swap in the Brave-specific message instead of
     // telling someone with a fine connection to go check it.
     setError(code === "network-error" && isBraveRef.current ? "network-error-brave" : code);
-  }, [clearTimer, clearRestartTimer, clearSilenceTimer]);
+  }, [clearTimer, clearRestartTimer, clearSilenceTimer, switchToAudioOnly]);
 
   const buildRecognition = useCallback((): SpeechRecognition | null => {
     const SpeechRecognitionCtor =
@@ -355,6 +420,27 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     return recognition;
   }, [language, failPermanently, clearRestartTimer, clearSilenceTimer]);
 
+  const startAudioRecording = useCallback((stream: MediaStream): boolean => {
+    if (!canRecordAudio) return false;
+    try {
+      const mimeType = pickAudioMimeType();
+      const recorder = new MediaRecorder(stream, {
+        ...(mimeType ? { mimeType } : {}),
+        audioBitsPerSecond: AUDIO_BITS_PER_SECOND,
+      });
+      audioChunksRef.current = [];
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) audioChunksRef.current.push(event.data);
+      };
+      recorder.start(1000);
+      mediaRecorderRef.current = recorder;
+      return true;
+    } catch {
+      mediaRecorderRef.current = null;
+      return false;
+    }
+  }, [canRecordAudio]);
+
   const start = useCallback(async () => {
     setError(null);
     setTranscript("");
@@ -365,6 +451,8 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     hasCapturedAnyWordsRef.current = false;
     pauseEventsRef.current = [];
     audioMonitorActiveRef.current = false;
+    audioBlobRef.current = null;
+    stoppingRef.current = false;
     setPauses(null);
     setElapsedSeconds(0);
     setStatus("requesting");
@@ -375,27 +463,11 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
       return;
     }
 
+    let stream: MediaStream;
     try {
       // Explicit permission prompt up front, and keep the stream so we can
       // show a real "mic is live" state and release it cleanly on stop.
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      streamRef.current = stream;
-
-      const recognition = buildRecognition();
-      if (!recognition) {
-        setStatus("error");
-        setError("not-supported");
-        stream.getTracks().forEach((t) => t.stop());
-        return;
-      }
-      recognitionRef.current = recognition;
-      shouldRunRef.current = true;
-      recognition.start();
-
-      setStatus("recording");
-      startTimer();
-      armSilenceWarning();
-      startAudioMonitor(stream, 0);
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     } catch (e) {
       setStatus("error");
       setError(
@@ -403,8 +475,42 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
           ? "mic-denied"
           : "mic-unavailable",
       );
+      return;
     }
-  }, [buildRecognition, isSupported, startTimer, armSilenceWarning, startAudioMonitor]);
+    streamRef.current = stream;
+    const recordingAudio = startAudioRecording(stream);
+
+    // iOS's speech engine is unreliable and can fight MediaRecorder for the
+    // mic, so iPhones/iPads go audio-only from the start.
+    const recognition = !isIOS() || !recordingAudio ? buildRecognition() : null;
+    let live = false;
+    if (recognition) {
+      try {
+        recognitionRef.current = recognition;
+        shouldRunRef.current = true;
+        recognition.start();
+        live = true;
+      } catch {
+        recognitionRef.current = null;
+        shouldRunRef.current = false;
+      }
+    }
+
+    if (!live && !recordingAudio) {
+      setStatus("error");
+      setError("not-supported");
+      stream.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+      return;
+    }
+
+    liveActiveRef.current = live;
+    setLiveActive(live);
+    setStatus("recording");
+    startTimer();
+    armSilenceWarning();
+    startAudioMonitor(stream, 0);
+  }, [buildRecognition, isSupported, startAudioRecording, startTimer, armSilenceWarning, startAudioMonitor]);
 
   const pause = useCallback(() => {
     if (status !== "recording") return;
@@ -412,6 +518,7 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     clearRestartTimer();
     clearSilenceTimer();
     recognitionRef.current?.stop();
+    if (mediaRecorderRef.current?.state === "recording") mediaRecorderRef.current.pause();
     clearTimer();
     stopAudioMonitor();
     setInterimTranscript("");
@@ -421,23 +528,27 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
 
   const resume = useCallback(() => {
     if (status !== "paused") return;
-    const recognition = buildRecognition();
-    if (!recognition) {
-      failPermanently("not-supported");
-      return;
+    if (mediaRecorderRef.current?.state === "paused") mediaRecorderRef.current.resume();
+    if (liveActiveRef.current) {
+      const recognition = buildRecognition();
+      if (!recognition) {
+        failPermanently("not-supported");
+      } else {
+        try {
+          recognitionRef.current = recognition;
+          shouldRunRef.current = true;
+          consecutiveFailuresRef.current = 0;
+          recognition.start();
+        } catch {
+          failPermanently("network-error");
+        }
+      }
     }
-    try {
-      recognitionRef.current = recognition;
-      shouldRunRef.current = true;
-      consecutiveFailuresRef.current = 0;
-      recognition.start();
-      startTimer();
-      armSilenceWarning();
-      if (streamRef.current) startAudioMonitor(streamRef.current, elapsedSeconds);
-      setStatus("recording");
-    } catch {
-      failPermanently("network-error");
-    }
+    if (!mediaRecorderRef.current && !liveActiveRef.current) return;
+    startTimer();
+    armSilenceWarning();
+    if (streamRef.current) startAudioMonitor(streamRef.current, elapsedSeconds);
+    setStatus("recording");
   }, [
     status,
     buildRecognition,
@@ -448,7 +559,31 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     elapsedSeconds,
   ]);
 
+  const releaseStream = useCallback(() => {
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+  }, []);
+
+  /** Stops MediaRecorder without keeping its audio (reset/unmount). */
+  const discardAudioRecording = useCallback(() => {
+    const recorder = mediaRecorderRef.current;
+    mediaRecorderRef.current = null;
+    audioChunksRef.current = [];
+    audioBlobRef.current = null;
+    if (recorder && recorder.state !== "inactive") {
+      recorder.onstop = null;
+      recorder.ondataavailable = null;
+      try {
+        recorder.stop();
+      } catch {
+        // Already stopped.
+      }
+    }
+  }, []);
+
   const stop = useCallback(() => {
+    if (stoppingRef.current) return;
+    stoppingRef.current = true;
     shouldRunRef.current = false;
     clearRestartTimer();
     clearSilenceTimer();
@@ -458,10 +593,33 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     setPauses(audioMonitorActiveRef.current ? pauseEventsRef.current : null);
     setInterimTranscript("");
     setIsSilentTooLong(false);
-    streamRef.current?.getTracks().forEach((t) => t.stop());
-    streamRef.current = null;
-    setStatus("stopped");
-  }, [clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor]);
+
+    const recorder = mediaRecorderRef.current;
+    const finish = () => {
+      releaseStream();
+      setStatus("stopped");
+    };
+    if (!recorder || recorder.state === "inactive") {
+      finish();
+      return;
+    }
+    // "stopped" is only reported once the final audio chunk has landed, so
+    // the caller always gets the complete recording from getAudioBlob().
+    recorder.onstop = () => {
+      const chunks = audioChunksRef.current;
+      audioBlobRef.current = chunks.length
+        ? new Blob(chunks, { type: recorder.mimeType || chunks[0].type })
+        : null;
+      finish();
+    };
+    try {
+      recorder.stop();
+    } catch {
+      finish();
+    }
+  }, [clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor, releaseStream]);
+
+  const getAudioBlob = useCallback(() => audioBlobRef.current, []);
 
   const reset = useCallback(() => {
     shouldRunRef.current = false;
@@ -471,8 +629,11 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     recognitionRef.current = null;
     clearTimer();
     stopAudioMonitor();
-    streamRef.current?.getTracks().forEach((t) => t.stop());
-    streamRef.current = null;
+    discardAudioRecording();
+    releaseStream();
+    stoppingRef.current = false;
+    liveActiveRef.current = true;
+    setLiveActive(true);
     finalChunksRef.current = [];
     consecutiveFailuresRef.current = 0;
     hasCapturedAnyWordsRef.current = false;
@@ -485,7 +646,7 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     setElapsedSeconds(0);
     setError(null);
     setStatus("idle");
-  }, [clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor]);
+  }, [clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor, discardAudioRecording, releaseStream]);
 
   useEffect(() => {
     return () => {
@@ -495,9 +656,10 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
       recognitionRef.current?.stop();
       clearTimer();
       stopAudioMonitor();
+      discardAudioRecording();
       streamRef.current?.getTracks().forEach((t) => t.stop());
     };
-  }, [clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor]);
+  }, [clearTimer, clearRestartTimer, clearSilenceTimer, stopAudioMonitor, discardAudioRecording]);
 
   return {
     status,
@@ -508,6 +670,8 @@ export function useSpeechRecorder(language: SpeechLanguage): UseSpeechRecorderRe
     isSupported,
     isSilentTooLong,
     pauses,
+    liveActive,
+    getAudioBlob,
     start,
     pause,
     resume,

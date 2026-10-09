@@ -229,7 +229,7 @@ export default function ChallengesPage() {
         </div>
       </section>
 
-      <div className="grid gap-4 lg:grid-cols-[1fr_1.2fr]">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
         {/* Path to mastery */}
         <section className="self-start rounded-2xl border border-border bg-surface p-6">
           <h2 className="text-sm font-medium text-muted">{c.pathTitle}</h2>

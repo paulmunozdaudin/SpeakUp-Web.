@@ -12,9 +12,9 @@ import { Button } from "@/components/ui/button";
 import { useDict } from "@/lib/i18n";
 import type { Dictionary } from "@/lib/i18n/translations";
 import { formatDuration } from "@/utils/format";
-import { isIOS } from "@/utils/platform";
 import { cn } from "@/utils/cn";
 import { reportClientError } from "@/utils/report-error";
+import { transcribeRecording } from "@/services/transcription.service";
 import type { AnalysisMode, SpeechLanguage, TargetDuration } from "@/types";
 
 interface RecorderPanelProps {
@@ -35,6 +35,19 @@ interface RecorderPanelProps {
 /** Grace period after Stop, so the recognizer's last async result lands
  *  before we read the final transcript and hand off to analysis. */
 const STOP_GRACE_MS = 500;
+
+function wordCount(text: string): number {
+  return text.trim().split(/\s+/).filter(Boolean).length;
+}
+
+/** The server transcript (from the full recorded audio) is the more
+ *  accurate one; the live browser transcript is the fallback — and also
+ *  wins if the server one came back suspiciously short next to it. */
+function pickTranscript(server: string | null, live: string): string {
+  if (!server) return live.trim();
+  if (wordCount(server) < wordCount(live) * 0.5) return live.trim();
+  return server;
+}
 
 /** Every RecorderErrorCode must resolve to a message — the TS mapped type
  *  makes it impossible to add a new code without wiring up its copy here. */
@@ -85,6 +98,8 @@ export function RecorderPanel({
   const latestTranscriptRef = useRef(recorder.transcript);
   const framesRef = useRef<CapturedFrame[] | undefined>(undefined);
   const [videoProcessing, setVideoProcessing] = useState(false);
+  const [transcribing, setTranscribing] = useState(false);
+  const [emptyTake, setEmptyTake] = useState(false);
   useEffect(() => {
     latestTranscriptRef.current = recorder.transcript;
   }, [recorder.transcript]);
@@ -144,6 +159,7 @@ export function RecorderPanel({
   }
 
   async function handleStart() {
+    setEmptyTake(false);
     if (isVideoMode) {
       // Use the resolved value, not videoRecorder.error read right after —
       // that field comes from this render's closure and is stale until
@@ -156,32 +172,47 @@ export function RecorderPanel({
 
   // Stop finalizes AND auto-analyzes — no separate "finish" click. Gated on
   // videoProcessing too, so frame sampling has a chance to finish before we
-  // hand off (voice mode never sets it, so this is a no-op there).
+  // hand off (voice mode never sets it, so this is a no-op there). The
+  // recorded audio is transcribed server-side first; the live transcript
+  // is the fallback if that fails.
   useEffect(() => {
     if (recorder.status !== "stopped") return;
     if (isVideoMode && videoProcessing) return;
     const elapsed = recorder.elapsedSeconds;
-    const timer = setTimeout(() => {
-      onFinish(
-        latestTranscriptRef.current,
-        elapsed,
-        framesRef.current,
-        recorder.pauses ?? undefined,
-      );
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      const audio = recorder.getAudioBlob();
+      let serverTranscript: string | null = null;
+      if (audio) {
+        setTranscribing(true);
+        serverTranscript = await transcribeRecording(audio, language);
+        if (cancelled) return;
+        setTranscribing(false);
+      }
+      const transcript = pickTranscript(serverTranscript, latestTranscriptRef.current);
+      if (!transcript) {
+        reportClientError(
+          "empty-transcript",
+          `live=${recorder.liveActive} audio=${audio ? `${audio.size}B ${audio.type}` : "none"} ${elapsed}s`,
+        );
+        setEmptyTake(true);
+        recorder.reset();
+        return;
+      }
+      onFinish(transcript, elapsed, framesRef.current, recorder.pauses ?? undefined);
     }, STOP_GRACE_MS);
-    return () => clearTimeout(timer);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recorder.status, isVideoMode, videoProcessing]);
 
-  // iOS requires a separate "Speech Recognition" permission on top of the
-  // microphone one, which fails the exact same way (not-allowed) and would
-  // otherwise show the generic "allow the microphone" message — misleading
-  // for someone who already has — so it gets its own, more useful copy.
   const errorMessage = recorder.error
-    ? recorder.error === "mic-denied" && isIOS()
-      ? d.practice.micDeniedIOS
-      : errorMessages(d)[recorder.error]
-    : null;
+    ? errorMessages(d)[recorder.error]
+    : emptyTake
+      ? d.practice.transcriptionEmpty
+      : null;
   const cameraErrorMessage = videoRecorder.error
     ? videoErrorMessages(d)[videoRecorder.error]
     : null;
@@ -281,7 +312,9 @@ export function RecorderPanel({
             <span className="text-muted">{d.practice.pressStartToBegin}</span>
           )}
           {recorder.status === "stopped" && (
-            <span className="text-muted">{d.practice.analyzing}</span>
+            <span className="text-muted">
+              {transcribing ? d.practice.transcribingAudio : d.practice.analyzing}
+            </span>
           )}
           {targetReached && isActive && (
             <span className="font-medium text-success">
@@ -431,7 +464,9 @@ export function RecorderPanel({
             </p>
           ) : (
             <p className="italic text-muted/60">
-              {d.practice.liveTranscriptEmpty}
+              {recorder.liveActive
+                ? d.practice.liveTranscriptEmpty
+                : d.practice.transcriptAfterRecording}
             </p>
           )}
         </div>
