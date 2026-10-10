@@ -22,6 +22,7 @@ import { VideoPresenceGrid } from "@/components/results/video-presence-grid";
 import { TranscriptCard } from "@/components/results/transcript-card";
 import { ImprovedVersionCard } from "@/components/results/improved-version-card";
 import { ResultsTabs } from "@/components/results/results-tabs";
+import { ChallengeResult } from "@/components/results/challenge-result";
 import { useDict } from "@/lib/i18n";
 import { fr } from "@/lib/i18n/translations";
 import { fill, sessionXp } from "@/lib/challenges";
@@ -80,13 +81,21 @@ export default function ResultsPage({
     session.mode === "bac-francais-oral" ||
     session.mode === "grand-oral";
 
-  const tabs: { key: TabKey; label: string }[] = [
-    { key: "overview", label: d.results.tabOverview },
-    { key: "metrics", label: d.results.tabMetrics },
-    { key: "transcript", label: d.results.tabTranscript },
-    { key: "improved", label: d.results.tabImproved },
-    { key: "questions", label: d.results.tabQuestions },
-  ];
+  // Challenges are judged on their own rubric — no "improved version" of a
+  // reading or audience questions for a 1-minute story.
+  const challengeEval = session.mode === "challenge" ? analysis.challengeEval : undefined;
+  const tabs: { key: TabKey; label: string }[] = challengeEval
+    ? [
+        { key: "overview", label: d.challenges.result.tabResult },
+        { key: "transcript", label: d.results.tabTranscript },
+      ]
+    : [
+        { key: "overview", label: d.results.tabOverview },
+        { key: "metrics", label: d.results.tabMetrics },
+        { key: "transcript", label: d.results.tabTranscript },
+        { key: "improved", label: d.results.tabImproved },
+        { key: "questions", label: d.results.tabQuestions },
+      ];
 
   return (
     <div className="space-y-6">
@@ -150,7 +159,11 @@ export default function ResultsPage({
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
         >
-          {tab === "overview" && (
+          {tab === "overview" && challengeEval && (
+            <ChallengeResult evaluation={challengeEval} />
+          )}
+
+          {tab === "overview" && !challengeEval && (
             <div className="space-y-4">
               {analysis.bacFrancais && (
                 <BacFrancaisResultCard evaluation={analysis.bacFrancais} />

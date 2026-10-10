@@ -114,6 +114,7 @@ export default function ChallengePlayPage() {
         targetDurationMinutes: 1,
         analysisMode: "voice",
         pauses,
+        sourceText: challengeText(pick, language) ?? undefined,
         challenge: {
           type: pick.type,
           prompt: challengePrompt(pick, language),

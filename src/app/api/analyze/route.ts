@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import type { AnalysisMode, PracticeMode, SpeechLanguage } from "@/types";
-import { PRACTICE_MODES } from "@/types";
+import type { AnalysisMode, ChallengeType, PracticeMode, SpeechLanguage } from "@/types";
+import { CHALLENGE_TYPES, PRACTICE_MODES } from "@/types";
 import { getAnalysisProvider } from "@/services/ai";
 import type { AnalysisFrame } from "@/services/ai/provider";
 import { evaluateBacFrancaisOral } from "@/services/ai/bac-francais-evaluator";
+import { evaluateChallenge } from "@/services/ai/challenge-evaluator";
 
 export const runtime = "nodejs";
 export const maxDuration = 60; // the LLM call can take a while
@@ -35,7 +36,14 @@ interface AnalyzeBody {
   /** Long mid-speech silences, timestamped client-side from the real mic
    *  signal (see use-speech-recorder's audio monitor) — not AI-derived. */
   pauses?: PauseEventInput[];
+  /** mode "challenge" only: which challenge, so it's judged on its own
+   *  rubric instead of as a presentation. */
+  challengeType?: ChallengeType;
+  /** "reading" challenges only: the text that had to be read aloud. */
+  sourceText?: string;
 }
+
+const MAX_SOURCE_TEXT_CHARS = 4000;
 
 /** Bounds the request body against an abusive/buggy client; a real
  *  presentation only produces a handful of these. */
@@ -81,6 +89,10 @@ function isValidBody(body: unknown): body is AnalyzeBody {
       (Array.isArray(b.frames) &&
         b.frames.length <= MAX_FRAMES &&
         b.frames.every(isValidFrame))) &&
+    (b.challengeType === undefined ||
+      CHALLENGE_TYPES.includes(b.challengeType as ChallengeType)) &&
+    (b.sourceText === undefined ||
+      (typeof b.sourceText === "string" && b.sourceText.length <= MAX_SOURCE_TEXT_CHARS)) &&
     (b.pauses === undefined ||
       (Array.isArray(b.pauses) &&
         b.pauses.length <= MAX_PAUSE_EVENTS &&
@@ -121,7 +133,30 @@ export async function POST(request: Request) {
     }
 
     const provider = getAnalysisProvider();
-    const analysis = await provider.analyze(body);
+    const genericAnalysis = provider.analyze(body);
+    // Challenges get their own rubric, judged concurrently with the generic
+    // analysis (which still provides transcript stats for the record).
+    const challengeEvaluation =
+      body.mode === "challenge" && body.challengeType
+        ? evaluateChallenge({
+            type: body.challengeType,
+            transcript: body.transcript,
+            language: body.language,
+            durationSeconds: body.durationSeconds,
+            prompt: body.title,
+            sourceText: body.sourceText,
+            blanks: body.pauses?.length,
+            generic: genericAnalysis,
+          })
+        : null;
+    const analysis = await genericAnalysis;
+    if (challengeEvaluation) {
+      const { evaluation, summary } = await challengeEvaluation;
+      analysis.challengeEval = evaluation;
+      analysis.overallScore = evaluation.score;
+      analysis.summary = summary;
+      if (body.sourceText) analysis.sourceText = body.sourceText;
+    }
 
     // Deterministic pass-through, not an AI judgment — the browser already
     // measured these from the real mic signal (use-speech-recorder's audio

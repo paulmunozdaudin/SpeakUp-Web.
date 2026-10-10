@@ -14,7 +14,7 @@ import type { PaceVerdict, SpeechLanguage } from "@/types";
 
 /* ── Lexicons ────────────────────────────────────────────────────────── */
 
-const FILLERS: Record<SpeechLanguage, string[]> = {
+export const FILLERS: Record<SpeechLanguage, string[]> = {
   fr: [
     "euh",
     "euhh",

@@ -37,8 +37,11 @@ export interface AnalyzeInput {
   /** Long mid-speech silences measured live from the mic — real audio
    *  signal, never derived from the transcript. */
   pauses?: PauseEvent[];
-  /** Challenges only — saved with the analysis, never sent to the API. */
+  /** Challenges only — saved with the analysis; only its type is sent to
+   *  the API (to pick the challenge's rubric). */
   challenge?: ChallengeInfo;
+  /** "reading" challenges only: the text that had to be read aloud. */
+  sourceText?: string;
 }
 
 export async function analyzeAndSave(
@@ -53,7 +56,7 @@ export async function analyzeAndSave(
   const response = await fetch("/api/analyze", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(request),
+    body: JSON.stringify({ ...request, challengeType: challenge?.type }),
   });
 
   if (!response.ok) {

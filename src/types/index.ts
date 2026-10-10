@@ -221,6 +221,10 @@ export interface AnalysisResult {
   /** Only for mode === "challenge": which exercise it was, attached
    *  client-side before saving so /challenges can compute XP and levels. */
   challenge?: ChallengeInfo;
+
+  /** Only for mode === "challenge" (sessions from now on): the
+   *  challenge-specific evaluation shown instead of the generic report. */
+  challengeEval?: ChallengeEvaluation;
 }
 
 /** The 1-minute communication exercises offered on /challenges. */
@@ -232,6 +236,45 @@ export const CHALLENGE_TYPES = [
   "story",
 ] as const;
 export type ChallengeType = (typeof CHALLENGE_TYPES)[number];
+
+/** What each challenge type is actually judged on — a reading isn't scored
+ *  on its "introduction", a story is scored on its hook and ending, etc. */
+export const CHALLENGE_DIMENSIONS = {
+  improvise: ["onTopic", "structure", "fluency", "vocabulary", "confidence"],
+  reading: ["accuracy", "fluency", "pace", "pauses"],
+  explain: ["simplicity", "analogy", "correctness", "clarity"],
+  noFillers: ["fillers", "blanks", "fluency", "content"],
+  story: ["hook", "narrative", "details", "ending", "fluency"],
+} as const satisfies Record<ChallengeType, readonly string[]>;
+export type ChallengeDimension =
+  (typeof CHALLENGE_DIMENSIONS)[ChallengeType][number];
+
+/** Challenge-specific evaluation, replacing the generic presentation
+ *  report on the results page for mode === "challenge". */
+export interface ChallengeEvaluation {
+  type: ChallengeType;
+  score: number; // 0–100
+  dimensions: { key: ChallengeDimension; score: number; feedback: string }[];
+  strengths: string[];
+  improvements: string[];
+  /** One concrete thing to try in the next challenge. */
+  nextTip: string;
+  /** Measured, never AI-guessed. */
+  stats: {
+    wordsPerMinute: number;
+    fillerTotal: number;
+    fillerPerMinute: number;
+    /** Long blanks from the real mic signal; null when not measured. */
+    blanks: number | null;
+  };
+  /** "reading" only: the source text compared word by word with what was
+   *  actually read. */
+  reading?: {
+    accuracy: number; // 0–100, share of the text's words read
+    /** The source text split into words, each flagged as read or missed. */
+    words: { text: string; read: boolean }[];
+  };
+}
 
 export interface ChallengeInfo {
   type: ChallengeType;

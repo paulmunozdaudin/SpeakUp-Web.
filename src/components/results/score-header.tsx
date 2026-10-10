@@ -80,10 +80,14 @@ export function ScoreHeader({
                 ? d.practice.analysisModeVideoTitle
                 : d.practice.analysisModeVoiceTitle}
             </Badge>
-            <Badge tone={PACE_TONE[analysis.paceVerdict]}>
-              <Gauge className="h-3 w-3" />
-              {analysis.wordsPerMinute} {d.results.wordsPerMin} · {paceLabel}
-            </Badge>
+            {/* Challenges show pace in their own report, judged against
+                that challenge (reading aloud has a different ideal). */}
+            {!analysis.challengeEval && (
+              <Badge tone={PACE_TONE[analysis.paceVerdict]}>
+                <Gauge className="h-3 w-3" />
+                {analysis.wordsPerMinute} {d.results.wordsPerMin} · {paceLabel}
+              </Badge>
+            )}
             <span className="text-xs text-muted">
               {formatDate(createdAt)} · {formatDuration(durationSeconds)}
             </span>
