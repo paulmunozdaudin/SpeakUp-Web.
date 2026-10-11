@@ -1,0 +1,20 @@
+{
+  "lines": [
+    { "text": "Nadie nace sabiendo hablar en público.", "emphasis": ["nadie"] },
+    { "text": "Ni el que da la charla que todos recuerdan.", "emphasis": ["recuerdan"] },
+    { "text": "Ni el que cierra el trato en cinco minutos.", "emphasis": ["cierra"] },
+    { "text": "Todos empezaron igual que tú.", "emphasis": ["igual", "tú"] },
+    { "text": "Con la voz temblando. Con la mente en blanco.", "emphasis": ["temblando", "blanco"] },
+    { "text": "La diferencia es que ellos practicaron.", "emphasis": ["practicaron"] },
+    { "text": "Cuando nadie miraba.", "emphasis": ["nadie"] },
+    { "text": "Eso es Eloq.", "emphasis": ["Eloq"] },
+    { "text": "Cada día, un reto nuevo. Un tema sorpresa. Un minuto.", "emphasis": ["reto", "minuto"] },
+    { "text": "Y una IA que te dice la verdad: tus muletillas, tu ritmo.", "emphasis": ["verdad"] },
+    { "text": "Hasta que un día hablas… y la sala se calla para escucharte.", "emphasis": ["escucharte"] }
+  ],
+  "endCard": {
+    "title": "Eloq",
+    "subtitle": "Habla para que te escuchen",
+    "url": "eloq-oral.com"
+  }
+}
