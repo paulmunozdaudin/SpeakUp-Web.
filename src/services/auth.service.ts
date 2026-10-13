@@ -9,6 +9,7 @@
 import { track } from "@vercel/analytics";
 import { getSupabaseBrowserClient } from "@/lib/supabase/client";
 import { getStoredReferralCode } from "@/lib/referral";
+import { isNativeApp, NATIVE_AUTH_CALLBACK } from "@/lib/native";
 
 export interface AuthResult {
   ok: boolean;
@@ -65,10 +66,16 @@ export async function signInWithGoogle(): Promise<AuthResult> {
   // survives that switch, since Supabase carries it straight through to
   // the callback regardless of which browser handled the consent step.
   const referredBy = getStoredReferralCode();
-  const redirectTo = new URL("/auth/callback", window.location.origin);
+  // In the iOS app, Google refuses to sign in inside an embedded web view,
+  // so the consent screen opens in the system browser sheet and redirects
+  // back into the app via its URL scheme (handled by NativeBridge).
+  const native = isNativeApp();
+  const redirectTo = new URL(
+    native ? NATIVE_AUTH_CALLBACK : `${window.location.origin}/auth/callback`,
+  );
   if (referredBy) redirectTo.searchParams.set("ref", referredBy);
 
-  const { error } = await supabase.auth.signInWithOAuth({
+  const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
       redirectTo: redirectTo.toString(),
@@ -77,9 +84,14 @@ export async function signInWithGoogle(): Promise<AuthResult> {
       // for anyone with more than one Google account (e.g. personal +
       // school).
       queryParams: { prompt: "select_account" },
+      skipBrowserRedirect: native,
     },
   });
   if (error) return { ok: false, error: error.message };
+  if (native && data.url) {
+    const { Browser } = await import("@capacitor/browser");
+    await Browser.open({ url: data.url, presentationStyle: "popover" });
+  }
   return { ok: true };
 }
 

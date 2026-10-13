@@ -26,6 +26,7 @@ import { ChallengeResult } from "@/components/results/challenge-result";
 import { useDict } from "@/lib/i18n";
 import { fr } from "@/lib/i18n/translations";
 import { fill, sessionXp } from "@/lib/challenges";
+import { hapticSuccess } from "@/lib/native";
 
 type TabKey = "overview" | "metrics" | "transcript" | "improved" | "questions";
 
@@ -42,7 +43,16 @@ export default function ResultsPage({
 
   useEffect(() => {
     getSession(id)
-      .then(setSession)
+      .then((result) => {
+        setSession(result);
+        // A little "done!" buzz in the app right after finishing a challenge.
+        if (
+          result?.mode === "challenge" &&
+          Date.now() - new Date(result.createdAt).getTime() < 2 * 60_000
+        ) {
+          hapticSuccess();
+        }
+      })
       .finally(() => setLoading(false));
   }, [id]);
 

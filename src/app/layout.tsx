@@ -6,6 +6,7 @@ import { LocaleHtmlLang } from "@/components/theme/locale-html-lang";
 import { RegisterServiceWorker } from "@/components/pwa/register-service-worker";
 import { CookieNotice } from "@/components/legal/cookie-notice";
 import { ErrorReporter } from "@/components/monitoring/error-reporter";
+import { NativeBridge } from "@/components/native/native-bridge";
 import { ReferralCapture } from "@/components/referral/referral-capture";
 import "./globals.css";
 
@@ -84,6 +85,7 @@ export default function RootLayout({
         <RegisterServiceWorker />
         <CookieNotice />
         <ErrorReporter />
+        <NativeBridge />
         <ReferralCapture />
       </body>
     </html>

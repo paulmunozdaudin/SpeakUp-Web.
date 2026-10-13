@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Gauge, Mic, Sparkles, Video } from "lucide-react";
+import { Gauge, Mic, Share2, Sparkles, Video } from "lucide-react";
+import { useState } from "react";
+import { shareText } from "@/lib/native";
 import type { AnalysisResult, PracticeMode } from "@/types";
 import { FRENCH_EXAM_MODES } from "@/types";
 
@@ -45,6 +47,7 @@ export function ScoreHeader({
   analysis: AnalysisResult;
 }) {
   const d = useDict();
+  const [copied, setCopied] = useState(false);
   const paceLabel =
     analysis.paceVerdict === "slow"
       ? d.results.paceSlow
@@ -108,6 +111,20 @@ export function ScoreHeader({
                 {d.results.practiceAgain}
               </Button>
             </Link>
+            <Button
+              variant="secondary"
+              onClick={async () => {
+                const result = await shareText(
+                  d.results.shareText.replace("{score}", String(analysis.overallScore)),
+                  "https://eloq-oral.com",
+                );
+                setCopied(result === "copied");
+              }}
+            >
+              <Share2 className="h-4 w-4" />
+              {d.results.share}
+            </Button>
+            {copied && <span className="text-xs text-success">{d.results.shareCopied}</span>}
             <span className="inline-flex items-center gap-1.5 text-xs text-muted">
               <Sparkles className="h-3.5 w-3.5" />
               {analysis.provider === "openai"

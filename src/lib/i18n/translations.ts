@@ -357,6 +357,9 @@ export const en = {
   results: {
     overall: "Overall score",
     practiceAgain: "Practice again",
+    share: "Share",
+    shareText: "I scored {score}/100 on Eloq 🎙️ Can you beat me?",
+    shareCopied: "Copied! Paste it wherever you like.",
     backToDashboard: "Back to dashboard",
     notFoundTitle: "Report not found",
     notFoundDescription: "This practice session doesn't exist or was deleted.",
@@ -459,6 +462,11 @@ export const en = {
     supportDescription: "Found a bug or have a question? Write to us and we'll get back to you.",
     supportEmailCopy: "Copy email",
     supportEmailCopied: "Copied!",
+    accountTitle: "Account",
+    deleteAccount: "Delete account",
+    deleteAccountWarning: "This permanently deletes your account, your history and your progress. It can't be undone.",
+    deleteAccountConfirm: "Yes, delete my account",
+    deleteAccountError: "Couldn't delete the account. Please try again or write to us.",
   },
   billing: {
     quotaExceeded:
@@ -731,6 +739,17 @@ export const en = {
     progressTitle: "Score evolution",
     xpEarned: "+{xp} XP",
     seeProgress: "See your progress",
+    reminder: {
+      title: "Daily reminder",
+      description: "We'll remind you to do your 1-minute challenge every day.",
+      enable: "Turn on reminder",
+      disable: "Turn off",
+      timeLabel: "Time",
+      on: "On every day at {time}",
+      denied: "Notifications are blocked. Turn them on in Settings → Eloq → Notifications.",
+      notificationTitle: "Your challenge is waiting 🔥",
+      notificationBody: "1 minute to speak better than yesterday. Today's topic is a surprise.",
+    },
     dimensions: {
       onTopic: "On topic",
       structure: "Quick structure",
@@ -1158,6 +1177,9 @@ export const es: Dictionary = {
   results: {
     overall: "Puntuación global",
     practiceAgain: "Practicar de nuevo",
+    share: "Compartir",
+    shareText: "He sacado un {score}/100 en Eloq 🎙️ ¿Me superas?",
+    shareCopied: "¡Copiado! Pégalo donde quieras.",
     backToDashboard: "Volver al panel",
     notFoundTitle: "Informe no encontrado",
     notFoundDescription: "Esta sesión de práctica no existe o fue eliminada.",
@@ -1262,6 +1284,11 @@ export const es: Dictionary = {
     supportDescription: "¿Has encontrado un fallo o tienes una duda? Escríbenos y te responderemos.",
     supportEmailCopy: "Copiar email",
     supportEmailCopied: "¡Copiado!",
+    accountTitle: "Cuenta",
+    deleteAccount: "Eliminar cuenta",
+    deleteAccountWarning: "Esto elimina para siempre tu cuenta, tu historial y tu progreso. No se puede deshacer.",
+    deleteAccountConfirm: "Sí, eliminar mi cuenta",
+    deleteAccountError: "No se ha podido eliminar la cuenta. Inténtalo de nuevo o escríbenos.",
   },
   billing: {
     quotaExceeded:
@@ -1533,6 +1560,17 @@ export const es: Dictionary = {
     progressTitle: "Evolución de tu nota",
     xpEarned: "+{xp} XP",
     seeProgress: "Ver tu progreso",
+    reminder: {
+      title: "Recordatorio diario",
+      description: "Te avisaremos cada día para que hagas tu reto de 1 minuto.",
+      enable: "Activar recordatorio",
+      disable: "Desactivar",
+      timeLabel: "Hora",
+      on: "Activado todos los días a las {time}",
+      denied: "Las notificaciones están bloqueadas. Actívalas en Ajustes → Eloq → Notificaciones.",
+      notificationTitle: "Tu reto te espera 🔥",
+      notificationBody: "1 minuto para hablar mejor que ayer. El tema de hoy es sorpresa.",
+    },
     dimensions: {
       onTopic: "Se ciñe al tema",
       structure: "Estructura rápida",
@@ -1954,6 +1992,9 @@ export const fr: Dictionary = {
   results: {
     overall: "Score global",
     practiceAgain: "S'entraîner à nouveau",
+    share: "Partager",
+    shareText: "J'ai eu {score}/100 sur Eloq 🎙️ Tu fais mieux ?",
+    shareCopied: "Copié ! Colle-le où tu veux.",
     backToDashboard: "Retour au tableau de bord",
     notFoundTitle: "Rapport introuvable",
     notFoundDescription: "Cette session d'entraînement n'existe pas ou a été supprimée.",
@@ -2056,6 +2097,11 @@ export const fr: Dictionary = {
     supportDescription: "Tu as trouvé un bug ou tu as une question ? Écris-nous, on te répondra.",
     supportEmailCopy: "Copier l'email",
     supportEmailCopied: "Copié !",
+    accountTitle: "Compte",
+    deleteAccount: "Supprimer le compte",
+    deleteAccountWarning: "Cela supprime définitivement ton compte, ton historique et ta progression. C'est irréversible.",
+    deleteAccountConfirm: "Oui, supprimer mon compte",
+    deleteAccountError: "Impossible de supprimer le compte. Réessaie ou écris-nous.",
   },
   billing: {
     quotaExceeded:
@@ -2328,6 +2374,17 @@ export const fr: Dictionary = {
     progressTitle: "Évolution de ta note",
     xpEarned: "+{xp} XP",
     seeProgress: "Voir ta progression",
+    reminder: {
+      title: "Rappel quotidien",
+      description: "On te rappellera chaque jour de faire ton défi d'1 minute.",
+      enable: "Activer le rappel",
+      disable: "Désactiver",
+      timeLabel: "Heure",
+      on: "Activé tous les jours à {time}",
+      denied: "Les notifications sont bloquées. Active-les dans Réglages → Eloq → Notifications.",
+      notificationTitle: "Ton défi t'attend 🔥",
+      notificationBody: "1 minute pour parler mieux qu'hier. Le sujet du jour est une surprise.",
+    },
     dimensions: {
       onTopic: "Dans le sujet",
       structure: "Structure rapide",

@@ -18,6 +18,7 @@ import { useUser } from "@/hooks/use-user";
 import { useProfile } from "@/hooks/use-profile";
 import { useSessions } from "@/hooks/use-sessions";
 import { ManualPaymentNotice } from "@/components/billing/manual-payment-notice";
+import { AccountActions } from "@/components/profile/account-actions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardTitle } from "@/components/ui/card";
@@ -308,6 +309,8 @@ export default function ProfilePage() {
           />
         </div>
       </Card>
+
+      {user && <AccountActions />}
     </div>
   );
 }

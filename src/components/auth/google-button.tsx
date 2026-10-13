@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { signInWithGoogle } from "@/services/auth.service";
+import { isNativeApp } from "@/lib/native";
 import { useDict } from "@/lib/i18n";
 
 /** Google's official 4-color "G" mark — per Google's brand guidelines for
@@ -45,8 +46,12 @@ export function GoogleButton() {
     if (!result.ok) {
       setError(result.error ?? d.auth.genericError);
       setLoading(false);
+    } else if (isNativeApp()) {
+      // In the app, Google opens in a sheet over this page — if it's
+      // dismissed without signing in, the button must work again.
+      setLoading(false);
     }
-    // On success the browser is already navigating away to Google.
+    // On the web, the browser is already navigating away to Google.
   }
 
   return (

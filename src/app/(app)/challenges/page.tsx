@@ -25,6 +25,7 @@ import {
   LEVEL_THRESHOLDS,
 } from "@/lib/challenges";
 import { CHALLENGE_ICONS } from "@/components/challenges/challenge-icons";
+import { ReminderCard } from "@/components/challenges/reminder-card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProgressChart } from "@/components/dashboard/progress-chart";
@@ -197,6 +198,8 @@ export default function ChallengesPage() {
           </Link>
         </div>
       </section>
+
+      <ReminderCard />
 
       {/* All challenge types */}
       <section>
