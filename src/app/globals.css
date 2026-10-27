@@ -94,3 +94,16 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ── Native iOS app (html.native-app, set by nativeInitScript) ─────────
+   web-only: hidden inside the app (marketing chrome, external payments,
+   Google sign-in). app-only: shown only inside the app. */
+.native-app .web-only {
+  display: none !important;
+}
+html:not(.native-app) .app-only {
+  display: none !important;
+}
+.native-app .native-main {
+  padding-top: calc(env(safe-area-inset-top) + 0.5rem) !important;
+}

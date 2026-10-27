@@ -24,9 +24,10 @@ export function QuotaExceededNotice({ dict }: { dict?: Dictionary }) {
     <div className="flex flex-col items-start gap-3 rounded-xl border border-accent/30 bg-accent-soft px-4 py-3.5 sm:flex-row sm:items-center sm:justify-between">
       <div className="flex items-start gap-2.5 text-sm text-foreground">
         <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-        <p>{d.billing.quotaExceeded}</p>
+        <p className="web-only">{d.billing.quotaExceeded}</p>
+        <p className="app-only">{d.billing.quotaExceededApp}</p>
       </div>
-      <Link href="/profile" className="w-full shrink-0 sm:w-auto">
+      <Link href="/profile" className="web-only w-full shrink-0 sm:w-auto">
         <Button size="sm" className="w-full sm:w-auto">
           {d.profile.upgradeToPro}
         </Button>

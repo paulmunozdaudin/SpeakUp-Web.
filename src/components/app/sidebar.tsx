@@ -55,7 +55,7 @@ export function Sidebar() {
     <>
       {/* Mobile top bar — just the logo, so there's always a way back home.
           Padded for the notch/status bar (matters as an installed PWA). */}
-      <header className="fixed inset-x-0 top-0 z-40 flex h-[calc(3.5rem+env(safe-area-inset-top))] items-end border-b border-border bg-surface/90 px-4 pb-2.5 backdrop-blur-xl md:hidden">
+      <header className="web-only fixed inset-x-0 top-0 z-40 flex h-[calc(3.5rem+env(safe-area-inset-top))] items-end border-b border-border bg-surface/90 px-4 pb-2.5 backdrop-blur-xl md:hidden">
         <Logo href="/" />
       </header>
 

@@ -472,6 +472,7 @@ export const en = {
     quotaExceeded:
       "You've used your 3 free practices this week. Upgrade to Pro for unlimited practices.",
     checkoutError: "Couldn't start checkout. Please try again in a moment.",
+    quotaExceededApp: "You've used your 3 free practices this week. They reset on Monday — daily challenges stay unlimited.",
     portalError: "Couldn't open the billing portal. Please try again.",
     notConfigured:
       "Online payments aren't live yet. Email us and we'll activate Pro for you by hand.",
@@ -1294,6 +1295,7 @@ export const es: Dictionary = {
     quotaExceeded:
       "Has usado tus 3 prácticas gratis de esta semana. Hazte Pro para prácticas ilimitadas.",
     checkoutError: "No se pudo iniciar el pago. Inténtalo de nuevo en un momento.",
+    quotaExceededApp: "Has usado tus 3 prácticas gratis de esta semana. Se renuevan el lunes; los retos diarios siguen siendo ilimitados.",
     portalError: "No se pudo abrir el portal de facturación. Inténtalo de nuevo.",
     notConfigured: "Los pagos online aún no están activos. Escríbenos y te activamos Pro a mano.",
     manualPaymentIntro:
@@ -2107,6 +2109,7 @@ export const fr: Dictionary = {
     quotaExceeded:
       "Tu as utilisé tes 3 entraînements gratuits de cette semaine. Passe à Pro pour des entraînements illimités.",
     checkoutError: "Impossible de démarrer le paiement. Réessaie dans un instant.",
+    quotaExceededApp: "Tu as utilisé tes 3 entraînements gratuits de la semaine. Ils se renouvellent lundi ; les défis quotidiens restent illimités.",
     portalError: "Impossible d'ouvrir le portail de facturation. Réessaie.",
     notConfigured:
       "Les paiements en ligne ne sont pas encore actifs. Écris-nous et on active Pro à la main.",

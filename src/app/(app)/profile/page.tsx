@@ -177,7 +177,7 @@ export default function ProfilePage() {
           </Link>
         )}
         {!userLoading && user && !profileLoading && (
-          <div className="shrink-0 text-right">
+          <div className="web-only shrink-0 text-right">
             {!isPro && !PRO_CHECKOUT_ENABLED ? (
               waitlistJoined ? (
                 <Badge tone="success">

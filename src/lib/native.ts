@@ -13,6 +13,21 @@ import { Capacitor } from "@capacitor/core";
 export const APP_URL_SCHEME = "com.eloqoral.app";
 export const NATIVE_AUTH_CALLBACK = `${APP_URL_SCHEME}://auth/callback`;
 
+/** Inline <head> script: runs before first paint, so the app never
+ *  flashes web-only UI. Capacitor injects window.Capacitor at document
+ *  start. In the app, the marketing landing is skipped entirely. */
+export const nativeInitScript = `
+(function () {
+  try {
+    var c = window.Capacitor;
+    if (c && c.isNativePlatform && c.isNativePlatform()) {
+      document.documentElement.classList.add("native-app");
+      if (location.pathname === "/") location.replace("/practice");
+    }
+  } catch (e) {}
+})();
+`;
+
 export function isNativeApp(): boolean {
   return typeof window !== "undefined" && Capacitor.isNativePlatform();
 }

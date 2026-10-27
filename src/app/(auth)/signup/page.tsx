@@ -73,7 +73,7 @@ export default function SignupPage() {
       </h1>
       <p className="mt-1.5 text-sm text-muted">{d.auth.signupSubtitle}</p>
 
-      <div className="mt-8">
+      <div className="web-only mt-8">
         <GoogleButton />
       </div>
       <p className="mt-2.5 text-center text-xs leading-relaxed text-muted">
@@ -87,7 +87,7 @@ export default function SignupPage() {
         </Link>
         .
       </p>
-      <div className="my-6 flex items-center gap-3 text-xs text-muted">
+      <div className="web-only my-6 flex items-center gap-3 text-xs text-muted">
         <span className="h-px flex-1 bg-border" />
         {d.auth.orDivider}
         <span className="h-px flex-1 bg-border" />
