@@ -1,7 +1,8 @@
 /**
  * Renders a props file to a vertical 1080x1920 MP4 in video/out/.
  *
- *   npm run render -- props/my-ad.json
+ *   npm run render -- props/my-ad.json            (EloqAd)
+ *   npm run render -- props/lectura-x.json Lectura (read-along)
  *
  * Set CHROME_PATH to use an already-installed Chrome/Chromium instead of
  * letting Remotion download its own.
@@ -9,7 +10,7 @@
 import { spawnSync } from "node:child_process";
 import { basename } from "node:path";
 
-const [propsPath] = process.argv.slice(2);
+const [propsPath, composition = "EloqAd"] = process.argv.slice(2);
 if (!propsPath) {
   console.error("Usage: npm run render -- props/my-ad.json");
   process.exit(1);
@@ -19,7 +20,7 @@ const args = [
   "remotion",
   "render",
   "src/index.ts",
-  "EloqAd",
+  composition,
   out,
   `--props=${propsPath}`,
   "--codec=h264",

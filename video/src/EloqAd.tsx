@@ -180,7 +180,7 @@ const Captions: React.FC<{ line: TimedLine; emphasis: string[] }> = ({ line, emp
 };
 
 /** Concentric-rings mark, echoing the Eloq logo. */
-const EloqMark: React.FC<{ size: number; progress: number }> = ({ size, progress }) => (
+export const EloqMark: React.FC<{ size: number; progress: number }> = ({ size, progress }) => (
   <svg width={size} height={size} viewBox="0 0 100 100">
     <rect width="100" height="100" rx="24" fill="#0b0b12" stroke="rgba(129,140,248,0.35)" />
     {[34, 25, 16, 7].map((r, i) => (
@@ -198,7 +198,7 @@ const EloqMark: React.FC<{ size: number; progress: number }> = ({ size, progress
   </svg>
 );
 
-const EndCard: React.FC<{ endCard: AdProps["endCard"] }> = ({ endCard }) => {
+export const EndCard: React.FC<{ endCard: AdProps["endCard"] }> = ({ endCard }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const enter = spring({ frame, fps, config: { damping: 16 } });

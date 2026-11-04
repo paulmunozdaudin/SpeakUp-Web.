@@ -1,0 +1,28 @@
+{
+  "title": "Mejora tu oratoria",
+  "subtitle": "hablar despacio",
+  "text": [
+    "Hablar despacio",
+    "no es hablar aburrido.",
+    "",
+    "Es darle a cada palabra",
+    "el tiempo",
+    "que necesita",
+    "para llegar.",
+    "",
+    "Quien habla rápido",
+    "parece que pide perdón",
+    "por ocupar espacio.",
+    "",
+    "Quien habla despacio",
+    "sabe",
+    "que le van a escuchar."
+  ],
+  "wordsPerSecond": 2.2,
+  "introSeconds": 2.6,
+  "endCard": {
+    "title": "Eloq",
+    "subtitle": "Habla para que te escuchen",
+    "url": "eloq-oral.com"
+  }
+}
