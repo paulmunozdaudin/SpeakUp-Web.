@@ -60,7 +60,7 @@ const PARAGRAPH_GAP = 84;
 const TEXT_LEFT = 190;
 const FONT_SIZE = 62;
 const HIDDEN_BELOW = 760; // first line waits just off the fade zone
-const LEAD_IN_SECONDS = 1.1; // text glides up to the bar after the intro
+const LEAD_IN_SECONDS = 0.6; // text glides up to the bar after the intro
 const OUTRO_SECONDS = 1.4; // scrolling after the last line, before the end card
 
 interface PlacedLine {

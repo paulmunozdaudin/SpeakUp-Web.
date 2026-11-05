@@ -16,7 +16,7 @@
     "Tiene que ser tuya."
   ],
   "wordsPerSecond": 4.2,
-  "introSeconds": 5,
+  "introSeconds": 1.8,
   "endCard": {
     "title": "Eloq",
     "subtitle": "Habla para que te escuchen",

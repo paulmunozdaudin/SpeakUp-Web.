@@ -19,7 +19,7 @@
     "y siguen."
   ],
   "wordsPerSecond": 3.0,
-  "introSeconds": 5,
+  "introSeconds": 1.8,
   "endCard": {
     "title": "Eloq",
     "subtitle": "Habla para que te escuchen",
