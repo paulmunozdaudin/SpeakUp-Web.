@@ -2,6 +2,7 @@ import React from "react";
 import {
   AbsoluteFill,
   Audio,
+  Easing,
   interpolate,
   Sequence,
   spring,
@@ -29,8 +30,8 @@ export interface LecturaProps {
   text: string[];
   /** Reading pace in words per second (default 2.2). */
   wordsPerSecond?: number;
-  /** Seconds before the first line reaches the bar — the voice-over says
-   *  the title meanwhile (default 2.6). */
+  /** Seconds the title is on screen alone, before the text slides in —
+   *  the voice-over says the title meanwhile (default 2.6). */
   introSeconds?: number;
   /** Voice-over of the title, file in public/. */
   voice?: string;
@@ -52,7 +53,8 @@ const LINE_HEIGHT = 128;
 const PARAGRAPH_GAP = 84;
 const TEXT_LEFT = 190;
 const FONT_SIZE = 62;
-const START_BELOW = 520; // how far below the bar the first line starts
+const HIDDEN_BELOW = 760; // first line waits just off the fade zone
+const LEAD_IN_SECONDS = 1.1; // text glides up to the bar after the intro
 const OUTRO_SECONDS = 1.4; // scrolling after the last line, before the end card
 
 interface PlacedLine {
@@ -68,7 +70,7 @@ export function layoutLectura(props: LecturaProps) {
   const pauseScale = 2.2 / wps;
   const lines: PlacedLine[] = [];
   let y = 0;
-  let t = intro;
+  let t = intro + LEAD_IN_SECONDS;
   for (const raw of props.text) {
     const text = raw.trim();
     if (!text) {
@@ -92,12 +94,19 @@ export function lecturaSeconds(props: LecturaProps): number {
 }
 
 /** Scroll offset at time t: each line sits on the bar exactly at its `at`. */
-function scrollAt(t: number, lines: PlacedLine[], scrollEnd: number): number {
+function scrollAt(t: number, lines: PlacedLine[], intro: number, scrollEnd: number): number {
   if (lines.length === 0) return 0;
   const first = lines[0];
   const last = lines[lines.length - 1];
-  const times = [0, ...lines.map((l) => l.at)];
-  const offsets = [first.y - START_BELOW, ...lines.map((l) => l.y)];
+  // Title alone, then the text eases up into place.
+  if (t <= intro) return first.y - HIDDEN_BELOW;
+  if (t < first.at) {
+    return interpolate(t, [intro, first.at], [first.y - HIDDEN_BELOW, first.y], {
+      easing: Easing.out(Easing.cubic),
+    });
+  }
+  const times = lines.map((l) => l.at);
+  const offsets = lines.map((l) => l.y);
   // Keep moving after the last line at the average pace.
   const pace = lines.length > 1 ? (last.y - first.y) / (last.at - first.at) : LINE_HEIGHT;
   times.push(scrollEnd);
@@ -145,9 +154,9 @@ const Label: React.FC<{ children: React.ReactNode; size: number; delay: number }
 export const Lectura: React.FC<LecturaProps> = (props) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const { lines, scrollEnd } = layoutLectura(props);
+  const { lines, intro, scrollEnd } = layoutLectura(props);
   const t = frame / fps;
-  const scroll = scrollAt(t, lines, scrollEnd);
+  const scroll = scrollAt(t, lines, intro, scrollEnd);
   const endStart = Math.round(scrollEnd * fps);
 
   return (
