@@ -33,8 +33,14 @@ export interface LecturaProps {
   /** Seconds the title is on screen alone, before the text slides in —
    *  the voice-over says the title meanwhile (default 2.6). */
   introSeconds?: number;
-  /** Voice-over of the title, file in public/. */
+  /** Voice-over of the title, file in public/ (written by
+   *  `npm run voice-title`). When set, introSeconds is ignored: the title
+   *  holds for the voice's length plus voiceGapSeconds. */
   voice?: string;
+  /** What the voice-over says (default: the title). */
+  voiceText?: string;
+  /** Silence between the end of the voice and the text (default 0.6). */
+  voiceGapSeconds?: number;
   music?: string;
   musicVolume?: number;
   endCard: AdProps["endCard"];

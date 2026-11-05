@@ -1,5 +1,6 @@
 import React from "react";
-import { Composition } from "remotion";
+import { Composition, staticFile } from "remotion";
+import { getAudioDurationInSeconds } from "@remotion/media-utils";
 import { EloqAd } from "./EloqAd";
 import { Lectura, lecturaSeconds, type LecturaProps } from "./Lectura";
 import { FPS, totalSeconds } from "./timing";
@@ -29,9 +30,19 @@ export const RemotionRoot: React.FC = () => (
       fps={FPS}
       durationInFrames={FPS * 10}
       defaultProps={lecturaExample as LecturaProps}
-      calculateMetadata={({ props }) => ({
-        durationInFrames: Math.ceil(lecturaSeconds(props) * FPS),
-      })}
+      calculateMetadata={async ({ props }) => {
+        // With a voice-over, the title holds exactly as long as the voice
+        // plus a short breath, so voice and text never overlap.
+        let next = props;
+        if (props.voice) {
+          const voiceSeconds = await getAudioDurationInSeconds(staticFile(props.voice));
+          next = { ...props, introSeconds: voiceSeconds + (props.voiceGapSeconds ?? 0.6) };
+        }
+        return {
+          props: next,
+          durationInFrames: Math.ceil(lecturaSeconds(next) * FPS),
+        };
+      }}
     />
   </>
 );
