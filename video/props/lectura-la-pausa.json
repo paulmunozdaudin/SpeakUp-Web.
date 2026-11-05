@@ -1,0 +1,24 @@
+{
+  "title": "Mejora tu oratoria",
+  "subtitle": "el poder de la pausa",
+  "text": [
+    "Una pausa",
+    "no es un silencio vacío.",
+    "",
+    "Es el momento",
+    "en el que tu idea",
+    "aterriza",
+    "en la cabeza del otro.",
+    "",
+    "Los que dudan",
+    "rellenan cada hueco.",
+    "",
+    "Los que convencen",
+    "se callan,",
+    "respiran,",
+    "y siguen."
+  ],
+  "wordsPerSecond": 3.0,
+  "introSeconds": 2.3,
+  "endCard": { "title": "Eloq", "subtitle": "Habla para que te escuchen", "url": "eloq-oral.com" }
+}

@@ -1,0 +1,28 @@
+{
+  "title": "Mejora tu dicción",
+  "subtitle": "trabalenguas",
+  "text": [
+    "Tres tristes tigres",
+    "tragaban trigo",
+    "en un trigal.",
+    "",
+    "Pablito clavó un clavito.",
+    "¿Qué clavito",
+    "clavó Pablito?",
+    "",
+    "El cielo está enladrillado.",
+    "¿Quién lo",
+    "desenladrillará?",
+    "El desenladrillador",
+    "que lo desenladrille",
+    "buen desenladrillador",
+    "será."
+  ],
+  "wordsPerSecond": 3.6,
+  "introSeconds": 2.1,
+  "endCard": {
+    "title": "Eloq",
+    "subtitle": "Habla para que te escuchen",
+    "url": "eloq-oral.com"
+  }
+}

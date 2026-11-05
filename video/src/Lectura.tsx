@@ -64,6 +64,8 @@ interface PlacedLine {
 export function layoutLectura(props: LecturaProps) {
   const wps = props.wordsPerSecond ?? 2.2;
   const intro = props.introSeconds ?? 2.6;
+  // Pauses shrink with the pace so faster videos feel faster overall.
+  const pauseScale = 2.2 / wps;
   const lines: PlacedLine[] = [];
   let y = 0;
   let t = intro;
@@ -71,14 +73,14 @@ export function layoutLectura(props: LecturaProps) {
     const text = raw.trim();
     if (!text) {
       y += PARAGRAPH_GAP;
-      t += 0.5;
+      t += 0.5 * pauseScale;
       continue;
     }
     lines.push({ text, y, at: t });
     y += LINE_HEIGHT;
     const words = splitWords(text).length;
     const pause = /[.!?…]$/.test(text) ? 0.45 : /[,;:]$/.test(text) ? 0.25 : 0.05;
-    t += words / wps + pause;
+    t += words / wps + pause * pauseScale;
   }
   const last = lines[lines.length - 1];
   const scrollEnd = (last?.at ?? intro) + OUTRO_SECONDS;

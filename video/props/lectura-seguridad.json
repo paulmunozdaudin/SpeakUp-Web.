@@ -1,0 +1,21 @@
+{
+  "title": "Mejora tu oratoria",
+  "subtitle": "habla con seguridad",
+  "text": [
+    "No digas «creo que».",
+    "Di lo que piensas.",
+    "",
+    "No pidas perdón",
+    "antes de hablar.",
+    "",
+    "No mires al suelo.",
+    "Mira a quien te escucha.",
+    "",
+    "Tu voz",
+    "no tiene que ser perfecta.",
+    "Tiene que ser tuya."
+  ],
+  "wordsPerSecond": 4.2,
+  "introSeconds": 2.0,
+  "endCard": { "title": "Eloq", "subtitle": "Habla para que te escuchen", "url": "eloq-oral.com" }
+}
