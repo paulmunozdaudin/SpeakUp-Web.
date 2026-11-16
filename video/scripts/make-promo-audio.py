@@ -4,9 +4,9 @@ audio, so there is nothing to license):
 
     python3 scripts/make-promo-audio.py
 
-Writes public/promo/music.wav (120 BPM, A minor) and public/promo/sfx.wav
-(whooshes, taps, pops, impacts), both cut to the video's timeline in
-src/promo/timeline.ts. Needs numpy.
+For each promo variant it writes music.wav (120 BPM, A minor) and sfx.wav
+(whooshes, taps, pops, impacts) into that variant's folder under public/,
+cut to the timeline in src/promo/timeline.ts. Needs numpy.
 """
 import os
 import wave
@@ -14,16 +14,44 @@ import wave
 import numpy as np
 
 SR = 44100
-TOTAL = 33.0
 BPM = 120
 BEAT = 60 / BPM
 BAR = 4 * BEAT
-N = int(SR * TOTAL)
 rng = np.random.default_rng(7)
 
-# Scene boundaries (seconds) — keep in sync with src/promo/timeline.ts.
-DROP = 7.5  # "Découvre Eloq AI." — the beat comes in
-OUTRO = 28.0  # call to action — the beat leaves
+# Timelines (seconds) — keep in sync with the T objects in
+# src/promo/timeline.ts. `taps` are the taps on the phone screen and
+# `swooshes` the screen changes of the last scenes.
+VARIANTS = {
+    "promo": dict(  # French
+        total=33.0, hook2=1.75, problem=3.5, part2=5.5, reveal=7.5, phone=8.6, setup=10.0,
+        tap_start=12.6, tap_record=13.6, tap_stop=16.3, results=17.6,
+        callouts=(18.9, 19.55, 20.2, 20.85, 21.5), camera=22.15, tail=23.5,
+        taps=(24.4, 25.3, 26.2), swooshes=(), cta=28.0, button=29.7,
+    ),
+    "promo-es": dict(  # Spanish
+        total=30.0, hook2=1.75, problem=3.5, part2=5.25, reveal=7.0, phone=8.0, setup=9.2,
+        tap_start=11.0, tap_record=11.9, tap_stop=14.2, results=15.3,
+        callouts=(16.5, 17.1, 17.7, 18.3, 18.9), camera=None, tail=19.5,
+        taps=(20.5,), swooshes=(21.45, 22.4), cta=25.5, button=27.0,
+    ),
+}
+
+# Set per variant by configure().
+TOTAL = 0.0
+N = 0
+DROP = 0.0  # the reveal — the beat comes in
+OUTRO = 0.0  # call to action — the beat leaves
+V = {}
+
+
+def configure(variant):
+    global TOTAL, N, DROP, OUTRO, V
+    V = variant
+    TOTAL = variant["total"]
+    N = int(SR * TOTAL)
+    DROP = variant["reveal"]
+    OUTRO = variant["cta"]
 
 
 def t_axis(seconds):
@@ -133,7 +161,7 @@ def make_music():
             place(music, KICK, time, 0.5)
         if part == "drop":
             # A one-bar break before the exams scene keeps it from droning.
-            in_break = 22.5 <= time < 23.5
+            in_break = V["tail"] - 1.0 <= time < V["tail"]
             if not in_break:
                 place(music, KICK, time, 0.9)
                 i = int(time * SR)
@@ -147,8 +175,8 @@ def make_music():
             if beat % 4 == 3:
                 place(music, OHAT, time + BEAT / 2, 0.2, pan=-0.2)
     # Snare-ish fill into the exams scene.
-    for k, offset in enumerate((23.0, 23.125, 23.25, 23.375)):
-        place(music, CLAP, offset, 0.25 + 0.08 * k)
+    for k in range(4):
+        place(music, CLAP, V["tail"] - 0.5 + k * 0.125, 0.25 + 0.08 * k)
 
     # Harmony
     for bar in range(bars):
@@ -269,37 +297,42 @@ def make_sfx():
     cue = lambda sound, at, gain=1.0, pan=0.0: place(sfx, sound, at, gain, pan)
 
     cue(impact(), 0.0, 0.7)
-    cue(whoosh(0.45), 1.45, 0.6)
-    cue(impact(), 1.75, 0.5)
-    cue(whoosh(0.5), 3.3, 0.7)
-    for k, at in enumerate((4.0, 4.3, 4.6)):  # revision cards ticked off
-        cue(pop(72 + 2 * k), at, 0.45)
-    cue(glitch(), 5.5, 0.8)
-    for k, at in enumerate((5.9, 6.3, 6.7)):  # "euh…", "du coup…", "en fait…"
-        cue(pop(64 - 2 * k), at, 0.5, pan=(-0.4, 0.4, 0.0)[k])
-    cue(riser(0.7), 6.8, 0.8)
-    cue(impact(), DROP, 1.0)
-    cue(whoosh(0.5), 8.5, 0.6)
-    cue(whoosh(0.4, 1.3), 10.0, 0.5)
-    cue(tap(), 12.6, 0.9)
-    cue(tap(), 13.6, 0.9)
-    cue(pop(84), 13.72, 0.4)  # recording starts
-    cue(tap(), 16.3, 0.9)
-    cue(whoosh(0.4), 16.35, 0.45)
-    cue(chime(), 17.75, 0.8)  # the score lands
-    for k, at in enumerate((18.9, 19.55, 20.2, 20.85, 21.5)):  # metric call-outs
+    cue(whoosh(0.45), V["hook2"] - 0.3, 0.6)
+    cue(impact(), V["hook2"], 0.5)
+    cue(whoosh(0.5), V["problem"] - 0.2, 0.7)
+    for k in range(3):  # revision cards ticked off
+        cue(pop(72 + 2 * k), V["problem"] + 0.5 + 0.3 * k, 0.45)
+    cue(glitch(), V["part2"], 0.8)
+    first = V["part2"] + 0.4
+    step = (V["reveal"] - 0.8 - first) / 2
+    for k in range(3):  # filler-word chips
+        cue(pop(64 - 2 * k), first + k * step, 0.5, pan=(-0.4, 0.4, 0.0)[k])
+    cue(riser(0.7), V["reveal"] - 0.7, 0.8)
+    cue(impact(), V["reveal"], 1.0)
+    cue(whoosh(0.5), V["phone"] - 0.1, 0.6)
+    cue(whoosh(0.4, 1.3), V["setup"], 0.5)
+    cue(tap(), V["tap_start"], 0.9)
+    cue(tap(), V["tap_record"], 0.9)
+    cue(pop(84), V["tap_record"] + 0.12, 0.4)  # recording starts
+    cue(tap(), V["tap_stop"], 0.9)
+    cue(whoosh(0.4), V["tap_stop"] + 0.05, 0.45)
+    cue(chime(), V["results"] + 0.15, 0.8)  # the score lands
+    for k, at in enumerate(V["callouts"]):  # metric call-outs
         cue(whoosh(0.22, 1.4), at - 0.1, 0.3)
         cue(pop(72 + 2 * k), at, 0.6, pan=(-0.3, 0.3)[k % 2])
-    cue(whoosh(0.3, 1.3), 22.05, 0.35)  # camera mode card
-    cue(pop(84), 22.15, 0.5)
-    cue(whoosh(0.45), 23.3, 0.6)
-    for k, at in enumerate((24.4, 25.3, 26.2)):  # exam cards selected
+    if V["camera"] is not None:  # camera mode card
+        cue(whoosh(0.3, 1.3), V["camera"] - 0.1, 0.35)
+        cue(pop(84), V["camera"], 0.5)
+    cue(whoosh(0.45), V["tail"] - 0.2, 0.6)
+    for k, at in enumerate(V["taps"]):
         cue(tap(), at, 0.8)
         cue(pop(76 + 3 * k), at + 0.03, 0.35)
-    cue(riser(0.6), 27.4, 0.7)
+    for at in V["swooshes"]:
+        cue(whoosh(0.35, 1.2), at, 0.45)
+    cue(riser(0.6), OUTRO - 0.6, 0.7)
     cue(impact(), OUTRO, 0.9)
     cue(chime((69, 76, 81, 88)), OUTRO + 0.15, 0.6)
-    cue(pop(81), 29.7, 0.5)
+    cue(pop(81), V["button"], 0.5)
     return sfx
 
 
@@ -316,7 +349,9 @@ def write(path, stereo, peak=0.89):
 
 
 if __name__ == "__main__":
-    out = os.path.join(os.path.dirname(__file__), "..", "public", "promo")
-    os.makedirs(out, exist_ok=True)
-    write(os.path.join(out, "music.wav"), make_music(), peak=0.8)
-    write(os.path.join(out, "sfx.wav"), make_sfx(), peak=0.7)
+    for folder, variant in VARIANTS.items():
+        configure(variant)
+        out = os.path.join(os.path.dirname(__file__), "..", "public", folder)
+        os.makedirs(out, exist_ok=True)
+        write(os.path.join(out, "music.wav"), make_music(), peak=0.8)
+        write(os.path.join(out, "sfx.wav"), make_sfx(), peak=0.7)

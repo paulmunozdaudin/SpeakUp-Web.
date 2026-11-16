@@ -1,0 +1,157 @@
+{
+  "recording": [
+    {
+      "file": "rec-00.jpg",
+      "t": 0.34
+    },
+    {
+      "file": "rec-01.jpg",
+      "t": 0.569
+    },
+    {
+      "file": "rec-02.jpg",
+      "t": 1.217
+    },
+    {
+      "file": "rec-03.jpg",
+      "t": 1.886
+    },
+    {
+      "file": "rec-04.jpg",
+      "t": 2.162
+    },
+    {
+      "file": "rec-05.jpg",
+      "t": 2.429
+    },
+    {
+      "file": "rec-06.jpg",
+      "t": 2.718
+    },
+    {
+      "file": "rec-07.jpg",
+      "t": 3.197
+    },
+    {
+      "file": "rec-08.jpg",
+      "t": 3.592
+    },
+    {
+      "file": "rec-09.jpg",
+      "t": 3.816
+    },
+    {
+      "file": "rec-10.jpg",
+      "t": 4.072
+    },
+    {
+      "file": "rec-11.jpg",
+      "t": 4.724
+    },
+    {
+      "file": "rec-12.jpg",
+      "t": 5.127
+    },
+    {
+      "file": "rec-13.jpg",
+      "t": 5.291
+    },
+    {
+      "file": "rec-14.jpg",
+      "t": 5.6
+    },
+    {
+      "file": "rec-15.jpg",
+      "t": 5.938
+    },
+    {
+      "file": "rec-16.jpg",
+      "t": 6.395
+    },
+    {
+      "file": "rec-17.jpg",
+      "t": 6.874
+    },
+    {
+      "file": "rec-18.jpg",
+      "t": 7.033
+    }
+  ],
+  "analysing": [
+    {
+      "file": "ana-00.jpg",
+      "t": 0.374
+    },
+    {
+      "file": "ana-01.jpg",
+      "t": 0.719
+    },
+    {
+      "file": "ana-02.jpg",
+      "t": 1.133
+    },
+    {
+      "file": "ana-03.jpg",
+      "t": 1.643
+    }
+  ],
+  "rects": {
+    "Claridad": {
+      "x": 48,
+      "y": 2330.25,
+      "w": 1104,
+      "h": 496.5
+    },
+    "Confianza": {
+      "x": 48,
+      "y": 2874.75,
+      "w": 1104,
+      "h": 496.5
+    },
+    "Estructura": {
+      "x": 48,
+      "y": 3419.25,
+      "w": 1104,
+      "h": 496.5
+    },
+    "Ritmo": {
+      "x": 48,
+      "y": 3963.75,
+      "w": 1104,
+      "h": 496.5
+    },
+    "Fluidez": {
+      "x": 48,
+      "y": 4508.25,
+      "w": 1104,
+      "h": 428.25
+    },
+    "Control de muletillas": {
+      "x": 48,
+      "y": 4984.5,
+      "w": 1104,
+      "h": 496.5
+    },
+    "Precisión del lenguaje": {
+      "x": 48,
+      "y": 7775.25,
+      "w": 1104,
+      "h": 428.25
+    },
+    "Puntuación global": {
+      "x": 48,
+      "y": 264,
+      "w": 1104,
+      "h": 1787.25
+    }
+  },
+  "chrome": {
+    "header": 168,
+    "nav": 184.5
+  },
+  "heights": {
+    "setup": 5616,
+    "metrics": 9813,
+    "challenges": 9444
+  }
+}

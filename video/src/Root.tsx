@@ -4,7 +4,7 @@ import { getAudioDurationInSeconds } from "@remotion/media-utils";
 import { EloqAd } from "./EloqAd";
 import { Lectura, lecturaSeconds, type LecturaProps } from "./Lectura";
 import { Promo, PromoCover } from "./promo/Promo";
-import { PROMO_FPS, PROMO_SECONDS } from "./promo/timeline";
+import { PROMO_FPS, PROMO_VARIANTS } from "./promo/timeline";
 import { FPS, totalSeconds } from "./timing";
 import type { AdProps } from "./types";
 import example from "../props/nadie-nace-sabiendo.json";
@@ -46,15 +46,25 @@ export const RemotionRoot: React.FC = () => (
         };
       }}
     />
-    <Composition
-      id="Promo"
-      component={Promo}
-      width={1080}
-      height={1920}
-      fps={PROMO_FPS}
-      durationInFrames={PROMO_FPS * PROMO_SECONDS}
-      defaultProps={{ music: true }}
-    />
-    <Still id="PromoCover" component={PromoCover} width={1080} height={1920} />
+    {(["fr", "es"] as const).map((locale) => (
+      <React.Fragment key={locale}>
+        <Composition
+          id={locale === "fr" ? "Promo" : "PromoEs"}
+          component={Promo}
+          width={1080}
+          height={1920}
+          fps={PROMO_FPS}
+          durationInFrames={PROMO_FPS * PROMO_VARIANTS[locale].seconds}
+          defaultProps={{ music: true, locale }}
+        />
+        <Still
+          id={locale === "fr" ? "PromoCover" : "PromoCoverEs"}
+          component={PromoCover}
+          width={1080}
+          height={1920}
+          defaultProps={{ locale }}
+        />
+      </React.Fragment>
+    ))}
   </>
 );

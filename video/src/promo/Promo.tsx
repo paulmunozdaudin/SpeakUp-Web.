@@ -11,19 +11,23 @@ import {
   useVideoConfig,
 } from "remotion";
 import { loadFont } from "@remotion/fonts";
-import frames from "../../public/promo/frames.json";
-import { CAPTIONS, PROMO_SECONDS, T, type Caption } from "./timeline";
+import { PROMO_FR, PROMO_VARIANTS, type Caption, type PromoConfig, type PromoLocale, type Rect, type Screen } from "./timeline";
 
 /**
- * Launch promo for Eloq AI (French, 9:16). Every app screen is a real
+ * Launch promo for Eloq AI (9:16, one variant per language — see
+ * timeline.ts). Every app screen is a real
  * capture of the product (scripts/capture-promo.cjs); the rest is motion
  * design in the app's own palette.
  */
 export interface PromoProps {
   /** false renders the cut with sound effects only. */
   music: boolean;
+  locale: PromoLocale;
   [key: string]: unknown;
 }
+
+const Config = React.createContext<PromoConfig>(PROMO_FR);
+const useCfg = () => React.useContext(Config);
 
 const font = "Inter";
 for (const subset of ["latin", "latin-ext"]) {
@@ -57,11 +61,16 @@ function useClock() {
   return { frame, fps, t, ramp, pop };
 }
 
-const img = (name: string) => staticFile(`promo/${name}`);
+/** Resolves a file in the current variant's asset folder. */
+const useAsset = () => {
+  const { dir } = useCfg();
+  return (name: string) => staticFile(`${dir}/${name}`);
+};
 
 // ── Backdrop ────────────────────────────────────────────────────────────────
 const Backdrop: React.FC = () => {
   const { t, ramp } = useClock();
+  const { T } = useCfg();
   const drift = (speed: number, phase: number) => Math.sin(t * speed + phase);
   // The glow swells when the beat drops and on the call to action.
   const energy = 0.55 + 0.45 * ramp(T.reveal - 0.2, T.reveal + 0.4) - 0.15 * ramp(T.cta, T.cta + 1);
@@ -242,6 +251,7 @@ const Ripples: React.FC<{ at: number; x: number; y: number; count?: number; max?
 // ── Scene 1 — hook ──────────────────────────────────────────────────────────
 const Hook: React.FC = () => {
   const { t, ramp } = useClock();
+  const { T, text } = useCfg();
   if (t > T.problem + 0.3) return null;
   const exit1 = ramp(T.hookLine2 - 0.2, T.hookLine2 + 0.05);
   const exit2 = ramp(T.problem - 0.2, T.problem + 0.1);
@@ -251,16 +261,16 @@ const Hook: React.FC = () => {
       <Ripples at={T.hookLine2} x={540} y={880} max={1500} color="96,165,250" />
       <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingBottom: 160 }}>
         {t < T.hookLine2 + 0.1 && (
-          <Kinetic lines={["Tu as un oral", "à passer ?"]} at={0.05} size={138} accent={["oral"]} out={exit1} />
+          <Kinetic lines={text.hook1.lines} at={0.05} size={text.hook1.size} accent={text.hook1.accent} out={exit1} />
         )}
       </AbsoluteFill>
       <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", paddingBottom: 160 }}>
         {t >= T.hookLine2 - 0.05 && (
           <Kinetic
-            lines={["Ne découvre pas", "ton niveau", "le jour de l'examen."]}
+            lines={text.hook2.lines}
             at={T.hookLine2}
-            size={98}
-            accent={["le", "jour", "de", "l'examen."]}
+            size={text.hook2.size}
+            accent={text.hook2.accent}
             out={exit2}
             stagger={0.06}
             lineHeight={1.12}
@@ -272,10 +282,9 @@ const Hook: React.FC = () => {
 };
 
 // ── Scene 2 — the problem ───────────────────────────────────────────────────
-const NOTE_TITLES = ["Introduction", "Arguments", "Conclusion"];
-
 const NoteCard: React.FC<{ index: number }> = ({ index }) => {
   const { pop, ramp } = useClock();
+  const { T, text } = useCfg();
   const enter = pop(T.problem + 0.08 + index * 0.1, 15, 150);
   const check = pop(T.problem + 0.5 + index * 0.3, 11, 220);
   const leave = ramp(T.problemPart2 - 0.25, T.problemPart2 + 0.1);
@@ -302,10 +311,10 @@ const NoteCard: React.FC<{ index: number }> = ({ index }) => {
       }}
     >
       <div style={{ fontSize: 26, fontWeight: 600, color: MUTED, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-        Fiche {index + 1}
+        {text.noteLabel} {index + 1}
       </div>
       <div style={{ marginTop: 10, fontSize: 46, fontWeight: 700, color: "white", letterSpacing: "-0.02em" }}>
-        {NOTE_TITLES[index]}
+        {text.noteTitles[index]}
       </div>
       {[0.92, 0.74, 0.86, 0.6, 0.8].map((w, i) => (
         <div
@@ -343,14 +352,18 @@ const NoteCard: React.FC<{ index: number }> = ({ index }) => {
   );
 };
 
-const FILLERS = [
-  { text: "« euh… »", x: 110, y: 800, at: 5.9 },
-  { text: "« du coup… »", x: 330, y: 1500, at: 6.3 },
-  { text: "« en fait… »", x: 470, y: 890, at: 6.7 },
+const FILLER_SPOTS = [
+  { x: 110, y: 800 },
+  { x: 330, y: 1500 },
+  { x: 470, y: 890 },
 ];
 
 const Problem: React.FC = () => {
   const { t, ramp, pop } = useClock();
+  const { T, text } = useCfg();
+  // The three filler chips pop across the second half of the scene.
+  const fillerStep = (T.reveal - 0.8 - (T.problemPart2 + 0.4)) / 2;
+  const fillers = FILLER_SPOTS.map((spot, i) => ({ ...spot, text: text.fillers[i], at: T.problemPart2 + 0.4 + i * fillerStep }));
   if (t < T.problem - 0.1 || t > T.reveal + 0.25) return null;
   const exit = ramp(T.reveal - 0.3, T.reveal + 0.05);
   const part2 = pop(T.problemPart2 - 0.1, 16, 140);
@@ -360,12 +373,12 @@ const Problem: React.FC = () => {
     <AbsoluteFill style={{ opacity: 1 - exit, transform: `scale(${1 + exit * 0.15})`, filter: exit > 0 ? `blur(${exit * 16}px)` : undefined }}>
       <div style={{ position: "absolute", top: 250, left: 0, right: 0 }}>
         {t < T.problemPart2 + 0.05 && (
-          <Kinetic lines={["Tu peux connaître", "ton sujet par cœur…"]} at={T.problem + 0.12} size={86} accent={["par", "cœur…"]} out={out1} />
+          <Kinetic lines={text.problem1.lines} at={T.problem + 0.12} size={text.problem1.size} accent={text.problem1.accent} out={out1} />
         )}
       </div>
       <div style={{ position: "absolute", top: 250, left: 0, right: 0 }}>
         {t >= T.problemPart2 - 0.1 && (
-          <Kinetic lines={["…et pourtant avoir du mal", "à le présenter."]} at={T.problemPart2} size={70} accent={["du", "mal"]} />
+          <Kinetic lines={text.problem2.lines} at={T.problemPart2} size={text.problem2.size} accent={text.problem2.accent} />
         )}
       </div>
 
@@ -406,7 +419,7 @@ const Problem: React.FC = () => {
           })}
         </div>
       )}
-      {FILLERS.map((f) => {
+      {fillers.map((f) => {
         const p = pop(f.at, 10, 230);
         if (t < f.at) return null;
         return (
@@ -440,6 +453,7 @@ const Problem: React.FC = () => {
 // ── Scene 3 — reveal ────────────────────────────────────────────────────────
 const Reveal: React.FC = () => {
   const { t, ramp, pop } = useClock();
+  const { T, text } = useCfg();
   if (t < T.reveal - 0.05 || t > T.phoneIn + 0.5) return null;
   const enter = pop(T.reveal, 13, 160);
   const exit = ramp(T.phoneIn - 0.15, T.phoneIn + 0.3);
@@ -461,7 +475,7 @@ const Reveal: React.FC = () => {
           <EloqMark size={250} progress={interpolate(t, [T.reveal, T.reveal + 0.6], [0, 1], clamp)} />
         </div>
         <div style={{ height: 56 }} />
-        <Kinetic lines={["Découvre", "Eloq AI."]} at={T.reveal + 0.12} size={150} accent={["Eloq", "AI."]} />
+        <Kinetic lines={text.reveal} at={T.reveal + 0.12} size={150} accent={["Eloq", "AI."]} />
       </AbsoluteFill>
     </AbsoluteFill>
   );
@@ -477,12 +491,15 @@ const BEZEL = 16;
 const PHONE_TOP = 470;
 
 /** A full-viewport capture. */
-const Still: React.FC<{ file: string }> = ({ file }) => (
-  <Img src={img(file)} style={{ position: "absolute", left: 0, top: 0, width: SCREEN_W, height: SCREEN_H }} />
-);
+const Still: React.FC<{ file: string }> = ({ file }) => {
+  const img = useAsset();
+  return <Img src={img(file)} style={{ position: "absolute", left: 0, top: 0, width: SCREEN_W, height: SCREEN_H }} />;
+};
 
 /** A whole-page capture scrolled behind the app's real header and tab bar. */
 const Scrolled: React.FC<{ file: string; height: number; scroll: number }> = ({ file, height, scroll }) => {
+  const img = useAsset();
+  const { frames } = useCfg();
   const max = height - SHOT_H;
   const y = Math.max(0, Math.min(max, scroll));
   const header = frames.chrome.header;
@@ -523,11 +540,6 @@ const Tap: React.FC<{ at: number; x: number; y: number }> = ({ at, x, y }) => {
   );
 };
 
-const SETUP_H = 5616;
-const METRICS_H = 10035;
-const rects = frames.rects as Record<string, { x: number; y: number; w: number; h: number }>;
-const CALLOUT_KEYS = ["Clarté", "Confiance", "Rythme", "Structure", "Maîtrise des tics de langage"];
-
 interface Segment {
   from: number;
   to: number;
@@ -540,51 +552,61 @@ function frameAt<F extends { file: string; t: number }>(list: F[], elapsed: numb
   return current;
 }
 
-const SEGMENTS: Segment[] = [
-  { from: T.phoneIn - 0.2, to: T.setup, render: () => <Still file="landing.png" /> },
-  {
-    from: T.setup,
-    to: T.recIdle,
-    render: (t) => {
-      const scroll =
-        interpolate(t, [T.setup + 0.45, T.setup + 1.75], [0, 1560], { ...clamp, easing: Easing.inOut(Easing.cubic) }) +
-        interpolate(t, [T.demo, T.demo + 0.5], [0, SETUP_H - SHOT_H - 1560], { ...clamp, easing: Easing.inOut(Easing.cubic) });
-      return <Scrolled file="setup-long.png" height={SETUP_H} scroll={scroll} />;
+const inOut = { ...clamp, easing: Easing.inOut(Easing.cubic) };
+
+function renderScreen(screen: Screen, t: number): React.ReactNode {
+  if (screen.kind === "still") return <Still file={screen.file} />;
+  const scroll = interpolate(t, screen.over, [screen.scrollFrom, screen.scrollTo], inOut);
+  return <Scrolled file={screen.file} height={screen.height} scroll={scroll} />;
+}
+
+/** Everything the phone shows, in order. */
+function buildSegments(cfg: PromoConfig): Segment[] {
+  const { T, frames } = cfg;
+  const firstStop = 1560; // setup page scrolled down to the mode cards
+  return [
+    { from: T.phoneIn - 0.2, to: T.setup, render: () => <Still file="landing.png" /> },
+    {
+      from: T.setup,
+      to: T.recIdle,
+      render: (t) => {
+        const scroll =
+          interpolate(t, [T.setup + 0.35, T.demo - 0.15], [0, firstStop], inOut) +
+          interpolate(t, [T.demo, T.tapStart - 0.1], [0, cfg.setupHeight - SHOT_H - firstStop], inOut);
+        return <Scrolled file="setup-long.png" height={cfg.setupHeight} scroll={scroll} />;
+      },
     },
-  },
-  { from: T.recIdle, to: T.recording, render: () => <Still file="rec-idle.png" /> },
-  { from: T.recording, to: T.recLate, render: (t) => <Still file={frameAt(frames.recording, (t - T.recording) * 2.2).file} /> },
-  { from: T.recLate, to: T.analysing, render: () => <Still file="rec-late.png" /> },
-  { from: T.analysing, to: T.results, render: (t) => <Still file={frameAt(frames.analysing, t - T.analysing + 0.38).file} /> },
-  {
-    from: T.results,
-    to: T.exams,
-    render: (t) => {
-      // Rest on the score, then follow each metric as it is called out.
-      const stops = CALLOUT_KEYS.map((k) => rects[k].y - 760);
-      const times = [T.metrics, ...T.callouts.map((c) => c - 0.05)];
-      const values = [70, ...stops];
-      // Smooth steps between the stops.
-      let scroll = values[0];
-      for (let i = 1; i < times.length; i++) {
-        scroll += interpolate(t, [times[i] - 0.3, times[i] + 0.15], [0, values[i] - values[i - 1]], {
-          ...clamp,
-          easing: Easing.inOut(Easing.cubic),
-        });
-      }
-      return <Scrolled file="metrics-long.png" height={METRICS_H} scroll={scroll} />;
+    { from: T.recIdle, to: T.recording, render: () => <Still file="rec-idle.png" /> },
+    // Played a little faster than real time so the timer visibly runs.
+    { from: T.recording, to: T.recLate, render: (t) => <Still file={frameAt(frames.recording, (t - T.recording) * 2.2).file} /> },
+    { from: T.recLate, to: T.analysing, render: () => <Still file="rec-late.png" /> },
+    { from: T.analysing, to: T.results, render: (t) => <Still file={frameAt(frames.analysing, t - T.analysing + 0.38).file} /> },
+    {
+      from: T.results,
+      to: T.tail,
+      render: (t) => {
+        // Rest on the score, then follow each metric as it is called out.
+        const stops = cfg.calloutKeys.map((k) => frames.rects[k].y - 760);
+        const times = [T.metrics, ...T.callouts.map((c) => c - 0.05)];
+        const values = [70, ...stops];
+        let scroll = values[0];
+        for (let i = 1; i < times.length; i++) {
+          scroll += interpolate(t, [times[i] - 0.3, times[i] + 0.15], [0, values[i] - values[i - 1]], inOut);
+        }
+        return <Scrolled file="metrics-long.png" height={cfg.metricsHeight} scroll={scroll} />;
+      },
     },
-  },
-  { from: T.exams, to: T.examTaps[0] + 0.1, render: () => <Still file="exam-brevet.png" /> },
-  { from: T.examTaps[0] + 0.1, to: T.examTaps[1] + 0.1, render: () => <Still file="exam-bac.png" /> },
-  { from: T.examTaps[1] + 0.1, to: T.examTaps[2] + 0.12, render: () => <Still file="exam-grand-oral.png" /> },
-  { from: T.examTaps[2] + 0.12, to: T.cta + 0.6, render: () => <Still file="exam-grand-oral-info.png" /> },
-];
+    ...cfg.tailScreens.map((screen) => ({ from: screen.from, to: screen.to, render: (t: number) => renderScreen(screen, t) })),
+  ];
+}
 
 const FADE = 0.16;
 
 const Phone: React.FC = () => {
   const { t, ramp, pop } = useClock();
+  const cfg = useCfg();
+  const { T } = cfg;
+  const segments = React.useMemo(() => buildSegments(cfg), [cfg]);
   if (t < T.phoneIn - 0.2 || t > T.cta + 0.5) return null;
 
   const enter = pop(T.phoneIn, 17, 110);
@@ -594,10 +616,10 @@ const Phone: React.FC = () => {
     1 +
     0.14 * ramp(T.results + 0.1, T.results + 0.8) -
     0.14 * ramp(T.metrics - 0.15, T.metrics + 0.35) +
-    0.05 * ramp(T.exams, T.exams + 0.6);
+    0.05 * ramp(T.tail, T.tail + 0.6);
   const lift = 0;
   // The phone steps back while the real metric cards are pulled out of it.
-  const dim = ramp(T.callouts[0] - 0.2, T.callouts[0] + 0.15) - ramp(T.exams - 0.2, T.exams + 0.1);
+  const dim = ramp(T.callouts[0] - 0.2, T.callouts[0] + 0.15) - ramp(T.tail - 0.2, T.tail + 0.1);
   const breathe = Math.sin(t * 1.3) * 6;
   const scanning = t >= T.analysing && t < T.results;
 
@@ -619,7 +641,7 @@ const Phone: React.FC = () => {
       }}
     >
       <div style={{ position: "relative", width: SCREEN_W, height: SCREEN_H, borderRadius: 82, overflow: "hidden", background: BG }}>
-        {SEGMENTS.map((segment, i) => {
+        {segments.map((segment, i) => {
           if (t < segment.from || t > segment.to + FADE) return null;
           const opacity = i === 0 ? 1 : interpolate(t, [segment.from, segment.from + FADE], [0, 1], clamp);
           return (
@@ -630,12 +652,9 @@ const Phone: React.FC = () => {
         })}
 
         {/* Taps on the real buttons */}
-        <Tap at={T.tapStart} x={600} y={1932} />
-        <Tap at={T.tapRecord} x={600} y={1012} />
-        <Tap at={T.tapStop} x={600} y={1012} />
-        <Tap at={T.examTaps[0]} x={600} y={1143} />
-        <Tap at={T.examTaps[1]} x={980} y={1143} />
-        <Tap at={T.examTaps[2]} x={879} y={1012} />
+        {cfg.taps.map((tap) => (
+          <Tap key={tap.at} at={tap.at} x={tap.x} y={tap.y} />
+        ))}
 
         {/* A light sweep while the analysis runs */}
         {scanning && (
@@ -658,12 +677,8 @@ const Phone: React.FC = () => {
 };
 
 // ── Metric call-outs (real cards, cropped from the capture) ─────────────────
-const Crop: React.FC<{ file: string; pageHeight: number; rect: { x: number; y: number; w: number; h: number }; width: number }> = ({
-  file,
-  pageHeight,
-  rect,
-  width,
-}) => {
+const Crop: React.FC<{ file: string; pageHeight: number; rect: Rect; width: number }> = ({ file, pageHeight, rect, width }) => {
+  const img = useAsset();
   const k = width / rect.w;
   return (
     <div style={{ position: "relative", width, height: rect.h * k, borderRadius: 58 * k * (SHOT_W / 1104), overflow: "hidden" }}>
@@ -677,13 +692,17 @@ const Crop: React.FC<{ file: string; pageHeight: number; rect: { x: number; y: n
 
 const Callouts: React.FC = () => {
   const { t, pop, ramp } = useClock();
-  if (t < T.callouts[0] - 0.1 || t > T.exams + 0.2) return null;
+  const cfg = useCfg();
+  const { T } = cfg;
+  const rects = cfg.frames.rects;
+  const afterLast = T.camera ?? T.tail;
+  if (t < T.callouts[0] - 0.1 || t > T.tail + 0.2) return null;
   const WIDTH = 960;
   return (
     <AbsoluteFill>
-      {CALLOUT_KEYS.map((key, i) => {
+      {cfg.calloutKeys.map((key, i) => {
         const at = T.callouts[i];
-        const next = i < CALLOUT_KEYS.length - 1 ? T.callouts[i + 1] : T.camera;
+        const next = i < cfg.calloutKeys.length - 1 ? T.callouts[i + 1] : afterLast;
         if (t < at - 0.05 || t > next + 0.35) return null;
         const p = pop(at, 13, 180);
         const out = ramp(next - 0.08, next + 0.25);
@@ -702,17 +721,19 @@ const Callouts: React.FC = () => {
               boxShadow: "0 50px 120px rgba(0,0,0,0.7), 0 0 0 2px rgba(129,140,248,0.55), 0 0 120px rgba(99,102,241,0.55)",
             }}
           >
-            <Crop file="metrics-long.png" pageHeight={METRICS_H} rect={rect} width={WIDTH} />
+            <Crop file="metrics-long.png" pageHeight={cfg.metricsHeight} rect={rect} width={WIDTH} />
           </div>
         );
       })}
 
       {/* Camera mode: the real option card from the setup screen */}
-      {t >= T.camera - 0.05 &&
+      {T.camera !== undefined &&
+        cfg.cameraRect &&
+        t >= T.camera - 0.05 &&
         (() => {
           const p = pop(T.camera, 14, 170);
-          const out = ramp(T.exams - 0.15, T.exams + 0.15);
-          const rect = { x: 48, y: 1512, w: 1104, h: 552 };
+          const out = ramp(T.tail - 0.15, T.tail + 0.15);
+          const rect = cfg.cameraRect;
           return (
             <div
               style={{
@@ -725,7 +746,7 @@ const Callouts: React.FC = () => {
                 boxShadow: "0 50px 120px rgba(0,0,0,0.7), 0 0 0 2px rgba(96,165,250,0.6), 0 0 120px rgba(59,130,246,0.5)",
               }}
             >
-              <Crop file="setup-long.png" pageHeight={SETUP_H} rect={rect} width={WIDTH} />
+              <Crop file="setup-long.png" pageHeight={cfg.setupHeight} rect={rect} width={WIDTH} />
             </div>
           );
         })()}
@@ -736,6 +757,7 @@ const Callouts: React.FC = () => {
 // ── Captions ────────────────────────────────────────────────────────────────
 const CaptionBlock: React.FC<{ caption: Caption }> = ({ caption }) => {
   const { t, ramp, pop } = useClock();
+  const { text } = useCfg();
   if (t < caption.from - 0.05 || t > caption.to + 0.2) return null;
   const out = ramp(caption.to - 0.12, caption.to + 0.12);
   const pill = pop(caption.from, 13, 200);
@@ -759,7 +781,7 @@ const CaptionBlock: React.FC<{ caption: Caption }> = ({ caption }) => {
             transform: `scale(${0.8 + 0.2 * pill})`,
           }}
         >
-          ÉTAPE {caption.step}
+          {text.stepLabel} {caption.step}
         </div>
       )}
       <div style={{ filter: "drop-shadow(0 6px 30px rgba(0,0,0,0.9))" }}>
@@ -772,6 +794,7 @@ const CaptionBlock: React.FC<{ caption: Caption }> = ({ caption }) => {
 // ── Scene 6 — call to action ────────────────────────────────────────────────
 const Cta: React.FC = () => {
   const { t, pop, ramp } = useClock();
+  const { T, text } = useCfg();
   if (t < T.cta - 0.05) return null;
   const enter = pop(T.cta + 0.05, 14, 140);
   const button = pop(T.ctaButton, 12, 190);
@@ -797,7 +820,7 @@ const Cta: React.FC = () => {
           <div style={{ fontFamily: font, fontWeight: 800, fontSize: 150, letterSpacing: "-0.045em", color: "white" }}>Eloq AI</div>
         </div>
         <div style={{ height: 150 }} />
-        <Kinetic lines={["Le jour de ton oral,", "sois prêt."]} at={T.cta + 0.45} size={112} accent={["sois", "prêt."]} lineHeight={1.1} />
+        <Kinetic lines={text.cta.lines} at={T.cta + 0.45} size={text.cta.size} accent={text.cta.accent} lineHeight={1.1} />
         <div style={{ height: 130 }} />
         <div
           style={{
@@ -814,7 +837,7 @@ const Cta: React.FC = () => {
             boxShadow: `0 30px 80px rgba(99,102,241,${0.35 + 0.3 * glow}), inset 0 2px 0 rgba(255,255,255,0.25)`,
           }}
         >
-          Commence gratuitement
+          {text.ctaButton}
         </div>
         <div
           style={{
@@ -827,7 +850,7 @@ const Cta: React.FC = () => {
             opacity: pop(T.ctaButton + 0.25, 16, 150),
           }}
         >
-          sur <span style={gradientText}>eloq-oral.com</span>
+          {text.ctaUrlPrefix} <span style={gradientText}>eloq-oral.com</span>
         </div>
       </AbsoluteFill>
     </AbsoluteFill>
@@ -835,9 +858,11 @@ const Cta: React.FC = () => {
 };
 
 // ── Composition ─────────────────────────────────────────────────────────────
-export const Promo: React.FC<PromoProps> = ({ music }) => {
+const PromoScenes: React.FC<{ music: boolean }> = ({ music }) => {
   const { t } = useClock();
-  const fadeOut = interpolate(t, [PROMO_SECONDS - 0.35, PROMO_SECONDS], [1, 0.92], clamp);
+  const cfg = useCfg();
+  const img = useAsset();
+  const fadeOut = interpolate(t, [cfg.seconds - 0.35, cfg.seconds], [1, 0.92], clamp);
   return (
     <AbsoluteFill style={{ backgroundColor: BG, opacity: fadeOut }}>
       <Backdrop />
@@ -846,7 +871,7 @@ export const Promo: React.FC<PromoProps> = ({ music }) => {
       <Reveal />
       <Phone />
       <Callouts />
-      {CAPTIONS.map((caption) => (
+      {cfg.captions.map((caption) => (
         <CaptionBlock key={caption.from} caption={caption} />
       ))}
       <Cta />
@@ -856,70 +881,93 @@ export const Promo: React.FC<PromoProps> = ({ music }) => {
   );
 };
 
+export const Promo: React.FC<PromoProps> = ({ music, locale }) => (
+  <Config.Provider value={PROMO_VARIANTS[locale] ?? PROMO_FR}>
+    <PromoScenes music={music} />
+  </Config.Provider>
+);
+
 /** Still for the TikTok cover: the hook over the real results screen. */
-export const PromoCover: React.FC = () => (
-  <AbsoluteFill style={{ backgroundColor: BG, overflow: "hidden" }}>
-    <div
-      style={{
-        position: "absolute",
-        width: 1500,
-        height: 1500,
-        left: -210,
-        top: -420,
-        borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(99,102,241,0.55) 0%, rgba(99,102,241,0) 62%)",
-      }}
-    />
-    <div
-      style={{
-        position: "absolute",
-        width: 1200,
-        height: 1200,
-        right: -400,
-        bottom: -200,
-        borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(59,130,246,0.4) 0%, rgba(59,130,246,0) 62%)",
-      }}
-    />
-    <div style={{ position: "absolute", top: 210, left: 0, right: 0, display: "flex", justifyContent: "center", alignItems: "center", gap: 22 }}>
-      <EloqMark size={84} />
-      <div style={{ fontFamily: font, fontWeight: 800, fontSize: 62, letterSpacing: "-0.04em", color: "white" }}>Eloq AI</div>
-    </div>
-    <div
-      style={{
-        position: "absolute",
-        top: 360,
-        left: 0,
-        right: 0,
-        fontFamily: font,
-        fontWeight: 800,
-        fontSize: 132,
-        lineHeight: 1.04,
-        letterSpacing: "-0.04em",
-        color: "white",
-        textAlign: "center",
-      }}
-    >
-      Tu as un <span style={gradientText}>oral</span>
-      <br />à passer ?
-    </div>
-    <div
-      style={{
-        position: "absolute",
-        left: (1080 - SCREEN_W) / 2 - BEZEL,
-        top: 760,
-        width: SCREEN_W + BEZEL * 2,
-        height: SCREEN_H + BEZEL * 2,
-        borderRadius: 96,
-        padding: BEZEL,
-        background: "linear-gradient(150deg, #3a3a44 0%, #16161b 30%, #0c0c10 70%, #2c2c36 100%)",
-        boxShadow: "0 60px 140px rgba(0,0,0,0.75), 0 0 180px rgba(99,102,241,0.5)",
-        transform: "rotate(-3deg)",
-      }}
-    >
-      <div style={{ position: "relative", width: SCREEN_W, height: SCREEN_H, borderRadius: 82, overflow: "hidden" }}>
-        <Scrolled file="metrics-long.png" height={METRICS_H} scroll={70} />
+const CoverArt: React.FC = () => {
+  const cfg = useCfg();
+  const { hook1 } = cfg.text;
+  return (
+    <AbsoluteFill style={{ backgroundColor: BG, overflow: "hidden" }}>
+      <div
+        style={{
+          position: "absolute",
+          width: 1500,
+          height: 1500,
+          left: -210,
+          top: -420,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(99,102,241,0.55) 0%, rgba(99,102,241,0) 62%)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          width: 1200,
+          height: 1200,
+          right: -400,
+          bottom: -200,
+          borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(59,130,246,0.4) 0%, rgba(59,130,246,0) 62%)",
+        }}
+      />
+      <div style={{ position: "absolute", top: 210, left: 0, right: 0, display: "flex", justifyContent: "center", alignItems: "center", gap: 22 }}>
+        <EloqMark size={84} />
+        <div style={{ fontFamily: font, fontWeight: 800, fontSize: 62, letterSpacing: "-0.04em", color: "white" }}>Eloq AI</div>
       </div>
-    </div>
-  </AbsoluteFill>
+      <div
+        style={{
+          position: "absolute",
+          top: 360,
+          left: 0,
+          right: 0,
+          fontFamily: font,
+          fontWeight: 800,
+          fontSize: hook1.size - 6,
+          lineHeight: 1.04,
+          letterSpacing: "-0.04em",
+          color: "white",
+          textAlign: "center",
+        }}
+      >
+        {hook1.lines.map((line) => (
+          <div key={line}>
+            {line.split(" ").map((word, i) => (
+              <span key={i} style={hook1.accent.includes(word) ? gradientText : undefined}>
+                {word}{" "}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: (1080 - SCREEN_W) / 2 - BEZEL,
+          top: 760,
+          width: SCREEN_W + BEZEL * 2,
+          height: SCREEN_H + BEZEL * 2,
+          borderRadius: 96,
+          padding: BEZEL,
+          background: "linear-gradient(150deg, #3a3a44 0%, #16161b 30%, #0c0c10 70%, #2c2c36 100%)",
+          boxShadow: "0 60px 140px rgba(0,0,0,0.75), 0 0 180px rgba(99,102,241,0.5)",
+          transform: "rotate(-3deg)",
+        }}
+      >
+        <div style={{ position: "relative", width: SCREEN_W, height: SCREEN_H, borderRadius: 82, overflow: "hidden" }}>
+          <Scrolled file="metrics-long.png" height={cfg.metricsHeight} scroll={70} />
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+export const PromoCover: React.FC<{ locale: PromoLocale; [key: string]: unknown }> = ({ locale }) => (
+  <Config.Provider value={PROMO_VARIANTS[locale] ?? PROMO_FR}>
+    <CoverArt />
+  </Config.Provider>
 );

@@ -34,7 +34,7 @@ function buildCopy(language: SpeechLanguage) {
       fillerFeedback: (s: TranscriptStats) =>
         s.fillerTotal === 0
           ? "No se han detectado muletillas — un discurso muy limpio."
-          : `Has usado ${s.fillerTotal} muletillas (${s.fillerPerMinute}/min). La más repetida: «${s.fillerTop[0]?.word}» × ${s.fillerTop[0]?.count}. Sustitúyelas por pausas breves.`,
+          : `Has usado ${s.fillerTotal} muletilla${s.fillerTotal === 1 ? "" : "s"} (${s.fillerPerMinute}/min). La más repetida: «${s.fillerTop[0]?.word}» × ${s.fillerTop[0]?.count}. Sustitúyelas por pausas breves.`,
       sentenceFeedback: (s: TranscriptStats) =>
         s.longSentenceCount > 0
           ? `Tu frase más larga tiene ${s.longestSentenceWords} palabras («${shortQuote(s.longestSentence, 60)}»). Divídela en dos o tres ideas.`
@@ -86,7 +86,7 @@ function buildCopy(language: SpeechLanguage) {
       closingLow:
         "El discurso termina de forma abrupta, sin resumen ni llamada a la acción. Los últimos 15 segundos son los que se recuerdan.",
       summary: (s: TranscriptStats, overall: number, title: string) =>
-        `Análisis de «${title}»: ${s.wordCount} palabras a ${s.wordsPerMinute} ppm con ${s.fillerTotal} muletillas. Puntuación global ${overall}/100. ${
+        `Análisis de «${title}»: ${s.wordCount} palabras a ${s.wordsPerMinute} ppm con ${s.fillerTotal} muletilla${s.fillerTotal === 1 ? "" : "s"}. Puntuación global ${overall}/100. ${
           s.hasIntro && s.hasConclusion
             ? "La estructura está completa; el siguiente salto está en la ejecución."
             : "Lo más urgente es completar la estructura: " +
