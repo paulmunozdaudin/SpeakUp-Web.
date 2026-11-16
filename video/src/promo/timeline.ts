@@ -201,36 +201,58 @@ export const PROMO_FR: PromoConfig = {
 };
 
 // ── Spanish — 30 s, presentations, pitches, interviews and challenges ──────
+// Timed to the voice-over (public/promo-es/voice.wav).
 const ES_T = {
   hook: 0,
-  hookLine2: 1.75,
-  problem: 3.5,
-  problemPart2: 5.25,
+  hookLine2: 1.4,
+  problem: 3.4,
+  problemPart2: 5.1,
   reveal: 7.0,
-  phoneIn: 8.0,
-  setup: 9.2,
-  demo: 10.5,
-  tapStart: 11.0,
-  recIdle: 11.4,
-  tapRecord: 11.9,
-  recording: 12.0,
-  recLate: 13.6,
-  tapStop: 14.2,
-  analysing: 14.3,
-  results: 15.3,
-  metrics: 16.2,
-  callouts: [16.5, 17.1, 17.7, 18.3, 18.9],
-  tail: 19.5,
+  phoneIn: 8.5,
+  setup: 9.5,
+  demo: 10.3,
+  tapStart: 10.9,
+  recIdle: 11.3,
+  tapRecord: 11.8,
+  recording: 11.92,
+  recLate: 13.1,
+  tapStop: 13.6,
+  analysing: 13.7,
+  results: 15.4,
+  metrics: 16.3,
+  callouts: [17.0, 17.72, 18.32, 18.72, 19.6],
+  tail: 20.8,
   cta: 25.5,
   ctaButton: 27.0,
 };
-const ES_PITCH = 20.5;
-const ES_INTERVIEW = 21.5;
-const ES_CHALLENGES = 22.5;
+const ES_PITCH = 22.03;
+const ES_INTERVIEW = 23.0;
+const ES_CHALLENGES = 23.85;
 
 export const PROMO_ES: PromoConfig = {
   dir: "promo-es",
   seconds: 30,
+  // The recording is played 4 % faster so the narration fits in 30 s.
+  voice: {
+    file: "voice.wav",
+    clips: [
+      say(0.081, 1.262, 0.08), // ¿Tienes que hablar en público?
+      say(1.669, 3.599, 1.42), // No descubras tu nivel delante de todos.
+      say(4.006, 5.53, 3.5), // Puedes saberte el tema de memoria…
+      say(5.835, 7.463, 5.15), // y aun así quedarte en blanco.
+      say(7.909, 9.329, 7.1), // Descubre Eloq AI:
+      say(9.679, 11.36, 8.62), // tu coach personal para hablar mejor.
+      say(11.765, 12.866, 10.38), // Lanza un entrenamiento,
+      say(13.033, 13.568, 11.7), // grábate,
+      say(13.716, 15.428, 13.68), // y la IA analiza tu discurso.
+      say(15.734, 17.272, 15.48), // Recibes un análisis detallado:
+      say(17.549, 21.186, 17.1), // claridad, confianza, ritmo, estructura y muletillas.
+      say(21.454, 24.367, 20.88), // Para presentaciones, pitch para inversores y entrevistas.
+      say(24.638, 26.16, 23.95), // Y retos diarios de un minuto.
+      say(26.472, 27.737, 25.7), // Habla para que te escuchen.
+      say(28.01, 30.72, 27.08), // Empieza gratis en eloq-oral.com.
+    ],
+  },
   frames: framesEs,
   setupHeight: framesEs.heights.setup,
   metricsHeight: framesEs.heights.metrics,
@@ -248,7 +270,7 @@ export const PROMO_ES: PromoConfig = {
       height: framesEs.heights.challenges,
       scrollFrom: 0,
       scrollTo: 2250,
-      over: [ES_CHALLENGES + 0.7, ES_T.cta - 0.2],
+      over: [ES_CHALLENGES + 0.45, ES_T.cta - 0.15],
     },
   ],
   taps: [

@@ -30,10 +30,10 @@ VARIANTS = {
         taps=(25.65, 26.6, 27.5), swooshes=(), cta=28.5, button=30.8,
     ),
     "promo-es": dict(  # Spanish
-        total=30.0, hook2=1.75, problem=3.5, part2=5.25, reveal=7.0, phone=8.0, setup=9.2,
-        tap_start=11.0, tap_record=11.9, tap_stop=14.2, results=15.3,
-        callouts=(16.5, 17.1, 17.7, 18.3, 18.9), camera=None, tail=19.5,
-        taps=(20.5,), swooshes=(21.45, 22.4), cta=25.5, button=27.0,
+        total=30.0, hook2=1.4, problem=3.4, part2=5.1, reveal=7.0, phone=8.5, setup=9.5,
+        tap_start=10.9, tap_record=11.8, tap_stop=13.6, results=15.4,
+        callouts=(17.0, 17.72, 18.32, 18.72, 19.6), camera=None, tail=20.8,
+        taps=(22.03,), swooshes=(22.95, 23.8), cta=25.5, button=27.0,
     ),
 }
 
