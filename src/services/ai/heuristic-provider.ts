@@ -153,14 +153,14 @@ function buildCopy(language: SpeechLanguage) {
       fillerFeedback: (s: TranscriptStats) =>
         s.fillerTotal === 0
           ? "Aucun tic de langage détecté — un discours très propre."
-          : `Vous avez utilisé ${s.fillerTotal} tics de langage (${s.fillerPerMinute}/min). Le plus fréquent : « ${s.fillerTop[0]?.word} » × ${s.fillerTop[0]?.count}. Remplacez-les par de courtes pauses.`,
+          : `Vous avez utilisé ${s.fillerTotal} tic${s.fillerTotal === 1 ? "" : "s"} de langage (${s.fillerPerMinute}/min). Le plus fréquent : « ${s.fillerTop[0]?.word} » × ${s.fillerTop[0]?.count}. Remplacez-les par de courtes pauses.`,
       sentenceFeedback: (s: TranscriptStats) =>
         s.longSentenceCount > 0
           ? `Votre phrase la plus longue fait ${s.longestSentenceWords} mots (« ${shortQuote(s.longestSentence, 60)} »). Divisez-la en deux ou trois idées.`
           : `Vos phrases font en moyenne ${Math.round(s.avgSentenceLength)} mots — une longueur facile à suivre.`,
       clarityHigh: "Les idées passent dès la première écoute ; vous gardez des phrases directes.",
       clarityLow: (s: TranscriptStats) =>
-        `Certains passages sont difficiles à suivre : ${s.longSentenceCount > 0 ? "des phrases trop longues" : "des idées enchaînées sans pause"} et ${s.fillerTotal} tics de langage diluent le message.`,
+        `Certains passages sont difficiles à suivre : ${s.longSentenceCount > 0 ? "des phrases trop longues" : "des idées enchaînées sans pause"} et ${s.fillerTotal} tic${s.fillerTotal === 1 ? "" : "s"} de langage diluent le message.`,
       confidenceHigh: "Vous paraissez sûr de vous : peu d'hésitations, des affirmations directes.",
       confidenceLow: (s: TranscriptStats) =>
         s.hedgeCount > 0
@@ -177,7 +177,7 @@ function buildCopy(language: SpeechLanguage) {
       },
       fluencyHigh: "Le discours coule sans coupures notables.",
       fluencyLow: (s: TranscriptStats) =>
-        `${s.fillerTotal} tics de langage et des relances courtes cassent le rythme. Travaillez les transitions entre les idées.`,
+        `${s.fillerTotal} tic${s.fillerTotal === 1 ? "" : "s"} de langage et des relances courtes cassent le rythme. Travaillez les transitions entre les idées.`,
       organizationHigh: (s: TranscriptStats) =>
         `Vous utilisez ${s.connectorCount} connecteurs logiques (« premièrement », « de plus », « enfin »…), ce qui ordonne le message.`,
       organizationLow:
@@ -205,7 +205,7 @@ function buildCopy(language: SpeechLanguage) {
       closingLow:
         "Le discours s'arrête brusquement, sans résumé ni appel à l'action. Les 15 dernières secondes sont celles dont on se souvient.",
       summary: (s: TranscriptStats, overall: number, title: string) =>
-        `Analyse de « ${title} » : ${s.wordCount} mots à ${s.wordsPerMinute} mpm avec ${s.fillerTotal} tics de langage. Score global ${overall}/100. ${
+        `Analyse de « ${title} » : ${s.wordCount} mots à ${s.wordsPerMinute} mpm avec ${s.fillerTotal} tic${s.fillerTotal === 1 ? "" : "s"} de langage. Score global ${overall}/100. ${
           s.hasIntro && s.hasConclusion
             ? "La structure est complète ; la prochaine étape se joue sur l'exécution."
             : "Le plus urgent est de compléter la structure : " +

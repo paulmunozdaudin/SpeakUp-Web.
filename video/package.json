@@ -7,7 +7,12 @@
     "studio": "remotion studio src/index.ts",
     "voice": "node scripts/voice.mjs",
     "voice-title": "node scripts/voice-title.mjs",
-    "render": "node scripts/render.mjs"
+    "render": "node scripts/render.mjs",
+    "promo": "remotion render src/index.ts Promo out/eloq-promo.mp4 --codec=h264 --crf=17",
+    "promo:sfx-only": "remotion render src/index.ts Promo out/eloq-promo-sans-musique.mp4 --codec=h264 --crf=17 --props={\\\"music\\\":false}",
+    "promo:cover": "remotion still src/index.ts PromoCover out/eloq-promo-cover.png",
+    "promo:audio": "python3 scripts/make-promo-audio.py",
+    "promo:capture": "node scripts/capture-promo.cjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.534",
