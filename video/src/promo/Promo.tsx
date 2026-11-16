@@ -5,6 +5,7 @@ import {
   Easing,
   Img,
   interpolate,
+  Sequence,
   spring,
   staticFile,
   useCurrentFrame,
@@ -22,6 +23,8 @@ import { PROMO_FR, PROMO_VARIANTS, type Caption, type PromoConfig, type PromoLoc
 export interface PromoProps {
   /** false renders the cut with sound effects only. */
   music: boolean;
+  /** false leaves the voice-over out (variants without one ignore it). */
+  voice?: boolean;
   locale: PromoLocale;
   [key: string]: unknown;
 }
@@ -858,11 +861,12 @@ const Cta: React.FC = () => {
 };
 
 // ── Composition ─────────────────────────────────────────────────────────────
-const PromoScenes: React.FC<{ music: boolean }> = ({ music }) => {
-  const { t } = useClock();
+const PromoScenes: React.FC<{ music: boolean; voice: boolean }> = ({ music, voice }) => {
+  const { t, fps } = useClock();
   const cfg = useCfg();
   const img = useAsset();
   const fadeOut = interpolate(t, [cfg.seconds - 0.35, cfg.seconds], [1, 0.92], clamp);
+  const spoken = voice && cfg.voice !== undefined;
   return (
     <AbsoluteFill style={{ backgroundColor: BG, opacity: fadeOut }}>
       <Backdrop />
@@ -875,15 +879,22 @@ const PromoScenes: React.FC<{ music: boolean }> = ({ music }) => {
         <CaptionBlock key={caption.from} caption={caption} />
       ))}
       <Cta />
-      {music && <Audio src={img("music.wav")} volume={0.8} />}
-      <Audio src={img("sfx.wav")} volume={music ? 0.75 : 0.9} />
+      {/* Music and effects sit under the voice when there is one. */}
+      {music && <Audio src={img("music.wav")} volume={spoken ? 0.3 : 0.8} />}
+      <Audio src={img("sfx.wav")} volume={spoken ? 0.45 : music ? 0.75 : 0.9} />
+      {spoken &&
+        cfg.voice?.clips.map((clip) => (
+          <Sequence key={clip.at} from={Math.round(clip.at * fps)} durationInFrames={Math.ceil((clip.to - clip.from) * fps)}>
+            <Audio src={img(cfg.voice!.file)} trimBefore={Math.round(clip.from * fps)} trimAfter={Math.round(clip.to * fps)} />
+          </Sequence>
+        ))}
     </AbsoluteFill>
   );
 };
 
-export const Promo: React.FC<PromoProps> = ({ music, locale }) => (
+export const Promo: React.FC<PromoProps> = ({ music, voice = true, locale }) => (
   <Config.Provider value={PROMO_VARIANTS[locale] ?? PROMO_FR}>
-    <PromoScenes music={music} />
+    <PromoScenes music={music} voice={voice} />
   </Config.Provider>
 );
 

@@ -2,7 +2,7 @@
 
 Vertical 1080×1920, 30 fps, captions on screen, one variant per language:
 
-- **French** (`Promo`, 33 s) — students preparing the Brevet, Bac de Français
+- **French** (`Promo`, 34.5 s, with voice-over) — students preparing the Brevet, Bac de Français
   and Grand Oral.
 - **Spanish** (`PromoEs`, 30 s) — presentations, investor pitches, interviews
   and the daily challenges.
@@ -29,6 +29,10 @@ variant uses are in `src/promo/timeline.ts`.
   so the transcript is a fixed speech in that language; the
   scores shown are the ones the app's analysis engine computes for it.
   `frames.json` holds the frame timings and the position of each metric card.
+- **Voice-over (French)** — `public/promo/voice.wav`, an ElevenLabs recording
+  of the script. `PROMO_FR.voice.clips` in `timeline.ts` cuts it into phrases
+  and places each on its scene; pass `--props` with `"voice":false` to
+  render without it.
 - **Music and sound effects** — synthesised from scratch by
   `scripts/make-promo-audio.py` (numpy only, no samples), so there is no
   third-party audio to license.

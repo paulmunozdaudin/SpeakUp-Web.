@@ -54,7 +54,7 @@ export const RemotionRoot: React.FC = () => (
           width={1080}
           height={1920}
           fps={PROMO_FPS}
-          durationInFrames={PROMO_FPS * PROMO_VARIANTS[locale].seconds}
+          durationInFrames={Math.round(PROMO_FPS * PROMO_VARIANTS[locale].seconds)}
           defaultProps={{ music: true, locale }}
         />
         <Still

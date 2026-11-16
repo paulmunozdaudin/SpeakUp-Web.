@@ -24,10 +24,10 @@ rng = np.random.default_rng(7)
 # `swooshes` the screen changes of the last scenes.
 VARIANTS = {
     "promo": dict(  # French
-        total=33.0, hook2=1.75, problem=3.5, part2=5.5, reveal=7.5, phone=8.6, setup=10.0,
-        tap_start=12.6, tap_record=13.6, tap_stop=16.3, results=17.6,
-        callouts=(18.9, 19.55, 20.2, 20.85, 21.5), camera=22.15, tail=23.5,
-        taps=(24.4, 25.3, 26.2), swooshes=(), cta=28.0, button=29.7,
+        total=34.5, hook2=1.6, problem=3.9, part2=5.9, reveal=8.0, phone=9.6, setup=10.8,
+        tap_start=12.8, tap_record=13.8, tap_stop=16.3, results=18.0,
+        callouts=(19.5, 20.25, 21.0, 21.6, 22.45), camera=23.3, tail=24.5,
+        taps=(25.65, 26.6, 27.5), swooshes=(), cta=28.5, button=30.8,
     ),
     "promo-es": dict(  # Spanish
         total=30.0, hook2=1.75, problem=3.5, part2=5.25, reveal=7.0, phone=8.0, setup=9.2,

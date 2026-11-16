@@ -34,6 +34,9 @@ export interface PromoConfig {
   /** Folder under public/ holding this variant's captures and audio. */
   dir: string;
   seconds: number;
+  /** Voice-over: phrases cut from one recording (seconds in the file) and
+   *  placed on the timeline. */
+  voice?: { file: string; clips: { from: number; to: number; at: number }[] };
   frames: {
     recording: { file: string; t: number }[];
     analysing: { file: string; t: number }[];
@@ -93,36 +96,60 @@ export interface PromoConfig {
   };
 }
 
-// ── French — 33 s, students preparing an oral exam ─────────────────────────
+// ── French — 34.5 s, students preparing an oral exam ─────────────────────────
+// Timed to the voice-over (public/promo/voice.wav): each scene starts with
+// its sentence.
 const FR_T = {
   hook: 0,
-  hookLine2: 1.75,
-  problem: 3.5,
-  problemPart2: 5.5,
-  reveal: 7.5,
-  phoneIn: 8.6,
-  setup: 10.0,
-  demo: 12.0,
-  tapStart: 12.6,
-  recIdle: 13.0,
-  tapRecord: 13.6,
-  recording: 13.72,
+  hookLine2: 1.6,
+  problem: 3.9,
+  problemPart2: 5.9,
+  reveal: 8.0,
+  phoneIn: 9.6,
+  setup: 10.8,
+  demo: 12.2,
+  tapStart: 12.8,
+  recIdle: 13.2,
+  tapRecord: 13.8,
+  recording: 13.92,
   recLate: 15.6,
   tapStop: 16.3,
   analysing: 16.4,
-  results: 17.6,
-  metrics: 18.6,
-  callouts: [18.9, 19.55, 20.2, 20.85, 21.5],
-  camera: 22.15,
-  tail: 23.5,
-  cta: 28.0,
-  ctaButton: 29.7,
+  results: 18.0,
+  metrics: 19.2,
+  callouts: [19.5, 20.25, 21.0, 21.6, 22.45],
+  camera: 23.3,
+  tail: 24.5,
+  cta: 28.5,
+  ctaButton: 30.8,
 };
-const FR_EXAM_TAPS = [24.4, 25.3, 26.2];
+const FR_EXAM_TAPS = [25.65, 26.6, 27.5];
+
+/** One spoken phrase: where it sits in the voice file and when it plays. */
+const say = (from: number, to: number, at: number) => ({ from: from - 0.06, to: to + 0.12, at: at - 0.06 });
 
 export const PROMO_FR: PromoConfig = {
   dir: "promo",
-  seconds: 33,
+  seconds: 34.5,
+  voice: {
+    file: "voice.wav",
+    clips: [
+      say(0.07, 1.09, 0.1), // Tu as un oral à passer ?
+      say(1.53, 3.73, 1.6), // Ne découvre pas ton niveau le jour de l'examen.
+      say(4.33, 5.95, 4.05), // Tu peux connaître ton sujet par cœur…
+      say(6.3, 8.34, 5.95), // et pourtant avoir du mal à le présenter.
+      say(8.71, 10.15, 8.12), // Découvre Eloq AI :
+      say(10.47, 12.69, 9.75), // ton coach personnel pour progresser à l'oral.
+      say(13.0, 13.89, 12.3), // Lance un entraînement,
+      say(14.12, 14.91, 13.75), // enregistre-toi,
+      say(15.1, 16.66, 16.4), // et l'IA analyse ton discours.
+      say(16.98, 18.39, 18.05), // Tu reçois une analyse détaillée :
+      say(18.79, 22.41, 19.6), // clarté, confiance, rythme, structure, tics de langage.
+      say(22.73, 25.62, 24.6), // Prépare ton Brevet, ton Bac de Français et ton Grand Oral.
+      say(25.94, 27.63, 28.95), // Le jour de ton oral, sois prêt.
+      say(27.99, 30.8, 30.85), // Commence gratuitement sur eloq-oral.com.
+    ],
+  },
   frames: framesFr,
   setupHeight: 5616,
   metricsHeight: 10035,
